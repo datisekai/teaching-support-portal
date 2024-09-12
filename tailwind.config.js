@@ -1,13 +1,13 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  darkMode: 'class',
+  darkMode: "class",
   content: [
-      './index.html',
-      './src/**/*.{vue,js,ts,jsx,tsx}',
-      './node_modules/primereact/**/*.{js,ts,jsx,tsx}',
+    "./index.html",
+    "./src/**/*.{vue,js,ts,jsx,tsx}",
+    "./node_modules/primereact/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-      extend: {},
+    extend: {},
   },
   plugins: [],
 };
