@@ -82,11 +82,11 @@ const AuthLayout = () => {
       })
       .filter((item) => item !== null);
   };
-  const renderActionsMobile = () => {
+  const renderActions = () => {
     return createActionItems(true).map((actionItem) => actionItem?.template());
   };
 
-  const renderActions = useMemo(() => {
+  const createActions = useMemo(() => {
     return createActionItems(false);
   }, [header.actions]);
 
@@ -99,10 +99,10 @@ const AuthLayout = () => {
     window.addEventListener("resize", handleResize);
     handleResize();
 
-    setDataActions(renderActions);
+    setDataActions(createActions);
 
     return () => window.removeEventListener("resize", handleResize);
-  }, [renderActions]);
+  }, [createActions]);
 
   const handleCloseSidebar = () => {
     setIsSidebarVisible(false);
@@ -123,7 +123,7 @@ const AuthLayout = () => {
         <MyHeader
           isSidebarVisible={isSidebarVisible}
           dataActions={dataActions}
-          renderActionsMobile={renderActionsMobile}
+          renderActions={renderActions}
           header={header}
           isMobile={isMobile}
           toggleSidebar={toggleSidebar}

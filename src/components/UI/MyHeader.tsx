@@ -1,7 +1,7 @@
 import { Button } from "primereact/button";
 import { Menu } from "primereact/menu";
 import { MenuItem } from "primereact/menuitem";
-import React, { useRef } from "react";
+import React, { ReactNode, useRef } from "react";
 
 interface IAction {
   title: string;
@@ -13,7 +13,7 @@ interface IAction {
 interface IMyHeader {
   isSidebarVisible: boolean;
   dataActions: MenuItem[];
-  renderActionsMobile: () => JSX.Element[];
+  renderActions: () => ReactNode;
   header: {
     title: string;
     actions: IAction[];
@@ -24,7 +24,7 @@ interface IMyHeader {
 const MyHeader: React.FC<IMyHeader> = ({
   isSidebarVisible,
   dataActions,
-  renderActionsMobile,
+  renderActions,
   header,
   isMobile,
   toggleSidebar,
@@ -66,7 +66,7 @@ const MyHeader: React.FC<IMyHeader> = ({
         </div>
       ) : (
         <div className="tw-flex tw-items-center tw-justify-center tw-gap-2 tw-mr-2">
-          {renderActionsMobile()}
+          {renderActions()}
         </div>
       )}
     </header>
