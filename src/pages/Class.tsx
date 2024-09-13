@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { useCommonStore } from "../stores";
+import MyCard from "../components/UI/MyCard";
 
 const Class = () => {
   const { setHeaderTitle, setHeaderActions } = useCommonStore();
@@ -26,7 +27,13 @@ const Class = () => {
       },
     ]);
   }, []);
-  return <div>Class</div>;
+  return (
+    <div>
+      <MyCard title="Danh sách lớp học">
+        <div>adasdad</div>
+      </MyCard>
+    </div>
+  );
 };
 
 export default Class;

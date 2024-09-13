@@ -15,13 +15,15 @@ const MyCard: React.FC<CardProps> = ({
   className,
 }) => {
   return (
-    <div className={`border rounded-lg shadow-md p-4 bg-white ${className}`}>
-      <div className="mb-4">
-        <h2 className="text-xl font-bold">{title}</h2>
-        {description && <p className="text-gray-600">{description}</p>}
+    <div
+      className={`tw-border tw-shadow-lg tw-rounded-lg tw-p-4 tw-bg-white ${className}`}
+    >
+      <div className="tw-mb-4">
+        {title && <h2 className="tw-text-xl tw-font-bold">{title}</h2>}
+        {description && <p className="tw-text-gray-600">{description}</p>}
       </div>
-      <div className="mb-4">{children}</div>
-      {footer && <div className="border-t pt-4">{footer}</div>}
+      <div className="tw-mb-4">{children}</div>
+      {footer && <div className="tw-border-t tw-pt-4">{footer}</div>}
     </div>
   );
 };
