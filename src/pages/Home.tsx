@@ -1,9 +1,80 @@
-import React from 'react'
 
-const Home = () => {
+import React, { useState } from "react";
+import { Accordion, AccordionTab } from 'primereact/accordion';
+import { Toolbar } from 'primereact/toolbar';
+import { Button } from 'primereact/button';
+import { SplitButton } from 'primereact/splitbutton';
+import { InputText } from 'primereact/inputtext';
+import { IconField } from 'primereact/iconfield';
+import { InputIcon } from 'primereact/inputicon';
+
+
+export default function Home() {
+
+  const items = [
+    {
+      label: 'Update',
+      icon: 'pi pi-refresh'
+    },
+    {
+      label: 'Delete',
+      icon: 'pi pi-times'
+    }
+  ];
+
+  const startContent = (
+    <React.Fragment>
+      <Button icon="pi pi-plus" className="mr-2" />
+      <Button icon="pi pi-print" className="mr-2" />
+      <Button icon="pi pi-upload" />
+    </React.Fragment>
+  );
+
+  const centerContent = (
+    <IconField iconPosition="left">
+      <InputIcon className="pi pi-search" />
+      <InputText placeholder="Search" />
+    </IconField>
+  );
+
+  const endContent = (
+    <React.Fragment>
+      <SplitButton label="Save" model={items} icon="pi pi-check"></SplitButton>
+    </React.Fragment>
+  );
   return (
-    <div>Home</div>
+    <div>
+      <div className="card">
+        <Accordion activeIndex={0}>
+          <AccordionTab header="Header I">
+            <p className="m-0">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+              Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+              commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+              Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+            </p>
+          </AccordionTab>
+          <AccordionTab header="Header II">
+            <p className="m-0">
+              Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa
+              quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas
+              sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.
+              Consectetur, adipisci velit, sed quia non numquam eius modi.
+            </p>
+          </AccordionTab>
+          <AccordionTab header="Header III">
+            <p className="m-0">
+              At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti
+              quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt
+              mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio.
+              Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus.
+            </p>
+          </AccordionTab>
+        </Accordion>
+      </div>
+      <div className="card">
+        <Toolbar start={startContent} center={centerContent} end={endContent} />
+      </div>
+    </div>
   )
 }
-
-export default Home

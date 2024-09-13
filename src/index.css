@@ -1,12 +1,22 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@layer tailwind-base, primereact, tailwind-utilities;
 
-html {
-    font-size: 14px;
+/* IMPORTANT: In "styled" mode you must add the PrimeReact Theme here. Do NOT include in "unstyled" mode */
+@import "primereact/resources/themes/lara-light-blue/theme.css"
+  layer(primereact);
+
+@layer tailwind-base {
+  @tailwind base;
 }
 
-.outline-btn{
-    border-color: #1c80cf;
-    color: #1c80cf;
+@layer tailwind-utilities {
+  @tailwind components;
+  @tailwind utilities;
+}
+html {
+  font-size: 14px;
+}
+
+.outline-btn {
+  border-color: #1c80cf;
+  color: #1c80cf;
 }
