@@ -7,6 +7,8 @@ import { SplitButton } from 'primereact/splitbutton';
 import { InputText } from 'primereact/inputtext';
 import { IconField } from 'primereact/iconfield';
 import { InputIcon } from 'primereact/inputicon';
+import MyTable from "../components/UI/MyTable";
+import { products, productSchemas } from "../components/dataTable/products";
 
 
 export default function Home() {
@@ -74,6 +76,9 @@ export default function Home() {
       </div>
       <div className="card">
         <Toolbar start={startContent} center={centerContent} end={endContent} />
+      </div>
+      <div className="card tw-mt-2">
+        <MyTable data={products} schemas={productSchemas} />
       </div>
     </div>
   )
