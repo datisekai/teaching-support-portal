@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useCommonStore } from "../stores";
 import MyCard from "../components/UI/MyCard";
+import MyCalendar from "../components/UI/MyCalendar";
 
 const Class = () => {
   const { setHeaderTitle, setHeaderActions } = useCommonStore();
@@ -32,6 +33,7 @@ const Class = () => {
       <MyCard title="Danh sách lớp học">
         <div>adasdad</div>
       </MyCard>
+      <MyCalendar />
     </div>
   );
 };
