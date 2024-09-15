@@ -12,14 +12,21 @@ const schema = yup
     .shape({
         name: yup.string().required(),
         description: yup.string().required(),
+        count: yup.number()
     })
     .required()
 const Department = () => {
 
-    const { register, handleSubmit, formState: { errors } } = useForm({
+    const { register, handleSubmit, formState: { errors }, setValue, getValues, watch } = useForm({
         resolver: yupResolver(schema),
+        defaultValues: {
+            description: '',
+            name: '',
+            count: 123
+        }
     })
 
+    console.log(watch("description"));
     const setFooterActions = useCommonStore(state => state.setFooterActions)
     const setHeaderTitle = useCommonStore(state => state.setHeaderTitle)
     const resetActions = useCommonStore(state => state.resetActions)

@@ -8,26 +8,19 @@ export const DepartmentForm: IForm[] = [
         prop: "name",
         type: "text",
         label: "Tên ngành",
+        col: 12,
       },
       {
         prop: "description",
-        type: "text",
+        type: "editor",
         label: "Mô tả",
-      },
-    ],
-  },
-  {
-    title: "abc",
-    attributes: [
-      {
-        prop: "name",
-        type: "text",
-        label: "Tên ngành",
+        col: 12,
       },
       {
-        prop: "description",
-        type: "text",
-        label: "Mô tả",
+        prop: "count",
+        type: "number",
+        label: "Số",
+        col: 12,
       },
     ],
   },

@@ -48,7 +48,7 @@ const AuthLayout = () => {
           toggleSidebar={toggleSidebar}
         />
         <main
-          className={`tw-flex-1 tw-p-4 tw-mt-20 tw-transition-all tw-duration-300 ${isSidebarVisible ? "md:tw-ml-80" : "md:tw-ml-0"
+          className={`tw-flex-1 tw-p-4 tw-pt-24 tw-pb-24 tw-transition-all tw-duration-300 ${isSidebarVisible ? "md:tw-ml-80" : "md:tw-ml-0"
             }`}
         >
           <Outlet />
