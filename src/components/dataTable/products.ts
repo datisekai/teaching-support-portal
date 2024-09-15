@@ -3,12 +3,12 @@ import { TableSchema } from "../../types/table";
 export const productSchemas: TableSchema[] = [
   {
     label: "Tên sản phẩm",
-    key: "name",
+    prop: "name",
     type: "text",
   },
   {
     label: "Giá",
-    key: "price",
+    prop: "price",
     type: "number",
   },
 ];

@@ -20,7 +20,7 @@ const MyCard: React.FC<CardProps> = ({
         {title && <h2 className="tw-text-xl tw-font-bold">{title}</h2>}
         {description && <p className="tw-text-gray-600">{description}</p>}
       </div>
-      <div className={`tw-mb-4 ${className}`}>{children}</div>
+      <div className={`tw-mb-4 ${className || ''}`}>{children}</div>
       {footer && <div className="tw-border-t tw-pt-4">{footer}</div>}
     </div>
   );

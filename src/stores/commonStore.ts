@@ -1,11 +1,15 @@
 import { create } from "zustand";
 
-interface IAction {
-  title: string;
-  icon: string;
-  onClick: () => void;
-  type: "button" | "file";
-  disabled: boolean;
+export interface IAction {
+  title?: string;
+  icon?: string;
+  onClick?: () => void;
+  type?: "button" | "file";
+  disabled?: boolean;
+  iconPos?: "right" | "left";
+  severity?: "success" | "info" | "warning" | "danger" | "help" | "secondary";
+  loading?: boolean;
+  action?: "back";
 }
 
 interface ICommonState {
@@ -14,8 +18,12 @@ interface ICommonState {
     title: string;
     actions: IAction[];
   };
+  footer: {
+    actions: IAction[];
+  };
   setHeaderTitle: (title: string) => void;
   setHeaderActions: (actions: IAction[]) => void;
+  setFooterActions: (actions: IAction[]) => void;
   setLoading: (isLoading: boolean) => void;
 }
 
@@ -25,8 +33,12 @@ export const useCommonStore = create<ICommonState>((set) => ({
     title: "Dashboard",
     actions: [],
   },
+  footer: {
+    actions: [],
+  },
   setHeaderTitle: (title: string) => {
     set((state) => ({
+      ...state,
       header: {
         ...state.header,
         title,
@@ -35,13 +47,23 @@ export const useCommonStore = create<ICommonState>((set) => ({
   },
   setHeaderActions: (actions: IAction[]) => {
     set((state) => ({
+      ...state,
       header: {
         ...state.header,
         actions,
       },
     }));
   },
+  setFooterActions: (actions: IAction[]) => {
+    set((state) => ({
+      ...state,
+      footer: {
+        ...state.footer,
+        actions: actions,
+      },
+    }));
+  },
   setLoading: (isLoading: boolean) => {
-    set(() => ({ isLoadingApi: isLoading }));
+    set((state) => ({ ...state, isLoadingApi: isLoading }));
   },
 }));

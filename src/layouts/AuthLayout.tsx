@@ -8,6 +8,7 @@ import { Menu } from "primereact/menu";
 import { MenuItem } from "primereact/menuitem";
 import MyHeader from "../components/UI/MyHeader";
 import MySideBar from "../components/UI/MySideBar";
+import MyFooterAction from "../components/UI/MyFooterAction";
 
 const AuthLayout = () => {
   const { header } = useCommonStore();
@@ -129,12 +130,12 @@ const AuthLayout = () => {
           toggleSidebar={toggleSidebar}
         />
         <main
-          className={`tw-flex-1 tw-p-4 tw-mt-20 tw-transition-all tw-duration-300 ${
-            isSidebarVisible ? "md:tw-ml-80" : "md:tw-ml-0"
-          }`}
+          className={`tw-flex-1 tw-p-4 tw-mt-20 tw-transition-all tw-duration-300 ${isSidebarVisible ? "md:tw-ml-80" : "md:tw-ml-0"
+            }`}
         >
           <Outlet />
         </main>
+        <MyFooterAction isSidebarVisible={isSidebarVisible} />
       </div>
     </div>
   );

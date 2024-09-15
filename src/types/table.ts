@@ -1,5 +1,5 @@
 export interface TableSchema {
-  key: string;
+  prop: string;
   label: string;
   type: "text" | "number" | "date" | "badge" | "money" | "datetime";
   getBadge?: (value: any) => {

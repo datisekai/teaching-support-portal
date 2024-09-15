@@ -33,13 +33,12 @@ const MyHeader: React.FC<IMyHeader> = ({
 
   return (
     <header
-      className={`tw-bg-gray-100 tw-fixed tw-top-0 tw-left-0 tw-right-0 tw-flex tw-justify-between tw-items-center tw-p-2 tw-shadow-md tw-z-10 tw-transition-all tw-duration-300 ${
-        isSidebarVisible ? "md:tw-ml-80" : "md:tw-ml-0"
-      }`}
+      className={`tw-bg-gray-100 tw-fixed tw-top-0 tw-left-0 tw-right-0 tw-flex tw-justify-between tw-items-center tw-p-2 tw-shadow-md tw-z-10 tw-transition-all tw-duration-300 ${isSidebarVisible ? "md:tw-ml-80" : "md:tw-ml-0"
+        }`}
     >
       <div className="tw-flex tw-items-center tw-gap-4 tw-min-h-16 tw-ml-2">
         <Button icon="pi pi-bars" onClick={toggleSidebar} />
-        <div>{header.title}</div>
+        <div className="tw-uppercase tw-font-bold">{header.title}</div>
       </div>
       {isMobile && dataActions.length > 0 ? (
         <div>

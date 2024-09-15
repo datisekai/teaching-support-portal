@@ -2,20 +2,14 @@ import { Avatar } from "primereact/avatar";
 import { Ripple } from "primereact/ripple";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { sidebarData } from "../constants";
 
 interface IMySideBar {
   isSidebarVisible: boolean;
   isMobile: boolean;
   handleCloseSidebar: () => void;
 }
-interface IMenuItem {
-  title: string;
-  children: {
-    title: string;
-    icon: string;
-    command: () => void;
-  }[];
-}
+
 interface ExpandedMenus {
   [key: number]: boolean;
 }
@@ -27,48 +21,6 @@ const MySideBar: React.FC<IMySideBar> = ({
 }) => {
   const navigate = useNavigate();
   const [expandedMenus, setExpandedMenus] = useState<ExpandedMenus>({});
-  const dataMenu: IMenuItem[] = [
-    {
-      title: "Lớp",
-      children: [
-        {
-          title: "Danh sách lớp",
-          icon: "pi pi-fw pi-user",
-          command: () => {
-            console.log("Lop");
-            navigate("class");
-          },
-        },
-        {
-          title: "Danh sách lớp2",
-          icon: "pi pi-fw pi-user",
-          command: () => {
-            console.log("Lop");
-            navigate("class2");
-          },
-        },
-      ],
-    },
-    {
-      title: "Khoahoc",
-      children: [
-        {
-          title: "Danh sách khoa hoc",
-          icon: "pi pi-fw pi-user",
-          command: () => {
-            console.log("Lop");
-          },
-        },
-        {
-          title: "Danh sách khoa hoc2",
-          icon: "pi pi-fw pi-user",
-          command: () => {
-            console.log("Lop");
-          },
-        },
-      ],
-    },
-  ];
 
   const handleExpandClick = (index: number) => {
     setExpandedMenus((prev) => ({
@@ -77,11 +29,13 @@ const MySideBar: React.FC<IMySideBar> = ({
     }));
   };
 
+  const handleMenuItemClick = (path?: string) => {
+    path && navigate(path);
+  };
   return (
     <div
-      className={`tw-fixed tw-top-0 tw-left-0 tw-h-full tw-bg-gray-100 tw-shadow-md tw-z-20 tw-transition-transform tw-duration-300 ${
-        isSidebarVisible ? "tw-translate-x-0" : "-tw-translate-x-full"
-      } ${isMobile ? "tw-w-full" : "tw-w-80"}`}
+      className={`tw-fixed tw-top-0 tw-left-0 tw-h-full tw-bg-gray-100 tw-shadow-md tw-z-20 tw-transition-transform tw-duration-300 ${isSidebarVisible ? "tw-translate-x-0" : "-tw-translate-x-full"
+        } ${isMobile ? "tw-w-full" : "tw-w-80"}`}
     >
       <div className="tw-flex tw-flex-col tw-h-full">
         <div className="tw-flex tw-items-center tw-justify-between tw-px-4 tw-py-3">
@@ -101,29 +55,27 @@ const MySideBar: React.FC<IMySideBar> = ({
         </div>
         <div className="tw-overflow-y-auto tw-flex-1">
           <ul className="tw-list-none tw-p-3 tw-m-0">
-            {dataMenu.map((item, index) => (
+            {sidebarData.map((item, index) => (
               <li key={index}>
                 <div
-                  onClick={() => handleExpandClick(index)}
+                  onClick={() => item.children && item.children.length > 0 ? handleExpandClick(index) : handleMenuItemClick(item?.path)}
                   className="tw-p-ripple tw-p-3 tw-flex tw-items-center tw-justify-between tw-text-600 tw-cursor-pointer hover:tw-bg-gray-200 tw-transition-colors tw-duration-200"
                 >
                   <span className="tw-font-medium">{item.title}</span>
-                  <i
-                    className={`pi pi-chevron-down tw-transition-transform tw-duration-300 ${
-                      expandedMenus[index] ? "tw-rotate-180" : ""
-                    }`}
-                  ></i>
+                  {item.children && item.children.length > 0 && <i
+                    className={`pi pi-chevron-down tw-transition-transform tw-duration-300 ${expandedMenus[index] ? "tw-rotate-180" : ""
+                      }`}
+                  ></i>}
                   <Ripple />
                 </div>
                 <ul
-                  className={`tw-list-none tw-p-0 tw-m-0 tw-overflow-hidden tw-transition-max-height tw-duration-300 ${
-                    expandedMenus[index] ? "tw-max-h-40" : "tw-max-h-0"
-                  }`}
+                  className={`tw-list-none tw-p-0 tw-m-0 tw-overflow-hidden tw-transition-max-height tw-duration-300 ${expandedMenus[index] ? "tw-max-h-40" : "tw-max-h-0"
+                    }`}
                 >
-                  {item.children.map((child, childIndex) => (
+                  {item?.children?.map((child, childIndex) => (
                     <li key={childIndex}>
                       <div
-                        onClick={child.command}
+                        onClick={() => handleMenuItemClick(child?.path)}
                         className="tw-p-ripple tw-flex tw-items-center tw-cursor-pointer tw-p-3 tw-border-round tw-text-700 hover:tw-bg-gray-200 tw-transition-colors tw-duration-200 tw-w-full"
                       >
                         <i className={`${child.icon} tw-mr-2`}></i>

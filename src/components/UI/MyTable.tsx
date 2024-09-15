@@ -42,7 +42,7 @@ const MyTable: FC<IMyTable> = ({ data = [], schemas = [], keySearch = "", totalR
     const bodyTemplate = (row: any, options: any) => {
         const key = options.field;
 
-        const schema = schemas.find(item => item.key === key);
+        const schema = schemas.find(item => item.prop === key);
         const value = row[key] || ''
         switch (schema?.type) {
             case 'text':
@@ -91,7 +91,7 @@ const MyTable: FC<IMyTable> = ({ data = [], schemas = [], keySearch = "", totalR
             <DataTable value={data} header={header} tableStyle={{ minWidth: '50rem' }}>
                 {
                     schemas.map((schema) => {
-                        return <Column body={bodyTemplate} key={schema.key} field={schema.key} header={schema.label}></Column>
+                        return <Column body={bodyTemplate} key={schema.prop} field={schema.prop} header={schema.label}></Column>
                     })
                 }
             </DataTable>
