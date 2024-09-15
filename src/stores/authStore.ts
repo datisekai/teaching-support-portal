@@ -1,20 +1,23 @@
-import { create } from 'zustand'
+import { create } from "zustand";
 
-
-interface IUser{
-    code: string
+interface IUser {
+  code: string;
+  permissions: string[];
 }
 
 interface IState {
-    token: string
-    user: IUser
-    login: (code: string, password: string) => Promise<IUser>
-  }
+  token: string;
+  user: IUser;
+  login: (code: string, password: string) => Promise<IUser>;
+}
 
 export const useAuthStore = create<IState>((set) => ({
-  token: '',
-  user:{} as IUser,
+  token: "",
+  user: {
+    permissions: ["view-class", "view-department"],
+    code: "3120410115",
+  } as IUser,
   login: async (code: string, password: string) => {
-        return {} as IUser  
-  } 
-}))
+    return {} as IUser;
+  },
+}));

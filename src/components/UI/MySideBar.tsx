@@ -1,8 +1,9 @@
 import { Avatar } from "primereact/avatar";
 import { Ripple } from "primereact/ripple";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { sidebarData } from "../constants";
+import { useAuthStore } from "../../stores";
 
 interface IMySideBar {
   isSidebarVisible: boolean;
@@ -21,6 +22,7 @@ const MySideBar: React.FC<IMySideBar> = ({
 }) => {
   const navigate = useNavigate();
   const [expandedMenus, setExpandedMenus] = useState<ExpandedMenus>({});
+  const permissions = useAuthStore(state => state.user.permissions)
 
   const handleExpandClick = (index: number) => {
     setExpandedMenus((prev) => ({
@@ -32,6 +34,21 @@ const MySideBar: React.FC<IMySideBar> = ({
   const handleMenuItemClick = (path?: string) => {
     path && navigate(path);
   };
+
+  const hasPermission = (permission?: string) => {
+    if (!permission) return false;
+    return permissions.includes(permission);
+  };
+
+  const filteredSidebarData = useMemo(() => {
+    return sidebarData.filter((item) => {
+      const hasChildPermission = item.children?.some((child) =>
+        hasPermission(child?.permission)
+      );
+      return hasPermission(item.permission) || hasChildPermission;
+    });
+  }, [permissions])
+
   return (
     <div
       className={`tw-fixed tw-top-0 tw-left-0 tw-h-full tw-bg-gray-100 tw-shadow-md tw-z-20 tw-transition-transform tw-duration-300 ${isSidebarVisible ? "tw-translate-x-0" : "-tw-translate-x-full"
@@ -55,7 +72,7 @@ const MySideBar: React.FC<IMySideBar> = ({
         </div>
         <div className="tw-overflow-y-auto tw-flex-1">
           <ul className="tw-list-none tw-p-3 tw-m-0">
-            {sidebarData.map((item, index) => (
+            {filteredSidebarData.map((item, index) => (
               <li key={index}>
                 <div
                   onClick={() => item.children && item.children.length > 0 ? handleExpandClick(index) : handleMenuItemClick(item?.path)}

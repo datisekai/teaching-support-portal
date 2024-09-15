@@ -8,6 +8,7 @@ export const sidebarData: IMenuItem[] = [
         title: "Danh sách lớp",
         icon: "pi pi-fw pi-user",
         path: "/class",
+        permission: "view-class",
       },
     ],
   },
@@ -20,6 +21,7 @@ export const sidebarData: IMenuItem[] = [
         title: "Danh sách ngành",
         icon: "pi pi-fw pi-user",
         path: "/department",
+        permission: "view-department",
       },
     ],
   },
@@ -31,8 +33,5 @@ interface IMenuItem {
   path?: string;
   hidden?: boolean;
   children?: IMenuItem[];
+  permission?: string;
 }
-
-export const getDisplaySidebar = () => {
-  return true;
-};
