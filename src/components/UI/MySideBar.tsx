@@ -56,16 +56,15 @@ const MySideBar: React.FC<IMySideBar> = ({
     >
       <div className="tw-flex tw-flex-col tw-h-full">
         <div className="tw-flex tw-items-center tw-justify-between tw-px-4 tw-py-3">
-          <span className="tw-inline-flex tw-items-center tw-gap-2">
-            <Avatar image="/public/logo.png" size="xlarge" shape="circle" />
+          <span onClick={() => navigate('/')} className="tw-inline-flex tw-items-center tw-gap-2">
+            <Avatar image="/public/images/logo.png" size="xlarge" shape="circle" />
             <span className="tw-font-semibold tw-text-2xl text-primary">
               IT SGU
             </span>
           </span>
           {isMobile && (
             <i
-              style={{ fontSize: "2rem" }}
-              className="pi pi-times-circle tw-cursor-pointer tw-text-[#6366f1] hover:tw-text-[#4f46e5]"
+              className="pi pi-times tw-text-2xl tw-cursor-pointer text-primary"
               onClick={handleCloseSidebar}
             />
           )}
@@ -111,7 +110,7 @@ const MySideBar: React.FC<IMySideBar> = ({
           <a className="tw-m-3 tw-flex tw-items-center tw-cursor-pointer tw-gap-2 tw-border-round tw-text-700 hover:tw-surface-100 tw-transition-duration-150 tw-transition-colors tw-p-ripple">
             <span className="tw-inline-flex tw-items-center tw-gap-2">
               <Avatar
-                image="/public/logo.png"
+                image="/public/images/logo.png"
                 size="xlarge"
                 className="tw-object-cover tw-object-top"
                 shape="circle"

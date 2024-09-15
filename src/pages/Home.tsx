@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Accordion, AccordionTab } from 'primereact/accordion';
 import { Toolbar } from 'primereact/toolbar';
 import { Button } from 'primereact/button';
@@ -9,10 +9,12 @@ import { IconField } from 'primereact/iconfield';
 import { InputIcon } from 'primereact/inputicon';
 import MyTable from "../components/UI/MyTable";
 import { products, productSchemas } from "../components/dataTable/products";
+import { useCommonStore } from "../stores";
 
 
 export default function Home() {
 
+  const { setHeaderTitle } = useCommonStore()
   const items = [
     {
       label: 'Update',
@@ -44,6 +46,10 @@ export default function Home() {
       <SplitButton label="Save" model={items} icon="pi pi-check"></SplitButton>
     </React.Fragment>
   );
+
+  useEffect(() => {
+    setHeaderTitle('Dashboard')
+  }, [])
   return (
     <div>
       <div className="card">

@@ -10,7 +10,7 @@ interface IGroup extends IForm {
 }
 const GroupItem: React.FC<IGroup> = ({ attributes, title, register, errors }) => {
     return (
-        <MyCard title={title} className='tw-flex tw-gap-x-2 tw-gap-y-4'>
+        <MyCard title={title} className=' tw-flex tw-gap-x-2 tw-gap-y-4'>
             {attributes.map((attribute, index) => (
                 <FormItem error={errors[attribute.prop]?.message || ''} key={attribute.prop} {...attribute} register={register} />
             ))}

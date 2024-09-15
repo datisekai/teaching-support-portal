@@ -22,6 +22,7 @@ const Department = () => {
 
     const setFooterActions = useCommonStore(state => state.setFooterActions)
     const setHeaderTitle = useCommonStore(state => state.setHeaderTitle)
+    const resetActions = useCommonStore(state => state.resetActions)
 
 
     const onSubmit = (data: any) => {
@@ -46,13 +47,13 @@ const Department = () => {
         setHeaderTitle('Tạo ngành học')
 
         return () => {
-            setFooterActions([])
+            resetActions()
         }
     }, [])
 
     return (
         <div>
-            <form onSubmit={(e) => e.preventDefault()}>
+            <form onSubmit={(e) => e.preventDefault()} className="tw-space-y-4">
                 {DepartmentForm.map((form, index) => (
                     <GroupItem errors={errors} {...form} key={index} register={register} />
                 ))}

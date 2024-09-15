@@ -25,6 +25,7 @@ interface ICommonState {
   setHeaderActions: (actions: IAction[]) => void;
   setFooterActions: (actions: IAction[]) => void;
   setLoading: (isLoading: boolean) => void;
+  resetActions: () => void;
 }
 
 export const useCommonStore = create<ICommonState>((set) => ({
@@ -65,5 +66,12 @@ export const useCommonStore = create<ICommonState>((set) => ({
   },
   setLoading: (isLoading: boolean) => {
     set((state) => ({ ...state, isLoadingApi: isLoading }));
+  },
+  resetActions: () => {
+    set((state) => ({
+      ...state,
+      header: { ...state.header, actions: [] },
+      footer: { ...state.footer, actions: [] },
+    }));
   },
 }));

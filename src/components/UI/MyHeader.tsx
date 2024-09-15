@@ -2,35 +2,20 @@ import { Button } from "primereact/button";
 import { Menu } from "primereact/menu";
 import { MenuItem } from "primereact/menuitem";
 import React, { ReactNode, useRef } from "react";
+import { IAction, useCommonStore } from "../../stores/commonStore";
+import MyHeaderAction from "./MyHeaderAction";
 
-interface IAction {
-  title: string;
-  icon: string;
-  onClick: () => void;
-  type: "button" | "file";
-  disabled: boolean;
-}
+
 interface IMyHeader {
   isSidebarVisible: boolean;
-  dataActions: MenuItem[];
-  renderActions: () => ReactNode;
-  header: {
-    title: string;
-    actions: IAction[];
-  };
-  isMobile: boolean;
   toggleSidebar: () => void;
 }
 const MyHeader: React.FC<IMyHeader> = ({
   isSidebarVisible,
-  dataActions,
-  renderActions,
-  header,
-  isMobile,
   toggleSidebar,
 }) => {
-  const menuRight = useRef<Menu | null>(null);
 
+  const header = useCommonStore(state => state.header)
   return (
     <header
       className={`tw-bg-gray-100 tw-fixed tw-top-0 tw-left-0 tw-right-0 tw-flex tw-justify-between tw-items-center tw-p-2 tw-shadow-md tw-z-10 tw-transition-all tw-duration-300 ${isSidebarVisible ? "md:tw-ml-80" : "md:tw-ml-0"
@@ -40,7 +25,7 @@ const MyHeader: React.FC<IMyHeader> = ({
         <Button icon="pi pi-bars" onClick={toggleSidebar} />
         <div className="tw-uppercase tw-font-bold">{header.title}</div>
       </div>
-      {isMobile && dataActions.length > 0 ? (
+      {/* {isMobile && dataActions.length > 0 ? (
         <div>
           <Menu
             model={dataActions}
@@ -63,11 +48,9 @@ const MyHeader: React.FC<IMyHeader> = ({
             aria-haspopup
           />
         </div>
-      ) : (
-        <div className="tw-flex tw-items-center tw-justify-center tw-gap-2 tw-mr-2">
-          {renderActions()}
-        </div>
-      )}
+      ) : ( */}
+      <MyHeaderAction />
+      {/* )} */}
     </header>
   );
 };

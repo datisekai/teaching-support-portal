@@ -1,95 +1,19 @@
-import React, { useState, useEffect, useRef, useMemo } from "react";
 import { Button } from "primereact/button";
-import { Avatar } from "primereact/avatar";
-import { Ripple } from "primereact/ripple";
-import { useCommonStore } from "../stores";
-import { Outlet, useNavigate } from "react-router-dom";
-import { Menu } from "primereact/menu";
 import { MenuItem } from "primereact/menuitem";
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import { Outlet } from "react-router-dom";
+import MyFooterAction from "../components/UI/MyFooterAction";
 import MyHeader from "../components/UI/MyHeader";
 import MySideBar from "../components/UI/MySideBar";
-import MyFooterAction from "../components/UI/MyFooterAction";
+import { useCommonStore } from "../stores";
 
 const AuthLayout = () => {
-  const { header } = useCommonStore();
-
-  const [dataActions, setDataActions] = useState<MenuItem[]>([]);
 
   const [isSidebarVisible, setIsSidebarVisible] = useState(
     window.innerWidth >= 768
   );
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
-  const handleButtonClick = () => {
-    fileInputRef.current?.click();
-  };
-
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      console.log("Selected file:", file);
-    }
-  };
-
-  const fileInputRef = useRef<HTMLInputElement | null>(null);
-
-  const createActionItems = (isMobile: boolean) => {
-    return header.actions
-      .map((action, index) => {
-        switch (action.type) {
-          case "button":
-            return {
-              label: action.title,
-              icon: action.icon,
-              template: () => (
-                <Button
-                  key={index}
-                  label={action.title}
-                  icon={action.icon}
-                  onClick={action.onClick}
-                  disabled={action.disabled}
-                  className="w-full"
-                  outlined={!isMobile}
-                />
-              ),
-            };
-          case "file":
-            return {
-              label: action.title,
-              icon: action.icon,
-              template: () => (
-                <div key={index}>
-                  <Button
-                    label={action.title}
-                    icon={action.icon}
-                    onClick={handleButtonClick}
-                    disabled={action.disabled}
-                    className="w-full"
-                    outlined={!isMobile}
-                  />
-                  <input
-                    type="file"
-                    ref={fileInputRef}
-                    onChange={handleFileChange}
-                    className="hidden"
-                    accept="image/*"
-                  />
-                </div>
-              ),
-            };
-          default:
-            return null;
-        }
-      })
-      .filter((item) => item !== null);
-  };
-  const renderActions = () => {
-    return createActionItems(true).map((actionItem) => actionItem?.template());
-  };
-
-  const createActions = useMemo(() => {
-    return createActionItems(false);
-  }, [header.actions]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -100,10 +24,9 @@ const AuthLayout = () => {
     window.addEventListener("resize", handleResize);
     handleResize();
 
-    setDataActions(createActions);
 
     return () => window.removeEventListener("resize", handleResize);
-  }, [createActions]);
+  }, []);
 
   const handleCloseSidebar = () => {
     setIsSidebarVisible(false);
@@ -123,10 +46,6 @@ const AuthLayout = () => {
         {/* Header */}
         <MyHeader
           isSidebarVisible={isSidebarVisible}
-          dataActions={dataActions}
-          renderActions={renderActions}
-          header={header}
-          isMobile={isMobile}
           toggleSidebar={toggleSidebar}
         />
         <main

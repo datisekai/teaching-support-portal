@@ -4,7 +4,7 @@ import MyCard from "../components/UI/MyCard";
 import MyCalendar from "../components/UI/MyCalendar";
 
 const Class = () => {
-  const { setHeaderTitle, setHeaderActions } = useCommonStore();
+  const { setHeaderTitle, setHeaderActions, resetActions } = useCommonStore();
   useEffect(() => {
     setHeaderTitle("Danh sách lớp học");
     setHeaderActions([
@@ -27,6 +27,10 @@ const Class = () => {
         disabled: false,
       },
     ]);
+
+    return () => {
+      resetActions()
+    }
   }, []);
   return (
     <div>

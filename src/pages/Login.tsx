@@ -25,31 +25,31 @@ const Login = () => {
 
   return (
     <div className="tw-min-h-screen">
-      <div className="tw-absolute tw-left-[15%] tw-top-[6%] tw-w-[70%] tw-h-[88vh] tw-flex tw-border tw-shadow-md tw-rounded-lg tw-bg-white">
+      <div className="tw-absolute tw-left-[2.5%] md:tw-left-[15%] tw-top-[6%] tw-w-[95%] md:tw-w-[70%] tw-h-[88vh] tw-flex tw-border tw-shadow-md tw-rounded-lg tw-bg-white">
         {/* Ẩn phần tử bên trái khi dưới md */}
-        <div className="tw-hidden tw-w-1/2 tw-bg-cover tw-bg-[url('/public/background-login.png')] md:tw-flex tw-flex-col tw-items-center tw-justify-center tw-rounded-lg">
+        <div className="tw-hidden tw-w-1/2 tw-bg-cover tw-bg-[url('/public/images/background-login.png')] md:tw-flex tw-flex-col tw-items-center tw-justify-center tw-rounded-lg">
           <p className="tw-text-3xl tw-font-bold tw-text-white">
             Đại học Sài Gòn
           </p>
           <Avatar
-            image="/public/logo.png"
+            image="/public/images/sgu-logo.jpeg"
             shape="circle"
             className="tw-w-40 tw-h-40 tw-my-4"
           />
           <p className="tw-text-2xl tw-font-bold tw-text-white">
-            Công nghệ thông tin
+            Hỗ trợ giảng dạy cho giảng viên
           </p>
         </div>
 
-        <div className="tw-w-full md:tw-w-1/2 tw-bg-[url('/public/background-login.png')] md:tw-bg-[url('')] md:tw-bg-white  tw-flex tw-items-center tw-justify-center tw-rounded-lg">
-          <div className="tw-w-full tw-max-w-md tw-p-8 tw-shadow-lg tw-rounded-lg tw-bg-white">
+        <div className="tw-w-full md:tw-w-1/2 tw-bg-[url('/public/images/background-login.png')] md:tw-bg-[url('')] md:tw-bg-white  tw-flex tw-items-center tw-justify-center tw-rounded-lg">
+          <div className="tw-w-full tw-max-w-md tw-p-8 tw-rounded-lg ">
             <div className="tw-mb-10 tw-text-center">
               <Avatar
-                image="/public/logo.png"
+                image="/public/images/logo.png"
                 shape="circle"
                 className="tw-w-40 tw-h-40"
               />
-              <h2 className="tw-text-3xl tw-font-semibold tw-text-center tw-mb-2">
+              <h2 className="tw-text-3xl tw-text-white md:tw-text-title tw-font-semibold tw-text-center tw-mb-2">
                 Đăng nhập
               </h2>
             </div>
