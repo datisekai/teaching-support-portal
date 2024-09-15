@@ -25,32 +25,8 @@ const MyHeader: React.FC<IMyHeader> = ({
         <Button icon="pi pi-bars" onClick={toggleSidebar} />
         <div className="tw-uppercase tw-font-bold">{header.title}</div>
       </div>
-      {/* {isMobile && dataActions.length > 0 ? (
-        <div>
-          <Menu
-            model={dataActions}
-            ref={menuRight}
-            id="popup_menu_right"
-            popupAlignment="right"
-            popup
-          />
-          <Button
-            label="Show Right"
-            iconPos="right"
-            icon="pi pi-angle-down"
-            className="tw-mr-2"
-            onClick={(event) => {
-              if (menuRight.current) {
-                menuRight.current.toggle(event);
-              }
-            }}
-            aria-controls="popup_menu_right"
-            aria-haspopup
-          />
-        </div>
-      ) : ( */}
+
       <MyHeaderAction />
-      {/* )} */}
     </header>
   );
 };

@@ -1,14 +1,17 @@
-import React, { act, memo, useMemo } from 'react'
-import { useCommonStore } from '../../stores'
 import { Button } from 'primereact/button'
-import { IAction } from '../../stores/commonStore'
+import { Menu } from 'primereact/menu'
+import { memo, useMemo, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useCommonStore } from '../../stores'
+import { IAction } from '../../stores/commonStore'
 
 
 const MyHeaderAction = () => {
 
-    const actions = useCommonStore(state => state.header.actions)
+    const { header: { actions } } = useCommonStore()
     const navigate = useNavigate()
+    const menuRight = useRef<Menu>(null);
+
 
     const getIcon = (action: IAction) => {
         if (!action.icon) return undefined
@@ -17,7 +20,7 @@ const MyHeaderAction = () => {
                 return "pi pi-arrow-left"
         }
 
-        return `pi ${action.icon}`
+        return `${action.icon}`
     }
 
     const handleClick = (action: IAction) => {
@@ -29,11 +32,23 @@ const MyHeaderAction = () => {
         return action.onClick
     }
 
-    return (
+    const items = useMemo(() => {
+        let dropdown = [{ label: 'Hành động', items: actions.map((action) => ({ label: action.title, icon: getIcon(action), command: handleClick(action) })) }]
+        return dropdown
+    }, [actions])
 
-        <div className='tw-flex-1 tw-w-full tw-flex tw-gap-2 tw-justify-end tw-items-center'>
-            {actions.map((action, index) => (<Button loading={action.loading} disabled={action.disabled} key={index} severity={action.severity} onClick={handleClick(action)} label={action.title} iconPos={action.iconPos || 'left'} icon={getIcon(action)} />))}
-        </div>
+
+    return (
+        <>
+            <div className='tw-hidden md:tw-flex tw-flex-1 tw-w-full tw-gap-2 tw-justify-end tw-items-center'>
+                {actions.map((action, index) => (<Button loading={action.loading} disabled={action.disabled} key={index} severity={action.severity} onClick={handleClick(action)} label={action.title} iconPos={action.iconPos || 'left'} icon={getIcon(action)} />))}
+            </div>
+            {actions && actions.length > 0 && <div className='tw-flex md:tw-hidden tw-flex-1 tw-justify-end'>
+                <Menu model={items} popup ref={menuRight} id="popup_menu_right" popupAlignment="right" />
+                <Button label="Hành động" icon="pi pi-angle-down" className="mr-2" onClick={(event) => menuRight?.current?.toggle(event)} aria-controls="popup_menu_right" aria-haspopup />
+            </div>}
+        </>
+
     )
 }
 

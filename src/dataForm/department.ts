@@ -1,4 +1,4 @@
-import { IForm, IFormItem } from "../../types/form-item";
+import { IForm, IFormItem } from "../types/form-item";
 
 export const DepartmentForm: IForm[] = [
   {

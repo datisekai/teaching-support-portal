@@ -2,7 +2,7 @@ import { yupResolver } from "@hookform/resolvers/yup"
 import { useEffect } from 'react'
 import { useForm } from "react-hook-form"
 import * as yup from 'yup'
-import { DepartmentForm } from '../components/dataForm/department'
+import { DepartmentForm } from '../dataForm/department'
 import GroupItem from '../components/Form/GroupItem'
 import { useCommonStore } from '../stores'
 import { IAction } from '../stores/commonStore'

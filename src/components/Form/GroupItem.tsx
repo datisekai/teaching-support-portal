@@ -1,7 +1,6 @@
 import React from 'react'
 import { IForm } from '../../types/form-item'
 import MyCard from '../UI/MyCard'
-import { UseFormRegister } from 'react-hook-form'
 import FormItem from './FormItem'
 
 interface IGroup extends IForm {
@@ -10,8 +9,8 @@ interface IGroup extends IForm {
 }
 const GroupItem: React.FC<IGroup> = ({ attributes, title, register, errors }) => {
     return (
-        <MyCard title={title} className=' tw-flex tw-gap-x-2 tw-gap-y-4'>
-            {attributes.map((attribute, index) => (
+        <MyCard title={title} className=' tw-flex tw-gap-x-4 tw-gap-y-4'>
+            {attributes.map((attribute) => (
                 <FormItem error={errors[attribute.prop]?.message || ''} key={attribute.prop} {...attribute} register={register} />
             ))}
         </MyCard>

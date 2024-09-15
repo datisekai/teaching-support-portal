@@ -43,7 +43,6 @@ const AuthLayout = () => {
         isSidebarVisible={isSidebarVisible}
       />
       <div className="tw-flex-1 tw-flex tw-flex-col tw-transition-all tw-duration-300">
-        {/* Header */}
         <MyHeader
           isSidebarVisible={isSidebarVisible}
           toggleSidebar={toggleSidebar}

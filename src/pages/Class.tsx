@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useCommonStore } from "../stores";
 import MyCard from "../components/UI/MyCard";
 import MyCalendar from "../components/UI/MyCalendar";
+import { uploadFile } from "../utils";
 
 const Class = () => {
   const { setHeaderTitle, setHeaderActions, resetActions } = useCommonStore();
@@ -10,7 +11,7 @@ const Class = () => {
     setHeaderActions([
       {
         title: "Tạo",
-        icon: "",
+        icon: "pi pi-plus",
         onClick: () => {
           console.log("a");
         },
@@ -19,9 +20,9 @@ const Class = () => {
       },
       {
         title: "Import",
-        icon: "",
-        onClick: () => {
-          console.log("a");
+        icon: "pi pi-upload",
+        onClick: async () => {
+          const file = await uploadFile()
         },
         type: "file",
         disabled: false,

@@ -88,7 +88,7 @@ const MyTable: FC<IMyTable> = ({ data = [], schemas = [], keySearch = "", totalR
     return (
         <div className="card">
 
-            <DataTable value={data} header={header} tableStyle={{ minWidth: '50rem' }}>
+            <DataTable value={data} header={header} tableStyle={{ minWidth: '10rem' }}>
                 {
                     schemas.map((schema) => {
                         return <Column body={bodyTemplate} key={schema.prop} field={schema.prop} header={schema.label}></Column>

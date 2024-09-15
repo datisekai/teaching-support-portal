@@ -17,10 +17,10 @@ const FormItem: React.FC<IForm> = ({ prop, label, type, options, error, register
     const renderFormItem = () => {
         switch (type) {
             case "text":
-                return <div className={`card`} style={{ width }}>
-                    <div className="flex flex-column gap-2">
+                return <div style={{ width }}>
+                    <div>
                         <label htmlFor={prop}>{label}</label>
-                        <InputText invalid={!!error} placeholder={label} {...register(prop)} id={prop} aria-describedby={`${prop}-help`} />
+                        <InputText className='w-full mt-2' invalid={!!error} placeholder={label} {...register(prop)} id={prop} aria-describedby={`${prop}-help`} />
                         <small id={`${prop}-help`} className='tw-text-red-500'>
                             {error && error}
                         </small>

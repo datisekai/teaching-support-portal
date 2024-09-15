@@ -1,4 +1,4 @@
-import { TableSchema } from "../../types/table";
+import { TableSchema } from "../types/table";
 
 export const productSchemas: TableSchema[] = [
   {
