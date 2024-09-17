@@ -7,8 +7,10 @@ export const uploadFile = () => {
     input.addEventListener("change", (event: any) => {
       const file = event.target.files[0];
       if (file) {
+        console.log("fiel");
         resolve(file);
       } else {
+        console.log("tesstt");
         reject(new Error("No file selected"));
       }
     });
