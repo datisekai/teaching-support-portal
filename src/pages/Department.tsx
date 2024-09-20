@@ -12,17 +12,19 @@ const schema = yup
     .shape({
         name: yup.string().required(),
         description: yup.string().required(),
-        count: yup.number()
+        count: yup.number(),
+        checked: yup.boolean()
     })
     .required()
 const Department = () => {
 
-    const { register, handleSubmit, formState: { errors }, setValue, getValues, watch } = useForm({
+    const { handleSubmit, formState: { errors }, watch, control } = useForm({
         resolver: yupResolver(schema),
         defaultValues: {
-            description: '',
+            description: '123',
             name: '',
-            count: 123
+            count: 123,
+            checked: true
         }
     })
 
@@ -62,7 +64,7 @@ const Department = () => {
         <div>
             <form onSubmit={(e) => e.preventDefault()} className="tw-space-y-4">
                 {DepartmentForm.map((form, index) => (
-                    <GroupItem errors={errors} {...form} key={index} register={register} />
+                    <GroupItem errors={errors} {...form} key={index} control={control} />
                 ))}
             </form>
         </div>

@@ -1,5 +1,3 @@
-import { UseFormRegister } from "react-hook-form";
-
 export interface IFormItem {
   label: string;
   type:
@@ -16,6 +14,7 @@ export interface IFormItem {
   prop: string;
   options?: IOption[];
   col?: number;
+  apiUrl?: string;
 }
 
 export interface IForm {
