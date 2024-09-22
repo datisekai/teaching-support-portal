@@ -6,38 +6,46 @@ import Preview from "../pages/Preview";
 import Class from "../pages/Class";
 import Attendance from "../pages/Attendance";
 import Department from "../pages/Department";
+import MasterLayout from "../layouts/MasterLayout";
 
 const router = createBrowserRouter([
   {
-    path: "/login",
-    element: <Login />,
-  },
-  {
-    path: "/preview/:componentName",
-    element: <Preview />,
-  },
-  {
-    path: "/",
-    element: <AuthLayout />,
+    path: '',
+    element: <MasterLayout />,
     children: [
       {
-        path: "",
-        element: <Home />,
+        path: "/login",
+        element: <Login />,
       },
       {
-        path: "class",
-        element: <Class />,
+        path: "/preview/:componentName",
+        element: <Preview />,
       },
       {
-        path: 'attendance',
-        element: <Attendance />
+        path: "/",
+        element: <AuthLayout />,
+        children: [
+          {
+            path: "",
+            element: <Home />,
+          },
+          {
+            path: "class",
+            element: <Class />,
+          },
+          {
+            path: 'attendance',
+            element: <Attendance />
+          },
+          {
+            path: 'department',
+            element: <Department />
+          }
+        ],
       },
-      {
-        path: 'department',
-        element: <Department />
-      }
-    ],
-  },
+    ]
+  }
+
 ]);
 
 export default router;

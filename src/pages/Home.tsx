@@ -16,6 +16,9 @@ import GroupItem from "../components/Form/GroupItem";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import * as yup from 'yup'
+import { useModalStore } from "../stores/modalStore";
+import useConfirm from "../hooks/useConfirm";
+import { useToast } from "../hooks/useToast";
 
 
 const schema = yup
@@ -29,6 +32,9 @@ const schema = yup
 export default function Home() {
 
   const { setHeaderTitle } = useCommonStore()
+  const { onToggle } = useModalStore()
+  const { onConfirm } = useConfirm()
+  const { showToast } = useToast()
 
   const { register, handleSubmit, formState: { errors }, control, setValue, getValues, watch } = useForm({
     resolver: yupResolver(schema),
@@ -119,6 +125,15 @@ export default function Home() {
           </form>
         </div>
       </div>
+      <Button label="Test modal" onClick={() => onToggle('test', {
+        header: '123', footer: <div>
+          <Button label="Ok" icon="pi pi-check" autoFocus />
+        </div>, content: { name: 'test' }
+      })}></Button>
+      <Button label="Confirm" onClick={() => onConfirm({ onAccept: () => console.log('onAccept'), onReject: () => console.log('onReject') })}></Button>
+      <Button label="Show Toast" onClick={() => showToast({ detail: '123' })}>
+
+      </Button>
     </MyCard>
   )
 }

@@ -37,6 +37,11 @@ export const useCommonStore = create<ICommonState>((set) => ({
   footer: {
     actions: [],
   },
+  modal: {
+    visible: false,
+    footer: "",
+    header: "",
+  },
   setHeaderTitle: (title: string) => {
     set((state) => ({
       ...state,

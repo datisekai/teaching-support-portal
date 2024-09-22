@@ -6,6 +6,8 @@ import MyFooterAction from "../components/UI/MyFooterAction";
 import MyHeader from "../components/UI/MyHeader";
 import MySideBar from "../components/UI/MySideBar";
 import { useCommonStore } from "../stores";
+import DynamicModal from "./DynamicModal";
+import { ConfirmDialog } from "primereact/confirmdialog";
 
 const AuthLayout = () => {
 
@@ -55,6 +57,7 @@ const AuthLayout = () => {
         </main>
         <MyFooterAction isSidebarVisible={isSidebarVisible} />
       </div>
+
     </div>
   );
 };
