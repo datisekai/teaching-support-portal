@@ -1,74 +1,76 @@
-import { yupResolver } from "@hookform/resolvers/yup"
-import { useEffect } from 'react'
-import { useForm } from "react-hook-form"
-import * as yup from 'yup'
-import { DepartmentForm } from '../dataForm/department'
-import GroupItem from '../components/Form/GroupItem'
-import { useCommonStore } from '../stores'
-import { IAction } from '../stores/commonStore'
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import * as yup from "yup";
+import { DepartmentForm } from "../dataForm/department";
+import GroupItem from "../components/Form/GroupItem";
+import { useCommonStore } from "../stores";
+import { IAction } from "../stores/commonStore";
 
 const schema = yup
-    .object()
-    .shape({
-        name: yup.string().required(),
-        description: yup.string().required(),
-        count: yup.number(),
-        checked: yup.boolean()
-    })
-    .required()
+  .object()
+  .shape({
+    name: yup.string().required(),
+    description: yup.string().required(),
+    count: yup.number(),
+    checked: yup.boolean(),
+  })
+  .required();
 const Department = () => {
+  const {
+    handleSubmit,
+    formState: { errors },
+    watch,
+    control,
+  } = useForm({
+    resolver: yupResolver(schema),
+    defaultValues: {
+      description: "123",
+      name: "",
+      count: 123,
+      checked: true,
+    },
+  });
 
-    const { handleSubmit, formState: { errors }, watch, control } = useForm({
-        resolver: yupResolver(schema),
-        defaultValues: {
-            description: '123',
-            name: '',
-            count: 123,
-            checked: true
-        }
-    })
+  console.log(watch("description"));
+  const setFooterActions = useCommonStore((state) => state.setFooterActions);
+  const setHeaderTitle = useCommonStore((state) => state.setHeaderTitle);
+  const resetActions = useCommonStore((state) => state.resetActions);
 
-    console.log(watch("description"));
-    const setFooterActions = useCommonStore(state => state.setFooterActions)
-    const setHeaderTitle = useCommonStore(state => state.setHeaderTitle)
-    const resetActions = useCommonStore(state => state.resetActions)
+  const onSubmit = (data: any) => {
+    console.log("data", data);
+  };
 
+  useEffect(() => {
+    const actions: IAction[] = [
+      {
+        title: "Trở lại",
+        severity: "secondary",
+        action: "back",
+      },
+      {
+        onClick: handleSubmit(onSubmit),
+        title: "Tạo ngành học",
+        icon: "pi-plus",
+      },
+    ];
+    setFooterActions(actions);
+    setHeaderTitle("Tạo ngành học");
 
-    const onSubmit = (data: any) => {
-        console.log('data', data);
-    }
+    return () => {
+      resetActions();
+    };
+  }, []);
 
-    useEffect(() => {
-        const actions: IAction[] = [
-            {
-                title: "Trở lại",
-                severity: 'secondary',
-                action: 'back'
-            },
-            {
-                onClick: handleSubmit(onSubmit),
-                title: "Tạo ngành học",
-                icon: 'pi-plus'
-            },
+  return (
+    <div>
+      <form onSubmit={(e) => e.preventDefault()} className="tw-space-y-4">
+        {DepartmentForm.map((form, index) => (
+          <GroupItem errors={errors} {...form} key={index} control={control} />
+        ))}
+      </form>
+    </div>
+  );
+};
 
-        ]
-        setFooterActions(actions)
-        setHeaderTitle('Tạo ngành học')
-
-        return () => {
-            resetActions()
-        }
-    }, [])
-
-    return (
-        <div>
-            <form onSubmit={(e) => e.preventDefault()} className="tw-space-y-4">
-                {DepartmentForm.map((form, index) => (
-                    <GroupItem errors={errors} {...form} key={index} control={control} />
-                ))}
-            </form>
-        </div>
-    )
-}
-
-export default Department
+export default Department;
