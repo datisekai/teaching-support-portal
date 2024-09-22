@@ -55,7 +55,7 @@ const Department = () => {
       },
     ];
     setFooterActions(actions);
-    setHeaderTitle("Tạo ngành học");
+    setHeaderTitle("Quản lý ngành học");
 
     return () => {
       resetActions();
@@ -65,11 +65,11 @@ const Department = () => {
   return (
     <div>
       <MyTable data={departments} schemas={departmentSchemas} />
-      <form onSubmit={(e) => e.preventDefault()} className="tw-space-y-4">
+      {/* <form onSubmit={(e) => e.preventDefault()} className="tw-space-y-4">
         {DepartmentForm.map((form, index) => (
           <GroupItem errors={errors} {...form} key={index} control={control} />
         ))}
-      </form>
+      </form> */}
     </div>
   );
 };
