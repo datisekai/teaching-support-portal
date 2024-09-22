@@ -30,7 +30,7 @@ export default function Home() {
 
   const { setHeaderTitle } = useCommonStore()
 
-  const { register, handleSubmit, formState: { errors }, setValue, getValues, watch } = useForm({
+  const { register, handleSubmit, formState: { errors }, control, setValue, getValues, watch } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
       description: '',
@@ -113,7 +113,7 @@ export default function Home() {
         <div className="card tw-mt-2">
           <form onSubmit={(e) => e.preventDefault()} className="tw-space-y-4">
             {TestForm.map((form, index) => (
-              <GroupItem errors={errors} {...form} key={index} register={register} />
+              <GroupItem errors={errors} {...form} key={index} control={control} />
             ))}
 
           </form>
