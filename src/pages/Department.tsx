@@ -1,72 +1,84 @@
-import { yupResolver } from "@hookform/resolvers/yup"
-import { useEffect } from 'react'
-import { useForm } from "react-hook-form"
-import * as yup from 'yup'
-import { DepartmentForm } from '../dataForm/department'
-import GroupItem from '../components/Form/GroupItem'
-import { useCommonStore } from '../stores'
-import { IAction } from '../stores/commonStore'
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import * as yup from "yup";
+import { DepartmentForm } from "../dataForm/department";
+import GroupItem from "../components/Form/GroupItem";
+import { useCommonStore } from "../stores";
+import { IAction } from "../stores/commonStore";
+import MyTable from "../components/UI/MyTable";
+import { departments, departmentSchemas } from "../dataTable/department";
 
 const schema = yup
-    .object()
-    .shape({
-        name: yup.string().required(),
-        description: yup.string().required(),
-        count: yup.number()
-    })
-    .required()
+  .object()
+  .shape({
+    name: yup.string().required(),
+    description: yup.string().required(),
+    count: yup.number(),
+  })
+  .required();
 const Department = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setValue,
+    getValues,
+    watch,
+  } = useForm({
+    resolver: yupResolver(schema),
+    defaultValues: {
+      description: "",
+      name: "",
+      count: 123,
+    },
+  });
 
-    const { register, handleSubmit, formState: { errors }, setValue, getValues, watch } = useForm({
-        resolver: yupResolver(schema),
-        defaultValues: {
-            description: '',
-            name: '',
-            count: 123
-        }
-    })
+  console.log(watch("description"));
+  const setFooterActions = useCommonStore((state) => state.setFooterActions);
+  const setHeaderTitle = useCommonStore((state) => state.setHeaderTitle);
+  const resetActions = useCommonStore((state) => state.resetActions);
 
-    console.log(watch("description"));
-    const setFooterActions = useCommonStore(state => state.setFooterActions)
-    const setHeaderTitle = useCommonStore(state => state.setHeaderTitle)
-    const resetActions = useCommonStore(state => state.resetActions)
+  const onSubmit = (data: any) => {
+    console.log("data", data);
+  };
 
+  useEffect(() => {
+    const actions: IAction[] = [
+      {
+        title: "Trở lại",
+        severity: "secondary",
+        action: "back",
+      },
+      {
+        onClick: handleSubmit(onSubmit),
+        title: "Tạo ngành học",
+        icon: "pi-plus",
+      },
+    ];
+    setFooterActions(actions);
+    setHeaderTitle("Tạo ngành học");
 
-    const onSubmit = (data: any) => {
-        console.log('data', data);
-    }
+    return () => {
+      resetActions();
+    };
+  }, []);
 
-    useEffect(() => {
-        const actions: IAction[] = [
-            {
-                title: "Trở lại",
-                severity: 'secondary',
-                action: 'back'
-            },
-            {
-                onClick: handleSubmit(onSubmit),
-                title: "Tạo ngành học",
-                icon: 'pi-plus'
-            },
+  return (
+    <div>
+      <MyTable data={departments} schemas={departmentSchemas} />
+      <form onSubmit={(e) => e.preventDefault()} className="tw-space-y-4">
+        {DepartmentForm.map((form, index) => (
+          <GroupItem
+            errors={errors}
+            {...form}
+            key={index}
+            register={register}
+          />
+        ))}
+      </form>
+    </div>
+  );
+};
 
-        ]
-        setFooterActions(actions)
-        setHeaderTitle('Tạo ngành học')
-
-        return () => {
-            resetActions()
-        }
-    }, [])
-
-    return (
-        <div>
-            <form onSubmit={(e) => e.preventDefault()} className="tw-space-y-4">
-                {DepartmentForm.map((form, index) => (
-                    <GroupItem errors={errors} {...form} key={index} register={register} />
-                ))}
-            </form>
-        </div>
-    )
-}
-
-export default Department
+export default Department;
