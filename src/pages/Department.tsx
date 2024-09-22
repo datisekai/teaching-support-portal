@@ -6,7 +6,8 @@ import { DepartmentForm } from "../dataForm/department";
 import GroupItem from "../components/Form/GroupItem";
 import { useCommonStore } from "../stores";
 import { IAction } from "../stores/commonStore";
-
+import MyTable from "../components/UI/MyTable";
+import { departmentSchemas, departments } from "../dataTable/department";
 const schema = yup
   .object()
   .shape({
@@ -32,7 +33,6 @@ const Department = () => {
     },
   });
 
-  console.log(watch("description"));
   const setFooterActions = useCommonStore((state) => state.setFooterActions);
   const setHeaderTitle = useCommonStore((state) => state.setHeaderTitle);
   const resetActions = useCommonStore((state) => state.resetActions);
@@ -64,6 +64,7 @@ const Department = () => {
 
   return (
     <div>
+      <MyTable data={departments} schemas={departmentSchemas} />
       <form onSubmit={(e) => e.preventDefault()} className="tw-space-y-4">
         {DepartmentForm.map((form, index) => (
           <GroupItem errors={errors} {...form} key={index} control={control} />
