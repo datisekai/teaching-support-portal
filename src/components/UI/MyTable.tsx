@@ -10,6 +10,7 @@ import { Paginator, PaginatorPageChangeEvent } from "primereact/paginator";
 import { useDebounceValue } from "usehooks-ts";
 import dayjs from "dayjs";
 import { Tag } from "primereact/tag";
+import { IAction } from "../../stores/commonStore";
 
 interface IMyTable {
   schemas: TableSchema[];
@@ -18,6 +19,7 @@ interface IMyTable {
   totalRecords?: number;
   perPage?: number;
   onChange?: (query: object) => void;
+  actions?: IAction[];
 }
 
 const MyTable: FC<IMyTable> = ({
@@ -27,6 +29,7 @@ const MyTable: FC<IMyTable> = ({
   totalRecords = 0,
   perPage = 5,
   onChange,
+  actions,
 }) => {
   const [first, setFirst] = useState(0);
 
@@ -87,6 +90,25 @@ const MyTable: FC<IMyTable> = ({
     );
   }, [keySearch]);
 
+  const renderActions = useCallback(() => {
+    return (
+      <div className="tw-w-full tw-flex tw-gap-2 tw-flex-wrap tw-items-center">
+        {actions?.map((action, index) => (
+          <Button
+            loading={action.loading}
+            disabled={action.disabled}
+            key={index}
+            severity={action.severity}
+            onClick={action.onClick}
+            label={action.title}
+            iconPos={action.iconPos || "left"}
+            icon={action.icon}
+          />
+        ))}
+      </div>
+    );
+  }, [actions]);
+
   const header = useMemo(() => {
     return keySearch ? renderHeader() : undefined;
   }, [keySearch]);
@@ -112,6 +134,13 @@ const MyTable: FC<IMyTable> = ({
             ></Column>
           );
         })}
+        {actions && actions.length > 0 && (
+          <Column
+            body={renderActions()}
+            field="actions"
+            header="Thao tác"
+          ></Column>
+        )}
       </DataTable>
       {displayPaginator && (
         <Paginator

@@ -17,13 +17,13 @@ export const TestForm: IForm[] = [
         col: 12,
       },
       {
-        prop: "description",
+        prop: "a",
         type: "textarea",
         label: "Textarea",
         col: 12,
       },
       {
-        prop: "description",
+        prop: "b",
         type: "switch",
         label: "Switch",
         col: 12,
@@ -34,7 +34,7 @@ export const TestForm: IForm[] = [
     title: "Select",
     attributes: [
       {
-        prop: "name",
+        prop: "select_a",
         type: "select",
         label: "Select",
         col: 12,
@@ -50,7 +50,7 @@ export const TestForm: IForm[] = [
         ],
       },
       {
-        prop: "name",
+        prop: "select_b",
         type: "select-ajax",
         label: "Select",
         col: 12,
@@ -71,7 +71,7 @@ export const TestForm: IForm[] = [
     title: "File",
     attributes: [
       {
-        prop: "name",
+        prop: "select_c",
         type: "file",
         label: "Choose File",
         col: 12,
@@ -82,7 +82,7 @@ export const TestForm: IForm[] = [
     title: "Editor",
     attributes: [
       {
-        prop: "name",
+        prop: "select_d",
         type: "editor",
         label: "Editor",
         col: 12,
