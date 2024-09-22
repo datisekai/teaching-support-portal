@@ -2,12 +2,12 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
-import { DepartmentForm } from "../dataForm/department";
-import GroupItem from "../components/Form/GroupItem";
-import { useCommonStore } from "../stores";
-import { IAction } from "../stores/commonStore";
-import MyTable from "../components/UI/MyTable";
-import { departmentSchemas, departments } from "../dataTable/department";
+import { DepartmentForm } from "../../dataForm/department";
+import GroupItem from "../../components/Form/GroupItem";
+import { useCommonStore } from "../../stores";
+import { IAction } from "../../stores/commonStore";
+import MyTable from "../../components/UI/MyTable";
+import { departmentSchemas, departments } from "../../dataTable/department";
 const schema = yup
   .object()
   .shape({

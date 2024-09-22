@@ -3,10 +3,10 @@ import AuthLayout from "../layouts/AuthLayout";
 import Login from "../pages/Login";
 import Home from "../pages/Home";
 import Preview from "../pages/Preview";
-import Class from "../pages/Class";
-import Attendance from "../pages/Attendance";
-import Department from "../pages/Department";
+import Attendance from "../pages/Attendance/Attendance";
+import Department from "../pages/Department/Department";
 import MasterLayout from "../layouts/MasterLayout";
+import Class from "../pages/Class/Class";
 
 const router = createBrowserRouter([
   {
