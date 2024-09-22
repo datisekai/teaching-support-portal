@@ -1,5 +1,3 @@
-import { UseFormRegister } from "react-hook-form";
-
 export interface IFormItem {
   label: string;
   type:
@@ -8,8 +6,7 @@ export interface IFormItem {
     | "select"
     | "select-ajax"
     | "date"
-    | "checkbox"
-    | "radio"
+    | "switch"
     | "textarea"
     | "file"
     | "editor"
@@ -17,6 +14,7 @@ export interface IFormItem {
   prop: string;
   options?: IOption[];
   col?: number;
+  apiUrl?: string;
 }
 
 export interface IForm {

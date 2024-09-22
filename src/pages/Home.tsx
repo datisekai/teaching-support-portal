@@ -11,11 +11,33 @@ import MyTable from "../components/UI/MyTable";
 import { products, productSchemas } from "../dataTable/products";
 import { useCommonStore } from "../stores";
 import MyCard from "../components/UI/MyCard";
+import { TestForm } from "../dataForm/test";
+import GroupItem from "../components/Form/GroupItem";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useForm } from "react-hook-form";
+import * as yup from 'yup'
 
 
+const schema = yup
+  .object()
+  .shape({
+    name: yup.string().required(),
+    description: yup.string().required(),
+    count: yup.number()
+  })
+  .required()
 export default function Home() {
 
   const { setHeaderTitle } = useCommonStore()
+
+  const { register, handleSubmit, formState: { errors }, control, setValue, getValues, watch } = useForm({
+    resolver: yupResolver(schema),
+    defaultValues: {
+      description: '',
+      name: '',
+      count: 123
+    }
+  })
   const items = [
     {
       label: 'Update',
@@ -87,6 +109,14 @@ export default function Home() {
         </div>
         <div className="card tw-mt-2">
           <MyTable data={products} schemas={productSchemas} />
+        </div>
+        <div className="card tw-mt-2">
+          <form onSubmit={(e) => e.preventDefault()} className="tw-space-y-4">
+            {TestForm.map((form, index) => (
+              <GroupItem errors={errors} {...form} key={index} control={control} />
+            ))}
+
+          </form>
         </div>
       </div>
     </MyCard>

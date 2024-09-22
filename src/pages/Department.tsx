@@ -6,8 +6,6 @@ import { DepartmentForm } from "../dataForm/department";
 import GroupItem from "../components/Form/GroupItem";
 import { useCommonStore } from "../stores";
 import { IAction } from "../stores/commonStore";
-import MyTable from "../components/UI/MyTable";
-import { departments, departmentSchemas } from "../dataTable/department";
 
 const schema = yup
   .object()
@@ -15,22 +13,22 @@ const schema = yup
     name: yup.string().required(),
     description: yup.string().required(),
     count: yup.number(),
+    checked: yup.boolean(),
   })
   .required();
 const Department = () => {
   const {
-    register,
     handleSubmit,
     formState: { errors },
-    setValue,
-    getValues,
     watch,
+    control,
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
-      description: "",
+      description: "123",
       name: "",
       count: 123,
+      checked: true,
     },
   });
 
@@ -66,15 +64,9 @@ const Department = () => {
 
   return (
     <div>
-      <MyTable data={departments} schemas={departmentSchemas} />
       <form onSubmit={(e) => e.preventDefault()} className="tw-space-y-4">
         {DepartmentForm.map((form, index) => (
-          <GroupItem
-            errors={errors}
-            {...form}
-            key={index}
-            register={register}
-          />
+          <GroupItem errors={errors} {...form} key={index} control={control} />
         ))}
       </form>
     </div>
