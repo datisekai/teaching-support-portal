@@ -2,24 +2,29 @@ import { useEffect, useState } from "react";
 import { useCommonStore } from "../../stores";
 import { IAction } from "../../stores/commonStore";
 import MyTable from "../../components/UI/MyTable";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import useConfirm from "../../hooks/useConfirm";
-import { classes, classSchemas } from "../../dataTable/class";
 import { uploadFile } from "../../utils";
+import { students, studentSchemas } from "../../dataTable/student";
 
-const Class = () => {
+const Student = () => {
+  const { id } = useParams();
   const [actionTable, setActionTable] = useState<IAction[]>([]);
   const navigate = useNavigate();
   const { onConfirm } = useConfirm();
 
   const { setHeaderTitle, setHeaderActions, resetActions } = useCommonStore();
 
-  const handleClick = (endpoint: string) => {
-    navigate(endpoint);
+  const handleEdit = (id: number) => {
+    navigate(`/student/edit/${id}`);
   };
+  const handleReset = (id: number) => {
+    navigate(-1);
+  };
+
   const handleDelete = (id: number) => {
     const data = {
-      message: "Bạn có chắc chắn muốn xoá lớp học này?",
+      message: "Bạn có chắc chắn muốn xoá sinh viên này?",
       header: "Xác nhận xoá",
       onAccept: () => {
         console.log("Đã xoá thành công!", id);
@@ -34,13 +39,13 @@ const Class = () => {
   useEffect(() => {
     setActionTable([
       {
-        onClick: () => handleClick(`/student/detail/${1}`),
-        tooltip: "Xem danh sách sinh viên",
-        icon: "pi-users",
-        severity: "info",
+        onClick: () => handleReset(1),
+        tooltip: "Reset thiết bị",
+        icon: "pi-refresh",
+        severity: "help",
       },
       {
-        onClick: () => handleClick(`/class/edit/${1}`),
+        onClick: () => handleEdit(1),
         tooltip: "Sửa",
         icon: "pi-pencil",
         severity: "success",
@@ -52,13 +57,13 @@ const Class = () => {
         severity: "danger",
       },
     ]);
-    setHeaderTitle("Quản lý môn học");
+    setHeaderTitle("Quản lý Sinh viên");
     setHeaderActions([
       {
         title: "Tạo",
         icon: "pi pi-plus",
         onClick: () => {
-          navigate("/class/create");
+          navigate(`/student/create/${id}`);
         },
         type: "button",
         disabled: false,
@@ -90,9 +95,9 @@ const Class = () => {
 
   return (
     <div>
-      <MyTable data={classes} schemas={classSchemas} actions={actionTable} />
+      <MyTable data={students} schemas={studentSchemas} actions={actionTable} />
     </div>
   );
 };
 
-export default Class;
+export default Student;

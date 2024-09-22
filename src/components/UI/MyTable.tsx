@@ -102,7 +102,9 @@ const MyTable: FC<IMyTable> = ({
             onClick={action.onClick}
             label={action.title}
             iconPos={action.iconPos || "left"}
-            icon={action.icon}
+            icon={`pi ${action.icon}`}
+            tooltip={action.tooltip}
+            tooltipOptions={{ position: "top" }}
           />
         ))}
       </div>

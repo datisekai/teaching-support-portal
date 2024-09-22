@@ -1,41 +1,62 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import * as yup from "yup";
-import { DepartmentForm } from "../../dataForm/department";
 import GroupItem from "../../components/Form/GroupItem";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { set, useForm } from "react-hook-form";
 import { useCommonStore } from "../../stores";
 import { IAction } from "../../stores/commonStore";
+import { SubjectForm } from "../../dataForm/subject";
+import { ClassForm } from "../../dataForm/class";
+const departmentOptions =
+  SubjectForm[0].attributes.find((attr) => attr.prop === "department")
+    ?.options || [];
+const teacherOptions =
+  ClassForm[0].attributes.find((attr) => attr.prop === "teacher")?.options ||
+  [];
 const schema = yup
   .object()
   .shape({
-    name: yup.string().required("Tên ngành học là bắt buộc."),
-    description: yup.string().required("Mô tả ngành học là bắt buộc."),
+    name: yup.string().required("Tên môn học là bắt buộc."),
+    description: yup.string().required("Mô tả môn học là bắt buộc."),
+    code: yup
+      .number()
+      .notOneOf([0], "Mã môn học là bắt buộc.")
+      .required("Mã môn học là bắt buộc."),
+    department: yup
+      .string()
+      .oneOf(
+        departmentOptions.map((option) => option.value),
+        "Ngành học là bắt buộc."
+      )
+      .required("Ngành học là bắt buộc."),
+    teacher: yup
+      .array()
+      .of(
+        yup.string().oneOf(
+          teacherOptions.map((option) => option.value),
+          "Giảng viên không hợp lệ."
+        )
+      )
+      .min(1, "Giảng viên là bắt buộc.")
+      .required("Giảng viên là bắt buộc."),
   })
   .required();
-const EditDepartment = () => {
-  const { id } = useParams();
-
+const CreateSubject = () => {
   const {
     handleSubmit,
     formState: { errors },
     control,
-    reset,
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
-      name: "",
       description: "",
+      name: "",
+      code: 0,
+      department: "",
+      teacher: [],
     },
   });
-
-  useEffect(() => {
-    reset({
-      name: "cong nghe thong tin",
-      description: "abc",
-    });
-  }, []);
   const navigate = useNavigate();
 
   const setFooterActions = useCommonStore((state) => state.setFooterActions);
@@ -43,7 +64,6 @@ const EditDepartment = () => {
   const resetActions = useCommonStore((state) => state.resetActions);
 
   const onSubmit = () => {
-    console.log("data", id);
     navigate(-1);
   };
 
@@ -56,12 +76,12 @@ const EditDepartment = () => {
       },
       {
         onClick: handleSubmit(onSubmit),
-        title: "Sửa ngành học",
+        title: "Tạo môn học",
         icon: "pi-plus",
       },
     ];
     setFooterActions(actions);
-    setHeaderTitle("Chỉnh sửa ngành học");
+    setHeaderTitle("Tạo môn học");
 
     return () => {
       resetActions();
@@ -71,7 +91,7 @@ const EditDepartment = () => {
   return (
     <div>
       <form onSubmit={(e) => e.preventDefault()} className="tw-space-y-4">
-        {DepartmentForm.map((form, index) => (
+        {SubjectForm.map((form, index) => (
           <GroupItem errors={errors} {...form} key={index} control={control} />
         ))}
       </form>
@@ -79,4 +99,4 @@ const EditDepartment = () => {
   );
 };
 
-export default EditDepartment;
+export default CreateSubject;

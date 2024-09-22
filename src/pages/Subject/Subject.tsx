@@ -4,22 +4,22 @@ import { IAction } from "../../stores/commonStore";
 import MyTable from "../../components/UI/MyTable";
 import { useNavigate } from "react-router-dom";
 import useConfirm from "../../hooks/useConfirm";
-import { classes, classSchemas } from "../../dataTable/class";
+import { subjects, subjectSchemas } from "../../dataTable/subject";
 import { uploadFile } from "../../utils";
 
-const Class = () => {
+const Subject = () => {
   const [actionTable, setActionTable] = useState<IAction[]>([]);
   const navigate = useNavigate();
   const { onConfirm } = useConfirm();
 
   const { setHeaderTitle, setHeaderActions, resetActions } = useCommonStore();
 
-  const handleClick = (endpoint: string) => {
-    navigate(endpoint);
+  const handleEdit = (id: number) => {
+    navigate(`/subject/edit/${id}`);
   };
   const handleDelete = (id: number) => {
     const data = {
-      message: "Bạn có chắc chắn muốn xoá lớp học này?",
+      message: "Bạn có chắc chắn muốn xoá môn học này?",
       header: "Xác nhận xoá",
       onAccept: () => {
         console.log("Đã xoá thành công!", id);
@@ -34,13 +34,7 @@ const Class = () => {
   useEffect(() => {
     setActionTable([
       {
-        onClick: () => handleClick(`/student/detail/${1}`),
-        tooltip: "Xem danh sách sinh viên",
-        icon: "pi-users",
-        severity: "info",
-      },
-      {
-        onClick: () => handleClick(`/class/edit/${1}`),
+        onClick: () => handleEdit(1),
         tooltip: "Sửa",
         icon: "pi-pencil",
         severity: "success",
@@ -58,7 +52,7 @@ const Class = () => {
         title: "Tạo",
         icon: "pi pi-plus",
         onClick: () => {
-          navigate("/class/create");
+          navigate("/subject/create");
         },
         type: "button",
         disabled: false,
@@ -90,9 +84,9 @@ const Class = () => {
 
   return (
     <div>
-      <MyTable data={classes} schemas={classSchemas} actions={actionTable} />
+      <MyTable data={subjects} schemas={subjectSchemas} actions={actionTable} />
     </div>
   );
 };
 
-export default Class;
+export default Subject;

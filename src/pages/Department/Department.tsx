@@ -1,61 +1,81 @@
-import { yupResolver } from "@hookform/resolvers/yup";
-import { useEffect } from "react";
-import { useForm } from "react-hook-form";
-import * as yup from "yup";
-import { DepartmentForm } from "../../dataForm/department";
-import GroupItem from "../../components/Form/GroupItem";
+import { useEffect, useState } from "react";
 import { useCommonStore } from "../../stores";
 import { IAction } from "../../stores/commonStore";
 import MyTable from "../../components/UI/MyTable";
 import { departmentSchemas, departments } from "../../dataTable/department";
-const schema = yup
-  .object()
-  .shape({
-    name: yup.string().required(),
-    description: yup.string().required(),
-    count: yup.number(),
-    checked: yup.boolean(),
-  })
-  .required();
+import { useNavigate } from "react-router-dom";
+import useConfirm from "../../hooks/useConfirm";
+import { uploadFile } from "../../utils";
+
 const Department = () => {
-  const {
-    handleSubmit,
-    formState: { errors },
-    watch,
-    control,
-  } = useForm({
-    resolver: yupResolver(schema),
-    defaultValues: {
-      description: "123",
-      name: "",
-      count: 123,
-      checked: true,
-    },
-  });
+  const [actionTable, setActionTable] = useState<IAction[]>([]);
+  const navigate = useNavigate();
+  const { onConfirm } = useConfirm();
 
-  const setFooterActions = useCommonStore((state) => state.setFooterActions);
-  const setHeaderTitle = useCommonStore((state) => state.setHeaderTitle);
-  const resetActions = useCommonStore((state) => state.resetActions);
+  const { setHeaderTitle, setHeaderActions, resetActions } = useCommonStore();
 
-  const onSubmit = (data: any) => {
-    console.log("data", data);
+  const handleEdit = (id: number) => {
+    navigate(`/department/edit/${id}`);
+  };
+  const handleDelete = (id: number) => {
+    const data = {
+      message: "Bạn có chắc chắn muốn xoá ngành học này?",
+      header: "Xác nhận xoá",
+      onAccept: () => {
+        console.log("Đã xoá thành công!", id);
+      },
+      onReject: () => {
+        console.log("Đã hủy bỏ hành động.");
+      },
+    };
+    onConfirm(data);
   };
 
   useEffect(() => {
-    const actions: IAction[] = [
+    setActionTable([
       {
-        title: "Trở lại",
-        severity: "secondary",
-        action: "back",
+        onClick: () => handleEdit(1),
+        tooltip: "Sửa",
+        icon: "pi-pencil",
+        severity: "success",
       },
       {
-        onClick: handleSubmit(onSubmit),
-        title: "Tạo ngành học",
-        icon: "pi-plus",
+        onClick: () => handleDelete(1),
+        tooltip: "Xóa",
+        icon: "pi-trash",
+        severity: "danger",
       },
-    ];
-    setFooterActions(actions);
+    ]);
     setHeaderTitle("Quản lý ngành học");
+    setHeaderActions([
+      {
+        title: "Tạo",
+        icon: "pi pi-plus",
+        onClick: () => {
+          navigate(`/department/create`);
+        },
+        type: "button",
+        disabled: false,
+      },
+      {
+        title: "Import",
+        icon: "pi pi-file-import",
+        onClick: async () => {
+          const file = await uploadFile();
+        },
+        type: "file",
+        disabled: false,
+      },
+      {
+        title: "Export",
+        icon: "pi pi-file-export",
+        onClick: () => {
+          console.log("a");
+        },
+        type: "button",
+        disabled: false,
+      },
+    ]);
 
     return () => {
       resetActions();
@@ -64,12 +84,11 @@ const Department = () => {
 
   return (
     <div>
-      <MyTable data={departments} schemas={departmentSchemas} />
-      {/* <form onSubmit={(e) => e.preventDefault()} className="tw-space-y-4">
-        {DepartmentForm.map((form, index) => (
-          <GroupItem errors={errors} {...form} key={index} control={control} />
-        ))}
-      </form> */}
+      <MyTable
+        data={departments}
+        schemas={departmentSchemas}
+        actions={actionTable}
+      />
     </div>
   );
 };

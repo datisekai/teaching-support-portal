@@ -1,20 +1,28 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import * as yup from "yup";
-import { DepartmentForm } from "../../dataForm/department";
 import GroupItem from "../../components/Form/GroupItem";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { set, useForm } from "react-hook-form";
 import { useCommonStore } from "../../stores";
 import { IAction } from "../../stores/commonStore";
+import { StudentForm } from "../../dataForm/student";
 const schema = yup
   .object()
   .shape({
-    name: yup.string().required("Tên ngành học là bắt buộc."),
-    description: yup.string().required("Mô tả ngành học là bắt buộc."),
+    name: yup.string().required("Tên sinh viên là bắt buộc."),
+    code: yup
+      .number()
+      .notOneOf([0], "Mã sinh viên là bắt buộc.")
+      .required("Mã sinh viên là bắt buộc."),
+    email: yup
+      .string()
+      .email("Email phải là bắt buộc.")
+      .required("Email phải là bắt buộc."),
+    phoneNumber: yup.string().required("Số điện thoại phải là bắt buộc."),
   })
   .required();
-const EditDepartment = () => {
+const EditStudent = () => {
   const { id } = useParams();
 
   const {
@@ -26,14 +34,18 @@ const EditDepartment = () => {
     resolver: yupResolver(schema),
     defaultValues: {
       name: "",
-      description: "",
+      code: 0,
+      email: "",
+      phoneNumber: "",
     },
   });
 
   useEffect(() => {
     reset({
-      name: "cong nghe thong tin",
-      description: "abc",
+      name: "Nghuyễn văn c",
+      code: 31204398213,
+      email: "abc@gmail.com",
+      phoneNumber: "0339463641",
     });
   }, []);
   const navigate = useNavigate();
@@ -56,12 +68,12 @@ const EditDepartment = () => {
       },
       {
         onClick: handleSubmit(onSubmit),
-        title: "Sửa ngành học",
+        title: "Sửa sinh viên",
         icon: "pi-plus",
       },
     ];
     setFooterActions(actions);
-    setHeaderTitle("Chỉnh sửa ngành học");
+    setHeaderTitle("Chỉnh sửa sinh viên");
 
     return () => {
       resetActions();
@@ -71,7 +83,7 @@ const EditDepartment = () => {
   return (
     <div>
       <form onSubmit={(e) => e.preventDefault()} className="tw-space-y-4">
-        {DepartmentForm.map((form, index) => (
+        {StudentForm.map((form, index) => (
           <GroupItem errors={errors} {...form} key={index} control={control} />
         ))}
       </form>
@@ -79,4 +91,4 @@ const EditDepartment = () => {
   );
 };
 
-export default EditDepartment;
+export default EditStudent;
