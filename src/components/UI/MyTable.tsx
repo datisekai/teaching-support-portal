@@ -5,11 +5,20 @@ import { IconField } from "primereact/iconfield";
 import { InputIcon } from "primereact/inputicon";
 import { InputText } from "primereact/inputtext";
 import { TableSchema } from "../../types/table";
-import { FC, useMemo, memo, useState, useCallback, useEffect } from "react";
+import {
+  FC,
+  useMemo,
+  memo,
+  useState,
+  useCallback,
+  useEffect,
+  useRef,
+} from "react";
 import { Paginator, PaginatorPageChangeEvent } from "primereact/paginator";
 import { useDebounceValue } from "usehooks-ts";
 import dayjs from "dayjs";
 import { Tag } from "primereact/tag";
+import { Menu } from "primereact/menu";
 
 export interface IActionTable {
   title?: string;
@@ -41,9 +50,11 @@ const MyTable: FC<IMyTable> = ({
   totalRecords = 0,
   perPage = 5,
   onChange,
-  actions,
+  actions = [],
 }) => {
   const [first, setFirst] = useState(0);
+
+  const menuRight = useRef<Menu>(null);
 
   const [debouncedValue, setValue] = useDebounceValue("", 500);
 
@@ -104,10 +115,49 @@ const MyTable: FC<IMyTable> = ({
 
   const renderActions = useCallback(
     (data: any, options: any) => {
+      const items = useMemo(() => {
+        let dropdown = [
+          {
+            label: "Hành động",
+            items: actions.map((action) => ({
+              label: action.tooltip,
+              icon: `pi ${action.icon}`,
+              command: () => {
+                if (action.onClick) {
+                  action.onClick(data, options);
+                }
+              },
+            })),
+          },
+        ];
+        return dropdown;
+      }, [actions]);
       return (
         <div className="tw-w-full tw-flex tw-gap-2 tw-flex-wrap tw-items-center">
+          {actions && actions.length > 0 && (
+            <div className="tw-flex md:tw-hidden tw-flex-1 tw-justify-end">
+              <Menu
+                model={items}
+                popup
+                ref={menuRight}
+                id="popup_menu_right"
+                popupAlignment="right"
+                aria-hidden="false"
+              />
+              <Button
+                size="small"
+                icon="pi pi-angle-down"
+                className="mr-2"
+                onClick={(event) => menuRight?.current?.toggle(event)}
+                aria-controls="popup_menu_right"
+                aria-haspopup
+              />
+            </div>
+          )}
           {actions?.map((action, index) => (
             <Button
+              size="small"
+              className="md:tw-flex tw-hidden "
               tooltip={action.tooltip}
               tooltipOptions={{ position: "top" }}
               loading={action.loading}

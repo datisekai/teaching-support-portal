@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useCommonStore } from "../../stores";
-import { IAction } from "../../stores/commonStore";
 import MyTable, { IActionTable } from "../../components/UI/MyTable";
 import { useNavigate } from "react-router-dom";
 import useConfirm from "../../hooks/useConfirm";

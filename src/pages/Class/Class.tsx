@@ -1,13 +1,39 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useCommonStore } from "../../stores";
 import MyTable, { IActionTable } from "../../components/UI/MyTable";
 import { useNavigate } from "react-router-dom";
 import useConfirm from "../../hooks/useConfirm";
 import { classes, classSchemas } from "../../dataTable/class";
 import { uploadFile } from "../../utils";
+import { Menu } from "primereact/menu";
 
 const Class = () => {
-  const [actionTable, setActionTable] = useState<IActionTable[]>([]);
+  const actionTable: IActionTable[] = [
+    {
+      onClick: (data, options) => {
+        handleClick(`/student/detail/${data.id}`, data);
+      },
+      tooltip: "Xem danh sách sinh viên",
+      icon: "pi-users",
+      severity: "info",
+    },
+    {
+      onClick: (data, options) => {
+        handleClick(`/class/edit/${data.id}`, data);
+      },
+      tooltip: "Sửa",
+      icon: "pi-pencil",
+      severity: "success",
+    },
+    {
+      onClick: (data, options) => {
+        handleDelete(data.id);
+      },
+      tooltip: "Xóa",
+      icon: "pi-trash",
+      severity: "danger",
+    },
+  ];
   const navigate = useNavigate();
   const { onConfirm } = useConfirm();
 
@@ -32,32 +58,6 @@ const Class = () => {
   };
 
   useEffect(() => {
-    setActionTable([
-      {
-        onClick: (data, options) => {
-          handleClick(`/student/detail/${data.id}`, data);
-        },
-        tooltip: "Xem danh sách sinh viên",
-        icon: "pi-users",
-        severity: "info",
-      },
-      {
-        onClick: (data, options) => {
-          handleClick(`/class/edit/${data.id}`, data);
-        },
-        tooltip: "Sửa",
-        icon: "pi-pencil",
-        severity: "success",
-      },
-      {
-        onClick: (data, options) => {
-          handleDelete(data.id);
-        },
-        tooltip: "Xóa",
-        icon: "pi-trash",
-        severity: "danger",
-      },
-    ]);
     setHeaderTitle("Quản lý môn học");
     setHeaderActions([
       {
