@@ -23,7 +23,7 @@ const Student = () => {
       },
       tooltip: "Sửa",
       icon: "pi-pencil",
-      severity: "success",
+      severity: "warning",
     },
     {
       onClick: (data, options) => {

@@ -115,11 +115,14 @@ const Login = () => {
                 )}
               </div>
 
-              <div className="tw-mb-4">
-                <Button label="Đăng nhập" className="tw-border-white" />
+              <div className="tw-mb-4 ">
+                <Button
+                  label="Đăng nhập"
+                  className="tw-border-white tw-w-full"
+                />
               </div>
 
-              <div>
+              <div className="tw-text-center">
                 <a
                   href="#"
                   className="tw-text-sm tw-text-white md:tw-text-[#6366f1] md:hover:tw-text-[#4f46e5]"

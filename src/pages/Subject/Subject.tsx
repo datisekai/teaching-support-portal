@@ -1,20 +1,50 @@
 import { useEffect, useState } from "react";
-import { useCommonStore } from "../../stores";
+import { useCommonStore, useModalStore } from "../../stores";
 import MyTable, { IActionTable } from "../../components/UI/MyTable";
 import { useNavigate } from "react-router-dom";
 import useConfirm from "../../hooks/useConfirm";
 import { subjects, subjectSchemas } from "../../dataTable/subject";
 import { uploadFile } from "../../utils";
+import { Button } from "primereact/button";
 
 const Subject = () => {
+  const { onToggle } = useModalStore();
+
+  const handleAddTeachers = () => {};
+
   const actionTable: IActionTable[] = [
+    {
+      onClick: (data, options) => {
+        onToggle(
+          "picklist",
+          {
+            header: "Thêm giảng viên",
+            footer: (
+              <div>
+                <Button
+                  label="Ok"
+                  icon="pi pi-check"
+                  autoFocus
+                  onClick={handleAddTeachers}
+                />
+              </div>
+            ),
+            content: data,
+          },
+          "tw-w-[90%] md:tw-w-[80rem]"
+        );
+      },
+      tooltip: "Thêm giảng viên",
+      icon: "pi-user-plus",
+      severity: "success",
+    },
     {
       onClick: (data, options) => {
         handleEdit(data);
       },
       tooltip: "Sửa",
       icon: "pi-pencil",
-      severity: "success",
+      severity: "warning",
     },
     {
       onClick: (data, options) => {

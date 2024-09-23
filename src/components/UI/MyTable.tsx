@@ -137,7 +137,7 @@ const MyTable: FC<IMyTable> = ({
           {actions && actions.length > 0 && (
             <div
               className={
-                actions.length < 3 ? "tw-flex md:tw-hidden" : "tw-flex"
+                actions.length < 4 ? "tw-flex md:tw-hidden" : "tw-flex"
               }
             >
               <Menu
@@ -162,7 +162,7 @@ const MyTable: FC<IMyTable> = ({
             <Button
               size="small"
               className={
-                actions.length < 3 ? "md:tw-flex tw-hidden" : "tw-hidden"
+                actions.length < 4 ? "md:tw-flex tw-hidden" : "tw-hidden"
               }
               tooltip={action.tooltip}
               tooltipOptions={{ position: "top" }}

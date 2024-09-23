@@ -6,9 +6,11 @@ interface IModalState {
   footer?: React.ReactNode;
   modalName: string;
   content: any;
+  style: string;
   onToggle: (
     modalName: string,
-    data: { header?: React.ReactNode; footer?: React.ReactNode; content?: any }
+    data: { header?: React.ReactNode; footer?: React.ReactNode; content?: any },
+    style: string
   ) => void;
   onDismiss: () => void;
 }
@@ -17,11 +19,13 @@ export const useModalStore = create<IModalState>((set) => ({
   visible: false,
   modalName: "",
   content: {},
-  onToggle: (modalName, data) => {
+  style: "",
+  onToggle: (modalName, data, style) => {
     set((state) => ({
       ...state,
       modalName: modalName,
       visible: !state.visible,
+      style: style,
       ...data,
     }));
   },
