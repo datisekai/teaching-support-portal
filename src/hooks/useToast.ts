@@ -1,30 +1,12 @@
-import { useRef, useCallback } from "react";
-import { Toast } from "primereact/toast";
+import { useContext } from "react";
+import { ToastContext } from "../layouts/ToastProvider";
 
-interface ToastOptions {
-  severity?: "success" | "info" | "warn" | "error" | "secondary" | "contrast";
-  summary?: string;
-  detail: string;
-  life?: number;
-}
+export const useToast = () => {
+  const context = useContext(ToastContext);
+  if (!context) {
+    throw new Error("useToastContext must be used within a ToastProvider");
+  }
 
-export function useToast() {
-  const toastRef = useRef<Toast>(null);
-
-  const showToast = ({
-    severity = "info",
-    summary = "",
-    detail,
-    life = 3000,
-  }: ToastOptions) => {
-    console.log("toast", toastRef);
-    toastRef.current?.show({
-      severity,
-      summary,
-      detail,
-      life,
-    });
-  };
-
-  return { toastRef, showToast };
-}
+  const { showToast } = context;
+  return { showToast };
+};

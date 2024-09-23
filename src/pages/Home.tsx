@@ -135,7 +135,7 @@ export default function Home() {
         </div>, content: { name: 'test' }
       })}></Button>
       <Button label="Confirm" onClick={() => onConfirm({ onAccept: () => console.log('onAccept'), onReject: () => console.log('onReject') })}></Button>
-      <Button label="Show Toast" onClick={() => showToast({ detail: '123' })}>
+      <Button label="Show Toast" onClick={() => showToast({})}>
 
       </Button>
     </MyCard>
