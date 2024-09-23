@@ -7,7 +7,24 @@ import { subjects, subjectSchemas } from "../../dataTable/subject";
 import { uploadFile } from "../../utils";
 
 const Subject = () => {
-  const [actionTable, setActionTable] = useState<IActionTable[]>([]);
+  const actionTable: IActionTable[] = [
+    {
+      onClick: (data, options) => {
+        handleEdit(data);
+      },
+      tooltip: "Sửa",
+      icon: "pi-pencil",
+      severity: "success",
+    },
+    {
+      onClick: (data, options) => {
+        handleDelete(data.id);
+      },
+      tooltip: "Xóa",
+      icon: "pi-trash",
+      severity: "danger",
+    },
+  ];
   const navigate = useNavigate();
   const { onConfirm } = useConfirm();
 
@@ -31,24 +48,6 @@ const Subject = () => {
   };
 
   useEffect(() => {
-    setActionTable([
-      {
-        onClick: (data, options) => {
-          handleEdit(data);
-        },
-        tooltip: "Sửa",
-        icon: "pi-pencil",
-        severity: "success",
-      },
-      {
-        onClick: (data, options) => {
-          handleDelete(data.id);
-        },
-        tooltip: "Xóa",
-        icon: "pi-trash",
-        severity: "danger",
-      },
-    ]);
     setHeaderTitle("Quản lý môn học");
     setHeaderActions([
       {

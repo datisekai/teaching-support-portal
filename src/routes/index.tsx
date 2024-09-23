@@ -17,6 +17,7 @@ import EditClass from "../pages/Class/EditClass";
 import Student from "../pages/Student/Student";
 import CreateStudent from "../pages/Student/CreateStudent";
 import EditStudent from "../pages/Student/EditStudent";
+import Statistic from "../pages/Statistic/Statistic";
 
 const router = createBrowserRouter([
   {
@@ -82,6 +83,10 @@ const router = createBrowserRouter([
           {
             path: "class/edit/:id",
             element: <EditClass />,
+          },
+          {
+            path: "class/statistic/:id",
+            element: <Statistic />,
           },
           {
             path: "student/detail/:id",

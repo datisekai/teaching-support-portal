@@ -8,7 +8,32 @@ import { students, studentSchemas } from "../../dataTable/student";
 
 const Student = () => {
   const { id } = useParams();
-  const [actionTable, setActionTable] = useState<IActionTable[]>([]);
+  const actionTable: IActionTable[] = [
+    {
+      onClick: (data, options) => {
+        handleReset(data);
+      },
+      tooltip: "Reset thiết bị",
+      icon: "pi-refresh",
+      severity: "help",
+    },
+    {
+      onClick: (data, options) => {
+        handleEdit(data);
+      },
+      tooltip: "Sửa",
+      icon: "pi-pencil",
+      severity: "success",
+    },
+    {
+      onClick: (data, options) => {
+        handleDelete(data.id);
+      },
+      tooltip: "Xóa",
+      icon: "pi-trash",
+      severity: "danger",
+    },
+  ];
   const navigate = useNavigate();
   const { onConfirm } = useConfirm();
 
@@ -36,32 +61,6 @@ const Student = () => {
   };
 
   useEffect(() => {
-    setActionTable([
-      {
-        onClick: (data, options) => {
-          handleReset(data);
-        },
-        tooltip: "Reset thiết bị",
-        icon: "pi-refresh",
-        severity: "help",
-      },
-      {
-        onClick: (data, options) => {
-          handleEdit(data);
-        },
-        tooltip: "Sửa",
-        icon: "pi-pencil",
-        severity: "success",
-      },
-      {
-        onClick: (data, options) => {
-          handleDelete(data.id);
-        },
-        tooltip: "Xóa",
-        icon: "pi-trash",
-        severity: "danger",
-      },
-    ]);
     setHeaderTitle("Quản lý Sinh viên");
     setHeaderActions([
       {

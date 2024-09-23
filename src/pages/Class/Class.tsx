@@ -11,6 +11,14 @@ const Class = () => {
   const actionTable: IActionTable[] = [
     {
       onClick: (data, options) => {
+        handleClick(`/class/statistic/${data.id}`, data);
+      },
+      tooltip: "Thống kê",
+      icon: "pi-chart-bar",
+      severity: "help",
+    },
+    {
+      onClick: (data, options) => {
         handleClick(`/student/detail/${data.id}`, data);
       },
       tooltip: "Xem danh sách sinh viên",

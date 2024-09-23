@@ -135,7 +135,11 @@ const MyTable: FC<IMyTable> = ({
       return (
         <div className="tw-w-full tw-flex tw-gap-2 tw-flex-wrap tw-items-center">
           {actions && actions.length > 0 && (
-            <div className="tw-flex md:tw-hidden tw-flex-1 tw-justify-end">
+            <div
+              className={
+                actions.length < 3 ? "tw-flex md:tw-hidden" : "tw-flex"
+              }
+            >
               <Menu
                 model={items}
                 popup
@@ -157,7 +161,9 @@ const MyTable: FC<IMyTable> = ({
           {actions?.map((action, index) => (
             <Button
               size="small"
-              className="md:tw-flex tw-hidden "
+              className={
+                actions.length < 3 ? "md:tw-flex tw-hidden" : "tw-hidden"
+              }
               tooltip={action.tooltip}
               tooltipOptions={{ position: "top" }}
               loading={action.loading}
