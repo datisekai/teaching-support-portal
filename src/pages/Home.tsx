@@ -114,7 +114,11 @@ export default function Home() {
           <Toolbar start={startContent} center={centerContent} end={endContent} />
         </div>
         <div className="card tw-mt-2">
-          <MyTable data={products} schemas={productSchemas} actions={[{ icon: 'pi pi-pencil' }]} />
+          <MyTable data={products} schemas={productSchemas} actions={[{
+            icon: 'pi pi-pencil', onClick: (data, options) => {
+              console.log('click', data, options);
+            }
+          }]} />
         </div>
         <div className="card tw-mt-2">
           <form onSubmit={(e) => e.preventDefault()} className="tw-space-y-4">

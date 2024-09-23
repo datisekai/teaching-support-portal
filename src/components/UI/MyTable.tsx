@@ -11,7 +11,18 @@ import { Paginator, PaginatorPageChangeEvent } from 'primereact/paginator';
 import { useDebounceValue } from 'usehooks-ts'
 import dayjs from 'dayjs';
 import { Tag } from 'primereact/tag';
-import { IAction } from '../../stores/commonStore';
+
+export interface IActionTable {
+    title?: string;
+    icon?: string;
+    onClick?: (data: any, options: any) => void;
+    type?: "button" | "file";
+    disabled?: boolean;
+    iconPos?: "right" | "left";
+    severity?: "success" | "info" | "warning" | "danger" | "help" | "secondary";
+    loading?: boolean;
+    action?: "back";
+}
 
 
 interface IMyTable {
@@ -21,7 +32,7 @@ interface IMyTable {
     totalRecords?: number,
     perPage?: number
     onChange?: (query: object) => void
-    actions?: IAction[]
+    actions?: IActionTable[]
 }
 
 const MyTable: FC<IMyTable> = ({ data = [], schemas = [], keySearch = "", totalRecords = 0, perPage = 5, onChange, actions }) => {
@@ -79,9 +90,13 @@ const MyTable: FC<IMyTable> = ({ data = [], schemas = [], keySearch = "", totalR
         );
     }, [keySearch])
 
-    const renderActions = useCallback(() => {
+    const renderActions = useCallback((data: any, options: any) => {
         return <div className='tw-w-full tw-flex tw-gap-2 tw-flex-wrap tw-items-center'>
-            {actions?.map((action, index) => (<Button loading={action.loading} disabled={action.disabled} key={index} severity={action.severity} onClick={action.onClick} label={action.title} iconPos={action.iconPos || 'left'} icon={action.icon} />))}
+            {actions?.map((action, index) => (<Button loading={action.loading} disabled={action.disabled} key={index} severity={action.severity} onClick={() => {
+                if (action.onClick) {
+                    action.onClick(data, options)
+                }
+            }} label={action.title} iconPos={action.iconPos || 'left'} icon={action.icon} />))}
         </div>
     }, [actions])
 
@@ -102,7 +117,7 @@ const MyTable: FC<IMyTable> = ({ data = [], schemas = [], keySearch = "", totalR
                         return <Column body={bodyTemplate} key={schema.prop} field={schema.prop} header={schema.label}></Column>
                     })
                 }
-                {actions && actions.length > 0 && <Column body={renderActions()} field="actions" header="Thao tác"></Column>}
+                {actions && actions.length > 0 && <Column body={renderActions} field="actions" header="Thao tác"></Column>}
             </DataTable>
             {displayPaginator && <Paginator
                 first={first}
