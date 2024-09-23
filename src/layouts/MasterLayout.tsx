@@ -10,10 +10,11 @@ const MasterLayout = () => {
 
     return (
         <>
-            <Outlet />
-            <ToastProvider />
-            <DynamicModal />
-            <ConfirmDialog />
+            <ToastProvider>
+                <Outlet />
+                <DynamicModal />
+                <ConfirmDialog />
+            </ToastProvider>
         </>
     );
 };
