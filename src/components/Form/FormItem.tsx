@@ -109,7 +109,7 @@ const FormItem: React.FC<IForm> = ({
       case "date":
         return renderController(({ field: { onChange, onBlur, value } }) => (
           <Calendar
-            className="w-full"
+            className="tw-w-full"
             placeholder={label}
             invalid={!!error}
             value={value}
@@ -131,7 +131,7 @@ const FormItem: React.FC<IForm> = ({
             options={options}
             optionLabel="title"
             placeholder={`Chọn ${label.toLowerCase()}`}
-            className="w-full"
+            className="tw-w-full"
           />
         ));
       case "multi-select":
@@ -147,7 +147,7 @@ const FormItem: React.FC<IForm> = ({
             options={options}
             optionLabel="title"
             placeholder={`Chọn ${label.toLowerCase()}`}
-            className="w-full"
+            className="tw-w-full"
           />
         ));
       case "select-ajax":
@@ -162,7 +162,7 @@ const FormItem: React.FC<IForm> = ({
             }
             options={ajaxOptions}
             placeholder={`Chọn ${label.toLowerCase()}`}
-            className="w-full"
+            className="tw-w-full"
           />
         ));
       case "textarea":
