@@ -1,41 +1,54 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import * as yup from "yup";
-import { DepartmentForm } from "../../dataForm/department";
 import GroupItem from "../../components/Form/GroupItem";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { set, useForm } from "react-hook-form";
 import { useCommonStore } from "../../stores";
 import { IAction } from "../../stores/commonStore";
+import { ClassForm } from "../../dataForm/class";
+
+const teacherOptions =
+  ClassForm[0].attributes.find((attr) => attr.prop === "teacher")?.options ||
+  [];
+const subjectOptions =
+  ClassForm[0].attributes.find((attr) => attr.prop === "subject")?.options ||
+  [];
 const schema = yup
   .object()
   .shape({
-    name: yup.string().required("Tên ngành học là bắt buộc."),
-    description: yup.string().required("Mô tả ngành học là bắt buộc."),
+    name: yup.string().required("Tên lớp học là bắt buộc."),
+    dueDate: yup.string().required("Năm học là bắt buộc."),
+    teacher: yup
+      .string()
+      .oneOf(
+        teacherOptions.map((option) => option.value),
+        "Giảng viên là bắt buộc."
+      )
+      .required("Giảng viên là bắt buộc."),
+    subject: yup
+      .string()
+      .oneOf(
+        subjectOptions.map((option) => option.value),
+        "Môn học là bắt buộc."
+      )
+      .required("Môn học là bắt buộc."),
   })
   .required();
-const EditDepartment = () => {
-  const { id } = useParams();
-
+const CreateClass = () => {
   const {
     handleSubmit,
     formState: { errors },
     control,
-    reset,
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
       name: "",
-      description: "",
+      dueDate: "",
+      subject: "",
+      teacher: "",
     },
   });
-
-  useEffect(() => {
-    reset({
-      name: "cong nghe thong tin",
-      description: "abc",
-    });
-  }, []);
   const navigate = useNavigate();
 
   const setFooterActions = useCommonStore((state) => state.setFooterActions);
@@ -43,7 +56,6 @@ const EditDepartment = () => {
   const resetActions = useCommonStore((state) => state.resetActions);
 
   const onSubmit = () => {
-    console.log("data", id);
     navigate(-1);
   };
 
@@ -56,12 +68,12 @@ const EditDepartment = () => {
       },
       {
         onClick: handleSubmit(onSubmit),
-        title: "Sửa ngành học",
+        title: "Tạo lớp học",
         icon: "pi-plus",
       },
     ];
     setFooterActions(actions);
-    setHeaderTitle("Chỉnh sửa ngành học");
+    setHeaderTitle("Tạo lớp học");
 
     return () => {
       resetActions();
@@ -71,7 +83,7 @@ const EditDepartment = () => {
   return (
     <div>
       <form onSubmit={(e) => e.preventDefault()} className="tw-space-y-4">
-        {DepartmentForm.map((form, index) => (
+        {ClassForm.map((form, index) => (
           <GroupItem errors={errors} {...form} key={index} control={control} />
         ))}
       </form>
@@ -79,4 +91,4 @@ const EditDepartment = () => {
   );
 };
 
-export default EditDepartment;
+export default CreateClass;

@@ -1,19 +1,29 @@
 import { TableSchema } from "../types/table";
 
-export const departmentSchemas: TableSchema[] = [
+export const subjectSchemas: TableSchema[] = [
   {
     label: "#",
     prop: "index",
     type: "number",
   },
   {
-    label: "Tên ngành",
+    label: "Mã môn học",
+    prop: "code",
+    type: "number",
+  },
+  {
+    label: "Tên",
     prop: "name",
     type: "text",
   },
   {
     label: "Mô tả",
     prop: "description",
+    type: "text",
+  },
+  {
+    label: "Ngành",
+    prop: "department",
     type: "text",
   },
   {
@@ -28,18 +38,22 @@ export const departmentSchemas: TableSchema[] = [
   },
 ];
 
-export const departments = [
+export const subjects = [
   {
     index: 1,
+    code: 840001,
     name: "Công nghệ thông tin",
     description: "a",
+    department: "Kỹ thuật phần mềm",
     createdAt: new Date(),
     updatedAt: new Date(),
   },
   {
     index: 2,
+    code: 840002,
     name: "Kỹ thuật phần mềm",
     description: "avb",
+    department: "Khoa học thông tin",
     createdAt: new Date(),
     updatedAt: new Date(),
   },

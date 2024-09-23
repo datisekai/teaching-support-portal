@@ -10,6 +10,7 @@ export interface IAction {
   severity?: "success" | "info" | "warning" | "danger" | "help" | "secondary";
   loading?: boolean;
   action?: "back";
+  tooltip?: string;
 }
 
 interface ICommonState {

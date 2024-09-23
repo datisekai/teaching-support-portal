@@ -22,6 +22,7 @@ export interface IActionTable {
     severity?: "success" | "info" | "warning" | "danger" | "help" | "secondary";
     loading?: boolean;
     action?: "back";
+    tooltip?: string
 }
 
 
@@ -92,11 +93,12 @@ const MyTable: FC<IMyTable> = ({ data = [], schemas = [], keySearch = "", totalR
 
     const renderActions = useCallback((data: any, options: any) => {
         return <div className='tw-w-full tw-flex tw-gap-2 tw-flex-wrap tw-items-center'>
-            {actions?.map((action, index) => (<Button loading={action.loading} disabled={action.disabled} key={index} severity={action.severity} onClick={() => {
-                if (action.onClick) {
-                    action.onClick(data, options)
-                }
-            }} label={action.title} iconPos={action.iconPos || 'left'} icon={action.icon} />))}
+            {actions?.map((action, index) => (<Button tooltip={action.tooltip}
+                tooltipOptions={{ position: "top" }} loading={action.loading} disabled={action.disabled} key={index} severity={action.severity} onClick={() => {
+                    if (action.onClick) {
+                        action.onClick(data, options)
+                    }
+                }} label={action.title} iconPos={action.iconPos || 'left'} icon={action.icon} />))}
         </div>
     }, [actions])
 

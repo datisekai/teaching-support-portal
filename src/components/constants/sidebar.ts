@@ -6,9 +6,22 @@ export const sidebarData: IMenuItem[] = [
     children: [
       {
         title: "Danh sách lớp",
-        icon: "pi pi-fw pi-user",
+        icon: "pi pi-user",
         path: "/class",
         permission: "view-class",
+      },
+    ],
+  },
+  {
+    title: "Môn học",
+    icon: "",
+    path: "/subject",
+    children: [
+      {
+        title: "Danh sách môn",
+        icon: "pi pi-book",
+        path: "/subject",
+        permission: "view-subject",
       },
     ],
   },
@@ -19,7 +32,7 @@ export const sidebarData: IMenuItem[] = [
     children: [
       {
         title: "Danh sách ngành",
-        icon: "pi pi-fw pi-user",
+        icon: "pi pi-user",
         path: "/department",
         permission: "view-department",
       },
