@@ -1,20 +1,20 @@
 import { useEffect, useState } from "react";
 import { useCommonStore } from "../../stores";
-import { IAction } from "../../stores/commonStore";
-import MyTable from "../../components/UI/MyTable";
+import MyTable, { IActionTable } from "../../components/UI/MyTable";
 import { useNavigate } from "react-router-dom";
 import useConfirm from "../../hooks/useConfirm";
 import { classes, classSchemas } from "../../dataTable/class";
 import { uploadFile } from "../../utils";
 
 const Class = () => {
-  const [actionTable, setActionTable] = useState<IAction[]>([]);
+  const [actionTable, setActionTable] = useState<IActionTable[]>([]);
   const navigate = useNavigate();
   const { onConfirm } = useConfirm();
 
   const { setHeaderTitle, setHeaderActions, resetActions } = useCommonStore();
 
-  const handleClick = (endpoint: string) => {
+  const handleClick = (endpoint: string, data: any) => {
+    console.log(data);
     navigate(endpoint);
   };
   const handleDelete = (id: number) => {
@@ -34,19 +34,25 @@ const Class = () => {
   useEffect(() => {
     setActionTable([
       {
-        onClick: () => handleClick(`/student/detail/${1}`),
+        onClick: (data, options) => {
+          handleClick(`/student/detail/${data.id}`, data);
+        },
         tooltip: "Xem danh sách sinh viên",
         icon: "pi-users",
         severity: "info",
       },
       {
-        onClick: () => handleClick(`/class/edit/${1}`),
+        onClick: (data, options) => {
+          handleClick(`/class/edit/${data.id}`, data);
+        },
         tooltip: "Sửa",
         icon: "pi-pencil",
         severity: "success",
       },
       {
-        onClick: () => handleDelete(1),
+        onClick: (data, options) => {
+          handleDelete(data.id);
+        },
         tooltip: "Xóa",
         icon: "pi-trash",
         severity: "danger",

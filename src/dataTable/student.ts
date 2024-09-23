@@ -3,7 +3,7 @@ import { TableSchema } from "../types/table";
 export const studentSchemas: TableSchema[] = [
   {
     label: "#",
-    prop: "index",
+    prop: "id",
     type: "number",
   },
   {
@@ -45,7 +45,7 @@ export const studentSchemas: TableSchema[] = [
 
 export const students = [
   {
-    index: 1,
+    id: 1,
     code: "312041014",
     name: "Nguyễn Văn A",
     email: "nguyenvana@example.com",
@@ -55,7 +55,7 @@ export const students = [
     updatedAt: "2024-08-10T12:00:00Z",
   },
   {
-    index: 2,
+    id: 2,
     code: "312041013",
     name: "Trần Thị B",
     email: "tranthib@example.com",

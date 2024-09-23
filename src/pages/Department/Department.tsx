@@ -1,21 +1,20 @@
 import { useEffect, useState } from "react";
 import { useCommonStore } from "../../stores";
-import { IAction } from "../../stores/commonStore";
-import MyTable from "../../components/UI/MyTable";
+import MyTable, { IActionTable } from "../../components/UI/MyTable";
 import { departmentSchemas, departments } from "../../dataTable/department";
 import { useNavigate } from "react-router-dom";
 import useConfirm from "../../hooks/useConfirm";
 import { uploadFile } from "../../utils";
 
 const Department = () => {
-  const [actionTable, setActionTable] = useState<IAction[]>([]);
+  const [actionTable, setActionTable] = useState<IActionTable[]>([]);
   const navigate = useNavigate();
   const { onConfirm } = useConfirm();
 
   const { setHeaderTitle, setHeaderActions, resetActions } = useCommonStore();
 
-  const handleEdit = (id: number) => {
-    navigate(`/department/edit/${id}`);
+  const handleEdit = (data: any) => {
+    navigate(`/department/edit/${data.id}`);
   };
   const handleDelete = (id: number) => {
     const data = {
@@ -34,13 +33,17 @@ const Department = () => {
   useEffect(() => {
     setActionTable([
       {
-        onClick: () => handleEdit(1),
+        onClick: (data, options) => {
+          handleEdit(data);
+        },
         tooltip: "Sửa",
         icon: "pi-pencil",
         severity: "success",
       },
       {
-        onClick: () => handleDelete(1),
+        onClick: (data, options) => {
+          handleDelete(data.id);
+        },
         tooltip: "Xóa",
         icon: "pi-trash",
         severity: "danger",

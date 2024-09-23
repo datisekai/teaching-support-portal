@@ -3,7 +3,7 @@ import { TableSchema } from "../types/table";
 export const subjectSchemas: TableSchema[] = [
   {
     label: "#",
-    prop: "index",
+    prop: "id",
     type: "number",
   },
   {
@@ -40,7 +40,7 @@ export const subjectSchemas: TableSchema[] = [
 
 export const subjects = [
   {
-    index: 1,
+    id: 1,
     code: 840001,
     name: "Công nghệ thông tin",
     description: "a",
@@ -49,7 +49,7 @@ export const subjects = [
     updatedAt: new Date(),
   },
   {
-    index: 2,
+    id: 2,
     code: 840002,
     name: "Kỹ thuật phần mềm",
     description: "avb",

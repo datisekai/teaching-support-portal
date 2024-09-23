@@ -3,7 +3,7 @@ import { TableSchema } from "../types/table";
 export const classSchemas: TableSchema[] = [
   {
     label: "#",
-    prop: "index",
+    prop: "id",
     type: "number",
   },
   {
@@ -40,7 +40,7 @@ export const classSchemas: TableSchema[] = [
 
 export const classes = [
   {
-    index: 1,
+    id: 1,
     name: "nhóm 02",
     teacher: "Nguyen Van A",
     subject: "Lập trình web",
@@ -49,7 +49,7 @@ export const classes = [
     updatedAt: new Date(),
   },
   {
-    index: 2,
+    id: 2,
     name: "nhóm 03",
     teacher: "Nguyen Van B",
     subject: "Java",

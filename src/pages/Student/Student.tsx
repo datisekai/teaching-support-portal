@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useCommonStore } from "../../stores";
-import { IAction } from "../../stores/commonStore";
-import MyTable from "../../components/UI/MyTable";
+import MyTable, { IActionTable } from "../../components/UI/MyTable";
 import { useNavigate, useParams } from "react-router-dom";
 import useConfirm from "../../hooks/useConfirm";
 import { uploadFile } from "../../utils";
@@ -9,17 +8,17 @@ import { students, studentSchemas } from "../../dataTable/student";
 
 const Student = () => {
   const { id } = useParams();
-  const [actionTable, setActionTable] = useState<IAction[]>([]);
+  const [actionTable, setActionTable] = useState<IActionTable[]>([]);
   const navigate = useNavigate();
   const { onConfirm } = useConfirm();
 
   const { setHeaderTitle, setHeaderActions, resetActions } = useCommonStore();
 
-  const handleEdit = (id: number) => {
-    navigate(`/student/edit/${id}`);
+  const handleEdit = (data: any) => {
+    navigate(`/student/edit/${data.id}`);
   };
-  const handleReset = (id: number) => {
-    navigate(-1);
+  const handleReset = (data: any) => {
+    console.log(data);
   };
 
   const handleDelete = (id: number) => {
@@ -39,19 +38,25 @@ const Student = () => {
   useEffect(() => {
     setActionTable([
       {
-        onClick: () => handleReset(1),
+        onClick: (data, options) => {
+          handleReset(data);
+        },
         tooltip: "Reset thiết bị",
         icon: "pi-refresh",
         severity: "help",
       },
       {
-        onClick: () => handleEdit(1),
+        onClick: (data, options) => {
+          handleEdit(data);
+        },
         tooltip: "Sửa",
         icon: "pi-pencil",
         severity: "success",
       },
       {
-        onClick: () => handleDelete(1),
+        onClick: (data, options) => {
+          handleDelete(data.id);
+        },
         tooltip: "Xóa",
         icon: "pi-trash",
         severity: "danger",
