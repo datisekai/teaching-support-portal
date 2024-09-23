@@ -1,6 +1,6 @@
 import { TableSchema } from "../types/table";
 
-export const studentSchemas: TableSchema[] = [
+export const statisticSchemas: TableSchema[] = [
   {
     label: "#",
     prop: "id",
@@ -27,41 +27,44 @@ export const studentSchemas: TableSchema[] = [
     type: "text",
   },
   {
-    label: "Thiết bị",
-    prop: "deviceId",
-    type: "text",
+    label: "Trạng thái",
+    prop: "status",
+    type: "badge",
+    getBadge: (value) => {
+      switch (value) {
+        case "success":
+          return { value: "Thành công", severity: "success" };
+        case "failed":
+          return { value: "Thất bại", severity: "danger" };
+        default:
+          return { value: "Lỗi", severity: "warning" };
+      }
+    },
   },
   {
-    label: "Ngày tạo",
+    label: "Ngày điểm danh",
     prop: "createdAt",
-    type: "datetime",
-  },
-  {
-    label: "Ngày sửa",
-    prop: "updatedAt",
     type: "datetime",
   },
 ];
 
-export const students = [
+export const statistics = [
   {
     id: 1,
     code: "312041014",
     name: "Nguyễn Văn A",
     email: "nguyenvana@example.com",
     phoneNumber: "0123456789",
-    deviceId: "123456789",
+    status: "success",
     createdAt: "2024-08-01T10:00:00Z",
-    updatedAt: "2024-08-10T12:00:00Z",
   },
   {
     id: 2,
     code: "312041013",
     name: "Trần Thị B",
     email: "tranthib@example.com",
-    deviceId: "123456789",
     phoneNumber: "0987654321",
+    status: "failed",
     createdAt: "2024-08-02T11:00:00Z",
-    updatedAt: "2024-08-11T13:00:00Z",
   },
 ];

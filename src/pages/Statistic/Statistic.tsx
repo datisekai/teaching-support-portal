@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useCommonStore } from "../../stores";
 import MyTable, { IActionTable } from "../../components/UI/MyTable";
 import { Chart } from "primereact/chart";
-import { students, studentSchemas } from "../../dataTable/student";
+import { statistics, statisticSchemas } from "../../dataTable/statistic";
 
 const Statistic = () => {
   const actionTable: IActionTable[] = [];
@@ -90,7 +90,11 @@ const Statistic = () => {
           className="tw-w-2/6"
         />
       </div>
-      <MyTable data={students} schemas={studentSchemas} actions={actionTable} />
+      <MyTable
+        data={statistics}
+        schemas={statisticSchemas}
+        actions={actionTable}
+      />
     </div>
   );
 };
