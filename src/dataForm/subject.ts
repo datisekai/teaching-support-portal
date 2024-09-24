@@ -26,6 +26,7 @@ export const SubjectForm: IForm[] = [
         prop: "department",
         type: "select",
         label: "Ngành học",
+        col: 12,
         options: [
           {
             title: "Kỹ thuật phần mềm",

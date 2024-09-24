@@ -13,6 +13,19 @@ export const sidebarData: IMenuItem[] = [
     ],
   },
   {
+    title: "Thông báo",
+    icon: "",
+    path: "/notification",
+    children: [
+      {
+        title: "Danh sách Thông báo",
+        icon: "pi pi-bell",
+        path: "/notification",
+        permission: "view-notification",
+      },
+    ],
+  },
+  {
     title: "Lớp học",
     icon: "",
     path: "/class",

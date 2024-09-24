@@ -14,6 +14,7 @@ export const ClassForm: IForm[] = [
         prop: "teacher",
         type: "select",
         label: "Giảng viên",
+        col: 12,
         options: [
           {
             title: "Nguyễn Văn A",
@@ -29,6 +30,7 @@ export const ClassForm: IForm[] = [
         prop: "subject",
         type: "select",
         label: "Môn học",
+        col: 12,
         options: [
           {
             title: "Lập trình web",

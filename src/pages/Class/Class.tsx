@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 import useConfirm from "../../hooks/useConfirm";
 import { classes, classSchemas } from "../../dataTable/class";
 import { uploadFile } from "../../utils";
-import { Menu } from "primereact/menu";
 
 const Class = () => {
   const actionTable: IActionTable[] = [

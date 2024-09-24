@@ -20,6 +20,7 @@ export const useAuthStore = create<IState>((set) => ({
       "view-subject",
       "view-attendance",
       "view-user",
+      "view-notification",
     ],
     code: "3120410115",
   } as IUser,
