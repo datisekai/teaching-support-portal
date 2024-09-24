@@ -1,5 +1,18 @@
 export const sidebarData: IMenuItem[] = [
   {
+    title: "Điểm danh",
+    icon: "",
+    path: "/attendance",
+    children: [
+      {
+        title: "Danh sách phòng",
+        icon: "pi pi-list-check",
+        path: "/attendance",
+        permission: "view-attendance",
+      },
+    ],
+  },
+  {
     title: "Lớp học",
     icon: "",
     path: "/class",
