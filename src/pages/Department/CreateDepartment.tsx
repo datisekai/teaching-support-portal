@@ -45,12 +45,12 @@ const CreateDepartment = () => {
       },
       {
         onClick: handleSubmit(onSubmit),
-        title: "Sửa ngành học",
+        title: "Tạo",
         icon: "pi-plus",
       },
     ];
     setFooterActions(actions);
-    setHeaderTitle("Chỉnh sửa ngành học");
+    setHeaderTitle("Tạo ngành học");
 
     return () => {
       resetActions();

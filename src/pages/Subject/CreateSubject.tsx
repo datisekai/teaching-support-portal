@@ -76,7 +76,7 @@ const CreateSubject = () => {
       },
       {
         onClick: handleSubmit(onSubmit),
-        title: "Tạo môn học",
+        title: "Tạo",
         icon: "pi-plus",
       },
     ];

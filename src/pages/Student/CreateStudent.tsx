@@ -57,12 +57,12 @@ const CreateStudent = () => {
       },
       {
         onClick: handleSubmit(onSubmit),
-        title: "Sửa sinh viên",
+        title: "Tạo",
         icon: "pi-plus",
       },
     ];
     setFooterActions(actions);
-    setHeaderTitle("Chỉnh sửa sinh viên");
+    setHeaderTitle("Tạo sinh viên");
 
     return () => {
       resetActions();

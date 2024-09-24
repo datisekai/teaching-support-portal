@@ -68,8 +68,8 @@ const EditStudent = () => {
       },
       {
         onClick: handleSubmit(onSubmit),
-        title: "Sửa sinh viên",
-        icon: "pi-plus",
+        title: "Lưu thay đổi",
+        // icon: "pi-plus",
       },
     ];
     setFooterActions(actions);

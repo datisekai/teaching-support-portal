@@ -77,8 +77,8 @@ const EditClass = () => {
       },
       {
         onClick: handleSubmit(onSubmit),
-        title: "Sửa lớp học",
-        icon: "pi-plus",
+        title: "Lưu thay đổi",
+        // icon: "pi-plus",
       },
     ];
     setFooterActions(actions);

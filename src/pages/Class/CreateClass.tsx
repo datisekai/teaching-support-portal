@@ -68,7 +68,7 @@ const CreateClass = () => {
       },
       {
         onClick: handleSubmit(onSubmit),
-        title: "Tạo lớp học",
+        title: "Tạo",
         icon: "pi-plus",
       },
     ];

@@ -56,8 +56,8 @@ const EditDepartment = () => {
       },
       {
         onClick: handleSubmit(onSubmit),
-        title: "Sửa ngành học",
-        icon: "pi-plus",
+        title: "Lưu thay đổi",
+        // icon: "pi-plus",
       },
     ];
     setFooterActions(actions);

@@ -6,6 +6,7 @@ import useConfirm from "../../hooks/useConfirm";
 import { subjects, subjectSchemas } from "../../dataTable/subject";
 import { uploadFile } from "../../utils";
 import { Button } from "primereact/button";
+import { teachers } from "../../dataTable/teacher";
 
 const Subject = () => {
   const { onToggle } = useModalStore();
@@ -15,6 +16,10 @@ const Subject = () => {
   const actionTable: IActionTable[] = [
     {
       onClick: (data, options) => {
+        const transferData = teachers.map((item) => {
+          return { content: item.code, subcontent: item.name };
+        });
+        console.log({ id: data.id, contents: transferData });
         onToggle(
           "picklist",
           {
@@ -29,14 +34,13 @@ const Subject = () => {
                 />
               </div>
             ),
-            content: data,
+            content: { id: data.id, contents: transferData },
           },
           "tw-w-[90%] md:tw-w-[80rem]"
         );
       },
       tooltip: "Thêm giảng viên",
       icon: "pi-user-plus",
-      severity: "success",
     },
     {
       onClick: (data, options) => {

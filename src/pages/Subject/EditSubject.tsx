@@ -87,8 +87,8 @@ const EditSubject = () => {
       },
       {
         onClick: handleSubmit(onSubmit),
-        title: "Sửa môn học",
-        icon: "pi-plus",
+        title: "Lưu thay đổi",
+        // icon: "pi-plus",
       },
     ];
     setFooterActions(actions);
