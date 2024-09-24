@@ -26,6 +26,19 @@ export const sidebarData: IMenuItem[] = [
     ],
   },
   {
+    title: "Đơn từ",
+    icon: "",
+    path: "/letter",
+    children: [
+      {
+        title: "Danh sách đơn từ",
+        icon: "pi pi-bell",
+        path: "/letter",
+        permission: "view-letter",
+      },
+    ],
+  },
+  {
     title: "Lớp học",
     icon: "",
     path: "/class",

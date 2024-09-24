@@ -4,6 +4,7 @@ import { useModalStore } from "../stores/modalStore";
 import { ModalName } from "../components/constants";
 import TestModal from "../components/Modal/TestModal";
 import PickListModal from "../components/Modal/PickListModal";
+import ViewLetterModal from "../components/Modal/ViewLetterModal";
 
 const DynamicModal = () => {
   const { modalName, onDismiss, onToggle, visible, footer, header, style } =
@@ -27,6 +28,7 @@ const DynamicModal = () => {
     >
       {modalName === ModalName.TEST && <TestModal />}
       {modalName === ModalName.PICKLIST && <PickListModal />}
+      {modalName === ModalName.VIEWLETTER && <ViewLetterModal />}
     </Dialog>
   );
 };
