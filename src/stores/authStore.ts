@@ -14,7 +14,13 @@ interface IState {
 export const useAuthStore = create<IState>((set) => ({
   token: "",
   user: {
-    permissions: ["view-class", "view-department", "view-subject","view-attendance"],
+    permissions: [
+      "view-class",
+      "view-department",
+      "view-subject",
+      "view-attendance",
+      "view-user",
+    ],
     code: "3120410115",
   } as IUser,
   login: async (code: string, password: string) => {

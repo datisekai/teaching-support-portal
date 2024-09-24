@@ -24,6 +24,7 @@ import { departmentRoutes } from "./department";
 import { attendanceRoutes } from "./attendance";
 import { studentRoutes } from "./student";
 import { subjectRoutes } from "./subject";
+import { userRoutes } from "./user";
 
 export interface IRouter {
   path: string;
@@ -57,6 +58,7 @@ const router = createBrowserRouter([
           ...attendanceRoutes,
           ...studentRoutes,
           ...subjectRoutes,
+          ...userRoutes,
         ],
       },
     ],

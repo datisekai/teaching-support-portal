@@ -51,6 +51,19 @@ export const sidebarData: IMenuItem[] = [
       },
     ],
   },
+  {
+    title: "Người dùng",
+    icon: "",
+    path: "/user",
+    children: [
+      {
+        title: "Danh sách người dùng",
+        icon: "pi pi-user",
+        path: "/user",
+        permission: "view-user",
+      },
+    ],
+  },
 ];
 
 interface IMenuItem {
