@@ -12,6 +12,22 @@ const Attendance = () => {
     return [
       {
         onClick: (data, options) => {
+          handleClick(`/attendance/detail/${data.id}`, data);
+        },
+        tooltip: "Danh sách điểm danh",
+        icon: "pi-users",
+        severity: "secondary",
+      },
+      {
+        onClick: (data, options) => {
+          handleClick(`/attendance/logs/${data.id}`, data);
+        },
+        tooltip: "Logs",
+        icon: "pi-cog",
+        severity: "help",
+      },
+      {
+        onClick: (data, options) => {
           //TODO
           //Show modal
         },
@@ -45,6 +61,11 @@ const Attendance = () => {
   const handleEdit = (data: any) => {
     navigate(`/attendance/edit/${data.id}`);
   };
+  const handleClick = (endpoint: string, data: any) => {
+    console.log(data);
+    navigate(endpoint);
+  };
+
   const handleDelete = (id: number) => {
     const data = {
       message: "Bạn có chắc chắn muốn xoá dòng này?",
