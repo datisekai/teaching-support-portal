@@ -11,9 +11,9 @@ import { RoomForm } from "../../dataForm/room";
 const schema = yup
   .object()
   .shape({
-    title: yup.string().required("Vui lòng điền tiêu đề"),
+    name: yup.string().required("Vui lòng điền tiêu đề"),
     description: yup.string(),
-    groupId: yup.string().required("Vui lòng chọn lớp học"),
+    group_id: yup.string().required("Vui lòng chọn lớp học"),
   })
   .required();
 const CreateAttendance = () => {
@@ -24,9 +24,9 @@ const CreateAttendance = () => {
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
-      title: "",
+      name: "",
       description: "",
-      groupId: "",
+      group_id: "",
     },
   });
   const navigate = useNavigate();

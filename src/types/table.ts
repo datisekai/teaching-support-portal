@@ -6,4 +6,5 @@ export interface TableSchema {
     value: string;
     severity: "danger" | "success" | "info" | "warning" | null;
   };
+  minWidth?: string;
 }

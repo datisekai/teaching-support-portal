@@ -210,6 +210,7 @@ const MyTable: FC<IMyTable> = ({
               key={schema.prop}
               field={schema.prop}
               header={schema.label}
+              style={{ minWidth: schema.minWidth || '50px' }}
             ></Column>
           );
         })}

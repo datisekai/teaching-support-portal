@@ -9,7 +9,7 @@ const Logs = () => {
   const { setHeaderTitle, setHeaderActions, resetActions } = useCommonStore();
 
   useEffect(() => {
-    setHeaderTitle("Chi tiết điểm danh");
+    setHeaderTitle("Logs điểm danh");
     setHeaderActions([]);
 
     return () => {

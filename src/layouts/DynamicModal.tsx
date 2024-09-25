@@ -1,10 +1,10 @@
 import { Dialog } from "primereact/dialog";
-import React, { useEffect } from "react";
-import { useModalStore } from "../stores/modalStore";
+import { useEffect } from "react";
 import { ModalName } from "../components/constants";
-import TestModal from "../components/Modal/TestModal";
 import PickListModal from "../components/Modal/PickListModal";
+import TestModal from "../components/Modal/TestModal";
 import ViewLetterModal from "../components/Modal/ViewLetterModal";
+import { useModalStore } from "../stores/modalStore";
 
 const DynamicModal = () => {
   const { modalName, onDismiss, onToggle, visible, footer, header, style } =
@@ -27,8 +27,8 @@ const DynamicModal = () => {
       onHide={onDismiss}
     >
       {modalName === ModalName.TEST && <TestModal />}
-      {modalName === ModalName.PICKLIST && <PickListModal />}
-      {modalName === ModalName.VIEWLETTER && <ViewLetterModal />}
+      {modalName === ModalName.PICK_LIST && <PickListModal />}
+      {modalName === ModalName.VIEW_LETTER && <ViewLetterModal />}
     </Dialog>
   );
 };

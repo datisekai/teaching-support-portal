@@ -47,7 +47,7 @@ const MyHeaderAction = () => {
 
   return (
     <>
-      <div className="tw-hidden md:tw-flex tw-flex-1 tw-w-full tw-gap-2 tw-justify-end tw-items-center">
+      <div className="tw-hidden md:tw-flex tw-pr-2  tw-flex-1 tw-w-full tw-gap-2 tw-justify-end tw-items-center">
         {actions.map((action, index) => (
           <Button
             loading={action.loading}

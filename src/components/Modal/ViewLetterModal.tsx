@@ -14,9 +14,8 @@ const ViewLetterModal: React.FC = () => {
         <strong>Lý do:</strong> {content.reason}
       </p>
       <p>
-        <strong>Minh chứng:</strong>
+        <strong>Minh chứng: <a href="/" className="tw-text-blue-500 hover:tw-underline tw-font-normal tw-cursor-pointer">Xem tại đây</a></strong>
       </p>
-      <div dangerouslySetInnerHTML={{ __html: content.evidence }} />
       <p>
         <strong>MSSV:</strong> {content.studentCode}
       </p>

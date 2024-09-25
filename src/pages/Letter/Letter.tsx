@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { letters, letterSchemas } from "../../dataTable/letter";
 import { Button } from "primereact/button";
 import { Dropdown, DropdownChangeEvent } from "primereact/dropdown";
+import { ModalName } from "../../components/constants";
 
 interface IStatus {
   id: string;
@@ -17,11 +18,6 @@ const Letter = () => {
   const { setHeaderTitle, setHeaderActions, resetActions } = useCommonStore();
   const [selectedStatus, setSelectedStatus] = useState<IStatus | null>(null);
 
-  const statusConfirms: IStatus[] = [
-    { id: "1", label: "Đồng ý" },
-    { id: "2", label: "Từ chối" },
-  ];
-
   const handleSubmit = (data: any) => {
     console.log("Dữ liệu:", data);
     console.log("Trạng thái đã chọn:", selectedStatus);
@@ -29,34 +25,33 @@ const Letter = () => {
   console.log("Trạng thái được chọn:", selectedStatus);
   const handleView = (data: any) => {
     onToggle(
-      "viewletter",
+      ModalName.VIEW_LETTER,
       {
         header: "Chi tiết đơn",
         footer: (
-          <div className="tw-flex tw-justify-between tw-items-center">
-            <div>
-              <Dropdown
-                value={selectedStatus}
-                onChange={(e: DropdownChangeEvent) => {
-                  setSelectedStatus(e.value);
-                }}
-                options={statusConfirms}
-                optionLabel="label"
-                placeholder={`Chọn trạng thái`}
-                className="tw-w-full"
+          <>
+            {data.status == 'pending' && <div className="tw-flex tw-justify-end tw-items-center">
+
+              <Button
+                label="Từ chối"
+                icon="pi pi-times"
+                type="button"
+                severity="danger"
+                onClick={() => handleSubmit(data)}
               />
-            </div>
-            <Button
-              label="Ok"
-              icon="pi pi-check"
-              autoFocus
-              onClick={() => handleSubmit(data)}
-            />
-          </div>
+              <Button
+                label="Đồng ý"
+                icon="pi pi-check"
+                autoFocus
+                onClick={() => handleSubmit(data)}
+              />
+            </div>}
+          </>
         ),
         content: data, // Nội dung chi tiết của đơn từ
+        style: "tw-w-[90%] md:tw-w-[30rem]"
       },
-      "tw-w-[90%] md:tw-w-[80rem]"
+
     );
   };
 
@@ -73,17 +68,6 @@ const Letter = () => {
 
   useEffect(() => {
     setHeaderTitle("Quản lý Đơn từ");
-    setHeaderActions([
-      {
-        title: "Tạo",
-        icon: "pi pi-plus",
-        onClick: () => {
-          navigate(`/letter/create`);
-        },
-        type: "button",
-        disabled: false,
-      },
-    ]);
 
     return () => {
       resetActions();

@@ -175,6 +175,7 @@ const FormItem: React.FC<IForm> = ({
             className="tw-w-full"
             rows={5}
             cols={30}
+            placeholder={label}
           />
         ));
       default:

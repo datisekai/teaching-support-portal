@@ -21,3 +21,7 @@ body.modal-open {
   border-color: #1c80cf;
   color: #1c80cf;
 }
+
+.p-datatable-wrapper {
+  max-width: calc(100vw - 28px);
+}

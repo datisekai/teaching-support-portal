@@ -46,6 +46,7 @@ export const letters = [
     studentName: "Nguyễn Văn A",
     absenceDate: "2024-08-15T09:00:00Z",
     createdAt: "2024-08-10T08:00:00Z",
+    status: "pending",
   },
   {
     id: 2,

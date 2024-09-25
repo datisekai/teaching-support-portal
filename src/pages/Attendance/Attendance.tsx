@@ -81,7 +81,7 @@ const Attendance = () => {
   };
 
   useEffect(() => {
-    setHeaderTitle("Quản lý ngành học");
+    setHeaderTitle("Quản lý điểm danh");
     setHeaderActions([
       {
         title: "Tạo",

@@ -1,5 +1,5 @@
 export enum ModalName {
   TEST = "test",
-  PICKLIST = "picklist",
-  VIEWLETTER = "viewletter",
+  PICK_LIST = "pick-list",
+  VIEW_LETTER = "view-letter",
 }

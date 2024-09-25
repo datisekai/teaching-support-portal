@@ -18,7 +18,7 @@ export const sidebarData: IMenuItem[] = [
     path: "/notification",
     children: [
       {
-        title: "Danh sách Thông báo",
+        title: "Danh sách thông báo",
         icon: "pi pi-bell",
         path: "/notification",
         permission: "view-notification",

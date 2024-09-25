@@ -10,6 +10,7 @@ export const roomSchemas: TableSchema[] = [
     label: "Môn học",
     prop: "group_name",
     type: "text",
+    minWidth: "100px",
   },
   {
     label: "Tiêu đề",
