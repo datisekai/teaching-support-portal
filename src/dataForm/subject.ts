@@ -8,25 +8,25 @@ export const SubjectForm: IForm[] = [
         prop: "code",
         type: "number",
         label: "Mã môn học",
-        col: 12,
+        col: 6,
       },
       {
         prop: "name",
         type: "text",
         label: "Tên",
-        col: 12,
+        col: 6,
       },
       {
         prop: "description",
         type: "editor",
         label: "Mô tả",
-        col: 12,
+        col: 6,
       },
       {
         prop: "department",
         type: "select",
         label: "Ngành học",
-        col: 12,
+        col: 6,
         options: [
           {
             title: "Kỹ thuật phần mềm",

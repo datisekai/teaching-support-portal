@@ -8,12 +8,6 @@ import { useCommonStore } from "../../stores";
 import { IAction } from "../../stores/commonStore";
 import { NotificationForm } from "../../dataForm/notification";
 
-const classGroupOptions =
-  NotificationForm[0].attributes.find((attr) => attr.prop === "classGroup")
-    ?.options || [];
-const subjectOptions =
-  NotificationForm[0].attributes.find((attr) => attr.prop === "subject")
-    ?.options || [];
 // Định nghĩa schema validation cho Notification
 const schema = yup
   .object()
@@ -22,15 +16,9 @@ const schema = yup
     content: yup.string().required("Nội dung thông báo là bắt buộc."),
     subject: yup
       .string()
-      .oneOf(
-        subjectOptions.map((option) => option.value),
-        "Môn học là bắt buộc."
-      )
+      .required("Môn học là bắt buộc.")
       .required("Môn học là bắt buộc."),
-    classGroup: yup.string().oneOf(
-      classGroupOptions.map((option) => option.value),
-      "Nhóm lớp là bắt buộc."
-    ),
+    classGroup: yup.string().required("Nhóm lớp là bắt buộc."),
   })
   .required();
 

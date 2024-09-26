@@ -27,6 +27,8 @@ import { subjectRoutes } from "./subject";
 import { userRoutes } from "./user";
 import { notificationRoutes } from "./notification";
 import { letterRoutes } from "./letter";
+import { permissionRoutes } from "./permission";
+import { interfaceRoutes } from "./interface";
 
 export interface IRouter {
   path: string;
@@ -63,6 +65,8 @@ const router = createBrowserRouter([
           ...userRoutes,
           ...notificationRoutes,
           ...letterRoutes,
+          ...permissionRoutes,
+          ...interfaceRoutes,
         ],
       },
     ],

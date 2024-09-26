@@ -8,12 +8,7 @@ import { useCommonStore } from "../../stores";
 import { IAction } from "../../stores/commonStore";
 import { SubjectForm } from "../../dataForm/subject";
 import { ClassForm } from "../../dataForm/class";
-const teacherOptions =
-  ClassForm[0].attributes.find((attr) => attr.prop === "teacher")?.options ||
-  [];
-const departmentOptions =
-  SubjectForm[0].attributes.find((attr) => attr.prop === "department")
-    ?.options || [];
+
 const schema = yup
   .object()
   .shape({
@@ -25,19 +20,11 @@ const schema = yup
       .required("Mã môn học là bắt buộc."),
     department: yup
       .string()
-      .oneOf(
-        departmentOptions.map((option) => option.value),
-        "Ngành học là bắt buộc."
-      )
+      .required("Ngành học là bắt buộc.")
       .required("Ngành học là bắt buộc."),
     teacher: yup
       .array()
-      .of(
-        yup.string().oneOf(
-          teacherOptions.map((option) => option.value),
-          "Giảng viên không hợp lệ."
-        )
-      )
+      .required("Giảng viên không hợp lệ.")
       .min(1, "Giảng viên là bắt buộc.")
       .required("Giảng viên là bắt buộc."),
   })

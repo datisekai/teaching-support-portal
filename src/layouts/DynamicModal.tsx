@@ -5,6 +5,7 @@ import PickListModal from "../components/Modal/PickListModal";
 import TestModal from "../components/Modal/TestModal";
 import ViewLetterModal from "../components/Modal/ViewLetterModal";
 import { useModalStore } from "../stores/modalStore";
+import FormItemPermissionModal from "../components/Modal/FormItemPermissionModal";
 
 const DynamicModal = () => {
   const { modalName, onDismiss, onToggle, visible, footer, header, style } =
@@ -29,6 +30,7 @@ const DynamicModal = () => {
       {modalName === ModalName.TEST && <TestModal />}
       {modalName === ModalName.PICK_LIST && <PickListModal />}
       {modalName === ModalName.VIEW_LETTER && <ViewLetterModal />}
+      {modalName === ModalName.CREATE_PERMISSION && <FormItemPermissionModal />}
     </Dialog>
   );
 };

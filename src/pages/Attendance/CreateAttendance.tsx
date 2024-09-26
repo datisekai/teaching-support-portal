@@ -12,7 +12,7 @@ const schema = yup
   .object()
   .shape({
     name: yup.string().required("Vui lòng điền tiêu đề"),
-    description: yup.string(),
+    description: yup.string().required("Vui lòng điền mô tả"),
     group_id: yup.string().required("Vui lòng chọn lớp học"),
   })
   .required();

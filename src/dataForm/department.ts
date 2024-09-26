@@ -8,19 +8,19 @@ export const DepartmentForm: IForm[] = [
         prop: "name",
         type: "text",
         label: "Tên ngành",
-        col: 12,
+        col: 6,
       },
       {
         prop: "description",
         type: "editor",
         label: "Mô tả",
-        col: 12,
+        col: 6,
       },
       // {
       //   prop: "count",
       //   type: "number",
       //   label: "Số",
-      //   col: 12,
+      //   col: 6,
       // },
       // {
       //   prop: "checked",

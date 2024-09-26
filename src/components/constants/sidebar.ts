@@ -32,7 +32,7 @@ export const sidebarData: IMenuItem[] = [
     children: [
       {
         title: "Danh sách đơn từ",
-        icon: "pi pi-bell",
+        icon: "pi pi-envelope",
         path: "/letter",
         permission: "view-letter",
       },
@@ -45,7 +45,7 @@ export const sidebarData: IMenuItem[] = [
     children: [
       {
         title: "Danh sách lớp",
-        icon: "pi pi-user",
+        icon: "pi pi-graduation-cap",
         path: "/class",
         permission: "view-class",
       },
@@ -71,7 +71,7 @@ export const sidebarData: IMenuItem[] = [
     children: [
       {
         title: "Danh sách ngành",
-        icon: "pi pi-user",
+        icon: "pi pi-th-large",
         path: "/department",
         permission: "view-department",
       },
@@ -87,6 +87,25 @@ export const sidebarData: IMenuItem[] = [
         icon: "pi pi-user",
         path: "/user",
         permission: "view-user",
+      },
+      {
+        title: "Danh sách phân quyền",
+        icon: "pi pi-key",
+        path: "/permission",
+        permission: "view-permission",
+      },
+    ],
+  },
+  {
+    title: "Giao diện",
+    icon: "",
+    path: "/interface",
+    children: [
+      {
+        title: "Quản lý giao diện",
+        icon: "pi pi-cog",
+        path: "/interface",
+        permission: "view-interface",
       },
     ],
   },
