@@ -6,13 +6,21 @@ import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { InputText } from "primereact/inputtext";
+import { users } from "../components/constants";
+import { useToast } from "../hooks/useToast";
+import { useAuthStore } from "../stores";
 
 const Login = () => {
   const [code, setCode] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const { showToast } = useToast();
+  const { login, user } = useAuthStore();
 
-  const onSubmit = (data: { code: string; password: string }) => {
-    console.log(data);
+  const onSubmit = async (data: { code: string; password: string }) => {
+    const loggedInUser = await login(data.code, data.password, showToast);
+
+    console.log("User sau khi đăng nhập:", loggedInUser);
+    localStorage.setItem("user", JSON.stringify(loggedInUser));
   };
 
   const schema = yup
@@ -38,7 +46,6 @@ const Login = () => {
   return (
     <div className="tw-min-h-screen tw-bg-[url('/public/images/slider2_1240x450-min.jpg')] tw-bg-cover tw-bg-center">
       <div className="tw-absolute tw-left-[2.5%] md:tw-left-[15%] tw-top-[6%] tw-w-[95%] md:tw-w-[70%] tw-h-[88vh] tw-flex tw-border tw-shadow-md tw-rounded-lg tw-bg-white">
-        {/* Ẩn phần tử bên trái khi dưới md */}
         <div className="tw-hidden tw-w-1/2 tw-bg-cover tw-bg-[url('/public/images/background-login.png')] md:tw-flex tw-flex-col tw-items-center tw-justify-center tw-rounded-lg tw-bg-center">
           <p className="tw-text-3xl tw-font-bold tw-text-white">
             Đại học Sài Gòn

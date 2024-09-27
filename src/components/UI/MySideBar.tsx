@@ -22,7 +22,11 @@ const MySideBar: React.FC<IMySideBar> = ({
 }) => {
   const navigate = useNavigate();
   const [expandedMenus, setExpandedMenus] = useState<ExpandedMenus>({});
-  const permissions = useAuthStore((state) => state.user.permissions);
+  // const { user } = useAuthStore();
+  // console.log(user);
+
+  const user = JSON.parse(localStorage.getItem("user") || "{}");
+  console.log(user);
 
   const handleExpandClick = (index: number) => {
     setExpandedMenus((prev) => ({
@@ -40,7 +44,7 @@ const MySideBar: React.FC<IMySideBar> = ({
 
   const hasPermission = (permission?: string) => {
     if (!permission) return false;
-    return permissions.includes(permission);
+    return user.permissions?.includes(permission);
   };
 
   const filteredSidebarData = useMemo(() => {
@@ -50,7 +54,7 @@ const MySideBar: React.FC<IMySideBar> = ({
       );
       return hasPermission(item.permission) || hasChildPermission;
     });
-  }, [permissions]);
+  }, [user.permissions]);
 
   return (
     <div

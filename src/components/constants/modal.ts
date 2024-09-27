@@ -3,4 +3,5 @@ export enum ModalName {
   PICK_LIST = "pick-list",
   VIEW_LETTER = "view-letter",
   CREATE_PERMISSION = "create-permission",
+  ADD_TEACHER = "add-teacher",
 }

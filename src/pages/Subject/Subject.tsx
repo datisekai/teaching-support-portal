@@ -7,11 +7,10 @@ import { subjects, subjectSchemas } from "../../dataTable/subject";
 import { uploadFile } from "../../utils";
 import { Button } from "primereact/button";
 import { teachers } from "../../dataTable/teacher";
+import { ModalName } from "../../components/constants";
 
 const Subject = () => {
   const { onToggle } = useModalStore();
-
-  const handleAddTeachers = () => {};
 
   const actionTable: IActionTable[] = [
     {
@@ -20,24 +19,11 @@ const Subject = () => {
           return { content: item.code, subcontent: item.name };
         });
         console.log({ id: data.id, contents: transferData });
-        onToggle(
-          "picklist",
-          {
-            header: "Thêm giảng viên",
-            footer: (
-              <div>
-                <Button
-                  label="Ok"
-                  icon="pi pi-check"
-                  autoFocus
-                  onClick={handleAddTeachers}
-                />
-              </div>
-            ),
-            content: { id: data.id, contents: transferData },
-          },
-          "tw-w-[90%] md:tw-w-[80rem]"
-        );
+        onToggle(ModalName.ADD_TEACHER, {
+          header: "Thêm giảng viên",
+          content: { id: data.id, contents: transferData },
+          style: "tw-w-[90%] md:tw-w-[30rem]",
+        });
       },
       tooltip: "Thêm giảng viên",
       icon: "pi-user-plus",

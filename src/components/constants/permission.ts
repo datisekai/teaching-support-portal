@@ -274,3 +274,28 @@ export const permissions = [
     ],
   },
 ];
+
+export const assignPermissions = [
+  {
+    role: "ADMIN",
+    permissions: [
+      "view-class",
+      "view-department",
+      "view-subject",
+      "view-attendance",
+      "view-user",
+      "view-notification",
+      "view-letter",
+      "view-permission",
+      "view-interface",
+      "view-user-class",
+      "view-permission",
+      "view-interface",
+      "view-permission",
+    ],
+  },
+  {
+    role: "GIANGVIEN",
+    permissions: ["view-user"],
+  },
+];
