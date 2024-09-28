@@ -7,7 +7,7 @@ import useConfirm from "../../hooks/useConfirm";
 import { uploadFile } from "../../utils";
 import { users, userSchemas } from "../../dataTable/user";
 import { permissions, permissionSchemas } from "../../dataTable/permission";
-import { ModalName } from "../../components/constants";
+import { ModalName } from "../../constants";
 import { Button } from "primereact/button";
 import { PermissionForm } from "../../dataForm/permission";
 

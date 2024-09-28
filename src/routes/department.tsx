@@ -1,19 +1,20 @@
 import { IRouter } from ".";
+import { pathNames } from "../constants";
 import CreateDepartment from "../pages/Department/CreateDepartment";
 import Department from "../pages/Department/Department";
 import EditDepartment from "../pages/Department/EditDepartment";
 
 export const departmentRoutes: IRouter[] = [
   {
-    path: "department",
+    path: pathNames.DEPARTMENT,
     element: <Department />,
   },
   {
-    path: "department/create",
+    path: pathNames.DEPARTMENT + "/create",
     element: <CreateDepartment />,
   },
   {
-    path: "department/edit/:id",
+    path: pathNames.DEPARTMENT + "/edit/:id",
     element: <EditDepartment />,
   },
 ];

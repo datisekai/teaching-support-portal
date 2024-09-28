@@ -1,4 +1,5 @@
 import { IRouter } from ".";
+import { pathNames } from "../constants";
 import Attendance from "../pages/Attendance/Attendance";
 import CreateAttendance from "../pages/Attendance/CreateAttendance";
 import DetailAttendance from "../pages/Attendance/DetailAttendance";
@@ -7,23 +8,23 @@ import Logs from "../pages/Attendance/Logs";
 
 export const attendanceRoutes: IRouter[] = [
   {
-    path: "attendance",
+    path: pathNames.ATTENDANCE,
     element: <Attendance />,
   },
   {
-    path: "attendance/create",
+    path: pathNames.ATTENDANCE + '/create',
     element: <CreateAttendance />,
   },
   {
-    path: "attendance/edit/:id",
+    path: pathNames.ATTENDANCE + "/edit/:id",
     element: <EditAttendance />,
   },
   {
-    path: "attendance/detail/:id",
+    path: pathNames.ATTENDANCE + "/detail/:id",
     element: <DetailAttendance />,
   },
   {
-    path: "attendance/logs/:id",
+    path: pathNames.ATTENDANCE + "/logs/:id",
     element: <Logs />,
   },
 ];

@@ -1,13 +1,15 @@
+import { pathNames } from "./pathname";
+
 export const sidebarData: IMenuItem[] = [
   {
     title: "Điểm danh",
     icon: "",
-    path: "/attendance",
+    path: pathNames.ATTENDANCE,
     children: [
       {
         title: "Danh sách phòng",
         icon: "pi pi-list-check",
-        path: "/attendance",
+        path: pathNames.ATTENDANCE,
         permission: "view-attendance",
       },
     ],
@@ -15,12 +17,12 @@ export const sidebarData: IMenuItem[] = [
   {
     title: "Thông báo",
     icon: "",
-    path: "/notification",
+    path: pathNames.NOTIFICATION,
     children: [
       {
         title: "Danh sách thông báo",
         icon: "pi pi-bell",
-        path: "/notification",
+        path: pathNames.NOTIFICATION,
         permission: "view-notification",
       },
     ],
@@ -28,12 +30,12 @@ export const sidebarData: IMenuItem[] = [
   {
     title: "Đơn từ",
     icon: "",
-    path: "/letter",
+    path: pathNames.LETTER,
     children: [
       {
         title: "Danh sách đơn từ",
         icon: "pi pi-envelope",
-        path: "/letter",
+        path: pathNames.LETTER,
         permission: "view-letter",
       },
     ],
@@ -41,12 +43,12 @@ export const sidebarData: IMenuItem[] = [
   {
     title: "Lớp học",
     icon: "",
-    path: "/class",
+    path: pathNames.CLASS,
     children: [
       {
         title: "Danh sách lớp",
         icon: "pi pi-graduation-cap",
-        path: "/class",
+        path: pathNames.CLASS,
         permission: "view-class",
       },
     ],
@@ -54,12 +56,12 @@ export const sidebarData: IMenuItem[] = [
   {
     title: "Môn học",
     icon: "",
-    path: "/subject",
+    path: pathNames.SUBJECT,
     children: [
       {
         title: "Danh sách môn",
         icon: "pi pi-book",
-        path: "/subject",
+        path: pathNames.SUBJECT,
         permission: "view-subject",
       },
     ],
@@ -67,12 +69,12 @@ export const sidebarData: IMenuItem[] = [
   {
     title: "Ngành học",
     icon: "",
-    path: "/department",
+    path: pathNames.DEPARTMENT,
     children: [
       {
         title: "Danh sách ngành",
         icon: "pi pi-th-large",
-        path: "/department",
+        path: pathNames.DEPARTMENT,
         permission: "view-department",
       },
     ],
@@ -80,18 +82,18 @@ export const sidebarData: IMenuItem[] = [
   {
     title: "Người dùng",
     icon: "",
-    path: "/user",
+    path: pathNames.USER,
     children: [
       {
         title: "Danh sách người dùng",
         icon: "pi pi-user",
-        path: "/user",
+        path: pathNames.USER,
         permission: "view-user",
       },
       {
         title: "Danh sách phân quyền",
         icon: "pi pi-key",
-        path: "/permission",
+        path: pathNames.PERMISSION,
         permission: "view-permission",
       },
     ],
@@ -99,12 +101,12 @@ export const sidebarData: IMenuItem[] = [
   {
     title: "Giao diện",
     icon: "",
-    path: "/interface",
+    path: pathNames.THEME,
     children: [
       {
         title: "Quản lý giao diện",
         icon: "pi pi-cog",
-        path: "/interface",
+        path: pathNames.THEME,
         permission: "view-interface",
       },
     ],

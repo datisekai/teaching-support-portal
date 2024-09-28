@@ -7,7 +7,7 @@ import { subjects, subjectSchemas } from "../../dataTable/subject";
 import { uploadFile } from "../../utils";
 import { Button } from "primereact/button";
 import { teachers } from "../../dataTable/teacher";
-import { ModalName } from "../../components/constants";
+import { ModalName } from "../../constants";
 
 const Subject = () => {
   const { onToggle } = useModalStore();

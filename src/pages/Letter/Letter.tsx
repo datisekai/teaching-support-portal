@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { letters, letterSchemas } from "../../dataTable/letter";
 import { Button } from "primereact/button";
 import { Dropdown, DropdownChangeEvent } from "primereact/dropdown";
-import { ModalName } from "../../components/constants";
+import { ModalName } from "../../constants";
 
 interface IStatus {
   id: string;
