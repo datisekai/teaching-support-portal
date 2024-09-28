@@ -3,9 +3,12 @@ import { Nullable } from "primereact/ts-helpers";
 import React, { useState, useEffect } from "react";
 import { addLocale } from "primereact/api";
 
-const MyCalendar = () => {
-  const [dates, setDates] = useState<Nullable<(Date | null)[]>>(null);
+interface IMyCalendar {
+  dates?: Nullable<(Date | null)[]>;
+  setDates: (dates: Nullable<(Date | null)[]>) => void;
+}
 
+const MyCalendar: React.FC<IMyCalendar> = ({ dates, setDates }) => {
   useEffect(() => {
     const today = new Date();
     const tomorrow = new Date(today);
