@@ -9,6 +9,8 @@ import { Calendar } from "primereact/calendar";
 import { Dropdown } from "primereact/dropdown";
 import { InputTextarea } from "primereact/inputtextarea";
 import { MultiSelect } from "primereact/multiselect";
+import MyUploadImage from "../UI/MyUploadImage";
+import { useWindowSize } from "usehooks-ts";
 
 interface IForm extends IFormItem {
   control: any;
@@ -25,7 +27,13 @@ const FormItem: React.FC<IForm> = ({
   col = 6,
   apiUrl,
 }) => {
-  const width = useMemo(() => `${(col / 12) * 100}%`, [col]);
+
+  const windowSize = useWindowSize()
+
+  const width = useMemo(() => {
+    if (windowSize.width < 768) return '100%';
+    return `${(col / 12) * 100}%`
+  }, [col, windowSize.width]);
   const [ajaxOptions, setAjaxOptions] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -178,6 +186,10 @@ const FormItem: React.FC<IForm> = ({
             placeholder={label}
           />
         ));
+      case "image":
+        return renderController(({ field: { onChange, onBlur, value } }) => (
+          <MyUploadImage onChange={(url) => onChange({ target: { value: url, name: prop } })} value={value} />
+        ))
       default:
         return renderController(
           ({ field: { onChange, onBlur, value, ref } }) => (

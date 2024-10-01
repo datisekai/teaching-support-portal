@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import MyCard from "../../components/UI/MyCard";
-import { permissions } from "../../components/constants";
+import { permissions } from "../../constants";
 import { InputSwitch, InputSwitchChangeEvent } from "primereact/inputswitch";
 import { Checkbox, CheckboxChangeEvent } from "primereact/checkbox";
 

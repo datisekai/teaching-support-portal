@@ -1,12 +1,11 @@
-import { Avatar } from "primereact/avatar";
-import React, { useState } from "react";
-import { FloatLabel } from "primereact/floatlabel";
-import { Button } from "primereact/button";
-import * as yup from "yup";
-import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { Avatar } from "primereact/avatar";
+import { Button } from "primereact/button";
+import { FloatLabel } from "primereact/floatlabel";
 import { InputText } from "primereact/inputtext";
-import { users } from "../components/constants";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import * as yup from "yup";
 import { useToast } from "../hooks/useToast";
 import { useAuthStore } from "../stores";
 

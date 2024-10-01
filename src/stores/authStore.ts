@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { assignPermissions, users } from "../components/constants";
+import { assignPermissions, users } from "../constants";
 
 interface IUser {
   code: string;

@@ -1,19 +1,20 @@
 import { IRouter } from ".";
+import { pathNames } from "../constants";
 import CreateUser from "../pages/User/CreateUser";
 import EditUser from "../pages/User/EditUser";
 import User from "../pages/User/User";
 
 export const userRoutes: IRouter[] = [
   {
-    path: "user",
+    path: pathNames.USER,
     element: <User />,
   },
   {
-    path: "user/create",
+    path: pathNames.USER + "/create",
     element: <CreateUser />,
   },
   {
-    path: "user/edit/:id",
+    path: pathNames.USER + "/edit/:id",
     element: <EditUser />,
   },
 ];

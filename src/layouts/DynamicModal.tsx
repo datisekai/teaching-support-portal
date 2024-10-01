@@ -1,6 +1,6 @@
 import { Dialog } from "primereact/dialog";
 import { useEffect } from "react";
-import { ModalName } from "../components/constants";
+import { ModalName } from "../constants";
 import PickListModal from "../components/Modal/PickListModal";
 import TestModal from "../components/Modal/TestModal";
 import ViewLetterModal from "../components/Modal/ViewLetterModal";
