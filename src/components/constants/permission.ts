@@ -273,6 +273,27 @@ export const permissions = [
       },
     ],
   },
+  {
+    title: "Câu hỏi",
+    children: [
+      {
+        title: "Xem danh sách",
+        value: "view-exam",
+      },
+      {
+        title: "Tạo mới",
+        value: "create-exam",
+      },
+      {
+        title: "Cập nhật",
+        value: "edit-exam",
+      },
+      {
+        title: "Xoá",
+        value: "delete-exam",
+      },
+    ],
+  },
 ];
 
 export const assignPermissions = [
@@ -292,6 +313,7 @@ export const assignPermissions = [
       "view-permission",
       "view-interface",
       "view-permission",
+      "view-exam",
     ],
   },
   {
