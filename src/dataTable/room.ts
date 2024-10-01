@@ -40,7 +40,7 @@ export const roomSchemas: TableSchema[] = [
   },
   {
     label: "Ngày cập nhật",
-    prop: "updatedAt",
+    prop: "updated_at",
     type: "datetime",
   },
 ];
@@ -52,7 +52,7 @@ export const rooms = [
     title: "Phương pháp tính",
     status: "ready", // trạng thái: Chưa bắt đầu
     teacher_name: "Nguyễn Văn A",
-    updatedAt: "2024-09-24T10:15:00",
+    updated_at: "2024-09-24T10:15:00",
   },
   {
     id: 2,
@@ -60,7 +60,7 @@ export const rooms = [
     title: "Cơ học lượng tử",
     status: "scan", // trạng thái: Đang điểm danh
     teacher_name: "Trần Thị B",
-    updatedAt: "2024-09-23T09:00:00",
+    updated_at: "2024-09-23T09:00:00",
   },
   {
     id: 3,
@@ -68,7 +68,7 @@ export const rooms = [
     title: "Hóa hữu cơ",
     status: "stop", // trạng thái: Kết thúc
     teacher_name: "Lê Thanh C",
-    updatedAt: "2024-09-22T15:30:00",
+    updated_at: "2024-09-22T15:30:00",
   },
   {
     id: 4,
@@ -76,7 +76,7 @@ export const rooms = [
     title: "Chiến tranh thế giới thứ hai",
     status: "ready", // trạng thái: Chưa bắt đầu
     teacher_name: "Phạm Hoàng D",
-    updatedAt: "2024-09-21T08:45:00",
+    updated_at: "2024-09-21T08:45:00",
   },
   {
     id: 5,
@@ -84,7 +84,7 @@ export const rooms = [
     title: "Di truyền học",
     status: "scan", // trạng thái: Đang điểm danh
     teacher_name: "Hoàng Văn E",
-    updatedAt: "2024-09-20T13:20:00",
+    updated_at: "2024-09-20T13:20:00",
   },
   {
     id: 6,
@@ -92,7 +92,7 @@ export const rooms = [
     title: "Địa lý tự nhiên",
     status: "stop", // trạng thái: Kết thúc
     teacher_name: "Nguyễn Thị F",
-    updatedAt: "2024-09-19T11:10:00",
+    updated_at: "2024-09-19T11:10:00",
   },
   {
     id: 7,
@@ -100,7 +100,7 @@ export const rooms = [
     title: "Thơ hiện đại Việt Nam",
     status: "ready", // trạng thái: Chưa bắt đầu
     teacher_name: "Lê Minh G",
-    updatedAt: "2024-09-18T10:05:00",
+    updated_at: "2024-09-18T10:05:00",
   },
   {
     id: 8,
@@ -108,7 +108,7 @@ export const rooms = [
     title: "Lập trình JavaScript",
     status: "scan", // trạng thái: Đang điểm danh
     teacher_name: "Trần Ngọc H",
-    updatedAt: "2024-09-17T16:50:00",
+    updated_at: "2024-09-17T16:50:00",
   },
   {
     id: 9,
@@ -116,7 +116,7 @@ export const rooms = [
     title: "Kỹ năng bóng đá",
     status: "stop", // trạng thái: Kết thúc
     teacher_name: "Nguyễn Quang I",
-    updatedAt: "2024-09-16T07:40:00",
+    updated_at: "2024-09-16T07:40:00",
   },
   {
     id: 10,
@@ -124,6 +124,6 @@ export const rooms = [
     title: "Tiếng Anh giao tiếp",
     status: "ready", // trạng thái: Chưa bắt đầu
     teacher_name: "Phạm Thị J",
-    updatedAt: "2024-09-15T14:35:00",
+    updated_at: "2024-09-15T14:35:00",
   },
 ];

@@ -19,17 +19,17 @@ export const letterSchemas: TableSchema[] = [
   },
   {
     label: "MSSV",
-    prop: "studentCode",
+    prop: "student_code",
     type: "number",
   },
   {
     label: "Tên sinh viên",
-    prop: "studentName",
+    prop: "student_name",
     type: "text",
   },
   {
     label: "Ngày xin nghỉ",
-    prop: "absenceDate",
+    prop: "absence_date",
     type: "datetime",
   },
 ];
@@ -42,10 +42,10 @@ export const letters = [
     reason: "Bị bệnh",
     evidence:
       "<p>Giấy khám bệnh</p><img src='path/to/image.jpg' alt='Giấy khám bệnh' />",
-    studentCode: "312041014",
-    studentName: "Nguyễn Văn A",
-    absenceDate: "2024-08-15T09:00:00Z",
-    createdAt: "2024-08-10T08:00:00Z",
+    student_code: "312041014",
+    student_name: "Nguyễn Văn A",
+    absence_date: "2024-08-15T09:00:00Z",
+    created_at: "2024-08-10T08:00:00Z",
     status: "pending",
   },
   {
@@ -54,9 +54,9 @@ export const letters = [
     reason: "Gia đình có việc gấp",
     evidence:
       "<p>Giấy tờ minh chứng</p><img src='path/to/evidence.jpg' alt='Minh chứng' />",
-    studentCode: "312041013",
-    studentName: "Trần Thị B",
-    absenceDate: "2024-08-18T10:00:00Z",
-    createdAt: "2024-08-11T09:00:00Z",
+    student_code: "312041013",
+    student_name: "Trần Thị B",
+    absence_date: "2024-08-18T10:00:00Z",
+    created_at: "2024-08-11T09:00:00Z",
   },
 ];
