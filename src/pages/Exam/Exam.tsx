@@ -3,9 +3,9 @@ import { useCommonStore, useModalStore } from "../../stores";
 import MyTable, { IActionTable } from "../../components/UI/MyTable";
 import { useNavigate } from "react-router-dom";
 import { Button } from "primereact/button";
-import { ModalName } from "../../components/constants";
 import { exams, examSchemas } from "../../dataTable/exam";
 import useConfirm from "../../hooks/useConfirm";
+import { ModalName } from "../../constants";
 
 interface IStatus {
   id: string;

@@ -8,18 +8,24 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { useToast } from "../hooks/useToast";
 import { useAuthStore } from "../stores";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [code, setCode] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const { showToast } = useToast();
   const { login, user } = useAuthStore();
+  const navigate = useNavigate();
 
   const onSubmit = async (data: { code: string; password: string }) => {
     const loggedInUser = await login(data.code, data.password, showToast);
 
     console.log("User sau khi đăng nhập:", loggedInUser);
     localStorage.setItem("user", JSON.stringify(loggedInUser));
+
+    if (loggedInUser) {
+      navigate("/");
+    }
   };
 
   const schema = yup
