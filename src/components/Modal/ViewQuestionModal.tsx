@@ -7,7 +7,7 @@ const ViewQuestionModal: React.FC = () => {
   return (
     <div className="">
       <p className="tw-mb-4">
-        <strong>Chủ đề:</strong> {content.topic}
+        <strong>Câu hỏi:</strong> {content.topic}
       </p>
       <p className="tw-mb-4">
         <strong>Nội dung:</strong>

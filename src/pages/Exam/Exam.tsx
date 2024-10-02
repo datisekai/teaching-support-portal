@@ -20,6 +20,10 @@ const Exam = () => {
   const handleView = (data: any) => {
     navigate(`/exam/view/${data.id}`);
   };
+  const handleEdit = (data: any) => {
+    console.log(data);
+    navigate(`/exam/edit/${data.id}`);
+  };
 
   const handleDelete = (id: number) => {
     const data = {
@@ -44,14 +48,22 @@ const Exam = () => {
       icon: "pi-eye",
       severity: "info",
     },
-    // {
-    //   onClick: (data, options) => {
-    //     handleDelete(data.id);
-    //   },
-    //   tooltip: "Xóa",
-    //   icon: "pi-trash",
-    //   severity: "danger",
-    // },
+    {
+      onClick: (data, options) => {
+        handleEdit(data);
+      },
+      tooltip: "Sửa",
+      icon: "pi-pencil",
+      severity: "warning",
+    },
+    {
+      onClick: (data, options) => {
+        handleDelete(data.id);
+      },
+      tooltip: "Xóa",
+      icon: "pi-trash",
+      severity: "danger",
+    },
   ];
 
   useEffect(() => {

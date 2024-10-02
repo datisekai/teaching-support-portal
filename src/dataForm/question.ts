@@ -14,7 +14,7 @@ export const QuestionForm: IForm[] = [
         prop: "content",
         type: "textarea",
         label: "Nội dung câu hỏi",
-        col: 12,
+        col: 6,
       },
       {
         prop: "correctAnswer",

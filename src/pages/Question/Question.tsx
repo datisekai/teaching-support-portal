@@ -44,20 +44,6 @@ const Question = () => {
     console.log(data);
     onToggle(ModalName.VIEW_QUESTION, {
       header: "Chi tiết câu hỏi",
-      footer: (
-        <>
-          {data.status == "pending" && (
-            <div className="tw-flex tw-justify-end tw-items-center">
-              <Button
-                label="Ok"
-                icon="pi pi-check"
-                autoFocus
-                onClick={() => handleSubmit(data)}
-              />
-            </div>
-          )}
-        </>
-      ),
       content: data, // Nội dung chi tiết của câu hỏi
       style: "tw-w-[90%] md:tw-w-[30rem]",
     });
