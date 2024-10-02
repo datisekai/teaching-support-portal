@@ -17,8 +17,8 @@ const Exam = () => {
     onDismiss();
   };
 
-  const handleEdit = (data: any) => {
-    navigate(`/exam/edit/${data.id}`);
+  const handleView = (data: any) => {
+    navigate(`/exam/view/${data.id}`);
   };
 
   const handleDelete = (id: number) => {
@@ -36,14 +36,14 @@ const Exam = () => {
   };
 
   const actionTable: IActionTable[] = [
-    // {
-    //   onClick: (data, options) => {
-    //     handleEdit(data);
-    //   },
-    //   tooltip: "Sửa",
-    //   icon: "pi-pencil",
-    //   severity: "warning",
-    // },
+    {
+      onClick: (data, options) => {
+        handleView(data);
+      },
+      tooltip: "Xem",
+      icon: "pi-eye",
+      severity: "info",
+    },
     // {
     //   onClick: (data, options) => {
     //     handleDelete(data.id);
@@ -57,15 +57,15 @@ const Exam = () => {
   useEffect(() => {
     setHeaderTitle("Quản lý Đề thi");
     setHeaderActions([
-      //   {
-      //     title: "Tạo mới",
-      //     icon: "pi pi-plus",
-      //     onClick: () => {
-      //       navigate(`/exam/create`);
-      //     },
-      //     type: "button",
-      //     disabled: false,
-      //   },
+      {
+        title: "Tạo mới",
+        icon: "pi pi-plus",
+        onClick: () => {
+          navigate(`/exam/create`);
+        },
+        type: "button",
+        disabled: false,
+      },
     ]);
     return () => {
       resetActions();

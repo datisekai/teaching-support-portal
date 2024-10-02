@@ -1,7 +1,7 @@
 import { TableSchema } from "../types/table";
 
 // Định nghĩa schema cho bảng question
-export const questionSchemas: TableSchema[] = [
+export const myQuestionSchemas: TableSchema[] = [
   {
     label: "#",
     prop: "id",
@@ -45,6 +45,11 @@ export const questionSchemas: TableSchema[] = [
     type: "text",
   },
   {
+    label: "Trạng thái",
+    prop: "status",
+    type: "text",
+  },
+  {
     label: "Ngày tạo",
     prop: "createdAt",
     type: "datetime",
@@ -57,7 +62,7 @@ export const questionSchemas: TableSchema[] = [
 ];
 
 // Dữ liệu mẫu cho bảng question
-export const questions = [
+export const myQuestions = [
   {
     id: 1,
     topic: "<a></a> là gì?",
@@ -67,11 +72,12 @@ export const questions = [
     type: "multiple-choice",
     content: "<p>a. a</p><p>b. b</p><p>c. c</p><p>d. d</p>",
     correctAnswer: "b",
+    status: "public",
     createdAt: "2024-08-15T09:00:00Z",
     updatedAt: "2024-08-10T08:00:00Z",
   },
   {
-    id: 2,
+    id: 1,
     topic: "<div></div> là gì?",
     chapter: "Chương 1",
     level: "medium",
@@ -79,6 +85,7 @@ export const questions = [
     teacher: "Nguyễn Văn B",
     content: "<p>a. a</p><p>b. b</p><p>c. c</p><p>d. d</p>",
     correctAnswer: "a",
+    status: "private",
     createdAt: "2024-08-15T09:00:00Z",
     updatedAt: "2024-08-10T08:00:00Z",
   },

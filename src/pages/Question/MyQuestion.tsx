@@ -2,25 +2,18 @@ import { useEffect, useState } from "react";
 import { useCommonStore, useModalStore } from "../../stores";
 import MyTable, { IActionTable } from "../../components/UI/MyTable";
 import { useNavigate } from "react-router-dom";
-import { Button } from "primereact/button";
-import { questions, questionSchemas } from "../../dataTable/question";
 import useConfirm from "../../hooks/useConfirm";
-import { ModalName } from "../../constants";
+import { myQuestions, myQuestionSchemas } from "../../dataTable/my-question";
 
 interface IStatus {
   id: string;
   label: string;
 }
 
-const Question = () => {
+const MyQuestion = () => {
   const navigate = useNavigate();
-  const { onToggle, onDismiss } = useModalStore();
   const { onConfirm } = useConfirm();
   const { setHeaderTitle, setHeaderActions, resetActions } = useCommonStore();
-
-  const handleSubmit = (data: any) => {
-    onDismiss();
-  };
 
   const handleEdit = (data: any) => {
     navigate(`/question/edit/${data.id}`);
@@ -40,36 +33,17 @@ const Question = () => {
     onConfirm(data);
   };
 
-  const handleView = (data: any) => {
+  const handleShare = (data: any) => {
     console.log(data);
-    onToggle(ModalName.VIEW_QUESTION, {
-      header: "Chi tiết câu hỏi",
-      footer: (
-        <>
-          {data.status == "pending" && (
-            <div className="tw-flex tw-justify-end tw-items-center">
-              <Button
-                label="Ok"
-                icon="pi pi-check"
-                autoFocus
-                onClick={() => handleSubmit(data)}
-              />
-            </div>
-          )}
-        </>
-      ),
-      content: data, // Nội dung chi tiết của câu hỏi
-      style: "tw-w-[90%] md:tw-w-[30rem]",
-    });
   };
 
   const actionTable: IActionTable[] = [
     {
       onClick: (data, options) => {
-        handleView(data);
+        handleShare(data);
       },
-      tooltip: "Xem",
-      icon: "pi-eye",
+      tooltip: "Share",
+      icon: "pi-share-alt",
       severity: "info",
     },
     {
@@ -91,7 +65,7 @@ const Question = () => {
   ];
 
   useEffect(() => {
-    setHeaderTitle("Quản lý câu hỏi");
+    setHeaderTitle("Quản lý câu hỏi của tôi");
     setHeaderActions([
       {
         title: "Tạo",
@@ -111,12 +85,12 @@ const Question = () => {
   return (
     <div>
       <MyTable
-        data={questions}
-        schemas={questionSchemas}
+        data={myQuestions}
+        schemas={myQuestionSchemas}
         actions={actionTable}
       />
     </div>
   );
 };
 
-export default Question;
+export default MyQuestion;

@@ -6,18 +6,18 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { useCommonStore } from "../../stores";
 import { IAction } from "../../stores/commonStore";
-import { NotificationForm } from "../../dataForm/notification";
+import { QuestionForm } from "../../dataForm/question";
 
 const schema = yup
   .object()
   .shape({
-    title: yup.string().required("Tên thông báo là bắt buộc."),
-    content: yup.string().required("Nội dung thông báo là bắt buộc."),
-    classGroup: yup.string().required("Nhóm lớp là bắt buộc."),
-    subject: yup
-      .string()
-      .required("Môn học là bắt buộc.")
-      .required("Môn học là bắt buộc."),
+    question: yup.string().required("Câu hỏi là bắt buộc."),
+    content: yup.string().required("Nội dung câu hỏi là bắt buộc."),
+    correctAnswer: yup.string().required("Đáp án đúng là bắt buộc."),
+    subject: yup.string().required("Môn học là bắt buộc."),
+    chapter: yup.string().required("Chương là bắt buộc."),
+    difficulty: yup.string().required("Độ khó là bắt buộc."),
+    status: yup.string().required("Trạng thái là bắt buộc."),
   })
   .required();
 
@@ -29,10 +29,13 @@ const CreateQuestion = () => {
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
-      title: "",
+      question: "",
       content: "",
-      classGroup: "",
+      correctAnswer: "",
       subject: "",
+      chapter: "",
+      difficulty: "",
+      status: "",
     },
   });
 
@@ -61,7 +64,7 @@ const CreateQuestion = () => {
       },
     ];
     setFooterActions(actions);
-    setHeaderTitle("Tạo thông báo");
+    setHeaderTitle("Tạo câu hỏi");
 
     return () => {
       resetActions();
@@ -71,7 +74,7 @@ const CreateQuestion = () => {
   return (
     <div>
       <form onSubmit={(e) => e.preventDefault()} className="tw-space-y-4">
-        {NotificationForm.map((form, index) => (
+        {QuestionForm.map((form, index) => (
           <GroupItem errors={errors} {...form} key={index} control={control} />
         ))}
       </form>

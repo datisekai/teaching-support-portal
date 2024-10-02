@@ -2,25 +2,24 @@ import { IForm } from "../types/form-item";
 
 export const ExamForm: IForm[] = [
   {
-    title: "Thông tin câu hỏi",
+    title: "Thông tin bài thi",
     attributes: [
       {
-        prop: "title",
+        prop: "examTitle",
         type: "text",
-        label: "Tên câu hỏi",
+        label: "Tiêu đề bài thi",
         col: 6,
       },
       {
-        prop: "image",
-        type: "image",
-        label: "Ảnh câu hỏi",
+        prop: "subject",
+        type: "select",
+        label: "Môn học",
         col: 6,
-      },
-      {
-        prop: "content",
-        type: "textarea",
-        label: "Nội dung câu hỏi",
-        col: 6,
+        options: [
+          { title: "Toán học", value: "math" },
+          { title: "Vật lý", value: "physics" },
+          { title: "Hóa học", value: "chemistry" },
+        ],
       },
       {
         prop: "classGroup",
@@ -35,19 +34,25 @@ export const ExamForm: IForm[] = [
         ],
       },
       {
-        prop: "subject",
+        prop: "startTime",
+        type: "date-time",
+        label: "Thời gian bắt đầu",
+        col: 6,
+      },
+      {
+        prop: "endTime",
+        type: "date-time",
+        label: "Thời gian kết thúc",
+        col: 6,
+      },
+      {
+        prop: "type",
         type: "select",
-        label: "Môn học",
+        label: "Loại đề thi",
         col: 6,
         options: [
-          {
-            title: "Lập trình web",
-            value: "ltw",
-          },
-          {
-            title: "Java",
-            value: "jv",
-          },
+          { title: "Tự luận", value: "essay" },
+          { title: "Trắc nghiệm", value: "multiple-choice" },
         ],
       },
     ],

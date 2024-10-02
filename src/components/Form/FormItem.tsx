@@ -27,12 +27,11 @@ const FormItem: React.FC<IForm> = ({
   col = 6,
   apiUrl,
 }) => {
-
-  const windowSize = useWindowSize()
+  const windowSize = useWindowSize();
 
   const width = useMemo(() => {
-    if (windowSize.width < 768) return '100%';
-    return `${(col / 12) * 100}%`
+    if (windowSize.width < 768) return "100%";
+    return `${(col / 12) * 100}%`;
   }, [col, windowSize.width]);
   const [ajaxOptions, setAjaxOptions] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -127,6 +126,21 @@ const FormItem: React.FC<IForm> = ({
             }
           />
         ));
+      case "date-time":
+        return renderController(({ field: { onChange, onBlur, value } }) => (
+          <Calendar
+            className="tw-w-full"
+            placeholder={label}
+            invalid={!!error}
+            value={value}
+            onBlur={onBlur}
+            onChange={(e) =>
+              onChange({ target: { value: e.value, name: prop } })
+            }
+            showTime
+            hourFormat="24"
+          />
+        ));
       case "select":
         return renderController(({ field: { onChange, onBlur, value } }) => (
           <Dropdown
@@ -188,8 +202,11 @@ const FormItem: React.FC<IForm> = ({
         ));
       case "image":
         return renderController(({ field: { onChange, onBlur, value } }) => (
-          <MyUploadImage onChange={(url) => onChange({ target: { value: url, name: prop } })} value={value} />
-        ))
+          <MyUploadImage
+            onChange={(url) => onChange({ target: { value: url, name: prop } })}
+            value={value}
+          />
+        ));
       default:
         return renderController(
           ({ field: { onChange, onBlur, value, ref } }) => (

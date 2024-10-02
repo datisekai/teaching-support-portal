@@ -292,6 +292,10 @@ export const permissions = [
         title: "Xoá",
         value: "delete-question",
       },
+      {
+        title: "Xem danh sách câu hỏi của tôi",
+        value: "view-my-question",
+      },
     ],
   },
   {
@@ -300,6 +304,14 @@ export const permissions = [
       {
         title: "Xem danh sách",
         value: "view-exam",
+      },
+      {
+        title: "Xem danh sách điểm",
+        value: "view-exam-score",
+      },
+      {
+        title: "Export",
+        value: "export-exam-score",
       },
       // {
       //   title: "Tạo mới",

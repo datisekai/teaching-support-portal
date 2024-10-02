@@ -38,6 +38,12 @@ export const sidebarData: IMenuItem[] = [
         path: "/question",
         permission: "view-question",
       },
+      {
+        title: "Quản lý câu hỏi của tôi",
+        icon: "pi pi-receipt",
+        path: "/my-question",
+        permission: "view-my-question",
+      },
     ],
   },
   {
