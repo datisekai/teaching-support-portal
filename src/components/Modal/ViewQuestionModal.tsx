@@ -1,7 +1,7 @@
 import React from "react";
 import { useModalStore } from "../../stores";
 
-const ViewExamModal: React.FC = () => {
+const ViewQuestionModal: React.FC = () => {
   const { content } = useModalStore();
 
   return (
@@ -20,4 +20,4 @@ const ViewExamModal: React.FC = () => {
   );
 };
 
-export default ViewExamModal;
+export default ViewQuestionModal;

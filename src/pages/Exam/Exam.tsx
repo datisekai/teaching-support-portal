@@ -7,11 +7,6 @@ import { exams, examSchemas } from "../../dataTable/exam";
 import useConfirm from "../../hooks/useConfirm";
 import { ModalName } from "../../constants";
 
-interface IStatus {
-  id: string;
-  label: string;
-}
-
 const Exam = () => {
   const navigate = useNavigate();
   const { onToggle, onDismiss } = useModalStore();
@@ -28,10 +23,10 @@ const Exam = () => {
 
   const handleDelete = (id: number) => {
     const data = {
-      message: "Bạn có chắc chắn muốn xoá câu hỏi này?",
+      message: "Bạn có chắc chắn muốn xoá đề thi này?",
       header: "Xác nhận xoá",
       onAccept: () => {
-        console.log("Đã xoá câu hỏi thành công!", id);
+        console.log("Đã xoá đề thi thành công!", id);
       },
       onReject: () => {
         console.log("Đã hủy bỏ hành động.");
@@ -40,68 +35,37 @@ const Exam = () => {
     onConfirm(data);
   };
 
-  const handleView = (data: any) => {
-    console.log(data);
-    onToggle(ModalName.VIEW_EXAM, {
-      header: "Chi tiết câu hỏi",
-      footer: (
-        <>
-          {data.status == "pending" && (
-            <div className="tw-flex tw-justify-end tw-items-center">
-              <Button
-                label="Ok"
-                icon="pi pi-check"
-                autoFocus
-                onClick={() => handleSubmit(data)}
-              />
-            </div>
-          )}
-        </>
-      ),
-      content: data, // Nội dung chi tiết của đơn từ
-      style: "tw-w-[90%] md:tw-w-[30rem]",
-    });
-  };
-
   const actionTable: IActionTable[] = [
-    {
-      onClick: (data, options) => {
-        handleView(data);
-      },
-      tooltip: "Xem",
-      icon: "pi-eye",
-      severity: "info",
-    },
-    {
-      onClick: (data, options) => {
-        handleEdit(data);
-      },
-      tooltip: "Sửa",
-      icon: "pi-pencil",
-      severity: "warning",
-    },
-    {
-      onClick: (data, options) => {
-        handleDelete(data);
-      },
-      tooltip: "Xóa",
-      icon: "pi-trash",
-      severity: "danger",
-    },
+    // {
+    //   onClick: (data, options) => {
+    //     handleEdit(data);
+    //   },
+    //   tooltip: "Sửa",
+    //   icon: "pi-pencil",
+    //   severity: "warning",
+    // },
+    // {
+    //   onClick: (data, options) => {
+    //     handleDelete(data.id);
+    //   },
+    //   tooltip: "Xóa",
+    //   icon: "pi-trash",
+    //   severity: "danger",
+    // },
   ];
 
   useEffect(() => {
-    setHeaderTitle("Quản lý Đơn từ");
+    setHeaderTitle("Quản lý Đề thi");
     setHeaderActions([
-      {
-        title: "Tạo",
-        icon: "pi pi-plus",
-        onClick: () => {
-          navigate(`/exam/create`);
-        },
-        type: "button",
-        disabled: false,
-      },
+      //   {
+      //     title: "Tạo mới",
+      //     icon: "pi pi-plus",
+      //     onClick: () => {
+      //       navigate(`/exam/create`);
+      //     },
+      //     type: "button",
+      //     disabled: false,
+      //   },
     ]);
     return () => {
       resetActions();

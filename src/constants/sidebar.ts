@@ -15,15 +15,28 @@ export const sidebarData: IMenuItem[] = [
     ],
   },
   {
-    title: "Câu hỏi",
+    title: "Đề thi",
     icon: "",
     path: "/exam",
     children: [
       {
-        title: "Quản lý câu hỏi",
-        icon: "pi pi-receipt",
+        title: "Quản lý đề thi",
+        icon: "pi pi-desktop",
         path: "/exam",
         permission: "view-exam",
+      },
+    ],
+  },
+  {
+    title: "Câu hỏi",
+    icon: "",
+    path: "/question",
+    children: [
+      {
+        title: "Quản lý câu hỏi",
+        icon: "pi pi-receipt",
+        path: "/question",
+        permission: "view-question",
       },
     ],
   },

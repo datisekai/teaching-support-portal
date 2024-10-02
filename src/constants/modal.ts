@@ -4,5 +4,5 @@ export enum ModalName {
   VIEW_LETTER = "view-letter",
   CREATE_PERMISSION = "create-permission",
   ADD_TEACHER = "add-teacher",
-  VIEW_EXAM = "view-exam",
+  VIEW_QUESTION = "view-question",
 }

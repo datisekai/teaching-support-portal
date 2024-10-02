@@ -8,51 +8,49 @@ export const examSchemas: TableSchema[] = [
     type: "number",
   },
   {
-    label: "Đề bài",
-    prop: "topic",
+    label: "Tên đề thi",
+    prop: "examName",
     type: "text",
   },
   {
-    label: "Chương",
-    prop: "chapter",
+    label: "Tên môn học",
+    prop: "subjectName",
     type: "text",
   },
   {
-    label: "Độ khó",
-    prop: "level",
+    label: "Nhóm lớp",
+    prop: "classGroup",
+    type: "text",
+  },
+  {
+    label: "Thời gian bắt đầu",
+    prop: "startTime",
+    type: "datetime",
+  },
+  {
+    label: "Thời gian kết thúc",
+    prop: "endTime",
+    type: "datetime",
+  },
+  {
+    label: "Trạng thái",
+    prop: "status",
     type: "badge",
     getBadge: (value) => {
       switch (value) {
-        case "easy":
-          return { value: "Dễ", severity: "info" };
-        case "medium":
-          return { value: "Trung bình", severity: "warning" };
-        case "difficult":
-          return { value: "Khó", severity: "danger" };
+        case "notStarted":
+          return { value: "Chưa bắt đầu", severity: "warning" };
+        case "started":
+          return { value: "Đang thực hiện", severity: "info" };
         default:
           return { value: "Lỗi", severity: "danger" };
       }
     },
   },
   {
-    label: "Giảng viên",
-    prop: "teacher",
+    label: "Loại đề thi",
+    prop: "examType",
     type: "text",
-  },
-  {
-    label: "Loại câu hỏi",
-    prop: "type",
-    type: "text",
-  },
-  {
-    label: "Ngày tạo",
-    prop: "createdAt",
-    type: "datetime",
-  },
-  {
-    label: "Ngày sửa",
-    prop: "updatedAt",
-    type: "datetime",
   },
 ];
 
@@ -60,26 +58,22 @@ export const examSchemas: TableSchema[] = [
 export const exams = [
   {
     id: 1,
-    topic: "<a></a> là gì?",
-    chapter: "Chương 1",
-    level: "easy",
-    teacher: "Nguyễn Văn A",
-    type: "multiple-choice",
-    content: "<p>a. a</p><p>b. b</p><p>c. c</p><p>d. d</p>",
-    correctAnswer: "b",
-    createdAt: "2024-08-15T09:00:00Z",
-    updatedAt: "2024-08-10T08:00:00Z",
+    examName: "Đề thi giữa kỳ",
+    subjectName: "Toán học",
+    classGroup: "Nhóm A",
+    startTime: "2024-10-10T09:00:00Z",
+    endTime: "2024-10-10T11:00:00Z",
+    examType: "multiple-choice",
+    status: "notStarted",
   },
   {
-    id: 1,
-    topic: "<div></div> là gì?",
-    chapter: "Chương 1",
-    level: "medium",
-    type: "essay",
-    teacher: "Nguyễn Văn B",
-    content: "<p>a. a</p><p>b. b</p><p>c. c</p><p>d. d</p>",
-    correctAnswer: "a",
-    createdAt: "2024-08-15T09:00:00Z",
-    updatedAt: "2024-08-10T08:00:00Z",
+    id: 2,
+    examName: "Đề thi cuối kỳ",
+    subjectName: "Vật lý",
+    classGroup: "Nhóm B",
+    startTime: "2024-11-20T14:00:00Z",
+    endTime: "2024-11-20T16:00:00Z",
+    examType: "essay",
+    status: "started",
   },
 ];

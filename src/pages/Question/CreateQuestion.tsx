@@ -21,7 +21,7 @@ const schema = yup
   })
   .required();
 
-const CreateExam = () => {
+const CreateQuestion = () => {
   const {
     handleSubmit,
     formState: { errors },
@@ -79,4 +79,4 @@ const CreateExam = () => {
   );
 };
 
-export default CreateExam;
+export default CreateQuestion;

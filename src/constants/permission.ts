@@ -278,20 +278,41 @@ export const permissions = [
     children: [
       {
         title: "Xem danh sách",
-        value: "view-exam",
+        value: "view-question",
       },
       {
         title: "Tạo mới",
-        value: "create-exam",
+        value: "create-question",
       },
       {
         title: "Cập nhật",
-        value: "edit-exam",
+        value: "edit-question",
       },
       {
         title: "Xoá",
-        value: "delete-exam",
+        value: "delete-question",
       },
+    ],
+  },
+  {
+    title: "Đề thi",
+    children: [
+      {
+        title: "Xem danh sách",
+        value: "view-exam",
+      },
+      // {
+      //   title: "Tạo mới",
+      //   value: "create-exam",
+      // },
+      // {
+      //   title: "Cập nhật",
+      //   value: "edit-exam",
+      // },
+      // {
+      //   title: "Xoá",
+      //   value: "delete-exam",
+      // },
     ],
   },
 ];
@@ -313,6 +334,7 @@ export const assignPermissions = [
       "view-permission",
       "view-interface",
       "view-permission",
+      "view-question",
       "view-exam",
     ],
   },
