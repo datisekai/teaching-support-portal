@@ -46,12 +46,12 @@ export const examSchemas: TableSchema[] = [
   },
   {
     label: "Ngày tạo",
-    prop: "created_at",
+    prop: "createdAt",
     type: "datetime",
   },
   {
     label: "Ngày sửa",
-    prop: "updated_at",
+    prop: "updatedAt",
     type: "datetime",
   },
 ];
@@ -66,8 +66,9 @@ export const exams = [
     teacher: "Nguyễn Văn A",
     type: "multiple-choice",
     content: "<p>a. a</p><p>b. b</p><p>c. c</p><p>d. d</p>",
-    created_at: "2024-08-15T09:00:00Z",
-    updated_at: "2024-08-10T08:00:00Z",
+    correctAnswer: "b",
+    createdAt: "2024-08-15T09:00:00Z",
+    updatedAt: "2024-08-10T08:00:00Z",
   },
   {
     id: 1,
@@ -77,7 +78,8 @@ export const exams = [
     type: "essay",
     teacher: "Nguyễn Văn B",
     content: "<p>a. a</p><p>b. b</p><p>c. c</p><p>d. d</p>",
-    created_at: "2024-08-15T09:00:00Z",
-    updated_at: "2024-08-10T08:00:00Z",
+    correctAnswer: "a",
+    createdAt: "2024-08-15T09:00:00Z",
+    updatedAt: "2024-08-10T08:00:00Z",
   },
 ];

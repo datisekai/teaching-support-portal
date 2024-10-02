@@ -18,12 +18,12 @@ export const notificationSchemas: TableSchema[] = [
   },
   {
     label: "Ngày thông báo",
-    prop: "notification_date",
+    prop: "notificationDate",
     type: "datetime",
   },
   {
     label: "Nhóm lớp",
-    prop: "class_group",
+    prop: "classGroup",
     type: "text",
   },
   {
@@ -33,12 +33,12 @@ export const notificationSchemas: TableSchema[] = [
   },
   {
     label: "Ngày tạo",
-    prop: "created_at",
+    prop: "createdAt",
     type: "datetime",
   },
   {
     label: "Ngày sửa",
-    prop: "updated_at",
+    prop: "updatedAt",
     type: "datetime",
   },
 ];
@@ -48,20 +48,20 @@ export const notifications = [
     id: 1,
     title: "Thông báo kiểm tra giữa kỳ",
     content: "Các bạn sinh viên chú ý lịch kiểm tra giữa kỳ vào ngày 15/10.",
-    notification_date: "2024-10-01T09:00:00Z",
-    class_group: "Nhóm A",
+    notificationDate: "2024-10-01T09:00:00Z",
+    classGroup: "Nhóm A",
     subject: "Lập trình web",
-    created_at: "2024-09-30T08:00:00Z",
-    updated_at: "2024-09-30T10:00:00Z",
+    createdAt: "2024-09-30T08:00:00Z",
+    updatedAt: "2024-09-30T10:00:00Z",
   },
   {
     id: 2,
     title: "Thông báo nghỉ học",
     content: "Lớp môn Lý thuyết đồ thị nghỉ ngày 18/10 do giảng viên bận.",
-    notification_date: "2024-10-05T11:00:00Z",
-    class_group: "Nhóm B",
+    notificationDate: "2024-10-05T11:00:00Z",
+    classGroup: "Nhóm B",
     subject: "Java",
-    created_at: "2024-10-03T10:00:00Z",
-    updated_at: "2024-10-04T12:00:00Z",
+    createdAt: "2024-10-03T10:00:00Z",
+    updatedAt: "2024-10-04T12:00:00Z",
   },
 ];

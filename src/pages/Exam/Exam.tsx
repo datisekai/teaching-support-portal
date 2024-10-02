@@ -41,6 +41,7 @@ const Exam = () => {
   };
 
   const handleView = (data: any) => {
+    console.log(data);
     onToggle(ModalName.VIEW_EXAM, {
       header: "Chi tiết câu hỏi",
       footer: (

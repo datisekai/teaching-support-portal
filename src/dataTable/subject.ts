@@ -28,12 +28,12 @@ export const subjectSchemas: TableSchema[] = [
   },
   {
     label: "Ngày tạo",
-    prop: "created_at",
+    prop: "createdAt",
     type: "datetime",
   },
   {
     label: "Ngày sửa",
-    prop: "updated_at",
+    prop: "updatedAt",
     type: "datetime",
   },
 ];
@@ -45,8 +45,8 @@ export const subjects = [
     name: "Công nghệ thông tin",
     description: "a",
     department: "Kỹ thuật phần mềm",
-    created_at: new Date(),
-    updated_at: new Date(),
+    createdAt: new Date(),
+    updatedAt: new Date(),
   },
   {
     id: 2,
@@ -54,7 +54,7 @@ export const subjects = [
     name: "Kỹ thuật phần mềm",
     description: "avb",
     department: "Khoa học thông tin",
-    created_at: new Date(),
-    updated_at: new Date(),
+    createdAt: new Date(),
+    updatedAt: new Date(),
   },
 ];

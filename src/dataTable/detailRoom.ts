@@ -23,7 +23,7 @@ export const detailRoomSchemas: TableSchema[] = [
   },
   {
     label: "Số điện thoại",
-    prop: "phone_number",
+    prop: "phoneNumber",
     type: "text",
   },
   {
@@ -43,7 +43,7 @@ export const detailRoomSchemas: TableSchema[] = [
   },
   {
     label: "Ngày tạo",
-    prop: "created_at",
+    prop: "createdAt",
     type: "datetime",
   },
 ];
@@ -54,17 +54,17 @@ export const detailRooms = [
     code: "312041014",
     name: "Nguyễn Văn A",
     email: "nguyenvana@example.com",
-    phone_number: "0123456789",
+    phoneNumber: "0123456789",
     status: "success",
-    created_at: "2024-08-01T10:00:00Z",
+    createdAt: "2024-08-01T10:00:00Z",
   },
   {
     id: 2,
     code: "312041013",
     name: "Trần Thị B",
     email: "tranthib@example.com",
-    phone_number: "0987654321",
+    phoneNumber: "0987654321",
     status: "failed",
-    created_at: "2024-08-02T11:00:00Z",
+    createdAt: "2024-08-02T11:00:00Z",
   },
 ];

@@ -18,12 +18,12 @@ export const departmentSchemas: TableSchema[] = [
   },
   {
     label: "Ngày tạo",
-    prop: "created_at",
+    prop: "createdAt",
     type: "datetime",
   },
   {
     label: "Ngày sửa",
-    prop: "updated_at",
+    prop: "updatedAt",
     type: "datetime",
   },
 ];
@@ -33,14 +33,14 @@ export const departments = [
     id: 1,
     name: "Công nghệ thông tin",
     description: "a",
-    created_at: new Date(),
-    updated_at: new Date(),
+    createdAt: new Date(),
+    updatedAt: new Date(),
   },
   {
     id: 2,
     name: "Kỹ thuật phần mềm",
     description: "avb",
-    created_at: new Date(),
-    updated_at: new Date(),
+    createdAt: new Date(),
+    updatedAt: new Date(),
   },
 ];
