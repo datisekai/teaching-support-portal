@@ -1,0 +1,30 @@
+export interface IUser {
+  id: number;
+  code: string;
+  email: string;
+  phone: any;
+  active: boolean;
+  name: string;
+  avatar: any;
+  deviceUid: any;
+  type: string;
+  createdAt: string;
+  updatedAt: string;
+  role: IRole;
+}
+
+export interface IRole {
+  id: number;
+  name: string;
+  createdAt: string;
+  updatedAt: string;
+  permissions: IPermission[];
+}
+
+export interface IPermission {
+  id: number;
+  action: string;
+  resource: string;
+  created_at: string;
+  updated_at: string;
+}

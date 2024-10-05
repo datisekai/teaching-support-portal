@@ -51,7 +51,7 @@ const Permission = () => {
     onToggle(ModalName.CREATE_PERMISSION, {
       header: "Tạo quyền",
       content: data,
-      style: "tw-w-[90%] md:tw-w-[30rem]",
+      style: "tw-w-[90%] md:tw-w-[24rem]",
     });
   };
 
@@ -78,7 +78,7 @@ const Permission = () => {
         onClick: () => {
           onToggle(ModalName.CREATE_PERMISSION, {
             header: "Tạo quyền",
-            style: "tw-w-[90%] md:tw-w-[30rem]",
+            style: "tw-w-[90%] md:tw-w-[24rem]",
           });
         },
         type: "button",

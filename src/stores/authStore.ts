@@ -1,76 +1,25 @@
 import { create } from "zustand";
-import { assignPermissions, users } from "../constants";
-
-interface IUser {
-  code: string;
-  permissions: string[];
-}
+import { assignPermissions, localKey, users } from "../constants";
+import { AuthService } from "../services";
+import { useUserStore } from "./userStore";
+import { getObjectLocalData, setObjectLocalData } from "../utils";
 
 interface IState {
   token: string;
-  user: IUser;
-  login: (
-    code: string,
-    password: string,
-    showToast: (data: any) => void
-  ) => Promise<IUser>;
-}
-interface IToast {
-  message?: string;
-  severity?:
-    | "info"
-    | "success"
-    | "warning"
-    | "danger"
-    | "secondary"
-    | "contrast";
-  summary?: string;
-  life?: number;
+  login: (code: string, password: string) => Promise<boolean>;
 }
 
 export const useAuthStore = create<IState>((set) => ({
-  token: "",
-  user: {} as IUser,
-  login: async (
-    code: string,
-    password: string,
-    showToast: (data: IToast) => void
-  ) => {
-    const result = users.find(
-      (user) => user.code === code && user.password === password
-    );
-
-    if (!result) {
-      showToast({
-        severity: "danger",
-        summary: "Thông báo",
-        message: "Sai tài khoản hoặc mật khẩu",
-        life: 3000,
-      });
-      return {} as IUser;
+  token: getObjectLocalData(localKey.TOKEN) || "",
+  login: async (code: string, password: string) => {
+    const result = await AuthService.login(code, password);
+    if (result) {
+      const token = result.accessToken;
+      setObjectLocalData(localKey.TOKEN, token);
+      set((state) => ({ ...state, token }));
+      useUserStore.getState().getMe();
     }
 
-    showToast({
-      severity: "success",
-      summary: "Thông báo",
-      message: "Đăng nhập thành công",
-      life: 3000,
-    });
-
-    const resultPermission = assignPermissions.find(
-      (permission) => permission.role === result.role
-    );
-
-    set({
-      user: {
-        code: result.code,
-        permissions: resultPermission?.permissions || [],
-      },
-    });
-
-    return {
-      code: result.code,
-      permissions: resultPermission?.permissions,
-    } as IUser;
+    return !!result;
   },
 }));

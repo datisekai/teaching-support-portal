@@ -1,6 +1,27 @@
 export * from "./api-config";
 
 import { axiosInstance } from "../plugins/axios";
+import { useCommonStore } from "../stores";
+
+export const processMiddlewareSendRequest = async ({
+  endpoint = "",
+  method = "GET",
+  body = {},
+}) => {
+  try {
+    useCommonStore.getState().setLoading(true);
+    const resp = await sendServerRequest({
+      endpoint,
+      method,
+      body,
+    });
+    return resp;
+  } catch (error) {
+    throw error;
+  } finally {
+    useCommonStore.getState().setLoading(true);
+  }
+};
 
 export const sendServerRequest = async ({
   endpoint = "",

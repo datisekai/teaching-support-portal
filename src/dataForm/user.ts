@@ -28,6 +28,12 @@ export const UserForm: IForm[] = [
         label: "Số điện thoại",
         col: 6,
       },
+      {
+        prop: "role",
+        type: "select-ajax",
+        label: "Loại quyền",
+        col: 6,
+      },
     ],
   },
 ];

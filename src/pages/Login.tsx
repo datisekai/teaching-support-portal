@@ -3,23 +3,46 @@ import { Avatar } from "primereact/avatar";
 import { Button } from "primereact/button";
 import { FloatLabel } from "primereact/floatlabel";
 import { InputText } from "primereact/inputtext";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { useToast } from "../hooks/useToast";
 import { useAuthStore } from "../stores";
+import { useNavigate } from "react-router-dom";
+import { pathNames } from "../constants";
 
 const Login = () => {
   const [code, setCode] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const { showToast } = useToast();
-  const { login, user } = useAuthStore();
+  const { login, token } = useAuthStore();
+  const navigate = useNavigate()
+
+
+  useEffect(() => {
+    if (token) {
+      return navigate(pathNames.HOME);
+    }
+  }, [token])
 
   const onSubmit = async (data: { code: string; password: string }) => {
-    const loggedInUser = await login(data.code, data.password, showToast);
+    const result = login(data.code, data.password);
+    if (!result) {
+      return showToast({
+        severity: "danger",
+        summary: "Thông báo",
+        message: "Sai tài khoản hoặc mật khẩu",
+        life: 3000,
+      });
+    }
 
-    console.log("User sau khi đăng nhập:", loggedInUser);
-    localStorage.setItem("user", JSON.stringify(loggedInUser));
+    showToast({
+      severity: "success",
+      summary: "Thông báo",
+      message: "Đăng nhập thành công",
+      life: 3000,
+    });
+    navigate(pathNames.HOME)
   };
 
   const schema = yup

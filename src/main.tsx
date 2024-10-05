@@ -12,9 +12,9 @@ import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primeflex/primeflex.min.css";
 
 createRoot(document.getElementById("root")!).render(
-  <StrictMode>
-    <PrimeReactProvider>
-      <RouterProvider router={router} />
-    </PrimeReactProvider>
-  </StrictMode>
+  // <StrictMode>
+  <PrimeReactProvider>
+    <RouterProvider router={router} />
+  </PrimeReactProvider>
+  // </StrictMode>
 );

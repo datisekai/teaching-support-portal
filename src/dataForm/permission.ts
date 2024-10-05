@@ -8,7 +8,7 @@ export const PermissionForm: IForm[] = [
         prop: "name",
         type: "text",
         label: "Tên",
-        col: 6,
+        col: 12,
       },
     ],
   },

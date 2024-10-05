@@ -6,6 +6,7 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button } from "primereact/button";
 import { PermissionForm } from "../../dataForm/permission";
+import FormItem from "../Form/FormItem";
 const schema = yup
   .object()
   .shape({
@@ -38,8 +39,8 @@ const FormItemPermissionModal = () => {
   return (
     <div>
       <form onSubmit={(e) => e.preventDefault()} className="tw-space-y-4">
-        {PermissionForm.map((form, index) => (
-          <GroupItem errors={errors} {...form} key={index} control={control} />
+        {PermissionForm[0].attributes.map((attribute) => (
+          <FormItem error={(errors as any)[attribute.prop]?.message || ''} key={attribute.prop} {...attribute} control={control} />
         ))}
       </form>
       <div className="tw-mt-4 tw-flex tw-justify-end">

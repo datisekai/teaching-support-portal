@@ -1,13 +1,15 @@
 import { useEffect, useMemo, useState } from "react";
-import { useCommonStore } from "../../stores";
+import { useCommonStore, useModalStore } from "../../stores";
 import MyTable, { IActionTable } from "../../components/UI/MyTable";
 import { departmentSchemas, departments } from "../../dataTable/department";
 import { useNavigate } from "react-router-dom";
 import useConfirm from "../../hooks/useConfirm";
 import { uploadFile } from "../../utils";
 import { rooms, roomSchemas } from "../../dataTable/room";
+import { ModalName } from "../../constants";
 
 const Attendance = () => {
+  const { onToggle } = useModalStore()
   const actionTable: IActionTable[] = useMemo(() => {
     return [
       {
@@ -30,6 +32,11 @@ const Attendance = () => {
         onClick: (data, options) => {
           //TODO
           //Show modal
+          onToggle(ModalName.ATTENDANCE, {
+            header: "Chi tiết",
+            content: data,
+          })
+
         },
         tooltip: "Chi tiết",
         icon: "pi-info-circle",
