@@ -13,7 +13,7 @@ const schema = yup
   .shape({
     name: yup.string().required("Vui lòng điền tiêu đề"),
     description: yup.string().required("Vui không điền mô tả"),
-    group_id: yup.string().required("Vui lòng chọn lớp học"),
+    groupId: yup.string().required("Vui lòng chọn lớp học"),
   })
   .required();
 const EditAttendance = () => {
@@ -26,7 +26,7 @@ const EditAttendance = () => {
     defaultValues: {
       name: "",
       description: "",
-      group_id: "",
+      groupId: "",
     },
   });
   const navigate = useNavigate();

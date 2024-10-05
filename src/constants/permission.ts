@@ -273,6 +273,60 @@ export const permissions = [
       },
     ],
   },
+  {
+    title: "Câu hỏi",
+    children: [
+      {
+        title: "Xem danh sách",
+        value: "view-question",
+      },
+      {
+        title: "Tạo mới",
+        value: "create-question",
+      },
+      {
+        title: "Cập nhật",
+        value: "edit-question",
+      },
+      {
+        title: "Xoá",
+        value: "delete-question",
+      },
+      {
+        title: "Xem danh sách câu hỏi của tôi",
+        value: "view-my-question",
+      },
+    ],
+  },
+  {
+    title: "Đề thi",
+    children: [
+      {
+        title: "Xem danh sách",
+        value: "view-exam",
+      },
+      {
+        title: "Xem danh sách điểm",
+        value: "view-exam-score",
+      },
+      {
+        title: "Export",
+        value: "export-exam-score",
+      },
+      // {
+      //   title: "Tạo mới",
+      //   value: "create-exam",
+      // },
+      // {
+      //   title: "Cập nhật",
+      //   value: "edit-exam",
+      // },
+      // {
+      //   title: "Xoá",
+      //   value: "delete-exam",
+      // },
+    ],
+  },
 ];
 
 export const assignPermissions = [
@@ -292,6 +346,8 @@ export const assignPermissions = [
       "view-permission",
       "view-interface",
       "view-permission",
+      "view-question",
+      "view-exam",
     ],
   },
   {
