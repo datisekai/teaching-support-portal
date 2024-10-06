@@ -11,7 +11,7 @@ export const ExamForm: IForm[] = [
         col: 6,
       },
       {
-        prop: "subject",
+        prop: "major",
         type: "select",
         label: "Môn học",
         col: 6,

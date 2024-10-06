@@ -3,13 +3,13 @@ import { useCommonStore, useModalStore } from "../../stores";
 import MyTable, { IActionTable } from "../../components/UI/MyTable";
 import { useNavigate } from "react-router-dom";
 import useConfirm from "../../hooks/useConfirm";
-import { subjects, subjectSchemas } from "../../dataTable/subject";
+import { majors, majorSchemas } from "../../dataTable/major";
 import { uploadFile } from "../../utils";
 import { Button } from "primereact/button";
 import { teachers } from "../../dataTable/teacher";
 import { ModalName } from "../../constants";
 
-const Subject = () => {
+const Major = () => {
   const { onToggle } = useModalStore();
 
   const actionTable: IActionTable[] = [
@@ -51,7 +51,7 @@ const Subject = () => {
   const { setHeaderTitle, setHeaderActions, resetActions } = useCommonStore();
 
   const handleEdit = (data: any) => {
-    navigate(`/subject/edit/${data.id}`);
+    navigate(`/major/edit/${data.id}`);
   };
   const handleDelete = (id: number) => {
     const data = {
@@ -74,7 +74,7 @@ const Subject = () => {
         title: "Tạo",
         icon: "pi pi-plus",
         onClick: () => {
-          navigate("/subject/create");
+          navigate("/major/create");
         },
         type: "button",
         disabled: false,
@@ -106,9 +106,9 @@ const Subject = () => {
 
   return (
     <div>
-      <MyTable data={subjects} schemas={subjectSchemas} actions={actionTable} />
+      <MyTable data={majors} schemas={majorSchemas} actions={actionTable} />
     </div>
   );
 };
 
-export default Subject;
+export default Major;

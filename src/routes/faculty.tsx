@@ -4,7 +4,7 @@ import CreateFaculty from "../pages/Faculty/CreateFaculty";
 import Faculty from "../pages/Faculty/Faculty";
 import EditFaculty from "../pages/Faculty/EditFaculty";
 
-export const FacultyRoutes: IRouter[] = [
+export const facultyRoutes: IRouter[] = [
   {
     path: pathNames.FACULTY,
     element: <Faculty />,

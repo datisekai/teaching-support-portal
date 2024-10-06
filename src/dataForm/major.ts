@@ -1,6 +1,6 @@
 import { IForm, IFormItem } from "../types/form-item";
 
-export const SubjectForm: IForm[] = [
+export const MajorForm: IForm[] = [
   {
     title: "Thông tin cơ bản",
     attributes: [
@@ -23,7 +23,7 @@ export const SubjectForm: IForm[] = [
         col: 6,
       },
       {
-        prop: "department",
+        prop: "faculty",
         type: "select",
         label: "Ngành học",
         col: 6,

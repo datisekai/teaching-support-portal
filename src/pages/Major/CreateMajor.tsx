@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import * as yup from "yup";
 import GroupItem from "../../components/Form/GroupItem";
@@ -6,7 +6,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { set, useForm } from "react-hook-form";
 import { useCommonStore } from "../../stores";
 import { IAction } from "../../stores/commonStore";
-import { SubjectForm } from "../../dataForm/subject";
+import { MajorForm } from "../../dataForm/major";
 import { ClassForm } from "../../dataForm/class";
 
 const schema = yup
@@ -29,39 +29,28 @@ const schema = yup
       .required("Giảng viên là bắt buộc."),
   })
   .required();
-const EditSubject = () => {
-  const { id } = useParams();
-
+const CreateMajor = () => {
   const {
     handleSubmit,
     formState: { errors },
     control,
-    reset,
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
-      name: "",
       description: "",
+      name: "",
       code: 0,
       faculty: "",
       teacher: [],
     },
   });
-
-  useEffect(() => {
-    reset({
-      name: "cong nghe thong tin",
-      description: "abc",
-      code: 812032,
-      faculty: "khmt",
-      teacher: ["nvb", "nva"],
-    });
-  }, []);
   const navigate = useNavigate();
-  const { setHeaderTitle, setFooterActions, resetActions } = useCommonStore();
+
+  const setFooterActions = useCommonStore((state) => state.setFooterActions);
+  const setHeaderTitle = useCommonStore((state) => state.setHeaderTitle);
+  const resetActions = useCommonStore((state) => state.resetActions);
 
   const onSubmit = () => {
-    console.log("data", id);
     navigate(-1);
   };
 
@@ -74,12 +63,12 @@ const EditSubject = () => {
       },
       {
         onClick: handleSubmit(onSubmit),
-        title: "Lưu thay đổi",
-        // icon: "pi-plus",
+        title: "Tạo",
+        icon: "pi-plus",
       },
     ];
     setFooterActions(actions);
-    setHeaderTitle("Chỉnh sửa môn học");
+    setHeaderTitle("Tạo môn học");
 
     return () => {
       resetActions();
@@ -89,7 +78,7 @@ const EditSubject = () => {
   return (
     <div>
       <form onSubmit={(e) => e.preventDefault()} className="tw-space-y-4">
-        {SubjectForm.map((form, index) => (
+        {MajorForm.map((form, index) => (
           <GroupItem errors={errors} {...form} key={index} control={control} />
         ))}
       </form>
@@ -97,4 +86,4 @@ const EditSubject = () => {
   );
 };
 
-export default EditSubject;
+export default CreateMajor;

@@ -11,12 +11,12 @@ import { letterRoutes } from "./letter";
 import { notificationRoutes } from "./notification";
 import { permissionRoutes } from "./permission";
 import { studentRoutes } from "./student";
-import { subjectRoutes } from "./subject";
+import { majorRoutes } from "./major";
 import { themeRoutes } from "./theme";
 import { userRoutes } from "./user";
 import { questionRoutes } from "./question";
 import { examRoutes } from "./exam";
-import { FacultyRoutes } from "./faculty";
+import { facultyRoutes } from "./faculty";
 
 export interface IRouter {
   path: string;
@@ -42,10 +42,10 @@ const router = createBrowserRouter([
             element: <Home />,
           },
           ...classRoutes,
-          ...FacultyRoutes,
+          ...facultyRoutes,
           ...attendanceRoutes,
           ...studentRoutes,
-          ...subjectRoutes,
+          ...majorRoutes,
           ...userRoutes,
           ...notificationRoutes,
           ...letterRoutes,

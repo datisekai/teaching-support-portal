@@ -6,7 +6,7 @@ export const pathNames = {
   LETTER: "/letter",
   NOTIFICATION: "/notification",
   ROOM: "/room",
-  SUBJECT: "/subject",
+  MAJOR: "/major",
   USER: "/user",
   CLASS: "/class",
   THEME: "/theme",

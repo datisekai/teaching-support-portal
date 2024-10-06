@@ -18,7 +18,7 @@ export const classSchemas: TableSchema[] = [
   },
   {
     label: "Môn học",
-    prop: "subject",
+    prop: "major",
     type: "text",
   },
   {
@@ -43,7 +43,7 @@ export const classes = [
     id: 1,
     name: "nhóm 02",
     teacher: "Nguyen Van A",
-    subject: "Lập trình web",
+    major: "Lập trình web",
     dueDate: "2022-12-31",
     createdAt: new Date(),
     updatedAt: new Date(),
@@ -52,7 +52,7 @@ export const classes = [
     id: 2,
     name: "nhóm 03",
     teacher: "Nguyen Van B",
-    subject: "Java",
+    major: "Java",
     dueDate: "2022-12-31",
     createdAt: new Date(),
     updatedAt: new Date(),

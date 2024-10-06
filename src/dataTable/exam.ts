@@ -14,7 +14,7 @@ export const examSchemas: TableSchema[] = [
   },
   {
     label: "Tên môn học",
-    prop: "subjectName",
+    prop: "majorName",
     type: "text",
   },
   {
@@ -59,7 +59,7 @@ export const exams = [
   {
     id: 1,
     examName: "Đề thi giữa kỳ",
-    subjectName: "Toán học",
+    majorName: "Toán học",
     classGroup: "Nhóm A",
     startTime: "2024-10-10T09:00:00Z",
     endTime: "2024-10-10T11:00:00Z",
@@ -69,7 +69,7 @@ export const exams = [
   {
     id: 2,
     examName: "Đề thi cuối kỳ",
-    subjectName: "Vật lý",
+    majorName: "Vật lý",
     classGroup: "Nhóm B",
     startTime: "2024-11-20T14:00:00Z",
     endTime: "2024-11-20T16:00:00Z",

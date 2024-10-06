@@ -27,7 +27,7 @@ export const ClassForm: IForm[] = [
         ],
       },
       {
-        prop: "subject",
+        prop: "major",
         type: "select",
         label: "Môn học",
         col: 6,

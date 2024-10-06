@@ -1,6 +1,6 @@
 import { TableSchema } from "../types/table";
 
-export const subjectSchemas: TableSchema[] = [
+export const majorSchemas: TableSchema[] = [
   {
     label: "#",
     prop: "id",
@@ -38,7 +38,7 @@ export const subjectSchemas: TableSchema[] = [
   },
 ];
 
-export const subjects = [
+export const majors = [
   {
     id: 1,
     code: 840001,

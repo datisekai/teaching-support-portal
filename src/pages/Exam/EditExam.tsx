@@ -19,7 +19,7 @@ const schema = yup
   .object()
   .shape({
     examTitle: yup.string().required("Tiêu đề bài thi là bắt buộc."),
-    subject: yup.string().required("Môn học là bắt buộc."),
+    major: yup.string().required("Môn học là bắt buộc."),
     classGroup: yup.string().required("Nhóm lớp là bắt buộc."),
     startTime: yup.date().nullable().required("Thời gian bắt đầu là bắt buộc."),
     endTime: yup
@@ -90,7 +90,7 @@ const EditExam = () => {
     setTarget(datafetch);
     return {
       examTitle: "Ví dụ bài thi",
-      subject: "math",
+      major: "math",
       classGroup: "A",
       startTime: new Date(),
       endTime: new Date(),
@@ -107,7 +107,7 @@ const EditExam = () => {
     resolver: yupResolver(schema),
     defaultValues: {
       examTitle: "",
-      subject: "",
+      major: "",
       classGroup: "",
       startTime: undefined,
       endTime: undefined,

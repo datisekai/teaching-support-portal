@@ -10,9 +10,8 @@ import { ClassForm } from "../../dataForm/class";
 const teacherOptions =
   ClassForm[0].attributes.find((attr) => attr.prop === "teacher")?.options ||
   [];
-const subjectOptions =
-  ClassForm[0].attributes.find((attr) => attr.prop === "subject")?.options ||
-  [];
+const majorOptions =
+  ClassForm[0].attributes.find((attr) => attr.prop === "major")?.options || [];
 const schema = yup
   .object()
   .shape({
@@ -25,10 +24,10 @@ const schema = yup
         "Giảng viên là bắt buộc."
       )
       .required("Giảng viên là bắt buộc."),
-    subject: yup
+    major: yup
       .string()
       .oneOf(
-        subjectOptions.map((option) => option.value),
+        majorOptions.map((option) => option.value),
         "Môn học là bắt buộc."
       )
       .required("Môn học là bắt buộc."),
@@ -47,7 +46,7 @@ const EditClass = () => {
     defaultValues: {
       name: "",
       dueDate: "",
-      subject: "",
+      major: "",
       teacher: "",
     },
   });
@@ -56,7 +55,7 @@ const EditClass = () => {
     reset({
       name: "nhom 02",
       dueDate: "2023-01-01",
-      subject: "jv",
+      major: "jv",
       teacher: "nvb",
     });
   }, []);

@@ -74,31 +74,31 @@ export const permissions = [
     children: [
       {
         title: "Xem danh sách",
-        value: "view-subject",
+        value: "view-major",
       },
       {
         title: "Tạo mới",
-        value: "create-subject",
+        value: "create-major",
       },
       {
         title: "Cập nhật",
-        value: "edit-subject",
+        value: "edit-major",
       },
       {
         title: "Xoá",
-        value: "delete-subject",
+        value: "delete-major",
       },
       {
         title: "Thêm giảng viên",
-        value: "add-teacher-subject",
+        value: "add-teacher-major",
       },
       {
         title: "Import",
-        value: "import-subject",
+        value: "import-major",
       },
       {
         title: "Export",
-        value: "export-subject",
+        value: "export-major",
       },
     ],
   },
@@ -335,7 +335,7 @@ export const assignPermissions = [
     permissions: [
       "view-class",
       "view-faculty",
-      "view-subject",
+      "view-major",
       "view-attendance",
       "view-user",
       "view-notification",
