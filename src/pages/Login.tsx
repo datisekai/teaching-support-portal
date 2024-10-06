@@ -66,14 +66,14 @@ const Login = () => {
   });
 
   return (
-    <div className="tw-min-h-screen tw-bg-[url('/public/images/slider2_1240x450-min.jpg')] tw-bg-cover tw-bg-center">
+    <div className="tw-min-h-screen tw-bg-[url('/images/slider2_1240x450-min.jpg')] tw-bg-cover tw-bg-center">
       <div className="tw-absolute tw-left-[2.5%] md:tw-left-[15%] tw-top-[6%] tw-w-[95%] md:tw-w-[70%] tw-h-[88vh] tw-flex tw-border tw-shadow-md tw-rounded-lg tw-bg-white">
-        <div className="tw-hidden tw-w-1/2 tw-bg-cover tw-bg-[url('/public/images/background-login.png')] md:tw-flex tw-flex-col tw-items-center tw-justify-center tw-rounded-lg tw-bg-center">
+        <div className="tw-hidden tw-w-1/2 tw-bg-cover tw-bg-[url('/images/background-login.png')] md:tw-flex tw-flex-col tw-items-center tw-justify-center tw-rounded-lg tw-bg-center">
           <p className="tw-text-3xl tw-font-bold tw-text-white">
             Đại học Sài Gòn
           </p>
           <Avatar
-            image="/public/images/sgu-logo.jpeg"
+            image="/images/sgu-logo.jpeg"
             shape="circle"
             className="tw-w-40 tw-h-40 tw-my-4"
           />
@@ -82,11 +82,11 @@ const Login = () => {
           </p>
         </div>
 
-        <div className="tw-w-full md:tw-w-1/2 tw-bg-[url('/public/images/background-login.png')] tw-bg-cover tw-bg-center md:tw-bg-[url('')] md:tw-bg-white tw-flex tw-items-center tw-justify-center tw-rounded-lg">
+        <div className="tw-w-full md:tw-w-1/2 tw-bg-[url('/images/background-login.png')] tw-bg-cover tw-bg-center md:tw-bg-[url('')] md:tw-bg-white tw-flex tw-items-center tw-justify-center tw-rounded-lg">
           <div className="tw-w-full tw-max-w-md tw-p-8 tw-rounded-lg ">
             <div className="tw-mb-10 tw-text-center">
               <Avatar
-                image="/public/images/logo.png"
+                image="/images/logo.png"
                 shape="circle"
                 className="tw-w-40 tw-h-40"
               />
