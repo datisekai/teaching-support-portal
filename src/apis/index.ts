@@ -43,7 +43,7 @@ export const sendServerRequest = async ({
     throw error;
   }
 };
-type HttpMethod = "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
+export type HttpMethod = "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
 interface SendFormDataParams {
   endpoint: string;
   method: HttpMethod;

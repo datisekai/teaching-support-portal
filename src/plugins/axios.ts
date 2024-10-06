@@ -29,8 +29,8 @@ axiosInstance.interceptors.response.use(
   },
   (error) => {
     if (error.response?.status === 401 || error.response?.status === 403) {
-      // removeLocalItem(localKey.TOKEN);
-      // window.location.replace(pathNames.HOME);
+      removeLocalItem(localKey.TOKEN);
+      window.location.replace(pathNames.HOME);
       return;
     }
     return error.response?.data;

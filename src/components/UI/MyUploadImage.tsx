@@ -4,7 +4,7 @@ import { FileUpload, FileUploadHeaderTemplateOptions, ItemTemplateOptions } from
 import { Tag } from 'primereact/tag';
 import { Tooltip } from 'primereact/tooltip';
 import { useRef, useState } from 'react';
-import { apiConfig, sendFormData } from '../../apis';
+import { apiConfig, HttpMethod, sendFormData } from '../../apis';
 import { useToast } from '../../hooks/useToast';
 
 
@@ -82,7 +82,7 @@ const MyUploadImage: React.FC<Props> = ({ onChange, value = '' }) => {
 
         try {
             const response = await sendFormData({
-                body: formData, endpoint: apiConfig.upload.endpoint, method: apiConfig.upload.method
+                body: formData, endpoint: apiConfig.upload.endpoint, method: apiConfig.upload.method as HttpMethod
             })
             onChange(response.data.url);
             showToast({ message: "Upload image success", severity: "success" });
