@@ -23,7 +23,7 @@ export const subjectSchemas: TableSchema[] = [
   },
   {
     label: "Ngành",
-    prop: "department",
+    prop: "faculty",
     type: "text",
   },
   {
@@ -44,7 +44,7 @@ export const subjects = [
     code: 840001,
     name: "Công nghệ thông tin",
     description: "a",
-    department: "Kỹ thuật phần mềm",
+    faculty: "Kỹ thuật phần mềm",
     createdAt: new Date(),
     updatedAt: new Date(),
   },
@@ -53,7 +53,7 @@ export const subjects = [
     code: 840002,
     name: "Kỹ thuật phần mềm",
     description: "avb",
-    department: "Khoa học thông tin",
+    faculty: "Khoa học thông tin",
     createdAt: new Date(),
     updatedAt: new Date(),
   },

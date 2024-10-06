@@ -1,6 +1,6 @@
 import { IForm, IFormItem } from "../types/form-item";
 
-export const DepartmentForm: IForm[] = [
+export const FacultyForm: IForm[] = [
   {
     title: "Thông tin cơ bản",
     attributes: [

@@ -45,27 +45,27 @@ export const permissions = [
     children: [
       {
         title: "Xem danh sách",
-        value: "view-department",
+        value: "view-faculty",
       },
       {
         title: "Tạo mới",
-        value: "create-department",
+        value: "create-faculty",
       },
       {
         title: "Cập nhật",
-        value: "edit-department",
+        value: "edit-faculty",
       },
       {
         title: "Xoá",
-        value: "delete-department",
+        value: "delete-faculty",
       },
       {
         title: "Import",
-        value: "import-department",
+        value: "import-faculty",
       },
       {
         title: "Export",
-        value: "export-department",
+        value: "export-faculty",
       },
     ],
   },
@@ -334,7 +334,7 @@ export const assignPermissions = [
     role: "ADMIN",
     permissions: [
       "view-class",
-      "view-department",
+      "view-faculty",
       "view-subject",
       "view-attendance",
       "view-user",

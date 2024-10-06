@@ -18,7 +18,7 @@ const schema = yup
       .number()
       .notOneOf([0], "Mã môn học là bắt buộc.")
       .required("Mã môn học là bắt buộc."),
-    department: yup
+    faculty: yup
       .string()
       .required("Ngành học là bắt buộc.")
       .required("Ngành học là bắt buộc."),
@@ -43,7 +43,7 @@ const EditSubject = () => {
       name: "",
       description: "",
       code: 0,
-      department: "",
+      faculty: "",
       teacher: [],
     },
   });
@@ -53,7 +53,7 @@ const EditSubject = () => {
       name: "cong nghe thong tin",
       description: "abc",
       code: 812032,
-      department: "khmt",
+      faculty: "khmt",
       teacher: ["nvb", "nva"],
     });
   }, []);

@@ -101,13 +101,13 @@ export const sidebarData: IMenuItem[] = [
   {
     title: "Ngành học",
     icon: "",
-    path: pathNames.DEPARTMENT,
+    path: pathNames.FACULTY,
     children: [
       {
         title: "Danh sách ngành",
         icon: "pi pi-th-large",
-        path: pathNames.DEPARTMENT,
-        permission: "view-department",
+        path: pathNames.FACULTY,
+        permission: "view-faculty",
       },
     ],
   },

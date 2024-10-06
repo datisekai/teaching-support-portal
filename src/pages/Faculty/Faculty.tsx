@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { useCommonStore } from "../../stores";
 import MyTable, { IActionTable } from "../../components/UI/MyTable";
-import { departmentSchemas, departments } from "../../dataTable/department";
+import { facultySchemas, facultys } from "../../dataTable/faculty";
 import { useNavigate } from "react-router-dom";
 import useConfirm from "../../hooks/useConfirm";
 import { uploadFile } from "../../utils";
 
-const Department = () => {
+const Faculty = () => {
   const actionTable: IActionTable[] = [
     {
       onClick: (data, options) => {
@@ -31,7 +31,7 @@ const Department = () => {
   const { setHeaderTitle, setHeaderActions, resetActions } = useCommonStore();
 
   const handleEdit = (data: any) => {
-    navigate(`/department/edit/${data.id}`);
+    navigate(`/faculty/edit/${data.id}`);
   };
   const handleDelete = (id: number) => {
     const data = {
@@ -54,7 +54,7 @@ const Department = () => {
         title: "Tạo",
         icon: "pi pi-plus",
         onClick: () => {
-          navigate(`/department/create`);
+          navigate(`/faculty/create`);
         },
         type: "button",
         disabled: false,
@@ -86,13 +86,9 @@ const Department = () => {
 
   return (
     <div>
-      <MyTable
-        data={departments}
-        schemas={departmentSchemas}
-        actions={actionTable}
-      />
+      <MyTable data={facultys} schemas={facultySchemas} actions={actionTable} />
     </div>
   );
 };
 
-export default Department;
+export default Faculty;

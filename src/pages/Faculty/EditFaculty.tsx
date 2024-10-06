@@ -1,7 +1,7 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import * as yup from "yup";
-import { DepartmentForm } from "../../dataForm/department";
+import { FacultyForm } from "../../dataForm/faculty";
 import GroupItem from "../../components/Form/GroupItem";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { set, useForm } from "react-hook-form";
@@ -14,18 +14,28 @@ const schema = yup
     description: yup.string().required("Mô tả ngành học là bắt buộc."),
   })
   .required();
-const CreateDepartment = () => {
+const EditFaculty = () => {
+  const { id } = useParams();
+
   const {
     handleSubmit,
     formState: { errors },
     control,
+    reset,
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
-      description: "",
       name: "",
+      description: "",
     },
   });
+
+  useEffect(() => {
+    reset({
+      name: "cong nghe thong tin",
+      description: "abc",
+    });
+  }, []);
   const navigate = useNavigate();
 
   const setFooterActions = useCommonStore((state) => state.setFooterActions);
@@ -33,6 +43,7 @@ const CreateDepartment = () => {
   const resetActions = useCommonStore((state) => state.resetActions);
 
   const onSubmit = () => {
+    console.log("data", id);
     navigate(-1);
   };
 
@@ -45,12 +56,12 @@ const CreateDepartment = () => {
       },
       {
         onClick: handleSubmit(onSubmit),
-        title: "Tạo",
-        icon: "pi-plus",
+        title: "Lưu thay đổi",
+        // icon: "pi-plus",
       },
     ];
     setFooterActions(actions);
-    setHeaderTitle("Tạo ngành học");
+    setHeaderTitle("Chỉnh sửa ngành học");
 
     return () => {
       resetActions();
@@ -60,7 +71,7 @@ const CreateDepartment = () => {
   return (
     <div>
       <form onSubmit={(e) => e.preventDefault()} className="tw-space-y-4">
-        {DepartmentForm.map((form, index) => (
+        {FacultyForm.map((form, index) => (
           <GroupItem errors={errors} {...form} key={index} control={control} />
         ))}
       </form>
@@ -68,4 +79,4 @@ const CreateDepartment = () => {
   );
 };
 
-export default CreateDepartment;
+export default EditFaculty;
