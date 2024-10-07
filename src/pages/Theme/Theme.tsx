@@ -35,8 +35,8 @@ const Interface = () => {
   const setHeaderTitle = useCommonStore((state) => state.setHeaderTitle);
   const resetActions = useCommonStore((state) => state.resetActions);
 
-  const onSubmit = () => {
-    navigate(-1);
+  const onSubmit = (values: any) => {
+    console.log('values', values);
   };
 
   useEffect(() => {

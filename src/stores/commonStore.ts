@@ -22,10 +22,14 @@ interface ICommonState {
   footer: {
     actions: IAction[];
   };
+  isLoadingUpload: {
+    [key: string]: boolean;
+  };
   setHeaderTitle: (title: string) => void;
   setHeaderActions: (actions: IAction[]) => void;
   setFooterActions: (actions: IAction[]) => void;
   setLoading: (isLoading: boolean) => void;
+  setLoadingUpload: (key: string, isLoading: boolean) => void;
   resetActions: () => void;
 }
 
@@ -38,6 +42,7 @@ export const useCommonStore = create<ICommonState>((set) => ({
   footer: {
     actions: [],
   },
+  isLoadingUpload: {},
   modal: {
     visible: false,
     footer: "",
@@ -72,6 +77,12 @@ export const useCommonStore = create<ICommonState>((set) => ({
   },
   setLoading: (isLoading: boolean) => {
     set((state) => ({ ...state, isLoadingApi: isLoading }));
+  },
+  setLoadingUpload: (key: string, isLoading: boolean) => {
+    set((state) => ({
+      ...state,
+      isLoadingUpload: { ...state.isLoadingUpload, [key]: isLoading },
+    }));
   },
   resetActions: () => {
     set((state) => ({

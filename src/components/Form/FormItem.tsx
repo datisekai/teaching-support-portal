@@ -9,8 +9,8 @@ import { Calendar } from "primereact/calendar";
 import { Dropdown } from "primereact/dropdown";
 import { InputTextarea } from "primereact/inputtextarea";
 import { MultiSelect } from "primereact/multiselect";
-import MyUploadImage from "../UI/MyUploadImage";
 import { useWindowSize } from "usehooks-ts";
+import MyUploadSingleImage from "../UI/MyUploadSingleImage";
 
 interface IForm extends IFormItem {
   control: any;
@@ -202,10 +202,11 @@ const FormItem: React.FC<IForm> = ({
         ));
       case "image":
         return renderController(({ field: { onChange, onBlur, value } }) => (
-          <MyUploadImage
-            onChange={(url) => onChange({ target: { value: url, name: prop } })}
-            value={value}
-          />
+          // <MyUploadImage
+          //   onChange={(url) => onChange({ target: { value: url, name: prop } })}
+          //   value={value}
+          // />
+          <MyUploadSingleImage onChange={(e) => onChange({ target: { value: e, name: prop } })} value={value || ''} />
         ));
       default:
         return renderController(
