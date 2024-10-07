@@ -54,4 +54,4 @@ const MyUploadSingleImage: React.FC<Props> = ({ value, onChange }) => {
     );
 };
 
-export default MyUploadSingleImage;
+export default React.memo(MyUploadSingleImage);
