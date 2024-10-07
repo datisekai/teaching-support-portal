@@ -14,7 +14,7 @@ const schema = yup
     title: yup.string().required("Tên thông báo là bắt buộc."),
     content: yup.string().required("Nội dung thông báo là bắt buộc."),
     classGroup: yup.string().required("Nhóm lớp là bắt buộc."),
-    subject: yup
+    major: yup
       .string()
       .required("Môn học là bắt buộc.")
       .required("Môn học là bắt buộc."),
@@ -32,7 +32,7 @@ const CreateNotification = () => {
       title: "",
       content: "",
       classGroup: "",
-      subject: "",
+      major: "",
     },
   });
 

@@ -88,26 +88,26 @@ export const sidebarData: IMenuItem[] = [
   {
     title: "Môn học",
     icon: "",
-    path: pathNames.SUBJECT,
+    path: pathNames.MAJOR,
     children: [
       {
         title: "Danh sách môn",
         icon: "pi pi-book",
-        path: pathNames.SUBJECT,
-        permission: "view-subject",
+        path: pathNames.MAJOR,
+        permission: "view-major",
       },
     ],
   },
   {
     title: "Ngành học",
     icon: "",
-    path: pathNames.DEPARTMENT,
+    path: pathNames.FACULTY,
     children: [
       {
         title: "Danh sách ngành",
         icon: "pi pi-th-large",
-        path: pathNames.DEPARTMENT,
-        permission: "view-department",
+        path: pathNames.FACULTY,
+        permission: "view-faculty",
       },
     ],
   },

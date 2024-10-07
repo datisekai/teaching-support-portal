@@ -1,6 +1,6 @@
 import { TableSchema } from "../types/table";
 
-export const departmentSchemas: TableSchema[] = [
+export const facultySchemas: TableSchema[] = [
   {
     label: "#",
     prop: "id",
@@ -28,7 +28,7 @@ export const departmentSchemas: TableSchema[] = [
   },
 ];
 
-export const departments = [
+export const facultys = [
   {
     id: 1,
     name: "Công nghệ thông tin",

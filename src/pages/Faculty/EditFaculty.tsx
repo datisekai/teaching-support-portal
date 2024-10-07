@@ -1,35 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import * as yup from "yup";
+import { FacultyForm } from "../../dataForm/faculty";
 import GroupItem from "../../components/Form/GroupItem";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { set, useForm } from "react-hook-form";
 import { useCommonStore } from "../../stores";
 import { IAction } from "../../stores/commonStore";
-import { SubjectForm } from "../../dataForm/subject";
-import { ClassForm } from "../../dataForm/class";
-
 const schema = yup
   .object()
   .shape({
-    name: yup.string().required("Tên môn học là bắt buộc."),
-    description: yup.string().required("Mô tả môn học là bắt buộc."),
-    code: yup
-      .number()
-      .notOneOf([0], "Mã môn học là bắt buộc.")
-      .required("Mã môn học là bắt buộc."),
-    department: yup
-      .string()
-      .required("Ngành học là bắt buộc.")
-      .required("Ngành học là bắt buộc."),
-    teacher: yup
-      .array()
-      .required("Giảng viên không hợp lệ.")
-      .min(1, "Giảng viên là bắt buộc.")
-      .required("Giảng viên là bắt buộc."),
+    name: yup.string().required("Tên ngành học là bắt buộc."),
+    description: yup.string().required("Mô tả ngành học là bắt buộc."),
   })
   .required();
-const EditSubject = () => {
+const EditFaculty = () => {
   const { id } = useParams();
 
   const {
@@ -42,9 +27,6 @@ const EditSubject = () => {
     defaultValues: {
       name: "",
       description: "",
-      code: 0,
-      department: "",
-      teacher: [],
     },
   });
 
@@ -52,13 +34,13 @@ const EditSubject = () => {
     reset({
       name: "cong nghe thong tin",
       description: "abc",
-      code: 812032,
-      department: "khmt",
-      teacher: ["nvb", "nva"],
     });
   }, []);
   const navigate = useNavigate();
-  const { setHeaderTitle, setFooterActions, resetActions } = useCommonStore();
+
+  const setFooterActions = useCommonStore((state) => state.setFooterActions);
+  const setHeaderTitle = useCommonStore((state) => state.setHeaderTitle);
+  const resetActions = useCommonStore((state) => state.resetActions);
 
   const onSubmit = () => {
     console.log("data", id);
@@ -79,7 +61,7 @@ const EditSubject = () => {
       },
     ];
     setFooterActions(actions);
-    setHeaderTitle("Chỉnh sửa môn học");
+    setHeaderTitle("Chỉnh sửa ngành học");
 
     return () => {
       resetActions();
@@ -89,7 +71,7 @@ const EditSubject = () => {
   return (
     <div>
       <form onSubmit={(e) => e.preventDefault()} className="tw-space-y-4">
-        {SubjectForm.map((form, index) => (
+        {FacultyForm.map((form, index) => (
           <GroupItem errors={errors} {...form} key={index} control={control} />
         ))}
       </form>
@@ -97,4 +79,4 @@ const EditSubject = () => {
   );
 };
 
-export default EditSubject;
+export default EditFaculty;

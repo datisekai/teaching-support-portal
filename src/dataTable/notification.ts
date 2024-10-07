@@ -28,7 +28,7 @@ export const notificationSchemas: TableSchema[] = [
   },
   {
     label: "Môn học",
-    prop: "subject",
+    prop: "major",
     type: "text",
   },
   {
@@ -50,7 +50,7 @@ export const notifications = [
     content: "Các bạn sinh viên chú ý lịch kiểm tra giữa kỳ vào ngày 15/10.",
     notificationDate: "2024-10-01T09:00:00Z",
     classGroup: "Nhóm A",
-    subject: "Lập trình web",
+    major: "Lập trình web",
     createdAt: "2024-09-30T08:00:00Z",
     updatedAt: "2024-09-30T10:00:00Z",
   },
@@ -60,7 +60,7 @@ export const notifications = [
     content: "Lớp môn Lý thuyết đồ thị nghỉ ngày 18/10 do giảng viên bận.",
     notificationDate: "2024-10-05T11:00:00Z",
     classGroup: "Nhóm B",
-    subject: "Java",
+    major: "Java",
     createdAt: "2024-10-03T10:00:00Z",
     updatedAt: "2024-10-04T12:00:00Z",
   },

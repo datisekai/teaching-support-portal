@@ -7,16 +7,16 @@ import Home from "../pages/Home";
 import Login from "../pages/Login";
 import { attendanceRoutes } from "./attendance";
 import { classRoutes } from "./class";
-import { departmentRoutes } from "./department";
 import { letterRoutes } from "./letter";
 import { notificationRoutes } from "./notification";
 import { permissionRoutes } from "./permission";
 import { studentRoutes } from "./student";
-import { subjectRoutes } from "./subject";
+import { majorRoutes } from "./major";
 import { themeRoutes } from "./theme";
 import { userRoutes } from "./user";
 import { questionRoutes } from "./question";
 import { examRoutes } from "./exam";
+import { facultyRoutes } from "./faculty";
 
 export interface IRouter {
   path: string;
@@ -42,10 +42,10 @@ const router = createBrowserRouter([
             element: <Home />,
           },
           ...classRoutes,
-          ...departmentRoutes,
+          ...facultyRoutes,
           ...attendanceRoutes,
           ...studentRoutes,
-          ...subjectRoutes,
+          ...majorRoutes,
           ...userRoutes,
           ...notificationRoutes,
           ...letterRoutes,

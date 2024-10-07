@@ -1,33 +1,13 @@
 import { useEffect, useState } from "react";
-import { useCommonStore, useModalStore } from "../../stores";
+import { useCommonStore } from "../../stores";
 import MyTable, { IActionTable } from "../../components/UI/MyTable";
+import { facultySchemas, facultys } from "../../dataTable/faculty";
 import { useNavigate } from "react-router-dom";
 import useConfirm from "../../hooks/useConfirm";
-import { subjects, subjectSchemas } from "../../dataTable/subject";
 import { uploadFile } from "../../utils";
-import { Button } from "primereact/button";
-import { teachers } from "../../dataTable/teacher";
-import { ModalName } from "../../constants";
 
-const Subject = () => {
-  const { onToggle } = useModalStore();
-
+const Faculty = () => {
   const actionTable: IActionTable[] = [
-    {
-      onClick: (data, options) => {
-        const transferData = teachers.map((item) => {
-          return { content: item.code, subcontent: item.name };
-        });
-        console.log({ id: data.id, contents: transferData });
-        onToggle(ModalName.ADD_TEACHER, {
-          header: "Thêm giảng viên",
-          content: { id: data.id, contents: transferData },
-          style: "tw-w-[90%] md:tw-w-[30rem]",
-        });
-      },
-      tooltip: "Thêm giảng viên",
-      icon: "pi-user-plus",
-    },
     {
       onClick: (data, options) => {
         handleEdit(data);
@@ -51,11 +31,11 @@ const Subject = () => {
   const { setHeaderTitle, setHeaderActions, resetActions } = useCommonStore();
 
   const handleEdit = (data: any) => {
-    navigate(`/subject/edit/${data.id}`);
+    navigate(`/faculty/edit/${data.id}`);
   };
   const handleDelete = (id: number) => {
     const data = {
-      message: "Bạn có chắc chắn muốn xoá môn học này?",
+      message: "Bạn có chắc chắn muốn xoá ngành học này?",
       header: "Xác nhận xoá",
       onAccept: () => {
         console.log("Đã xoá thành công!", id);
@@ -68,13 +48,13 @@ const Subject = () => {
   };
 
   useEffect(() => {
-    setHeaderTitle("Quản lý môn học");
+    setHeaderTitle("Quản lý ngành học");
     setHeaderActions([
       {
         title: "Tạo",
         icon: "pi pi-plus",
         onClick: () => {
-          navigate("/subject/create");
+          navigate(`/faculty/create`);
         },
         type: "button",
         disabled: false,
@@ -106,9 +86,9 @@ const Subject = () => {
 
   return (
     <div>
-      <MyTable data={subjects} schemas={subjectSchemas} actions={actionTable} />
+      <MyTable data={facultys} schemas={facultySchemas} actions={actionTable} />
     </div>
   );
 };
 
-export default Subject;
+export default Faculty;

@@ -45,27 +45,27 @@ export const permissions = [
     children: [
       {
         title: "Xem danh sách",
-        value: "view-department",
+        value: "view-faculty",
       },
       {
         title: "Tạo mới",
-        value: "create-department",
+        value: "create-faculty",
       },
       {
         title: "Cập nhật",
-        value: "edit-department",
+        value: "edit-faculty",
       },
       {
         title: "Xoá",
-        value: "delete-department",
+        value: "delete-faculty",
       },
       {
         title: "Import",
-        value: "import-department",
+        value: "import-faculty",
       },
       {
         title: "Export",
-        value: "export-department",
+        value: "export-faculty",
       },
     ],
   },
@@ -74,31 +74,31 @@ export const permissions = [
     children: [
       {
         title: "Xem danh sách",
-        value: "view-subject",
+        value: "view-major",
       },
       {
         title: "Tạo mới",
-        value: "create-subject",
+        value: "create-major",
       },
       {
         title: "Cập nhật",
-        value: "edit-subject",
+        value: "edit-major",
       },
       {
         title: "Xoá",
-        value: "delete-subject",
+        value: "delete-major",
       },
       {
         title: "Thêm giảng viên",
-        value: "add-teacher-subject",
+        value: "add-teacher-major",
       },
       {
         title: "Import",
-        value: "import-subject",
+        value: "import-major",
       },
       {
         title: "Export",
-        value: "export-subject",
+        value: "export-major",
       },
     ],
   },
@@ -334,8 +334,8 @@ export const assignPermissions = [
     role: "ADMIN",
     permissions: [
       "view-class",
-      "view-department",
-      "view-subject",
+      "view-faculty",
+      "view-major",
       "view-attendance",
       "view-user",
       "view-notification",
