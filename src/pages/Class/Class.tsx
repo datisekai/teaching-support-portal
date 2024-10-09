@@ -10,6 +10,22 @@ const Class = () => {
   const actionTable: IActionTable[] = [
     {
       onClick: (data, options) => {
+        handleClick(`/class/score/${data.id}`, data);
+      },
+      tooltip: "Quản lý điểm",
+      icon: "pi-box",
+      severity: "secondary",
+    },
+    {
+      onClick: (data, options) => {
+        handleClick(`/class/score-column-management/${data.id}`, data);
+      },
+      tooltip: "Quản lý cột điểm",
+      icon: "pi-pen-to-square",
+      severity: "secondary",
+    },
+    {
+      onClick: (data, options) => {
         handleClick(`/class/statistic/${data.id}`, data);
       },
       tooltip: "Thống kê",
