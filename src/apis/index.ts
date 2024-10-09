@@ -2,6 +2,7 @@ export * from "./api-config";
 
 import { axiosInstance } from "../plugins/axios";
 import { useCommonStore } from "../stores";
+import { apiConfig } from "./api-config";
 
 export const processMiddlewareSendRequest = async ({
   endpoint = "",
@@ -19,7 +20,7 @@ export const processMiddlewareSendRequest = async ({
   } catch (error) {
     throw error;
   } finally {
-    useCommonStore.getState().setLoading(true);
+    useCommonStore.getState().setLoading(false);
   }
 };
 
@@ -68,5 +69,25 @@ export const sendFormData = async ({
     return resp.data;
   } catch (error) {
     throw error;
+  }
+};
+
+export const sendUploadImage = async (file: File, id?: string) => {
+  try {
+    id && useCommonStore.getState().setLoadingUpload(id, true);
+
+    const formData = new FormData();
+    formData.append("file", file);
+    const response = await sendFormData({
+      body: formData,
+      endpoint: apiConfig.uploadImage.endpoint,
+      method: apiConfig.uploadImage.method as HttpMethod,
+    });
+    return response.url;
+  } catch (error) {
+    console.log(error);
+    return "";
+  } finally {
+    id && useCommonStore.getState().setLoadingUpload(id, false);
   }
 };

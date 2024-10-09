@@ -1,7 +1,7 @@
 export const apiConfig = {
-  upload: {
+  uploadImage: {
     method: "POST",
-    endpoint: "/api.upload",
+    endpoint: "/api.upload/image",
   },
   login: {
     method: "POST",

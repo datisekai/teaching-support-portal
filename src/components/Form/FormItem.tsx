@@ -9,8 +9,9 @@ import { Calendar } from "primereact/calendar";
 import { Dropdown } from "primereact/dropdown";
 import { InputTextarea } from "primereact/inputtextarea";
 import { MultiSelect } from "primereact/multiselect";
-import MyUploadImage from "../UI/MyUploadImage";
 import { useWindowSize } from "usehooks-ts";
+import MyUploadSingleImage from "../UI/MyUploadSingleImage";
+import MyEditor from "../UI/MyEditor";
 
 interface IForm extends IFormItem {
   control: any;
@@ -74,19 +75,20 @@ const FormItem: React.FC<IForm> = ({
         );
       case "editor":
         return renderController(({ field: { onChange, value, onBlur } }) => (
-          <Editor
-            placeholder={label}
-            value={value}
-            name={prop}
-            onSelectionChange={(e) => {
-              console.log("e", e);
-            }}
-            onTextChange={(e) =>
-              onChange({ target: { value: e.htmlValue, name: prop } })
-            }
-            style={{ height: "320px" }}
-            onBlur={onBlur}
-          />
+          // <Editor
+          //   placeholder={label}
+          //   value={value}
+          //   name={prop}
+          //   onSelectionChange={(e) => {
+          //     console.log("e", e);
+          //   }}
+          //   onTextChange={(e) =>
+          //     onChange({ target: { value: e.htmlValue, name: prop } })
+          //   }
+          //   style={{ height: "320px" }}
+          //   onBlur={onBlur}
+          // />
+          <MyEditor value={value} height={500} onChange={(e) => onChange({ target: { value: e, name: prop } })} />
         ));
       case "number":
         return renderController(({ field: { onChange, value, onBlur } }) => (
@@ -202,10 +204,11 @@ const FormItem: React.FC<IForm> = ({
         ));
       case "image":
         return renderController(({ field: { onChange, onBlur, value } }) => (
-          <MyUploadImage
-            onChange={(url) => onChange({ target: { value: url, name: prop } })}
-            value={value}
-          />
+          // <MyUploadImage
+          //   onChange={(url) => onChange({ target: { value: url, name: prop } })}
+          //   value={value}
+          // />
+          <MyUploadSingleImage onChange={(e) => onChange({ target: { value: e, name: prop } })} value={value || ''} />
         ));
       default:
         return renderController(
