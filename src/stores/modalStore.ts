@@ -17,12 +17,13 @@ interface IModalState {
     }
   ) => void;
   onDismiss: () => void;
+  clearContent: () => void;
 }
 
 export const useModalStore = create<IModalState>((set) => ({
   visible: false,
   modalName: "",
-  content: {},
+  content: null,
   style: "",
   onToggle: (modalName, data) => {
     set((state) => ({
@@ -34,5 +35,8 @@ export const useModalStore = create<IModalState>((set) => ({
   },
   onDismiss: () => {
     set((state) => ({ ...state, visible: false }));
+  },
+  clearContent: () => {
+    set((state) => ({ ...state, content: null }));
   },
 }));

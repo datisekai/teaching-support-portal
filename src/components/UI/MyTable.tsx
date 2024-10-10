@@ -41,6 +41,7 @@ interface IMyTable {
   perPage?: number;
   onChange?: (query: object) => void;
   actions?: IActionTable[];
+  isLoading?: boolean;
 }
 
 const MyTable: FC<IMyTable> = ({
@@ -51,11 +52,12 @@ const MyTable: FC<IMyTable> = ({
   perPage = 5,
   onChange,
   actions = [],
+  isLoading = false,
 }) => {
   const [first, setFirst] = useState(0);
-
+  const [selectedRowData, setSelectedRowData] = useState<any>(null);
+  const [menuVisible, setMenuVisible] = useState(false);
   const menuRight = useRef<Menu>(null);
-
   const [debouncedValue, setValue] = useDebounceValue("", 500);
 
   const handlePageChange = (event: PaginatorPageChangeEvent) => {
@@ -68,6 +70,12 @@ const MyTable: FC<IMyTable> = ({
       onChange({ [keySearch]: debouncedValue, page: first });
     }
   }, [debouncedValue, first]);
+
+  const handleMenuClick = (event: any, rowData: any) => {
+    setSelectedRowData(rowData);
+    setMenuVisible(true);
+    menuRight?.current?.toggle(event);
+  };
 
   const bodyTemplate = (row: any, options: any) => {
     const key = options.field;
@@ -83,9 +91,7 @@ const MyTable: FC<IMyTable> = ({
       case "datetime":
         return <span>{dayjs(value).format("DD/MM/YYYY HH:mm")}</span>;
       case "badge":
-        console.log("getbage", schema);
-        if (schema?.getBadge && typeof schema.getBadge == "function") {
-          console.log("join");
+        if (schema?.getBadge && typeof schema.getBadge === "function") {
           const { severity, value: renderValue } = schema.getBadge(value);
           return <Tag value={renderValue} severity={severity} />;
         }
@@ -116,24 +122,22 @@ const MyTable: FC<IMyTable> = ({
   }, [keySearch]);
 
   const renderActions = useCallback(
-    (data: any, options: any) => {
-      const items = useMemo(() => {
-        let dropdown = [
-          {
-            label: "Hành động",
-            items: actions.map((action) => ({
-              label: action.tooltip,
-              icon: `pi ${action.icon}`,
-              command: () => {
-                if (action.onClick) {
-                  action.onClick(data, options);
-                }
-              },
-            })),
-          },
-        ];
-        return dropdown;
-      }, [actions]);
+    (rowData: any, options: any) => {
+      const items = [
+        {
+          label: "Hành động",
+          items: actions.map((action) => ({
+            label: action.tooltip,
+            icon: `pi ${action.icon}`,
+            command: () => {
+              if (action.onClick) {
+                action.onClick(selectedRowData, options);
+              }
+            },
+          })),
+        },
+      ];
+
       return (
         <div className="tw-w-full tw-flex tw-gap-2 tw-flex-wrap tw-items-center">
           {actions && actions.length > 0 && (
@@ -154,7 +158,7 @@ const MyTable: FC<IMyTable> = ({
                 size="small"
                 icon="pi pi-angle-down"
                 className="mr-2"
-                onClick={(event) => menuRight?.current?.toggle(event)}
+                onClick={(event) => handleMenuClick(event, rowData)}
                 aria-controls="popup_menu_right"
                 aria-haspopup
               />
@@ -174,7 +178,7 @@ const MyTable: FC<IMyTable> = ({
               severity={action.severity}
               onClick={() => {
                 if (action.onClick) {
-                  action.onClick(data, options);
+                  action.onClick(rowData, options);
                 }
               }}
               label={action.title}
@@ -185,44 +189,31 @@ const MyTable: FC<IMyTable> = ({
         </div>
       );
     },
-    [actions]
+    [actions, selectedRowData]
   );
-
-  const header = useMemo(() => {
-    return keySearch ? renderHeader() : undefined;
-  }, [keySearch]);
-
-  const displayPaginator = useMemo(() => {
-    return totalRecords > perPage;
-  }, [totalRecords, perPage]);
 
   return (
     <div className="card">
       <DataTable
+        loading={isLoading}
         value={data}
-        header={header}
+        header={renderHeader()}
         tableStyle={{ minWidth: "10rem" }}
       >
-        {schemas.map((schema) => {
-          return (
-            <Column
-              body={bodyTemplate}
-              key={schema.prop}
-              field={schema.prop}
-              header={schema.label}
-              style={{ minWidth: schema.minWidth || "50px" }}
-            ></Column>
-          );
-        })}
-        {actions && actions.length > 0 && (
+        {schemas.map((schema) => (
           <Column
-            body={renderActions}
-            field="actions"
-            header="Thao tác"
-          ></Column>
+            body={bodyTemplate}
+            key={schema.prop}
+            field={schema.prop}
+            header={schema.label}
+            style={{ minWidth: schema.minWidth || "50px" }}
+          />
+        ))}
+        {actions && actions.length > 0 && (
+          <Column body={renderActions} field="actions" header="Thao tác" />
         )}
       </DataTable>
-      {displayPaginator && (
+      {totalRecords > perPage && (
         <Paginator
           first={first}
           rows={perPage}
