@@ -25,6 +25,6 @@ export interface IPermission {
   id: number;
   action: string;
   resource: string;
-  created_at: string;
-  updated_at: string;
+  createdAt: string;
+  updatedAt: string;
 }

@@ -59,5 +59,9 @@ export const apiConfig = {
       method: "GET",
       endpoint: "/api.role/:id",
     },
+    updateRolePermissions: {
+      method: "PUT",
+      endpoint: "/api.role/:id/permissions",
+    },
   },
 };

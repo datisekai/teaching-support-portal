@@ -4,35 +4,27 @@ import {
   sendServerRequest,
 } from "../apis";
 
-export const RoleService = {
+export const permissionService = {
   getAll: async () => {
-    const { getAll } = apiConfig.role;
+    const { getAll } = apiConfig.permission;
     return processMiddlewareSendRequest(getAll);
   },
   getSingle: async (id: number) => {
-    const { getSingle } = apiConfig.role;
+    const { getSingle } = apiConfig.permission;
     return processMiddlewareSendRequest({
       ...getSingle,
       endpoint: getSingle.endpoint.replace(":id", id.toString()),
     });
   },
-  updateRolePermissions: async (id: number, permissionIds: number[]) => {
-    const { updateRolePermissions } = apiConfig.role;
-    return sendServerRequest({
-      ...updateRolePermissions,
-      endpoint: updateRolePermissions.endpoint.replace(":id", id.toString()),
-      body: { permissionIds },
-    });
-  },
   create: async (body: Record<string, any>) => {
-    const { create } = apiConfig.role;
+    const { create } = apiConfig.permission;
     return sendServerRequest({
       ...create,
       body,
     });
   },
   update: async (id: number, body: Record<string, any>) => {
-    const { update } = apiConfig.role;
+    const { update } = apiConfig.permission;
     return sendServerRequest({
       ...update,
       endpoint: update.endpoint.replace(":id", id.toString()),
@@ -40,7 +32,7 @@ export const RoleService = {
     });
   },
   delete: async (id: number) => {
-    const { _delete } = apiConfig.role;
+    const { _delete } = apiConfig.permission;
     return sendServerRequest({
       ..._delete,
       endpoint: _delete.endpoint.replace(":id", id.toString()),

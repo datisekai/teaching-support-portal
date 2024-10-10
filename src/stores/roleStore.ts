@@ -1,18 +1,18 @@
 import { create } from "zustand";
 import { RoleService } from "../services/role";
-
-interface IRole {
-  id: number;
-  name: string;
-  createdAt: Date;
-  updatedAt: Date;
-}
+import { IRole } from "../types/user";
 
 interface IRoleState {
   roles: IRole[];
+  role: IRole | null;
   total: number;
   isLoadingRoles: boolean;
   fetchRoles: () => Promise<void>;
+  fetchRole: (id: number) => Promise<void>;
+  updateRolePermissions: (
+    id: number,
+    permissions: number[]
+  ) => Promise<boolean>;
   addRole: (role: IRole) => Promise<boolean>;
   updateRole: (id: number, updatedRole: IRole) => Promise<boolean>;
   deleteRole: (id: number) => Promise<boolean>;
@@ -20,6 +20,7 @@ interface IRoleState {
 
 export const useRoleStore = create<IRoleState>((set) => ({
   roles: [],
+  role: null,
   isLoadingRoles: false,
   total: 0,
   fetchRoles: async () => {
@@ -27,7 +28,18 @@ export const useRoleStore = create<IRoleState>((set) => ({
     set({ roles: response.data });
     set({ total: response.total });
   },
-
+  fetchRole: async (id: number) => {
+    const response = await RoleService.getSingle(id);
+    set({ role: response });
+  },
+  updateRolePermissions: async (id: number, permissionIds: number[]) => {
+    const response = await RoleService.updateRolePermissions(id, permissionIds);
+    if (response) {
+      set({ role: response });
+    }
+    console.log(response, !!response);
+    return !!response;
+  },
   addRole: async (role: IRole) => {
     const response = await RoleService.create(role);
     if (response) {
