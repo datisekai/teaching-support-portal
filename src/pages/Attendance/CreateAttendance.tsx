@@ -7,7 +7,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { set, useForm } from "react-hook-form";
 import { useCommonStore } from "../../stores";
 import { IAction } from "../../stores/commonStore";
-import { RoomForm } from "../../dataForm/room";
+import { AttendanceForm } from "../../dataForm/attendance";
 const schema = yup
   .object()
   .shape({
@@ -61,7 +61,7 @@ const CreateAttendance = () => {
   return (
     <div>
       <form onSubmit={(e) => e.preventDefault()} className="tw-space-y-4">
-        {RoomForm.map((form, index) => (
+        {AttendanceForm.map((form, index) => (
           <GroupItem errors={errors} {...form} key={index} control={control} />
         ))}
       </form>

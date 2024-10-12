@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { useCommonStore, useModalStore } from "../../stores";
+import { useAttendanceStore, useCommonStore, useModalStore } from "../../stores";
 import MyTable, { IActionTable } from "../../components/UI/MyTable";
 import { facultySchemas, facultys } from "../../dataTable/faculty";
 import { useNavigate } from "react-router-dom";
@@ -62,7 +62,8 @@ const Attendance = () => {
   const navigate = useNavigate();
   const { onConfirm } = useConfirm();
 
-  const { setHeaderTitle, setHeaderActions, resetActions } = useCommonStore();
+  const { setHeaderTitle, setHeaderActions, resetActions, isLoadingApi } = useCommonStore();
+  const { fetchAttendances, attendances, total, isLoadingAttendances } = useAttendanceStore()
 
   const handleEdit = (data: any) => {
     navigate(`/attendance/edit/${data.id}`);
@@ -105,9 +106,25 @@ const Attendance = () => {
     };
   }, []);
 
+
+
+  const handleSearch = (query: Object) => {
+    fetchAttendances(query)
+  };
+
+  const attendanceData = useMemo(() => {
+    return attendances.map((item) => {
+      return {
+        ...item,
+        majorName: item.class.major.name,
+        teacherNames: item.class.teachers.map(item => item.name).join(", "),
+      };
+    })
+  }, [attendances])
   return (
     <div>
-      <MyTable data={rooms} schemas={roomSchemas} actions={actionTable} />
+      <MyTable keySearch="title" onChange={handleSearch} data={attendanceData} totalRecords={total}
+        isLoading={isLoadingApi} schemas={roomSchemas} actions={actionTable} />
     </div>
   );
 };

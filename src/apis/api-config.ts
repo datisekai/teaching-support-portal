@@ -102,6 +102,10 @@ export const apiConfig = {
       method: "GET",
       endpoint: "/api.class",
     },
+    getAllOwn: {
+      method: "GET",
+      endpoint: "/api.class/me",
+    },
     getSingle: {
       method: "GET",
       endpoint: "/api.class/:id",
@@ -178,6 +182,32 @@ export const apiConfig = {
     updateRolePermissions: {
       method: "PUT",
       endpoint: "/api.role/:id/permissions",
+    },
+  },
+  attendance: {
+    create: {
+      method: "POST",
+      endpoint: "/api.attendance",
+    },
+    update: {
+      method: "PUT",
+      endpoint: "/api.attendance/:id",
+    },
+    _delete: {
+      method: "DELETE",
+      endpoint: "/api.attendance/:id",
+    },
+    getAll: {
+      method: "GET",
+      endpoint: "/api.attendance",
+    },
+    getSingle: {
+      method: "GET",
+      endpoint: "/api.attendance/:id",
+    },
+    getAllOwner: {
+      method: "GET",
+      endpoint: "/api.attendance/me",
     },
   },
 };

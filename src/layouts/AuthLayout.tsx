@@ -7,6 +7,7 @@ import MySideBar from "../components/UI/MySideBar";
 import { pathNames } from "../constants";
 import { useAuthStore, useCommonStore } from "../stores";
 import { useUserStore } from "../stores/userStore";
+import { useSocketStore } from "../stores/socketStore";
 
 const AuthLayout = () => {
 
@@ -17,6 +18,7 @@ const AuthLayout = () => {
   const { user, permissions, getMe } = useUserStore()
   const { token } = useAuthStore()
   const navigate = useNavigate()
+  const { connectSocket, disconnectSocket } = useSocketStore()
   console.log('user', user);
   console.log('permissions', permissions);
 
@@ -34,7 +36,12 @@ const AuthLayout = () => {
 
     getMe()
 
-    return () => window.removeEventListener("resize", handleResize);
+    connectSocket()
+
+    return () => {
+      window.removeEventListener("resize", handleResize)
+      disconnectSocket()
+    };
   }, []);
 
 

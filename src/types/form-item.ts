@@ -17,6 +17,7 @@ export interface IFormItem {
   options?: IOption[];
   col?: number;
   apiUrl?: string;
+  getOptions?: (data?: Array<any>) => IOption[];
 }
 
 export interface IForm {

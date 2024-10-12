@@ -56,7 +56,7 @@ const Faculty = () => {
           life: 3000,
         });
       },
-      onReject: () => {},
+      onReject: () => { },
     };
     onConfirm(data);
   };

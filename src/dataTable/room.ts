@@ -8,7 +8,7 @@ export const roomSchemas: TableSchema[] = [
   },
   {
     label: "Môn học",
-    prop: "groupName",
+    prop: "majorName",
     type: "text",
     minWidth: "100px",
   },
@@ -19,23 +19,21 @@ export const roomSchemas: TableSchema[] = [
   },
   {
     label: "Trạng thái",
-    prop: "status",
+    prop: "isOpen",
     type: "badge",
     getBadge: (value) => {
       switch (value) {
-        case "ready":
-          return { severity: "warning", value: "Chưa bắt đầu" };
-        case "scan":
+        case false:
+          return { severity: "info", value: "Chưa bắt đầu" };
+        case true:
           return { severity: "info", value: "Đang điểm danh" };
-        case "stop":
-          return { severity: "success", value: "Kết thúc" };
       }
       return { severity: "danger", value: "Không xác định" };
     },
   },
   {
     label: "Giảng viên",
-    prop: "teacherName",
+    prop: "teacherNames",
     type: "text",
   },
   {

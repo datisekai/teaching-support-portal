@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { IFormItem } from "../../types/form-item";
+import { IFormItem, IOption } from "../../types/form-item";
 import { InputText } from "primereact/inputtext";
 import { Controller } from "react-hook-form";
 import { Editor } from "primereact/editor";
@@ -12,6 +12,7 @@ import { MultiSelect } from "primereact/multiselect";
 import { useWindowSize } from "usehooks-ts";
 import MyUploadSingleImage from "../UI/MyUploadSingleImage";
 import MyEditor from "../UI/MyEditor";
+import { sendServerRequest } from "../../apis";
 
 interface IForm extends IFormItem {
   control: any;
@@ -27,6 +28,7 @@ const FormItem: React.FC<IForm> = ({
   control,
   col = 6,
   apiUrl,
+  getOptions
 }) => {
   const windowSize = useWindowSize();
 
@@ -34,24 +36,24 @@ const FormItem: React.FC<IForm> = ({
     if (windowSize.width < 768) return "100%";
     return `${(col / 12) * 100}%`;
   }, [col, windowSize.width]);
-  const [ajaxOptions, setAjaxOptions] = useState([]);
+  const [ajaxOptions, setAjaxOptions] = useState<IOption[]>([]);
   const [loading, setLoading] = useState(false);
 
   const renderController = (renderFn: (props: any) => JSX.Element) => (
     <Controller control={control} name={prop} render={renderFn} />
   );
 
-  const getOptions = async () => {
+  const getAjaxOptions = async () => {
     setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-    }, 5000);
-    //TODO: Call API
+    const data = await sendServerRequest({ endpoint: apiUrl, method: "GET", body: { limit: 10000 } });
+    const newOptions = getOptions?.(data.data) || [];
+    setAjaxOptions(newOptions)
+    setLoading(false);
   };
 
   useEffect(() => {
-    if (type == "select-ajax" && apiUrl) {
-      getOptions();
+    if (type == "select-ajax" && apiUrl && getOptions) {
+      getAjaxOptions();
     }
   }, []);
 
@@ -187,6 +189,7 @@ const FormItem: React.FC<IForm> = ({
             options={ajaxOptions}
             placeholder={`Chọn ${label.toLowerCase()}`}
             className="tw-w-full"
+            optionLabel="title"
           />
         ));
       case "textarea":
