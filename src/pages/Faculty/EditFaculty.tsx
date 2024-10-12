@@ -7,6 +7,10 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { set, useForm } from "react-hook-form";
 import { useCommonStore } from "../../stores";
 import { IAction } from "../../stores/commonStore";
+import { useFacultyStore } from "../../stores/facultyStore";
+import { pathNames } from "../../constants";
+import MyLoading from "../../components/UI/MyLoading";
+import { useToast } from "../../hooks/useToast";
 const schema = yup
   .object()
   .shape({
@@ -16,12 +20,14 @@ const schema = yup
   .required();
 const EditFaculty = () => {
   const { id } = useParams();
-
+  const { isLoadingApi } = useCommonStore();
+  const { faculty, updateFaculty, fetchFaculty } = useFacultyStore();
   const {
     handleSubmit,
     formState: { errors },
     control,
     reset,
+    setValue,
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
@@ -31,20 +37,38 @@ const EditFaculty = () => {
   });
 
   useEffect(() => {
-    reset({
-      name: "cong nghe thong tin",
-      description: "abc",
-    });
+    fetchFaculty(id || "");
   }, []);
+  useEffect(() => {
+    if (faculty) {
+      setValue("name", faculty.name);
+      setValue("description", faculty.description);
+    }
+  }, [faculty]);
   const navigate = useNavigate();
-
+  const { showToast } = useToast();
   const setFooterActions = useCommonStore((state) => state.setFooterActions);
   const setHeaderTitle = useCommonStore((state) => state.setHeaderTitle);
   const resetActions = useCommonStore((state) => state.resetActions);
 
-  const onSubmit = () => {
-    console.log("data", id);
-    navigate(-1);
+  const onSubmit = (data: any) => {
+    console.log(data);
+    const result = updateFaculty(parseInt(id || ""), data);
+    if (!result) {
+      return showToast({
+        severity: "danger",
+        summary: "Thông báo",
+        message: "Sửa thất bại",
+        life: 3000,
+      });
+    }
+    showToast({
+      severity: "success",
+      summary: "Thông báo",
+      message: "Sửa thành công",
+      life: 3000,
+    });
+    navigate(pathNames.FACULTY);
   };
 
   useEffect(() => {
@@ -70,11 +94,18 @@ const EditFaculty = () => {
 
   return (
     <div>
-      <form onSubmit={(e) => e.preventDefault()} className="tw-space-y-4">
-        {FacultyForm.map((form, index) => (
-          <GroupItem errors={errors} {...form} key={index} control={control} />
-        ))}
-      </form>
+      <MyLoading isLoading={isLoadingApi}>
+        <form onSubmit={(e) => e.preventDefault()} className="tw-space-y-4">
+          {FacultyForm.map((form, index) => (
+            <GroupItem
+              errors={errors}
+              {...form}
+              key={index}
+              control={control}
+            />
+          ))}
+        </form>
+      </MyLoading>
     </div>
   );
 };

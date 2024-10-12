@@ -7,7 +7,7 @@ interface IRoleState {
   role: IRole | null;
   total: number;
   isLoadingRoles: boolean;
-  fetchRoles: () => Promise<void>;
+  fetchRoles: (body: object) => Promise<void>;
   fetchRole: (id: number) => Promise<void>;
   updateRolePermissions: (
     id: number,
@@ -23,50 +23,75 @@ export const useRoleStore = create<IRoleState>((set) => ({
   role: null,
   isLoadingRoles: false,
   total: 0,
-  fetchRoles: async () => {
-    const response = await RoleService.getAll();
-    set({ roles: response.data });
-    set({ total: response.total });
+
+  fetchRoles: async (body) => {
+    try {
+      const response = await RoleService.getAll(body);
+      set({ roles: response.data, total: response.total });
+    } catch (error) {}
   },
+
   fetchRole: async (id: number) => {
-    const response = await RoleService.getSingle(id);
-    set({ role: response });
-  },
-  updateRolePermissions: async (id: number, permissionIds: number[]) => {
-    const response = await RoleService.updateRolePermissions(id, permissionIds);
-    if (response) {
+    try {
+      const response = await RoleService.getSingle(id);
       set({ role: response });
-    }
-    console.log(response, !!response);
-    return !!response;
+    } catch (error) {}
   },
-  addRole: async (role: IRole) => {
-    const response = await RoleService.create(role);
-    if (response) {
-      set((state) => ({
-        roles: [response, ...state.roles],
-      }));
+
+  updateRolePermissions: async (id: number, permissionIds: number[]) => {
+    try {
+      const response = await RoleService.updateRolePermissions(
+        id,
+        permissionIds
+      );
+      if (response) {
+        set({ role: response });
+      }
+      return !!response;
+    } catch (error) {
+      return false;
     }
-    return !!response;
+  },
+
+  addRole: async (role: IRole) => {
+    try {
+      const response = await RoleService.create(role);
+      if (response) {
+        set((state) => ({
+          roles: [response, ...state.roles],
+        }));
+      }
+      return !!response;
+    } catch (error) {
+      return false;
+    }
   },
 
   updateRole: async (id: number, updatedRole: IRole) => {
-    const response = await RoleService.update(id, updatedRole);
-    if (response) {
-      set((state) => ({
-        roles: state.roles.map((role) => (role.id === id ? response : role)),
-      }));
+    try {
+      const response = await RoleService.update(id, updatedRole);
+      if (response) {
+        set((state) => ({
+          roles: state.roles.map((role) => (role.id === id ? response : role)),
+        }));
+      }
+      return !!response;
+    } catch (error) {
+      return false;
     }
-    return !!response;
   },
 
   deleteRole: async (id: number) => {
-    const response = await RoleService.delete(id);
-    if (response) {
-      set((state) => ({
-        roles: state.roles.filter((role) => role.id !== id),
-      }));
+    try {
+      const response = await RoleService.delete(id);
+      if (response) {
+        set((state) => ({
+          roles: state.roles.filter((role) => role.id !== id),
+        }));
+      }
+      return !!response;
+    } catch (error) {
+      return false;
     }
-    return !!response;
   },
 }));

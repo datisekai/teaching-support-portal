@@ -4,6 +4,7 @@ import React, { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { sidebarData } from "../../constants";
 import { useAuthStore } from "../../stores";
+import { useUserStore } from "../../stores/userStore";
 
 interface IMySideBar {
   isSidebarVisible: boolean;
@@ -22,10 +23,8 @@ const MySideBar: React.FC<IMySideBar> = ({
 }) => {
   const navigate = useNavigate();
   const [expandedMenus, setExpandedMenus] = useState<ExpandedMenus>({});
-  // const { user } = useAuthStore();
+  const { user, permissions } = useUserStore();
   // console.log(user);
-
-  const user = JSON.parse(localStorage.getItem("user") || "{}");
 
   const handleExpandClick = (index: number) => {
     setExpandedMenus((prev) => ({
@@ -43,7 +42,7 @@ const MySideBar: React.FC<IMySideBar> = ({
 
   const hasPermission = (permission?: string) => {
     if (!permission) return false;
-    return user.permissions?.includes(permission);
+    return permissions?.includes(permission);
   };
 
   const filteredSidebarData = useMemo(() => {
@@ -53,12 +52,13 @@ const MySideBar: React.FC<IMySideBar> = ({
       );
       return hasPermission(item.permission) || hasChildPermission;
     });
-  }, [user.permissions]);
+  }, [permissions]);
 
   return (
     <div
-      className={`tw-fixed tw-top-0 tw-left-0 tw-h-full tw-bg-gray-100 tw-shadow-md tw-z-20 tw-transition-transform tw-duration-300 ${isSidebarVisible ? "tw-translate-x-0" : "-tw-translate-x-full"
-        } ${isMobile ? "tw-w-full" : "tw-w-80"}`}
+      className={`tw-fixed tw-top-0 tw-left-0 tw-h-full tw-bg-gray-100 tw-shadow-md tw-z-20 tw-transition-transform tw-duration-300 ${
+        isSidebarVisible ? "tw-translate-x-0" : "-tw-translate-x-full"
+      } ${isMobile ? "tw-w-full" : "tw-w-80"}`}
     >
       <div className="tw-flex tw-flex-col tw-h-full">
         <div className="tw-flex tw-items-center tw-justify-between tw-px-4 tw-py-3">
@@ -66,11 +66,7 @@ const MySideBar: React.FC<IMySideBar> = ({
             onClick={() => handleMenuItemClick("/")}
             className="tw-inline-flex tw-items-center tw-gap-2 hover:tw-cursor-pointer"
           >
-            <Avatar
-              image="/images/logo.png"
-              size="xlarge"
-              shape="circle"
-            />
+            <Avatar image="/images/logo.png" size="xlarge" shape="circle" />
             <span className="tw-font-semibold tw-text-2xl text-primary">
               IT SGU
             </span>
@@ -97,15 +93,17 @@ const MySideBar: React.FC<IMySideBar> = ({
                   <span className="tw-font-medium">{item.title}</span>
                   {item.children && item.children.length > 0 && (
                     <i
-                      className={`pi pi-chevron-down tw-transition-transform tw-duration-300 ${expandedMenus[index] ? "tw-rotate-180" : ""
-                        }`}
+                      className={`pi pi-chevron-down tw-transition-transform tw-duration-300 ${
+                        expandedMenus[index] ? "tw-rotate-180" : ""
+                      }`}
                     ></i>
                   )}
                   <Ripple />
                 </div>
                 <ul
-                  className={`tw-list-none tw-p-0 tw-m-0 tw-overflow-hidden tw-transition-max-height tw-duration-300 ${expandedMenus[index] ? "tw-max-h-40" : "tw-max-h-0"
-                    }`}
+                  className={`tw-list-none tw-p-0 tw-m-0 tw-overflow-hidden tw-transition-max-height tw-duration-300 ${
+                    expandedMenus[index] ? "tw-max-h-40" : "tw-max-h-0"
+                  }`}
                 >
                   {item?.children?.map((child, childIndex) => (
                     <li className="ml-2" key={childIndex}>

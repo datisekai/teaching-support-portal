@@ -34,7 +34,7 @@ export const sendServerRequest = async ({
       url: endpoint,
       method,
       ...{
-        [method === "get" ? "params" : "data"]: body,
+        [method === "GET" ? "params" : "data"]: body,
       },
     });
 

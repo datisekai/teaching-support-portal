@@ -32,7 +32,10 @@ export interface IActionTable {
   action?: "back";
   tooltip?: string;
 }
-
+export interface QueryParams {
+  page?: number;
+  [key: string]: any;
+}
 interface IMyTable {
   schemas: TableSchema[];
   data: any[];
@@ -54,14 +57,14 @@ const MyTable: FC<IMyTable> = ({
   actions = [],
   isLoading = false,
 }) => {
-  const [first, setFirst] = useState(0);
+  const [first, setFirst] = useState(1);
   const [selectedRowData, setSelectedRowData] = useState<any>(null);
   const [menuVisible, setMenuVisible] = useState(false);
   const menuRight = useRef<Menu>(null);
   const [debouncedValue, setValue] = useDebounceValue("", 500);
 
   const handlePageChange = (event: PaginatorPageChangeEvent) => {
-    const page = event.first;
+    const page = Math.max(1, event.first + 1);
     setFirst(page);
   };
 

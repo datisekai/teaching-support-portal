@@ -20,48 +20,64 @@ export const usePermissionStore = create<IPermissionState>((set) => ({
   permissions: [],
   isLoadingPermissions: false,
   permission: null,
+
   fetchPermissions: async () => {
-    const response = await permissionService.getAll();
-    console.log(response);
-    set({ permissions: response });
+    try {
+      const response = await permissionService.getAll();
+      set({ permissions: response });
+    } catch (error) {}
   },
+
   fetchPermission: async (id: number) => {
-    const response = await permissionService.getSingle(id);
-    console.log(response);
-    set({ permissions: response });
+    try {
+      const response = await permissionService.getSingle(id);
+      set({ permission: response });
+    } catch (error) {}
   },
 
   addPermission: async (Permission: IPermission) => {
-    const response = await permissionService.create(Permission);
-    if (response) {
-      set((state) => ({
-        permissions: [response, ...state.permissions],
-      }));
+    try {
+      const response = await permissionService.create(Permission);
+      if (response) {
+        set((state) => ({
+          permissions: [response, ...state.permissions],
+        }));
+      }
+      return !!response;
+    } catch (error) {
+      return false;
     }
-    return !!response;
   },
 
   updatePermission: async (id: number, updatedPermission: IPermission) => {
-    const response = await permissionService.update(id, updatedPermission);
-    if (response) {
-      set((state) => ({
-        permissions: state.permissions.map((permission) =>
-          permission.id === id ? response : permission
-        ),
-      }));
+    try {
+      const response = await permissionService.update(id, updatedPermission);
+      if (response) {
+        set((state) => ({
+          permissions: state.permissions.map((permission) =>
+            permission.id === id ? response : permission
+          ),
+        }));
+      }
+      return !!response;
+    } catch (error) {
+      return false;
     }
-    return !!response;
   },
 
   deletePermission: async (id: number) => {
-    const response = await permissionService.delete(id);
-    if (response) {
-      set((state) => ({
-        permissions: state.permissions.filter(
-          (permission) => permission.id !== id
-        ),
-      }));
+    try {
+      const response = await permissionService.delete(id);
+      if (response) {
+        set((state) => ({
+          permissions: state.permissions.filter(
+            (permission) => permission.id !== id
+          ),
+        }));
+      }
+      return !!response;
+    } catch (error) {
+      return false;
     }
-    return !!response;
   },
 }));

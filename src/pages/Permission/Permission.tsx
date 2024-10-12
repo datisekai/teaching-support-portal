@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import { useCommonStore, useModalStore, useRoleStore } from "../../stores";
-import MyTable, { IActionTable } from "../../components/UI/MyTable";
+import MyTable, {
+  IActionTable,
+  QueryParams,
+} from "../../components/UI/MyTable";
 import { useNavigate } from "react-router-dom";
 import useConfirm from "../../hooks/useConfirm";
 import { permissionSchemas } from "../../dataTable/permission";
@@ -99,20 +102,26 @@ const Permission = () => {
       },
     ]);
 
-    fetchRoles();
+    fetchRoles({});
     return () => {
       resetActions();
     };
   }, []);
 
+  const handleSearch = (query: Object) => {
+    fetchRoles(query);
+  };
+
   return (
     <div>
       <MyTable
+        keySearch="name"
         data={roles}
         schemas={permissionSchemas}
         actions={actionTable}
         totalRecords={total}
         isLoading={isLoadingApi}
+        onChange={handleSearch}
       />
     </div>
   );

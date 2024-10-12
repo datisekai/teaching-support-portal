@@ -3,11 +3,12 @@ import { useCommonStore, useModalStore } from "../../stores";
 import MyTable, { IActionTable } from "../../components/UI/MyTable";
 import { useNavigate } from "react-router-dom";
 import useConfirm from "../../hooks/useConfirm";
-import { majors, majorSchemas } from "../../dataTable/major";
+import { majorSchemas } from "../../dataTable/major";
 import { uploadFile } from "../../utils";
-import { Button } from "primereact/button";
-import { teachers } from "../../dataTable/teacher";
-import { ModalName } from "../../constants";
+import { ModalName, pathNames } from "../../constants";
+import { useMajorStore } from "../../stores/majorStore";
+import { teachers } from "../../dataTable/teacher"; // Import teachers
+import { useToast } from "../../hooks/useToast";
 
 const Major = () => {
   const { onToggle } = useModalStore();
@@ -18,7 +19,6 @@ const Major = () => {
         const transferData = teachers.map((item) => {
           return { content: item.code, subcontent: item.name };
         });
-        console.log({ id: data.id, contents: transferData });
         onToggle(ModalName.ADD_TEACHER, {
           header: "Thêm giảng viên",
           content: { id: data.id, contents: transferData },
@@ -32,7 +32,7 @@ const Major = () => {
       onClick: (data, options) => {
         handleEdit(data);
       },
-      tooltip: "Sửa",
+      tooltip: "Sửa",
       icon: "pi-pencil",
       severity: "warning",
     },
@@ -45,20 +45,38 @@ const Major = () => {
       severity: "danger",
     },
   ];
+
   const navigate = useNavigate();
   const { onConfirm } = useConfirm();
-
-  const { setHeaderTitle, setHeaderActions, resetActions } = useCommonStore();
+  const { showToast } = useToast();
+  const { setHeaderTitle, setHeaderActions, resetActions, isLoadingApi } =
+    useCommonStore();
+  const { majors, total, deleteMajor, fetchMajors } = useMajorStore();
 
   const handleEdit = (data: any) => {
-    navigate(`/major/edit/${data.id}`);
+    navigate(`${pathNames.MAJOR}/edit/${data.id}`);
   };
+
   const handleDelete = (id: number) => {
     const data = {
       message: "Bạn có chắc chắn muốn xoá môn học này?",
       header: "Xác nhận xoá",
       onAccept: () => {
-        console.log("Đã xoá thành công!", id);
+        const result = deleteMajor(id);
+        if (!result) {
+          return showToast({
+            severity: "danger",
+            summary: "Thông báo",
+            message: "Xóa thất bại",
+            life: 3000,
+          });
+        }
+        showToast({
+          severity: "success",
+          summary: "Thông báo",
+          message: "Xóa thành công",
+          life: 3000,
+        });
       },
       onReject: () => {
         console.log("Đã hủy bỏ hành động.");
@@ -74,7 +92,7 @@ const Major = () => {
         title: "Tạo",
         icon: "pi pi-plus",
         onClick: () => {
-          navigate("/major/create");
+          navigate(`${pathNames.MAJOR}/create`);
         },
         type: "button",
         disabled: false,
@@ -84,6 +102,7 @@ const Major = () => {
         icon: "pi pi-file-import",
         onClick: async () => {
           const file = await uploadFile();
+          console.log("File imported:", file);
         },
         type: "file",
         disabled: false,
@@ -92,7 +111,7 @@ const Major = () => {
         title: "Export",
         icon: "pi pi-file-export",
         onClick: () => {
-          console.log("a");
+          console.log("Export functionality here");
         },
         type: "button",
         disabled: false,
@@ -102,11 +121,26 @@ const Major = () => {
     return () => {
       resetActions();
     };
-  }, []);
+  }, [navigate, resetActions, setHeaderActions, setHeaderTitle]);
+
+  const handleSearch = (query: Object) => {
+    fetchMajors(query);
+  };
 
   return (
     <div>
-      <MyTable data={majors} schemas={majorSchemas} actions={actionTable} />
+      <MyTable
+        keySearch="name"
+        data={majors.map((item) => ({
+          ...item,
+          faculty: item.faculty.name,
+        }))}
+        schemas={majorSchemas}
+        actions={actionTable}
+        totalRecords={total}
+        isLoading={isLoadingApi}
+        onChange={handleSearch}
+      />
     </div>
   );
 };

@@ -1,61 +1,72 @@
-import React, { useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import * as yup from "yup";
 import GroupItem from "../../components/Form/GroupItem";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { set, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { useCommonStore } from "../../stores";
 import { IAction } from "../../stores/commonStore";
 import { MajorForm } from "../../dataForm/major";
-import { ClassForm } from "../../dataForm/class";
+import { useToast } from "../../hooks/useToast";
+import { useMajorStore } from "../../stores/majorStore";
+import { pathNames } from "../../constants";
+import { useFacultyStore } from "../../stores/facultyStore";
+import MyLoading from "../../components/UI/MyLoading";
 
-const schema = yup
-  .object()
-  .shape({
-    name: yup.string().required("Tên môn học là bắt buộc."),
-    description: yup.string().required("Mô tả môn học là bắt buộc."),
-    code: yup
-      .number()
-      .notOneOf([0], "Mã môn học là bắt buộc.")
-      .required("Mã môn học là bắt buộc."),
-    faculty: yup
-      .string()
-      .required("Ngành học là bắt buộc.")
-      .required("Ngành học là bắt buộc."),
-    teacher: yup
-      .array()
-      .required("Giảng viên không hợp lệ.")
-      .min(1, "Giảng viên là bắt buộc.")
-      .required("Giảng viên là bắt buộc."),
-  })
-  .required();
+const schema = yup.object().shape({
+  name: yup.string().required("Tên môn học là bắt buộc."),
+  code: yup
+    .number()
+    .notOneOf([0], "Mã môn học là bắt buộc.")
+    .required("Mã môn học là bắt buộc."),
+  facultyId: yup.number().required("Ngành học là bắt buộc."),
+});
+
 const CreateMajor = () => {
   const {
     handleSubmit,
     formState: { errors },
     control,
+    setValue,
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
-      description: "",
       name: "",
       code: 0,
-      faculty: "",
-      teacher: [],
+      facultyId: 0,
     },
   });
+
   const navigate = useNavigate();
+  const { showToast } = useToast();
+  const { addMajor } = useMajorStore();
+  const { setFooterActions, setHeaderTitle, resetActions, isLoadingApi } =
+    useCommonStore();
+  const { facultys, fetchFacultys } = useFacultyStore();
+  const [facultiesLoaded, setFacultiesLoaded] = useState(false);
 
-  const setFooterActions = useCommonStore((state) => state.setFooterActions);
-  const setHeaderTitle = useCommonStore((state) => state.setHeaderTitle);
-  const resetActions = useCommonStore((state) => state.resetActions);
-
-  const onSubmit = () => {
-    navigate(-1);
+  const onSubmit = async (values: any) => {
+    const result = await addMajor(values);
+    if (!result) {
+      showToast({
+        severity: "danger",
+        summary: "Thông báo",
+        message: "Tạo thất bại",
+        life: 3000,
+      });
+      return;
+    }
+    showToast({
+      severity: "success",
+      summary: "Thông báo",
+      message: "Tạo thành công",
+      life: 3000,
+    });
+    navigate(pathNames.MAJOR);
   };
 
   useEffect(() => {
-    const actions: IAction[] = [
+    setFooterActions([
       {
         title: "Trở lại",
         severity: "secondary",
@@ -66,22 +77,47 @@ const CreateMajor = () => {
         title: "Tạo",
         icon: "pi-plus",
       },
-    ];
-    setFooterActions(actions);
+    ]);
     setHeaderTitle("Tạo môn học");
+
+    fetchFacultys({ limit: 10000 }).then(() => {
+      setFacultiesLoaded(true);
+    });
 
     return () => {
       resetActions();
     };
   }, []);
 
+  useEffect(() => {
+    if (facultys) {
+      const updatedOptions = facultys.map((faculty: any) => ({
+        title: faculty.name,
+        value: faculty.id,
+      }));
+
+      MajorForm[0].attributes.find(
+        (attr) => attr.prop === "facultyId"
+      )!.options = updatedOptions;
+    }
+  }, [facultys]);
+
   return (
     <div>
-      <form onSubmit={(e) => e.preventDefault()} className="tw-space-y-4">
-        {MajorForm.map((form, index) => (
-          <GroupItem errors={errors} {...form} key={index} control={control} />
-        ))}
-      </form>
+      <MyLoading isLoading={isLoadingApi || !facultiesLoaded}>
+        {facultiesLoaded && (
+          <form onSubmit={(e) => e.preventDefault()} className="tw-space-y-4">
+            {MajorForm.map((form, index) => (
+              <GroupItem
+                errors={errors}
+                {...form}
+                key={index}
+                control={control}
+              />
+            ))}
+          </form>
+        )}
+      </MyLoading>
     </div>
   );
 };

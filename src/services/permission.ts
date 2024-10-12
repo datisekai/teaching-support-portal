@@ -5,9 +5,9 @@ import {
 } from "../apis";
 
 export const permissionService = {
-  getAll: async () => {
+  getAll: async (body = {}) => {
     const { getAll } = apiConfig.permission;
-    return processMiddlewareSendRequest(getAll);
+    return processMiddlewareSendRequest({ ...getAll, body });
   },
   getSingle: async (id: number) => {
     const { getSingle } = apiConfig.permission;

@@ -1,25 +1,24 @@
 import { useEffect, useState } from "react";
 import { useCommonStore } from "../../stores";
 import MyTable, { IActionTable } from "../../components/UI/MyTable";
-import { facultySchemas, facultys } from "../../dataTable/faculty";
+import { facultySchemas } from "../../dataTable/faculty";
 import { useNavigate } from "react-router-dom";
 import useConfirm from "../../hooks/useConfirm";
 import { uploadFile } from "../../utils";
+import { useFacultyStore } from "../../stores/facultyStore";
+import { useToast } from "../../hooks/useToast";
+import { pathNames } from "../../constants";
 
 const Faculty = () => {
   const actionTable: IActionTable[] = [
     {
-      onClick: (data, options) => {
-        handleEdit(data);
-      },
-      tooltip: "Sửa",
+      onClick: (data) => handleEdit(data),
+      tooltip: "Sửa",
       icon: "pi-pencil",
       severity: "warning",
     },
     {
-      onClick: (data, options) => {
-        handleDelete(data.id);
-      },
+      onClick: (data) => handleDelete(data.id),
       tooltip: "Xóa",
       icon: "pi-trash",
       severity: "danger",
@@ -27,22 +26,37 @@ const Faculty = () => {
   ];
   const navigate = useNavigate();
   const { onConfirm } = useConfirm();
-
-  const { setHeaderTitle, setHeaderActions, resetActions } = useCommonStore();
+  const { showToast } = useToast();
+  const { setHeaderTitle, setHeaderActions, resetActions, isLoadingApi } =
+    useCommonStore();
+  const { facultys, total, deleteFaculty, fetchFacultys } = useFacultyStore();
 
   const handleEdit = (data: any) => {
-    navigate(`/faculty/edit/${data.id}`);
+    navigate(`${pathNames.FACULTY}/edit/${data.id}`);
   };
-  const handleDelete = (id: number) => {
+
+  const handleDelete = (id: string) => {
     const data = {
       message: "Bạn có chắc chắn muốn xoá ngành học này?",
       header: "Xác nhận xoá",
       onAccept: () => {
-        console.log("Đã xoá thành công!", id);
+        const result = deleteFaculty(parseInt(id));
+        if (!result) {
+          return showToast({
+            severity: "danger",
+            summary: "Thông báo",
+            message: "Xóa thất bại",
+            life: 3000,
+          });
+        }
+        showToast({
+          severity: "success",
+          summary: "Thông báo",
+          message: "Xóa thành công",
+          life: 3000,
+        });
       },
-      onReject: () => {
-        console.log("Đã hủy bỏ hành động.");
-      },
+      onReject: () => {},
     };
     onConfirm(data);
   };
@@ -53,9 +67,7 @@ const Faculty = () => {
       {
         title: "Tạo",
         icon: "pi pi-plus",
-        onClick: () => {
-          navigate(`/faculty/create`);
-        },
+        onClick: () => navigate(`${pathNames.FACULTY}/create`),
         type: "button",
         disabled: false,
       },
@@ -72,7 +84,7 @@ const Faculty = () => {
         title: "Export",
         icon: "pi pi-file-export",
         onClick: () => {
-          console.log("a");
+          console.log("Export logic");
         },
         type: "button",
         disabled: false,
@@ -82,11 +94,23 @@ const Faculty = () => {
     return () => {
       resetActions();
     };
-  }, []);
+  }, [navigate, resetActions, setHeaderActions, setHeaderTitle]);
+
+  const handleSearch = (query: Object) => {
+    fetchFacultys(query);
+  };
 
   return (
     <div>
-      <MyTable data={facultys} schemas={facultySchemas} actions={actionTable} />
+      <MyTable
+        keySearch="name"
+        data={facultys}
+        schemas={facultySchemas}
+        actions={actionTable}
+        totalRecords={total}
+        isLoading={isLoadingApi}
+        onChange={handleSearch}
+      />
     </div>
   );
 };

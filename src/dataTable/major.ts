@@ -17,11 +17,6 @@ export const majorSchemas: TableSchema[] = [
     type: "text",
   },
   {
-    label: "Mô tả",
-    prop: "description",
-    type: "text",
-  },
-  {
     label: "Ngành",
     prop: "faculty",
     type: "text",

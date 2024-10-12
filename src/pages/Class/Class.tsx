@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import useConfirm from "../../hooks/useConfirm";
 import { classes, classSchemas } from "../../dataTable/class";
 import { uploadFile } from "../../utils";
+import { useClassStore } from "../../stores/classStore";
 
 const Class = () => {
   const actionTable: IActionTable[] = [
@@ -60,8 +61,9 @@ const Class = () => {
   const navigate = useNavigate();
   const { onConfirm } = useConfirm();
 
-  const { setHeaderTitle, setHeaderActions, resetActions } = useCommonStore();
-
+  const { setHeaderTitle, setHeaderActions, resetActions, isLoadingApi } =
+    useCommonStore();
+  const { classes, total, fetchClasses, deleteClass } = useClassStore();
   const handleClick = (endpoint: string, data: any) => {
     console.log(data);
     navigate(endpoint);
@@ -117,9 +119,21 @@ const Class = () => {
     };
   }, []);
 
+  const handleSearch = (query: Object) => {
+    fetchClasses(query);
+  };
+
   return (
     <div>
-      <MyTable data={classes} schemas={classSchemas} actions={actionTable} />
+      <MyTable
+        keySearch="name"
+        data={classes}
+        schemas={classSchemas}
+        actions={actionTable}
+        totalRecords={total}
+        isLoading={isLoadingApi}
+        onChange={handleSearch}
+      />
     </div>
   );
 };

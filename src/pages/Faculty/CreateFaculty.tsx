@@ -7,6 +7,9 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { set, useForm } from "react-hook-form";
 import { useCommonStore } from "../../stores";
 import { IAction } from "../../stores/commonStore";
+import { useFacultyStore } from "../../stores/facultyStore";
+import { pathNames } from "../../constants";
+import { useToast } from "../../hooks/useToast";
 const schema = yup
   .object()
   .shape({
@@ -27,14 +30,29 @@ const CreateFaculty = () => {
     },
   });
   const navigate = useNavigate();
-
+  const { showToast } = useToast();
+  const { faculty, addFaculty } = useFacultyStore();
   const setFooterActions = useCommonStore((state) => state.setFooterActions);
   const setHeaderTitle = useCommonStore((state) => state.setHeaderTitle);
   const resetActions = useCommonStore((state) => state.resetActions);
 
   const onSubmit = (values: any) => {
-    console.log('values', values);
-    // navigate(-1);
+    const result = addFaculty(values);
+    if (!result) {
+      return showToast({
+        severity: "danger",
+        summary: "Thông báo",
+        message: "Tạo thất bại",
+        life: 3000,
+      });
+    }
+    showToast({
+      severity: "success",
+      summary: "Thông báo",
+      message: "Tạo thành công",
+      life: 3000,
+    });
+    navigate(pathNames.FACULTY);
   };
 
   useEffect(() => {
