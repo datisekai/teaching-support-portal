@@ -26,7 +26,7 @@ const DynamicModal = () => {
       modal
       header={header}
       footer={footer}
-      className={`tw-w-[90%] md:tw-w-[50rem] ${style}`}
+      className={`tw-w-[90%] md:tw-w-[50rem] ${style} modal-${modalName}`}
       onHide={onDismiss}
     >
       {modalName === ModalName.TEST && <TestModal />}
