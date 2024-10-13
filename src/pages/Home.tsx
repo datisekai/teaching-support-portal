@@ -10,7 +10,6 @@ import MyTable from "../components/UI/MyTable";
 import { products, productSchemas } from "../dataTable/productsTable";
 import { useCommonStore } from "../stores";
 import MyCard from "../components/UI/MyCard";
-import { TestForm } from "../dataForm/test";
 import GroupItem from "../components/Form/GroupItem";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
@@ -153,14 +152,14 @@ export default function Home() {
         </div>
         <div className="card tw-mt-2">
           <form onSubmit={(e) => e.preventDefault()} className="tw-space-y-4">
-            {TestForm.map((form, index) => (
+            {/* {TestForm.map((form, index) => (
               <GroupItem
                 errors={errors}
                 {...form}
                 key={index}
                 control={control}
               />
-            ))}
+            ))} */}
           </form>
         </div>
       </div>

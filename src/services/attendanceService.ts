@@ -14,7 +14,10 @@ export const attendanceService = {
   },
   getAttendees: async (id: number) => {
     const { getAttendees } = apiConfig.attendance;
-    return processMiddlewareSendRequest({ ...getAttendees });
+    return processMiddlewareSendRequest({
+      ...getAttendees,
+      endpoint: getAttendees.endpoint.replace(":id", id.toString()),
+    });
   },
   getSingle: async (id: string) => {
     const { getSingle } = apiConfig.attendance;

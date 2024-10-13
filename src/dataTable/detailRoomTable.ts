@@ -23,18 +23,19 @@ export const detailRoomSchemas: TableSchema[] = [
   },
   {
     label: "Số điện thoại",
-    prop: "phoneNumber",
+    prop: "phone",
     type: "text",
   },
   {
     label: "Trạng thái",
-    prop: "status",
+    prop: "isSuccess",
     type: "badge",
+
     getBadge: (value) => {
       switch (value) {
-        case "success":
+        case true:
           return { value: "Thành công", severity: "success" };
-        case "failed":
+        case false:
           return { value: "Thất bại", severity: "danger" };
         default:
           return { value: "Lỗi", severity: "warning" };
@@ -42,7 +43,7 @@ export const detailRoomSchemas: TableSchema[] = [
     },
   },
   {
-    label: "Ngày tạo",
+    label: "Thời gian",
     prop: "createdAt",
     type: "datetime",
   },

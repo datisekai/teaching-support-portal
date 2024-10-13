@@ -24,17 +24,16 @@ const DetailAttendance = () => {
   }, []);
 
   const data = useMemo(() => {
-    return attendees.map(item => ({
-
+    return attendees?.map(item => ({
+      ...item, ...item.user, email: item.user.email || "Chưa có", phone: item.user.phone || "Chưa có"
     }))
   }, [attendees])
 
   return (
     <div>
       <MyTable
-        data={detailRooms}
+        data={data}
         isLoading={isLoadingApi}
-
         schemas={detailRoomSchemas}
         actions={actionTable}
       />

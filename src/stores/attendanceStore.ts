@@ -38,7 +38,7 @@ export const useAttendanceStore = create<IAttendanceState>((set) => ({
     try {
       const response = await attendanceService.getAttendees(+id);
       console.log("fetchAttendees", response);
-      set({ attendees: response });
+      set({ attendees: response.data });
     } catch (error) {}
   },
 
@@ -77,13 +77,7 @@ export const useAttendanceStore = create<IAttendanceState>((set) => ({
   deleteAttendance: async (id: number) => {
     try {
       const response = await attendanceService.delete(id);
-      if (response) {
-        set((state) => ({
-          attendances: state.attendances.filter(
-            (attendance) => attendance.id !== id
-          ),
-        }));
-      }
+      useAttendanceStore().fetchAttendances({});
       return !!response;
     } catch (error) {
       return false;
