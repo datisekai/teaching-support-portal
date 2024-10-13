@@ -4,7 +4,7 @@ import MyTable from '../components/UI/MyTable';
 import MyCard from '../components/UI/MyCard';
 import MyTabs from '../components/UI/MyTabs';
 import MyCalendar from '../components/UI/MyCalendar';
-import { products, productSchemas } from '../dataTable/products';
+import { products, productSchemas } from '../dataTable/productsTable';
 
 const componentMapping = {
     MyTable,

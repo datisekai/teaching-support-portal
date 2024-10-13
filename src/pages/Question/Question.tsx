@@ -3,7 +3,7 @@ import { useCommonStore, useModalStore } from "../../stores";
 import MyTable, { IActionTable } from "../../components/UI/MyTable";
 import { useNavigate } from "react-router-dom";
 import { Button } from "primereact/button";
-import { questions, questionSchemas } from "../../dataTable/question";
+import { questions, questionSchemas } from "../../dataTable/questionTable";
 import useConfirm from "../../hooks/useConfirm";
 import { ModalName } from "../../constants";
 

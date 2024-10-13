@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { permissionService } from "../services/permission";
+import { permissionService } from "../services/permissionService";
 import { IPermission } from "../types/user";
 
 interface IPermissionState {

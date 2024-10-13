@@ -6,8 +6,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { set, useForm } from "react-hook-form";
 import { useCommonStore } from "../../stores";
 import { IAction } from "../../stores/commonStore";
-import { UserForm } from "../../dataForm/user";
-import { interfaceForm } from "../../dataForm/interface";
+import { UserForm } from "../../dataForm/userForm";
+import { interfaceForm } from "../../dataForm/interfaceForm";
 const schema = yup
   .object()
   .shape({

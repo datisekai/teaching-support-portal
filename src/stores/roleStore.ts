@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { RoleService } from "../services/role";
+import { RoleService } from "../services/roleService";
 import { IRole } from "../types/user";
 
 interface IRoleState {

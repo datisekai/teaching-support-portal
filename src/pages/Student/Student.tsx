@@ -4,7 +4,7 @@ import MyTable, { IActionTable } from "../../components/UI/MyTable";
 import { useNavigate, useParams } from "react-router-dom";
 import useConfirm from "../../hooks/useConfirm";
 import { uploadFile } from "../../utils";
-import { students, studentSchemas } from "../../dataTable/student";
+import { students, studentSchemas } from "../../dataTable/studentTable";
 
 const Student = () => {
   const { id } = useParams();

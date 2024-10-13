@@ -3,7 +3,7 @@ import { useCommonStore } from "../../stores";
 import MyTable, { IActionTable } from "../../components/UI/MyTable";
 import { useNavigate } from "react-router-dom";
 import useConfirm from "../../hooks/useConfirm";
-import { classes, classSchemas } from "../../dataTable/class";
+import { classes, classSchemas } from "../../dataTable/classTable";
 import { uploadFile } from "../../utils";
 import { useClassStore } from "../../stores/classStore";
 

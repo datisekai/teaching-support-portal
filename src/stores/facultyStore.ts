@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { facultyService } from "../services/faculty";
+import { facultyService } from "../services/facultyService";
 import { IFaculty } from "../types/faculty";
 
 interface IFacultyState {

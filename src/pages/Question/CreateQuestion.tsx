@@ -6,7 +6,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { useCommonStore } from "../../stores";
 import { IAction } from "../../stores/commonStore";
-import { QuestionForm } from "../../dataForm/question";
+import { QuestionForm } from "../../dataForm/questionForm";
 
 const schema = yup
   .object()

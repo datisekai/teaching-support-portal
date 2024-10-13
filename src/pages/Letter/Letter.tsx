@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useCommonStore, useModalStore } from "../../stores";
 import MyTable, { IActionTable } from "../../components/UI/MyTable";
 import { useNavigate } from "react-router-dom";
-import { letters, letterSchemas } from "../../dataTable/letter";
+import { letters, letterSchemas } from "../../dataTable/letterTable";
 import { Button } from "primereact/button";
 import { Dropdown, DropdownChangeEvent } from "primereact/dropdown";
 import { ModalName } from "../../constants";

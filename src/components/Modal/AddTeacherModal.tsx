@@ -1,6 +1,6 @@
 import { Dropdown, DropdownChangeEvent } from "primereact/dropdown";
 import React, { useState } from "react";
-import { teachers, teacherSchemas } from "../../dataTable/teacher";
+import { teachers, teacherSchemas } from "../../dataTable/teacherTable";
 import { Button } from "primereact/button";
 import MyTable, { IActionTable } from "../UI/MyTable";
 

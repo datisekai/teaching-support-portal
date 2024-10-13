@@ -7,7 +7,7 @@ import { InputText } from "primereact/inputtext";
 import { IconField } from "primereact/iconfield";
 import { InputIcon } from "primereact/inputicon";
 import MyTable from "../components/UI/MyTable";
-import { products, productSchemas } from "../dataTable/products";
+import { products, productSchemas } from "../dataTable/productsTable";
 import { useCommonStore } from "../stores";
 import MyCard from "../components/UI/MyCard";
 import { TestForm } from "../dataForm/test";

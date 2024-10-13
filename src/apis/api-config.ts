@@ -205,9 +205,9 @@ export const apiConfig = {
       method: "GET",
       endpoint: "/api.attendance/:id",
     },
-    getAllOwner: {
+    getAttendees: {
       method: "GET",
-      endpoint: "/api.attendance/me",
+      endpoint: "/api.attendance/:id/attendees",
     },
   },
 };

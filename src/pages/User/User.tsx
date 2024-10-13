@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { useCommonStore } from "../../stores";
 import MyTable, { IActionTable } from "../../components/UI/MyTable";
-import { facultySchemas, facultys } from "../../dataTable/faculty";
+import { facultySchemas, facultys } from "../../dataTable/facultyTable";
 import { useNavigate } from "react-router-dom";
 import useConfirm from "../../hooks/useConfirm";
 import { uploadFile } from "../../utils";
-import { users, userSchemas } from "../../dataTable/user";
+import { users, userSchemas } from "../../dataTable/userTable";
 
 const User = () => {
   const actionTable: IActionTable[] = [

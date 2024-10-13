@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useCommonStore } from "../../stores";
 import MyTable, { IActionTable } from "../../components/UI/MyTable";
 import { Chart } from "primereact/chart";
-import { statistics, statisticSchemas } from "../../dataTable/statistic";
+import { statistics, statisticSchemas } from "../../dataTable/statisticTable";
 
 const Statistic = () => {
   const actionTable: IActionTable[] = [];

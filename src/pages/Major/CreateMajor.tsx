@@ -6,7 +6,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { useCommonStore } from "../../stores";
 import { IAction } from "../../stores/commonStore";
-import { MajorForm } from "../../dataForm/major";
+import { MajorForm } from "../../dataForm/majorForm";
 import { useToast } from "../../hooks/useToast";
 import { useMajorStore } from "../../stores/majorStore";
 import { pathNames } from "../../constants";

@@ -6,7 +6,7 @@ import MyTable, {
 } from "../../components/UI/MyTable";
 import { useNavigate } from "react-router-dom";
 import useConfirm from "../../hooks/useConfirm";
-import { permissionSchemas } from "../../dataTable/permission";
+import { permissionSchemas } from "../../dataTable/permissionTable";
 import { ModalName } from "../../constants";
 import { useToast } from "../../hooks/useToast";
 
@@ -79,7 +79,7 @@ const Permission = () => {
           life: 3000,
         });
       },
-      onReject: () => {},
+      onReject: () => { },
     };
     onConfirm(data);
   };

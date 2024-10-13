@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { assignPermissions, users } from "../constants";
 import { AuthService } from "../services";
-import { UserService } from "../services/user";
+import { UserService } from "../services/userService";
 import { IUser } from "../types/user";
 
 interface IState {

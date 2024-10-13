@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { classService } from "../services/class";
+import { classService } from "../services/classService";
 import { IClass } from "../types/class";
 
 interface IClassState {

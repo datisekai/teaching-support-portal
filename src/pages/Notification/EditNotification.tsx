@@ -6,7 +6,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { useCommonStore } from "../../stores";
 import { IAction } from "../../stores/commonStore";
-import { NotificationForm } from "../../dataForm/notification";
+import { NotificationForm } from "../../dataForm/notificationForm";
 
 // Định nghĩa schema validation cho Notification
 const schema = yup

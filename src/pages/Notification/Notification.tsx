@@ -6,7 +6,7 @@ import useConfirm from "../../hooks/useConfirm";
 import {
   notifications,
   notificationSchemas,
-} from "../../dataTable/notification";
+} from "../../dataTable/notificationTable";
 
 const Notification = () => {
   const navigate = useNavigate();

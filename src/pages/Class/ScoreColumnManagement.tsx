@@ -3,8 +3,8 @@ import MyTableCustom from "../../components/UI/MyTableCustom";
 import {
   scoreColumnManagements,
   scoreColumnManagementSchemas,
-} from "../../dataTable/score-column-management";
-import { classes, classSchemas } from "../../dataTable/class";
+} from "../../dataTable/scoreColumnManagementTable";
+import { classes, classSchemas } from "../../dataTable/classTable";
 import { IActionTable } from "../../components/UI/MyTable";
 import useConfirm from "../../hooks/useConfirm";
 

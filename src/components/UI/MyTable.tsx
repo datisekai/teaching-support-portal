@@ -200,7 +200,7 @@ const MyTable: FC<IMyTable> = ({
       <DataTable
         loading={isLoading}
         value={data}
-        header={renderHeader()}
+        header={keySearch ? renderHeader() : null}
         tableStyle={{ minWidth: "10rem" }}
       >
         {schemas.map((schema) => (

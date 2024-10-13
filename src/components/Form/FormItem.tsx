@@ -1,18 +1,17 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { IFormItem, IOption } from "../../types/form-item";
-import { InputText } from "primereact/inputtext";
-import { Controller } from "react-hook-form";
-import { Editor } from "primereact/editor";
-import { InputNumber } from "primereact/inputnumber";
-import { InputSwitch } from "primereact/inputswitch";
 import { Calendar } from "primereact/calendar";
 import { Dropdown } from "primereact/dropdown";
+import { InputNumber } from "primereact/inputnumber";
+import { InputSwitch } from "primereact/inputswitch";
+import { InputText } from "primereact/inputtext";
 import { InputTextarea } from "primereact/inputtextarea";
 import { MultiSelect } from "primereact/multiselect";
+import React, { useEffect, useMemo, useState } from "react";
+import { Controller } from "react-hook-form";
 import { useWindowSize } from "usehooks-ts";
-import MyUploadSingleImage from "../UI/MyUploadSingleImage";
-import MyEditor from "../UI/MyEditor";
 import { sendServerRequest } from "../../apis";
+import { IFormItem, IOption } from "../../types/form-item";
+import MyEditor from "../UI/MyEditor";
+import MyUploadSingleImage from "../UI/MyUploadSingleImage";
 
 interface IForm extends IFormItem {
   control: any;
@@ -28,7 +27,8 @@ const FormItem: React.FC<IForm> = ({
   control,
   col = 6,
   apiUrl,
-  getOptions
+  getOptions,
+  description
 }) => {
   const windowSize = useWindowSize();
 
@@ -36,7 +36,7 @@ const FormItem: React.FC<IForm> = ({
     if (windowSize.width < 768) return "100%";
     return `${(col / 12) * 100}%`;
   }, [col, windowSize.width]);
-  const [ajaxOptions, setAjaxOptions] = useState<IOption[]>([]);
+  const [ajaxOptions, setAjaxOptions] = useState<IOption[] | null>(null);
   const [loading, setLoading] = useState(false);
 
   const renderController = (renderFn: (props: any) => JSX.Element) => (
@@ -45,7 +45,7 @@ const FormItem: React.FC<IForm> = ({
 
   const getAjaxOptions = async () => {
     setLoading(true);
-    const data = await sendServerRequest({ endpoint: apiUrl, method: "GET", body: { limit: 10000 } });
+    const data = await sendServerRequest({ endpoint: apiUrl, method: "GET", body: { pagination: false } });
     const newOptions = getOptions?.(data.data) || [];
     setAjaxOptions(newOptions)
     setLoading(false);
@@ -77,19 +77,6 @@ const FormItem: React.FC<IForm> = ({
         );
       case "editor":
         return renderController(({ field: { onChange, value, onBlur } }) => (
-          // <Editor
-          //   placeholder={label}
-          //   value={value}
-          //   name={prop}
-          //   onSelectionChange={(e) => {
-          //     console.log("e", e);
-          //   }}
-          //   onTextChange={(e) =>
-          //     onChange({ target: { value: e.htmlValue, name: prop } })
-          //   }
-          //   style={{ height: "320px" }}
-          //   onBlur={onBlur}
-          // />
           <MyEditor value={value} height={500} onChange={(e) => onChange({ target: { value: e, name: prop } })} />
         ));
       case "number":
@@ -177,21 +164,24 @@ const FormItem: React.FC<IForm> = ({
           />
         ));
       case "select-ajax":
-        return renderController(({ field: { onChange, onBlur, value } }) => (
-          <Dropdown
-            loading={loading}
-            invalid={!!error}
-            onBlur={onBlur}
-            value={value}
-            onChange={(e) =>
-              onChange({ target: { value: e.value, name: prop } })
-            }
-            options={ajaxOptions}
-            placeholder={`Chọn ${label.toLowerCase()}`}
-            className="tw-w-full"
-            optionLabel="title"
-          />
-        ));
+        return renderController(({ field: { onChange, onBlur, value } }) => {
+          console.log('value', value, ajaxOptions);
+          return (
+            <Dropdown
+              loading={loading}
+              invalid={!!error}
+              onBlur={onBlur}
+              value={+value}
+              onChange={(e) =>
+                onChange({ target: { value: e.value, name: prop } })
+              }
+              options={ajaxOptions || []}
+              placeholder={`Chọn ${label.toLowerCase()}`}
+              className="tw-w-full"
+              optionLabel="title"
+            />
+          )
+        });
       case "textarea":
         return renderController(({ field: { onChange, onBlur, value } }) => (
           <InputTextarea
@@ -235,10 +225,13 @@ const FormItem: React.FC<IForm> = ({
   return (
     <div style={{ width }}>
       <div>
-        <label className="tw-mb-2 tw-block" htmlFor={prop}>
+        <label className=" tw-block" htmlFor={prop}>
           {label}
         </label>
-        {getInputComponent()}
+        {description && <div className="tw-py-0 tw-text-sm tw-my-0 tw-text-gray-600">{description}</div>}
+        <div className="mt-2">
+          {getInputComponent()}
+        </div>
         {error && (
           <small id={`${prop}-help`} className="tw-text-red-500">
             {error}

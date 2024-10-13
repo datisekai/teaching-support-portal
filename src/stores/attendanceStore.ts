@@ -1,26 +1,30 @@
 import { create } from "zustand";
-import { attendanceService } from "../services/attendance";
-import { IAttendance } from "../types/attendance";
+import { attendanceService } from "../services/attendanceService";
+import { IAttendance, IAttendee } from "../types/attendance";
 
 interface IAttendanceState {
   attendances: IAttendance[];
   attendance: IAttendance | null;
+  attendees: IAttendee[];
   total: number;
   isLoadingAttendances: boolean;
   fetchAttendances: (body: object) => Promise<void>;
   fetchAttendance: (id: string) => Promise<void>;
+  fetchAttendees: (id: string) => Promise<void>;
   addAttendance: (Attendance: IAttendance) => Promise<boolean>;
   updateAttendance: (
     id: number,
     updatedAttendance: IAttendance
   ) => Promise<boolean>;
   deleteAttendance: (id: number) => Promise<boolean>;
+  updateStatus: (id: number, isOpen: boolean) => void;
 }
 
 export const useAttendanceStore = create<IAttendanceState>((set) => ({
   attendances: [],
   attendance: null,
   isLoadingAttendances: false,
+  attendees: [],
   total: 0,
 
   fetchAttendances: async (body) => {
@@ -28,6 +32,13 @@ export const useAttendanceStore = create<IAttendanceState>((set) => ({
       console.log("abc");
       const response = await attendanceService.getAll(body);
       set({ attendances: response.data, total: response.total });
+    } catch (error) {}
+  },
+  fetchAttendees: async (id) => {
+    try {
+      const response = await attendanceService.getAttendees(+id);
+      console.log("fetchAttendees", response);
+      set({ attendees: response });
     } catch (error) {}
   },
 
@@ -41,11 +52,6 @@ export const useAttendanceStore = create<IAttendanceState>((set) => ({
   addAttendance: async (Attendance: IAttendance) => {
     try {
       const response = await attendanceService.create(Attendance);
-      if (response) {
-        set((state) => ({
-          attendances: [response, ...state.attendances],
-        }));
-      }
       return !!response;
     } catch (error) {
       return false;
@@ -58,7 +64,7 @@ export const useAttendanceStore = create<IAttendanceState>((set) => ({
       if (response) {
         set((state) => ({
           attendances: state.attendances.map((attendance) =>
-            attendance.id === id ? response : attendance
+            attendance.id === id ? { ...attendance, ...response } : attendance
           ),
         }));
       }
@@ -82,5 +88,12 @@ export const useAttendanceStore = create<IAttendanceState>((set) => ({
     } catch (error) {
       return false;
     }
+  },
+  updateStatus: (id, isOpen) => {
+    set((state) => ({
+      attendances: state.attendances.map((attendance) =>
+        attendance.id === id ? { ...attendance, isOpen } : attendance
+      ),
+    }));
   },
 }));

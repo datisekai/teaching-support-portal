@@ -5,9 +5,9 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button } from "primereact/button";
-import { PermissionForm } from "../../dataForm/permission";
+import { PermissionForm } from "../../dataForm/permissionForm";
 import FormItem from "../Form/FormItem";
-import { RoleService } from "../../services/role";
+import { RoleService } from "../../services/roleService";
 import { useToast } from "../../hooks/useToast";
 const schema = yup
   .object()

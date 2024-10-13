@@ -3,7 +3,7 @@ import { useCommonStore, useModalStore } from "../../stores";
 import MyTable, { IActionTable } from "../../components/UI/MyTable";
 import { useNavigate } from "react-router-dom";
 import useConfirm from "../../hooks/useConfirm";
-import { myQuestions, myQuestionSchemas } from "../../dataTable/my-question";
+import { myQuestions, myQuestionSchemas } from "../../dataTable/myQuestionTable";
 
 interface IStatus {
   id: string;

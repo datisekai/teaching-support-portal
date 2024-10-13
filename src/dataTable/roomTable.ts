@@ -26,7 +26,7 @@ export const roomSchemas: TableSchema[] = [
       switch (value) {
         case false:
         case "":
-          return { severity: "info", value: "Chưa bắt đầu" };
+          return { severity: "warning", value: "Không hoạt động" };
         case true:
           return { severity: "info", value: "Đang điểm danh" };
       }
@@ -125,5 +125,23 @@ export const rooms = [
     status: "ready", // trạng thái: Chưa bắt đầu
     teacherName: "Phạm Thị J",
     updatedAt: "2024-09-15T14:35:00",
+  },
+];
+
+export const AttendeeSchemas: TableSchema[] = [
+  {
+    label: "Mã sinh viên",
+    prop: "code",
+    type: "text",
+  },
+  {
+    label: "Tên sinh viên",
+    prop: "name",
+    type: "text",
+  },
+  {
+    label: "Thời gian",
+    prop: "time",
+    type: "datetime",
   },
 ];

@@ -3,11 +3,11 @@ import { useCommonStore, useModalStore } from "../../stores";
 import MyTable, { IActionTable } from "../../components/UI/MyTable";
 import { useNavigate } from "react-router-dom";
 import useConfirm from "../../hooks/useConfirm";
-import { majorSchemas } from "../../dataTable/major";
+import { majorSchemas } from "../../dataTable/majorTable";
 import { uploadFile } from "../../utils";
 import { ModalName, pathNames } from "../../constants";
 import { useMajorStore } from "../../stores/majorStore";
-import { teachers } from "../../dataTable/teacher"; // Import teachers
+import { teachers } from "../../dataTable/teacherTable"; // Import teachers
 import { useToast } from "../../hooks/useToast";
 
 const Major = () => {

@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { majorService } from "../services/major";
+import { majorService } from "../services/majorService";
 import { IMajor } from "../types/major";
 
 interface IMajorState {

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useCommonStore } from "../../stores";
 import MyTable, { IActionTable } from "../../components/UI/MyTable";
-import { facultySchemas } from "../../dataTable/faculty";
+import { facultySchemas } from "../../dataTable/facultyTable";
 import { useNavigate } from "react-router-dom";
 import useConfirm from "../../hooks/useConfirm";
 import { uploadFile } from "../../utils";

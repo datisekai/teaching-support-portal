@@ -6,7 +6,7 @@ export const AttendanceForm: IForm[] = [
     title: "Thông tin cơ bản",
     attributes: [
       {
-        prop: "name",
+        prop: "title",
         type: "text",
         label: "Tiêu đề",
         col: 6,
@@ -14,7 +14,7 @@ export const AttendanceForm: IForm[] = [
       {
         prop: "classId",
         type: "select-ajax",
-        apiUrl: apiConfig.class.getAllOwn.endpoint,
+        apiUrl: apiConfig.class.getAll.endpoint,
         label: "Lớp học",
         col: 6,
         getOptions: (data = []) => {
@@ -26,6 +26,14 @@ export const AttendanceForm: IForm[] = [
             };
           });
         },
+      },
+      {
+        prop: "expirationTime",
+        type: "number",
+        label: "Thời gian",
+        description:
+          "Là thời gian để QRCode thay đổi liên tục (recommend: 3000ms)",
+        col: 6,
       },
     ],
   },

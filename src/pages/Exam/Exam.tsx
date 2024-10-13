@@ -1,11 +1,9 @@
-import { useEffect, useState } from "react";
-import { useCommonStore, useModalStore } from "../../stores";
-import MyTable, { IActionTable } from "../../components/UI/MyTable";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Button } from "primereact/button";
-import { exams, examSchemas } from "../../dataTable/exam";
+import MyTable, { IActionTable } from "../../components/UI/MyTable";
+import { exams, examSchemas } from "../../dataTable/examTable";
 import useConfirm from "../../hooks/useConfirm";
-import { ModalName } from "../../constants";
+import { useCommonStore, useModalStore } from "../../stores";
 
 const Exam = () => {
   const navigate = useNavigate();

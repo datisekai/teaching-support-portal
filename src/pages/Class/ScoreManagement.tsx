@@ -1,10 +1,10 @@
 import React from "react";
 import MyTableCustom from "../../components/UI/MyTableCustom";
-import { students, studentSchemas } from "../../dataTable/student";
+import { students, studentSchemas } from "../../dataTable/studentTable";
 import {
   scoreManagerSchemas,
   scoresManager,
-} from "../../dataTable/score-manager";
+} from "../../dataTable/scoreManagerTable";
 
 const ScoreManagement = () => {
   return (

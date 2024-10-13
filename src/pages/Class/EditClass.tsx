@@ -6,7 +6,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { set, useForm } from "react-hook-form";
 import { useCommonStore } from "../../stores";
 import { IAction } from "../../stores/commonStore";
-import { ClassForm } from "../../dataForm/class";
+import { ClassForm } from "../../dataForm/classForm";
 const teacherOptions =
   ClassForm[0].attributes.find((attr) => attr.prop === "teacher")?.options ||
   [];

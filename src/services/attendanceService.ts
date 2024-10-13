@@ -12,6 +12,10 @@ export const attendanceService = {
     const { getAll } = apiConfig.attendance;
     return processMiddlewareSendRequest({ ...getAll, body });
   },
+  getAttendees: async (id: number) => {
+    const { getAttendees } = apiConfig.attendance;
+    return processMiddlewareSendRequest({ ...getAttendees });
+  },
   getSingle: async (id: string) => {
     const { getSingle } = apiConfig.attendance;
     return processMiddlewareSendRequest({

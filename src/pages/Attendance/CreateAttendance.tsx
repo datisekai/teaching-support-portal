@@ -1,19 +1,21 @@
 import React, { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import * as yup from "yup";
-import { FacultyForm } from "../../dataForm/faculty";
+import { FacultyForm } from "../../dataForm/facultyForm";
 import GroupItem from "../../components/Form/GroupItem";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { set, useForm } from "react-hook-form";
-import { useCommonStore } from "../../stores";
+import { useAttendanceStore, useCommonStore } from "../../stores";
 import { IAction } from "../../stores/commonStore";
-import { AttendanceForm } from "../../dataForm/attendance";
+import { AttendanceForm } from "../../dataForm/attendanceForm";
+import { useToast } from "../../hooks/useToast";
+import { pathNames } from "../../constants";
 const schema = yup
   .object()
   .shape({
-    name: yup.string().required("Vui lòng điền tiêu đề"),
-    description: yup.string().required("Vui lòng điền mô tả"),
-    groupId: yup.string().required("Vui lòng chọn lớp học"),
+    title: yup.string().required("Vui lòng điền tiêu đề"),
+    expirationTime: yup.number().required("Vui lòng điền thời gian").min(1000),
+    classId: yup.string().required("Vui lòng chọn lớp học"),
   })
   .required();
 const CreateAttendance = () => {
@@ -24,17 +26,34 @@ const CreateAttendance = () => {
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
-      name: "",
-      description: "",
-      groupId: "",
+      title: "",
+      classId: "",
+      expirationTime: 3000,
     },
   });
   const navigate = useNavigate();
+  const { addAttendance } = useAttendanceStore()
 
   const { setFooterActions, setHeaderTitle, resetActions } = useCommonStore();
+  const { showToast } = useToast()
 
-  const onSubmit = () => {
-    navigate(-1);
+  const onSubmit = async (values: any) => {
+    const result = await addAttendance(values);
+    if (!result) {
+      return showToast({
+        severity: "danger",
+        summary: "Thông báo",
+        message: "Tạo thất bại",
+        life: 3000,
+      });
+    }
+    showToast({
+      severity: "success",
+      summary: "Thông báo",
+      message: "Tạo thành công",
+      life: 3000,
+    });
+    navigate(pathNames.ATTENDANCE);
   };
 
   useEffect(() => {

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useCommonStore } from "../../stores";
 import MyTable, { IActionTable } from "../../components/UI/MyTable";
-import { detailRooms, detailRoomSchemas } from "../../dataTable/detailRoom";
+import { detailRooms, detailRoomSchemas } from "../../dataTable/detailRoomTable";
 
 const Logs = () => {
   const actionTable: IActionTable[] = [];
