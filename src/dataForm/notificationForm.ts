@@ -23,32 +23,33 @@ export const NotificationForm: IForm[] = [
         col: 6,
       },
       {
-        prop: "classGroup",
-        type: "select",
+        prop: "classId",
+        type: "select-ajax",
         label: "Nhóm lớp",
         col: 6,
-        options: [
-          { title: "Nhóm A", value: "A" },
-          { title: "Nhóm B", value: "B" },
-          { title: "Nhóm C", value: "C" },
-          { title: "Tất cả nhóm", value: "" },
-        ],
+        getOptions: (data = []) => {
+          return data.map((item: any) => {
+            return {
+              title: `${item.class.name} - ${item.name}`,
+              value: item.id,
+            };
+          });
+        },
       },
       {
-        prop: "major",
+        prop: "majorId",
         type: "select",
         label: "Môn học",
         col: 6,
-        options: [
-          {
-            title: "Lập trình web",
-            value: "ltw",
-          },
-          {
-            title: "Java",
-            value: "jv",
-          },
-        ],
+        getOptions: (data = []) => {
+          console.log("data", data);
+          return data.map((item: any) => {
+            return {
+              title: `${item.major.name} - ${item.name}`,
+              value: item.id,
+            };
+          });
+        },
       },
     ],
   },

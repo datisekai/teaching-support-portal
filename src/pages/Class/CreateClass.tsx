@@ -7,31 +7,17 @@ import { set, useForm } from "react-hook-form";
 import { useCommonStore } from "../../stores";
 import { IAction } from "../../stores/commonStore";
 import { ClassForm } from "../../dataForm/classForm";
+import { useClassStore } from "../../stores/classStore";
+import { pathNames } from "../../constants";
+import { useToast } from "../../hooks/useToast";
 
-const teacherOptions =
-  ClassForm[0].attributes.find((attr) => attr.prop === "teacher")?.options ||
-  [];
-const majorOptions =
-  ClassForm[0].attributes.find((attr) => attr.prop === "major")?.options || [];
 const schema = yup
   .object()
   .shape({
     name: yup.string().required("Tên lớp học là bắt buộc."),
     dueDate: yup.string().required("Năm học là bắt buộc."),
-    teacher: yup
-      .string()
-      .oneOf(
-        teacherOptions.map((option) => option.value),
-        "Giảng viên là bắt buộc."
-      )
-      .required("Giảng viên là bắt buộc."),
-    major: yup
-      .string()
-      .oneOf(
-        majorOptions.map((option) => option.value),
-        "Môn học là bắt buộc."
-      )
-      .required("Môn học là bắt buộc."),
+    teacher: yup.string().required("Giảng viên là bắt buộc."),
+    major: yup.string().required("Môn học là bắt buộc."),
   })
   .required();
 const CreateClass = () => {
@@ -53,9 +39,25 @@ const CreateClass = () => {
   const setFooterActions = useCommonStore((state) => state.setFooterActions);
   const setHeaderTitle = useCommonStore((state) => state.setHeaderTitle);
   const resetActions = useCommonStore((state) => state.resetActions);
-
-  const onSubmit = () => {
-    navigate(-1);
+  const { classes, fetchClass, addClass } = useClassStore();
+  const { showToast } = useToast();
+  const onSubmit = (values: any) => {
+    const result = addClass(values);
+    if (!result) {
+      return showToast({
+        severity: "danger",
+        summary: "Thông báo",
+        message: "Tạo thất bại",
+        life: 3000,
+      });
+    }
+    showToast({
+      severity: "success",
+      summary: "Thông báo",
+      message: "Tạo thành công",
+      life: 3000,
+    });
+    navigate(pathNames.CLASS);
   };
 
   useEffect(() => {

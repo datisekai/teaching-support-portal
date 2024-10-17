@@ -16,12 +16,13 @@ const Major = () => {
   const actionTable: IActionTable[] = [
     {
       onClick: (data, options) => {
-        const transferData = teachers.map((item) => {
-          return { content: item.code, subcontent: item.name };
-        });
+        console.log("checked: ", data.teachers);
+        // const transferData = teachers.map((item) => {
+        //   return { content: item.code, subcontent: item.name };
+        // });
         onToggle(ModalName.ADD_TEACHER, {
           header: "Thêm giảng viên",
-          content: { id: data.id, contents: transferData },
+          content: { id: data.id, contents: data.teachers },
           style: "tw-w-[90%] md:tw-w-[30rem]",
         });
       },

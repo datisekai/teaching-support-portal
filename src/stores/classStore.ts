@@ -10,6 +10,10 @@ interface IClassState {
   fetchClasses: (body: object) => Promise<void>;
   fetchClass: (id: number) => Promise<void>;
   addClass: (Class: IClass) => Promise<boolean>;
+  updateAssignTeachersClass: (
+    id: number,
+    teacherCodes: object
+  ) => Promise<boolean>;
   updateClass: (id: number, updatedClass: IClass) => Promise<boolean>;
   deleteClass: (id: number) => Promise<boolean>;
 }
@@ -51,6 +55,25 @@ export const useClassStore = create<IClassState>((set) => ({
   updateClass: async (id: number, updatedClass: IClass) => {
     try {
       const response = await classService.update(id, updatedClass);
+      if (response) {
+        set((state) => ({
+          classes: state.classes.map((item) =>
+            item.id === id ? response : item
+          ),
+        }));
+      }
+      return !!response;
+    } catch (error) {
+      return false;
+    }
+  },
+
+  updateAssignTeachersClass: async (id: number, teacherCodes: object) => {
+    try {
+      const response = await classService.updateAssignTeachers(
+        id,
+        teacherCodes
+      );
       if (response) {
         set((state) => ({
           classes: state.classes.map((item) =>

@@ -12,23 +12,21 @@ export const ClassForm: IForm[] = [
       },
       {
         prop: "teacher",
-        type: "select",
+        type: "select-ajax",
         label: "Giảng viên",
         col: 6,
-        options: [
-          {
-            title: "Nguyễn Văn A",
-            value: "nva",
-          },
-          {
-            title: "Nguyễn Văn B",
-            value: "nvb",
-          },
-        ],
+        getOptions: (data = []) => {
+          return data.map((item: any) => {
+            return {
+              title: `${item.user.name} - ${item.name}`,
+              value: item.id,
+            };
+          });
+        },
       },
       {
         prop: "major",
-        type: "select",
+        type: "select-ajax",
         label: "Môn học",
         col: 6,
         options: [

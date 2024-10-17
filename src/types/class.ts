@@ -4,7 +4,7 @@ import { IUser } from "./user";
 export interface IClass {
   id: number;
   name: string;
-  major: IMajor[];
+  major: IMajor;
   teacher: IUser[];
   createdAt: string;
   updatedAt: string;

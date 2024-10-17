@@ -110,6 +110,10 @@ export const apiConfig = {
       method: "GET",
       endpoint: "/api.class/:id",
     },
+    updateAssignTeachers: {
+      method: "PATCH",
+      endpoint: "/api.class/:id/assign-teachers",
+    },
   },
   // User
   user: {
@@ -208,6 +212,29 @@ export const apiConfig = {
     getAttendees: {
       method: "GET",
       endpoint: "/api.attendance/:id/attendees",
+    },
+  },
+  // teacher
+  teacher: {
+    create: {
+      method: "POST",
+      endpoint: "/api.user",
+    },
+    update: {
+      method: "PATCH",
+      endpoint: "/api.user/:id",
+    },
+    _delete: {
+      method: "DELETE",
+      endpoint: "/api.user/:id",
+    },
+    getAll: {
+      method: "GET",
+      endpoint: "/api.user",
+    },
+    getSingle: {
+      method: "GET",
+      endpoint: "/api.user/:id",
     },
   },
 };

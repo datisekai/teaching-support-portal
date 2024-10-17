@@ -7,12 +7,17 @@ import {
   notifications,
   notificationSchemas,
 } from "../../dataTable/notificationTable";
+import { useNotificationStore } from "../../stores/notificationStore";
+import { useToast } from "../../hooks/useToast";
 
 const Notification = () => {
   const navigate = useNavigate();
   const { onConfirm } = useConfirm();
   const { setHeaderTitle, setHeaderActions, resetActions } = useCommonStore();
-
+  const { notifications, fetchNotifications, deleteNotification, total } =
+    useNotificationStore();
+  const { isLoadingApi } = useCommonStore();
+  const { showToast } = useToast();
   const handleEdit = (data: any) => {
     navigate(`/notification/edit/${data.id}`);
   };
@@ -22,7 +27,21 @@ const Notification = () => {
       message: "Bạn có chắc chắn muốn xoá thông báo này?",
       header: "Xác nhận xoá",
       onAccept: () => {
-        console.log("Đã xoá thông báo thành công!", id);
+        const result = deleteNotification(id);
+        if (!result) {
+          return showToast({
+            severity: "danger",
+            summary: "Thông báo",
+            message: "Xóa thất bại",
+            life: 3000,
+          });
+        }
+        showToast({
+          severity: "success",
+          summary: "Thông báo",
+          message: "Xóa thành công",
+          life: 3000,
+        });
       },
       onReject: () => {
         console.log("Đã hủy bỏ hành động.");
@@ -67,14 +86,20 @@ const Notification = () => {
     return () => {
       resetActions();
     };
-  }, []);
-
+  }, [navigate, resetActions, setHeaderActions, setHeaderTitle]);
+  const handleSearch = (query: Object) => {
+    fetchNotifications(query);
+  };
   return (
     <div>
       <MyTable
+        keySearch="name"
         data={notifications}
         schemas={notificationSchemas}
         actions={actionTable}
+        totalRecords={total}
+        isLoading={isLoadingApi}
+        onChange={handleSearch}
       />
     </div>
   );

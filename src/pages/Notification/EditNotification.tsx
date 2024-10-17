@@ -14,11 +14,8 @@ const schema = yup
   .shape({
     title: yup.string().required("Tên thông báo là bắt buộc."),
     content: yup.string().required("Nội dung thông báo là bắt buộc."),
-    major: yup
-      .string()
-      .required("Môn học là bắt buộc.")
-      .required("Môn học là bắt buộc."),
-    classGroup: yup.string().required("Nhóm lớp là bắt buộc."),
+    majorId: yup.string().required("Môn học là bắt buộc."),
+    classId: yup.string().required("Nhóm lớp là bắt buộc."),
   })
   .required();
 
@@ -35,8 +32,8 @@ const EditNotification = () => {
     defaultValues: {
       title: "",
       content: "",
-      classGroup: "",
-      major: "",
+      classId: "",
+      majorId: "",
     },
   });
 
@@ -44,8 +41,8 @@ const EditNotification = () => {
     reset({
       title: "Thông báo kiểm tra giữa kỳ",
       content: "Lịch kiểm tra giữa kỳ sẽ diễn ra vào ngày 15/10.",
-      classGroup: "A",
-      major: "jv",
+      classId: "A",
+      majorId: "jv",
     });
   }, []);
 

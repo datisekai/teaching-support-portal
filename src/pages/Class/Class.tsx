@@ -64,6 +64,7 @@ const Class = () => {
   const { setHeaderTitle, setHeaderActions, resetActions, isLoadingApi } =
     useCommonStore();
   const { classes, total, fetchClasses, deleteClass } = useClassStore();
+  console.log("test", classes);
   const handleClick = (endpoint: string, data: any) => {
     console.log(data);
     navigate(endpoint);
@@ -127,7 +128,11 @@ const Class = () => {
     <div>
       <MyTable
         keySearch="name"
-        data={classes}
+        data={classes.map((item) => ({
+          ...item,
+          // teacher: item.teacher?.name,
+          major: item.major.name,
+        }))}
         schemas={classSchemas}
         actions={actionTable}
         totalRecords={total}
