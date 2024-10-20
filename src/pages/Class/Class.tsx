@@ -6,6 +6,7 @@ import useConfirm from "../../hooks/useConfirm";
 import { classes, classSchemas } from "../../dataTable/classTable";
 import { uploadFile } from "../../utils";
 import { useClassStore } from "../../stores/classStore";
+import { useToast } from "../../hooks/useToast";
 
 const Class = () => {
   const actionTable: IActionTable[] = [
@@ -64,7 +65,7 @@ const Class = () => {
   const { setHeaderTitle, setHeaderActions, resetActions, isLoadingApi } =
     useCommonStore();
   const { classes, total, fetchClasses, deleteClass } = useClassStore();
-  console.log("test", classes);
+  const { showToast } = useToast();
   const handleClick = (endpoint: string, data: any) => {
     console.log(data);
     navigate(endpoint);
@@ -73,9 +74,24 @@ const Class = () => {
     const data = {
       message: "Bạn có chắc chắn muốn xoá lớp học này?",
       header: "Xác nhận xoá",
-      onAccept: () => {
-        console.log("Đã xoá thành công!", id);
+      onAccept: async () => {
+        const result = await deleteClass(id);
+        if (!result) {
+          return showToast({
+            severity: "danger",
+            summary: "Thông báo",
+            message: "Xóa thất bại",
+            life: 3000,
+          });
+        }
+        showToast({
+          severity: "success",
+          summary: "Thông báo",
+          message: "Xóa thành công",
+          life: 3000,
+        });
       },
+
       onReject: () => {
         console.log("Đã hủy bỏ hành động.");
       },
@@ -84,7 +100,7 @@ const Class = () => {
   };
 
   useEffect(() => {
-    setHeaderTitle("Quản lý môn học");
+    setHeaderTitle("Quản lý lớp học");
     setHeaderActions([
       {
         title: "Tạo",

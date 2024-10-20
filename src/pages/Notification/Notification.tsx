@@ -94,7 +94,10 @@ const Notification = () => {
     <div>
       <MyTable
         keySearch="name"
-        data={notifications}
+        data={notifications.map((item) => ({
+          ...item,
+          class: item.class.name,
+        }))}
         schemas={notificationSchemas}
         actions={actionTable}
         totalRecords={total}

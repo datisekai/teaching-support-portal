@@ -11,7 +11,7 @@ export const classService = {
     return processMiddlewareSendRequest({ ...getAll, body });
   },
 
-  getSingle: async (id: number) => {
+  getSingle: async (id: string) => {
     const { getSingle } = apiConfig.class;
     return processMiddlewareSendRequest({
       ...getSingle,

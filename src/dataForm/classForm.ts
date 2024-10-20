@@ -13,7 +13,7 @@ export const ClassForm: IForm[] = [
       },
       {
         prop: "teacherCodes",
-        type: "multi-select-ajax",
+        type: "search",
         label: "Giảng viên",
         apiUrl: apiConfig.teacher.getPublicTeachers.endpoint,
         col: 6,
@@ -28,7 +28,7 @@ export const ClassForm: IForm[] = [
       },
       {
         prop: "majorId",
-        type: "multi-select-ajax",
+        type: "select-ajax",
         label: "Môn học",
         col: 6,
         apiUrl: apiConfig.major.getAll.endpoint,
@@ -42,7 +42,7 @@ export const ClassForm: IForm[] = [
         },
       },
       {
-        prop: "dueDate",
+        prop: "duration",
         type: "text",
         label: "Năm học",
         col: 6,

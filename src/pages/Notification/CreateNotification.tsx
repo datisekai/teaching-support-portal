@@ -14,9 +14,13 @@ import { pathNames } from "../../constants";
 const schema = yup
   .object()
   .shape({
-    title: yup.string().required("Tên thông báo là bắt buộc."),
+    name: yup.string().required("Tên thông báo là bắt buộc."),
+    image: yup.string().required("Ảnh là bắt buộc."),
     content: yup.string().required("Nội dung thông báo là bắt buộc."),
-    classId: yup.string().required("Nhóm lớp là bắt buộc."),
+    classIds: yup
+      .array()
+      .min(1, "Nhóm lớp là bắt buộc.")
+      .required("Nhóm lớp là bắt buộc."),
   })
   .required();
 
@@ -29,9 +33,10 @@ const CreateNotification = () => {
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
-      title: "",
+      name: "",
+      image: "",
       content: "",
-      classId: "",
+      classIds: [],
     },
   });
 
@@ -45,7 +50,7 @@ const CreateNotification = () => {
   const onSubmit = async (values: any) => {
     const transferData = {
       ...values,
-      classId: Number(values.classId),
+      classId: Number(values.classIds[0]),
     };
     const result = await addNotification(transferData);
     if (!result) {

@@ -19,7 +19,10 @@ const schema = yup.object().shape({
     .number()
     .notOneOf([0], "Mã môn học là bắt buộc.")
     .required("Mã môn học là bắt buộc."),
-  facultyId: yup.number().required("Ngành học là bắt buộc."),
+  facultyId: yup
+    .number()
+    .notOneOf([0], "Ngành học là bắt buộc.")
+    .required("Ngành học là bắt buộc."),
 });
 
 const CreateMajor = () => {

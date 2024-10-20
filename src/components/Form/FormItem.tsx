@@ -12,11 +12,14 @@ import { sendServerRequest } from "../../apis";
 import { IFormItem, IOption } from "../../types/form-item";
 import MyEditor from "../UI/MyEditor";
 import MyUploadSingleImage from "../UI/MyUploadSingleImage";
+import { IconField } from "primereact/iconfield";
+import { InputIcon } from "primereact/inputicon";
+import { AutoComplete } from "primereact/autocomplete";
 
 interface IForm extends IFormItem {
   control: any;
   error?: string;
-  watch?: any
+  watch?: any;
 }
 
 const FormItem: React.FC<IForm> = ({
@@ -46,32 +49,66 @@ const FormItem: React.FC<IForm> = ({
     <Controller control={control} name={prop} render={renderFn} />
   );
 
-
   useEffect(() => {
-    console.log('change', watch);
-    if (preConditionProp && type === 'select-ajax' && watch) {
-      getAjaxOptions({ [preConditionProp]: watch })
+    console.log("change", watch);
+    if (preConditionProp && type === "select-ajax" && watch) {
+      getAjaxOptions({ [preConditionProp]: watch });
     }
-  }, [watch])
+  }, [watch]);
 
   const getAjaxOptions = async (body = {}) => {
     setLoading(true);
-    const data = await sendServerRequest({ endpoint: apiUrl, method: "GET", body: { pagination: false, ...body } });
+    const data = await sendServerRequest({
+      endpoint: apiUrl,
+      method: "GET",
+      body: { pagination: false, ...body },
+    });
     const newOptions = getOptions?.(data.data) || [];
     setAjaxOptions(newOptions);
     setLoading(false);
   };
 
   useEffect(() => {
-    if ((type == "select-ajax" || type == "multi-select-ajax") && apiUrl && getOptions) {
+    if (
+      (type == "select-ajax" || type == "multi-select-ajax") &&
+      apiUrl &&
+      getOptions
+    ) {
       if (preConditionProp && !watch) return;
       if (preConditionProp && watch) {
-        getAjaxOptions({ [preConditionProp]: watch })
+        getAjaxOptions({ [preConditionProp]: watch });
         return;
       }
       getAjaxOptions();
     }
   }, []);
+  const [filteredItems, setFilteredItems] = useState<IOption[]>([]);
+
+  // Handle dynamic search via API
+  const searchItems = async (event: any) => {
+    const query = event.query.trim();
+    if (!query) {
+      setFilteredItems([]);
+      return;
+    }
+
+    setLoading(true);
+    try {
+      // Make API request with the search query
+      const response = await sendServerRequest({
+        endpoint: `${apiUrl}?code=${query}`, // Assuming the API accepts query params for searching
+        method: "GET",
+      });
+
+      // Process the API response
+      const data = getOptions ? getOptions(response.data) : [];
+      setFilteredItems(data);
+    } catch (error) {
+      console.error("Error fetching data", error);
+      setFilteredItems([]);
+    }
+    setLoading(false);
+  };
 
   const getInputComponent = () => {
     switch (type) {
@@ -91,6 +128,24 @@ const FormItem: React.FC<IForm> = ({
             />
           )
         );
+      case "search":
+        return renderController(({ field: { onChange, onBlur, value } }) => (
+          <div className="card p-fluid">
+            <AutoComplete
+              onBlur={onBlur}
+              multiple
+              value={value}
+              suggestions={filteredItems}
+              completeMethod={searchItems}
+              field="title"
+              onChange={(e) =>
+                onChange({ target: { value: e.value, name: prop } })
+              }
+              placeholder={`Tìm kiếm ${label.toLowerCase()}`}
+              className="!tw-w-full"
+            />
+          </div>
+        ));
       case "editor":
         return renderController(({ field: { onChange, value, onBlur } }) => (
           <MyEditor
@@ -175,11 +230,10 @@ const FormItem: React.FC<IForm> = ({
             value={value}
             name={prop}
             onChange={(e) => {
-              console.log("🚀 ~ getInputComponent ~ e:", e)
+              console.log("🚀 ~ getInputComponent ~ e:", e);
 
-              onChange(e)
-            }
-            }
+              onChange(e);
+            }}
             filter
             options={options}
             optionLabel="title"
@@ -197,9 +251,8 @@ const FormItem: React.FC<IForm> = ({
               value={+value}
               disabled={Boolean(preConditionProp && !watch)}
               onChange={(e) => {
-                onChange({ target: { value: e.value, name: prop } })
-              }
-              }
+                onChange({ target: { value: e.value, name: prop } });
+              }}
               options={ajaxOptions || []}
               placeholder={`Chọn ${label.toLowerCase()}`}
               className="tw-w-full"

@@ -89,7 +89,7 @@ export const apiConfig = {
     },
     deleteTeachersMajor: {
       method: "DELETE",
-      endpoint: "/api.major/:id/remove-teachers",
+      endpoint: "/api.major/:id/teacher/:teacherCode",
     },
   },
   // Class
@@ -99,7 +99,7 @@ export const apiConfig = {
       endpoint: "/api.class",
     },
     update: {
-      method: "PUT",
+      method: "PATCH",
       endpoint: "/api.class/:id",
     },
     _delete: {
@@ -153,7 +153,7 @@ export const apiConfig = {
       endpoint: "/api.notification",
     },
     update: {
-      method: "PUT",
+      method: "PATCH",
       endpoint: "/api.notification/:id",
     },
     _delete: {
@@ -246,7 +246,7 @@ export const apiConfig = {
     },
     getPublicTeachers: {
       method: "GET",
-      endpoint: "/api.user/public-teachers",
+      endpoint: "/api.user/public/teachers",
     },
   },
   difficulty: {

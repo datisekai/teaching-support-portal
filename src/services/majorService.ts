@@ -18,12 +18,13 @@ export const majorService = {
       body,
     });
   },
-  deleteTeachersMajor: async (id: number, body: object) => {
+  deleteTeachersMajor: async (id: number, teacherCode: number) => {
     const { deleteTeachersMajor } = apiConfig.major;
     return sendServerRequest({
       ...deleteTeachersMajor,
-      endpoint: deleteTeachersMajor.endpoint.replace(":id", id.toString()),
-      body: body,
+      endpoint: deleteTeachersMajor.endpoint
+        .replace(":id", id.toString())
+        .replace(":teacherCode", teacherCode.toString()),
     });
   },
   getSingle: async (id: string) => {

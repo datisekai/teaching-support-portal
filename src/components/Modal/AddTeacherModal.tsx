@@ -16,7 +16,7 @@ const AddTeacherModal = () => {
   const actionTable: IActionTable[] = [
     {
       onClick: (data, options) => {
-        handleDelete(data.id);
+        handleDelete(data.code);
       },
       tooltip: "Xóa",
       icon: "pi-trash",
@@ -30,15 +30,13 @@ const AddTeacherModal = () => {
   const { content } = useModalStore();
   const { onConfirm } = useConfirm();
   const { showToast } = useToast();
-  const handleDelete = async (id: number) => {
+  const handleDelete = async (teacherCode: number) => {
     const data = {
       message: "Bạn có chắc chắn muốn xoá giáo viên này khỏi môn học?",
       header: "Xác nhận xoá",
       onAccept: async () => {
         try {
-          const result = await deleteTeachersMajor(content.id, {
-            teacherCodes: [id],
-          });
+          const result = await deleteTeachersMajor(content.id, teacherCode);
 
           if (!result) {
             showToast({

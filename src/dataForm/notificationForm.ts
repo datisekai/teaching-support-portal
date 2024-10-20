@@ -24,7 +24,7 @@ export const NotificationForm: IForm[] = [
         col: 6,
       },
       {
-        prop: "classId",
+        prop: "classIds",
         type: "multi-select-ajax",
         apiUrl: apiConfig.class.getAll.endpoint,
         label: "Nhóm lớp",

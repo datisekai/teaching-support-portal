@@ -15,8 +15,11 @@ const schema = yup
   .object()
   .shape({
     name: yup.string().required("Tên lớp học là bắt buộc."),
-    dueDate: yup.string().required("Năm học là bắt buộc."),
-    teacherCodes: yup.string().required("Giảng viên là bắt buộc."),
+    duration: yup.string().required("Năm học là bắt buộc."),
+    teacherCodes: yup
+      .array()
+      .min(1, "Giảng viên là bắt buộc.")
+      .required("Giảng viên là bắt buộc."),
     majorId: yup.string().required("Môn học là bắt buộc."),
   })
   .required();
@@ -29,9 +32,9 @@ const CreateClass = () => {
     resolver: yupResolver(schema),
     defaultValues: {
       name: "",
-      dueDate: "",
+      duration: "",
       majorId: "",
-      teacherCodes: "",
+      teacherCodes: [],
     },
   });
   const navigate = useNavigate();
@@ -45,6 +48,7 @@ const CreateClass = () => {
     const transferData = {
       ...values,
       majorId: Number(values.majorId),
+      teacherCodes: values.teacherCodes.map((item: any) => Number(item.value)),
     };
     const result = await addClass(transferData);
     if (!result) {

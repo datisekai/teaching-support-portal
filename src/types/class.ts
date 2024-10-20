@@ -5,7 +5,8 @@ export interface IClass {
   id: number;
   name: string;
   major: IMajor;
-  teacher: IUser[];
+  duration: string;
+  teachers: IUser[];
   createdAt: string;
   updatedAt: string;
 }

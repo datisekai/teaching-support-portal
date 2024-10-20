@@ -8,7 +8,7 @@ export const notificationSchemas: TableSchema[] = [
   },
   {
     label: "Tên thông báo",
-    prop: "title",
+    prop: "name",
     type: "text",
   },
   {
@@ -23,12 +23,7 @@ export const notificationSchemas: TableSchema[] = [
   },
   {
     label: "Nhóm lớp",
-    prop: "classGroup",
-    type: "text",
-  },
-  {
-    label: "Môn học",
-    prop: "major",
+    prop: "class",
     type: "text",
   },
   {

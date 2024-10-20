@@ -61,8 +61,8 @@ const Major = () => {
     const data = {
       message: "Bạn có chắc chắn muốn xoá môn học này?",
       header: "Xác nhận xoá",
-      onAccept: () => {
-        const result = deleteMajor(id);
+      onAccept: async () => {
+        const result = await deleteMajor(id);
         if (!result) {
           return showToast({
             severity: "danger",

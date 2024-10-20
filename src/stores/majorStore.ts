@@ -11,7 +11,7 @@ interface IMajorState {
     id: number,
     teacherCodes: object
   ) => Promise<boolean>;
-  deleteTeachersMajor: (id: number, teacherCodes: object) => Promise<boolean>;
+  deleteTeachersMajor: (id: number, teacherCode: number) => Promise<boolean>;
   fetchMajors: (body: object) => Promise<void>;
   fetchMajor: (id: string) => Promise<void>;
   addMajor: (Major: IMajor) => Promise<boolean>;
@@ -47,9 +47,9 @@ export const useMajorStore = create<IMajorState>((set) => ({
       return false;
     }
   },
-  deleteTeachersMajor: async (id, teacherCodes) => {
+  deleteTeachersMajor: async (id, teacherCode) => {
     try {
-      const response = await majorService.deleteTeachersMajor(id, teacherCodes);
+      const response = await majorService.deleteTeachersMajor(id, teacherCode);
       if (response) {
         set({
           major: response,

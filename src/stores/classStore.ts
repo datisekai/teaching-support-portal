@@ -4,11 +4,11 @@ import { IClass } from "../types/class";
 
 interface IClassState {
   classes: IClass[];
-  class: IClass | null;
+  _class: IClass;
   total: number;
   isLoadingClasss: boolean;
   fetchClasses: (body: object) => Promise<void>;
-  fetchClass: (id: number) => Promise<void>;
+  fetchClass: (id: string) => Promise<void>;
   addClass: (Class: IClass) => Promise<boolean>;
   updateAssignTeachersClass: (
     id: number,
@@ -20,7 +20,7 @@ interface IClassState {
 
 export const useClassStore = create<IClassState>((set) => ({
   classes: [],
-  class: null,
+  _class: {} as IClass,
   isLoadingClasss: false,
   total: 0,
 
@@ -31,10 +31,10 @@ export const useClassStore = create<IClassState>((set) => ({
     } catch (error) {}
   },
 
-  fetchClass: async (id: number) => {
+  fetchClass: async (id: string) => {
     try {
       const response = await classService.getSingle(id);
-      set({ class: response });
+      set({ _class: response });
     } catch (error) {}
   },
 
