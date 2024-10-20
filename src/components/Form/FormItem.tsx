@@ -209,13 +209,12 @@ const FormItem: React.FC<IForm> = ({
         });
       case "multi-select-ajax":
         return renderController(({ field: { onChange, onBlur, value } }) => {
-          console.log("value", value, ajaxOptions);
           return (
             <MultiSelect
               loading={loading}
               invalid={!!error}
               onBlur={onBlur}
-              value={+value}
+              value={value}
               onChange={(e) =>
                 onChange({ target: { value: e.value, name: prop } })
               }

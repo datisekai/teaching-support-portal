@@ -57,24 +57,13 @@ export const QuestionCodeForm: IForm[] = [
 
       {
         prop: "languages",
-        type: "multi-select",
+        type: "multi-select-ajax",
         label: "Ngôn ngữ thực hiện",
         col: 6,
-
-        options: [
-          {
-            title: "C",
-            value: "49",
-          },
-          {
-            title: "C#",
-            value: "51",
-          },
-          {
-            title: "Javascript",
-            value: "63",
-          },
-        ],
+        apiUrl: apiConfig.language.getAll.endpoint,
+        getOptions(data = []) {
+          return data.map((item) => ({ title: item.name, value: item.id }));
+        },
       },
     ],
   },
