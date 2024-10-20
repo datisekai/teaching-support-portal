@@ -83,6 +83,14 @@ export const apiConfig = {
       method: "GET",
       endpoint: "/api.major/:id",
     },
+    updateAssignTeachers: {
+      method: "POST",
+      endpoint: "/api.major/:id/assign-teachers",
+    },
+    deleteTeachersMajor: {
+      method: "DELETE",
+      endpoint: "/api.major/:id/remove-teachers",
+    },
   },
   // Class
   class: {
@@ -235,6 +243,10 @@ export const apiConfig = {
     getSingle: {
       method: "GET",
       endpoint: "/api.user/:id",
+    },
+    getPublicTeachers: {
+      method: "GET",
+      endpoint: "/api.user/public-teachers",
     },
   },
 };

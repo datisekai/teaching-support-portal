@@ -36,8 +36,8 @@ const CreateFaculty = () => {
   const setHeaderTitle = useCommonStore((state) => state.setHeaderTitle);
   const resetActions = useCommonStore((state) => state.resetActions);
 
-  const onSubmit = (values: any) => {
-    const result = addFaculty(values);
+  const onSubmit = async (values: any) => {
+    const result = await addFaculty(values);
     if (!result) {
       return showToast({
         severity: "danger",

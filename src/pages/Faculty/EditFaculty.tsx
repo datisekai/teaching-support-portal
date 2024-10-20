@@ -51,9 +51,9 @@ const EditFaculty = () => {
   const setHeaderTitle = useCommonStore((state) => state.setHeaderTitle);
   const resetActions = useCommonStore((state) => state.resetActions);
 
-  const onSubmit = (data: any) => {
+  const onSubmit = async (data: any) => {
     console.log(data);
-    const result = updateFaculty(parseInt(id || ""), data);
+    const result = await updateFaculty(parseInt(id || ""), data);
     if (!result) {
       return showToast({
         severity: "danger",

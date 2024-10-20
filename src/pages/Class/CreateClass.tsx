@@ -16,8 +16,8 @@ const schema = yup
   .shape({
     name: yup.string().required("Tên lớp học là bắt buộc."),
     dueDate: yup.string().required("Năm học là bắt buộc."),
-    teacher: yup.string().required("Giảng viên là bắt buộc."),
-    major: yup.string().required("Môn học là bắt buộc."),
+    teacherCodes: yup.string().required("Giảng viên là bắt buộc."),
+    majorId: yup.string().required("Môn học là bắt buộc."),
   })
   .required();
 const CreateClass = () => {
@@ -30,8 +30,8 @@ const CreateClass = () => {
     defaultValues: {
       name: "",
       dueDate: "",
-      major: "",
-      teacher: "",
+      majorId: "",
+      teacherCodes: "",
     },
   });
   const navigate = useNavigate();
@@ -41,8 +41,12 @@ const CreateClass = () => {
   const resetActions = useCommonStore((state) => state.resetActions);
   const { classes, fetchClass, addClass } = useClassStore();
   const { showToast } = useToast();
-  const onSubmit = (values: any) => {
-    const result = addClass(values);
+  const onSubmit = async (values: any) => {
+    const transferData = {
+      ...values,
+      majorId: Number(values.majorId),
+    };
+    const result = await addClass(transferData);
     if (!result) {
       return showToast({
         severity: "danger",

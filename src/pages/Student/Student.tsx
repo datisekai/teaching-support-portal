@@ -5,6 +5,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import useConfirm from "../../hooks/useConfirm";
 import { uploadFile } from "../../utils";
 import { students, studentSchemas } from "../../dataTable/studentTable";
+import { useUserStore } from "../../stores/userStore";
+import { userSchemas } from "../../dataTable/userTable";
 
 const Student = () => {
   const { id } = useParams();
@@ -36,8 +38,10 @@ const Student = () => {
   ];
   const navigate = useNavigate();
   const { onConfirm } = useConfirm();
+  const { users, fetchUsers, deleteUser, total } = useUserStore();
 
-  const { setHeaderTitle, setHeaderActions, resetActions } = useCommonStore();
+  const { setHeaderTitle, setHeaderActions, resetActions, isLoadingApi } =
+    useCommonStore();
 
   const handleEdit = (data: any) => {
     navigate(`/student/edit/${data.id}`);
@@ -96,10 +100,20 @@ const Student = () => {
       resetActions();
     };
   }, []);
-
+  const handleSearch = (query: Object) => {
+    fetchUsers(query);
+  };
   return (
     <div>
-      <MyTable data={students} schemas={studentSchemas} actions={actionTable} />
+      <MyTable
+        keySearch="name"
+        data={users}
+        schemas={userSchemas}
+        actions={actionTable}
+        totalRecords={total}
+        isLoading={isLoadingApi}
+        onChange={handleSearch}
+      />
     </div>
   );
 };

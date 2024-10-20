@@ -59,7 +59,7 @@ const EditMajor = () => {
     if (major) {
       setValue("name", major.name);
       setValue("code", major.code);
-      setValue("facultyId", major.faculty.id);
+      setValue("facultyId", major?.faculty?.id);
     }
     if (facultys) {
       const updatedOptions = facultys.map((faculty: any) => ({
@@ -73,8 +73,8 @@ const EditMajor = () => {
     }
   }, [major, facultys]);
 
-  const onSubmit = (data: any) => {
-    const result = updateMajor(parseInt(id || ""), data);
+  const onSubmit = async (data: any) => {
+    const result = await updateMajor(parseInt(id || ""), data);
     if (!result) {
       showToast({
         severity: "danger",

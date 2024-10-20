@@ -17,7 +17,6 @@ const schema = yup
     title: yup.string().required("Tên thông báo là bắt buộc."),
     content: yup.string().required("Nội dung thông báo là bắt buộc."),
     classId: yup.string().required("Nhóm lớp là bắt buộc."),
-    majorId: yup.string().required("Môn học là bắt buộc."),
   })
   .required();
 
@@ -33,7 +32,6 @@ const CreateNotification = () => {
       title: "",
       content: "",
       classId: "",
-      majorId: "",
     },
   });
 
@@ -45,7 +43,11 @@ const CreateNotification = () => {
   const { showToast } = useToast();
   const { addNotification } = useNotificationStore();
   const onSubmit = async (values: any) => {
-    const result = await addNotification(values);
+    const transferData = {
+      ...values,
+      classId: Number(values.classId),
+    };
+    const result = await addNotification(transferData);
     if (!result) {
       showToast({
         severity: "danger",

@@ -1,3 +1,4 @@
+import { apiConfig } from "../apis";
 import { IForm } from "../types/form-item";
 
 export const NotificationForm: IForm[] = [
@@ -5,7 +6,7 @@ export const NotificationForm: IForm[] = [
     title: "Thông tin thông báo",
     attributes: [
       {
-        prop: "title",
+        prop: "name",
         type: "text",
         label: "Tên thông báo",
         col: 6,
@@ -24,28 +25,15 @@ export const NotificationForm: IForm[] = [
       },
       {
         prop: "classId",
-        type: "select-ajax",
+        type: "multi-select-ajax",
+        apiUrl: apiConfig.class.getAll.endpoint,
         label: "Nhóm lớp",
         col: 6,
         getOptions: (data = []) => {
+          console.log("values: ", data);
           return data.map((item: any) => {
             return {
-              title: `${item.class.name} - ${item.name}`,
-              value: item.id,
-            };
-          });
-        },
-      },
-      {
-        prop: "majorId",
-        type: "select",
-        label: "Môn học",
-        col: 6,
-        getOptions: (data = []) => {
-          console.log("data", data);
-          return data.map((item: any) => {
-            return {
-              title: `${item.major.name} - ${item.name}`,
+              title: `${item.name}`,
               value: item.id,
             };
           });

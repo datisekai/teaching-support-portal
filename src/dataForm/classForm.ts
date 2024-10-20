@@ -1,3 +1,4 @@
+import { apiConfig } from "../apis";
 import { IForm, IFormItem } from "../types/form-item";
 
 export const ClassForm: IForm[] = [
@@ -11,34 +12,34 @@ export const ClassForm: IForm[] = [
         col: 6,
       },
       {
-        prop: "teacher",
-        type: "select-ajax",
+        prop: "teacherCodes",
+        type: "multi-select-ajax",
         label: "Giảng viên",
+        apiUrl: apiConfig.teacher.getPublicTeachers.endpoint,
         col: 6,
         getOptions: (data = []) => {
           return data.map((item: any) => {
             return {
-              title: `${item.user.name} - ${item.name}`,
-              value: item.id,
+              title: `${item.code} - ${item.name}`,
+              value: item.code,
             };
           });
         },
       },
       {
-        prop: "major",
-        type: "select-ajax",
+        prop: "majorId",
+        type: "multi-select-ajax",
         label: "Môn học",
         col: 6,
-        options: [
-          {
-            title: "Lập trình web",
-            value: "ltw",
-          },
-          {
-            title: "Java",
-            value: "jv",
-          },
-        ],
+        apiUrl: apiConfig.major.getAll.endpoint,
+        getOptions: (data = []) => {
+          return data.map((item: any) => {
+            return {
+              title: `${item.code} - ${item.name}`,
+              value: item.id,
+            };
+          });
+        },
       },
       {
         prop: "dueDate",
