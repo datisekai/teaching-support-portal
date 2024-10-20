@@ -237,4 +237,60 @@ export const apiConfig = {
       endpoint: "/api.user/:id",
     },
   },
+  difficulty: {
+    create: {
+      method: "POST",
+      endpoint: "/api.difficulty",
+    },
+    _delete: {
+      method: "DELETE",
+      endpoint: "/api.difficulty/:id",
+    },
+    getAll: {
+      method: "GET",
+      endpoint: "/api.difficulty",
+    },
+  },
+  chapter: {
+    create: {
+      method: "POST",
+      endpoint: "/api.chapter",
+    },
+    _delete: {
+      method: "DELETE",
+      endpoint: "/api.chapter/:id",
+    },
+    getAll: {
+      method: "GET",
+      endpoint: "/api.chapter",
+    },
+  },
+  question: {
+    create: {
+      method: "POST",
+      endpoint: "/api.question",
+    },
+    update: {
+      method: "PUT",
+      endpoint: "/api.question/:id",
+    },
+    _delete: {
+      method: "DELETE",
+      endpoint: "/api.question/:id",
+    },
+    getAll: {
+      method: "GET",
+      endpoint: "/api.question",
+    },
+    getSingle: {
+      method: "GET",
+      endpoint: "/api.question/:id",
+    },
+  },
+  language: {
+    getAll: {
+      method: "GET",
+      endpoint: "/api.language",
+    },
+  },
 };

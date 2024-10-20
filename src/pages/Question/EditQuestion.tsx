@@ -1,12 +1,14 @@
-import React, { useEffect } from "react";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useEffect, useMemo } from "react";
+import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import * as yup from "yup";
 import GroupItem from "../../components/Form/GroupItem";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { useForm } from "react-hook-form";
+import { QuestionType } from "../../constants";
+import { QuestionCodeForm, QuestionMultiChoiceForm } from "../../dataForm/questionForm";
+import { useQuery } from "../../hooks/useQuery";
 import { useCommonStore } from "../../stores";
 import { IAction } from "../../stores/commonStore";
-import { QuestionForm } from "../../dataForm/questionForm";
 
 // Schema validation
 const schema = yup
@@ -23,6 +25,7 @@ const schema = yup
   .required();
 
 const EditQuestion = () => {
+  const [questionType] = useQuery({ key: 'type', defaultValue: QuestionType.MULTIPLE_CHOICE })
   const { id } = useParams(); // Lấy id của câu hỏi từ URL
   const navigate = useNavigate();
 
@@ -94,6 +97,10 @@ const EditQuestion = () => {
       resetActions();
     };
   }, [handleSubmit, setFooterActions, setHeaderTitle, resetActions]);
+
+  const QuestionForm = useMemo(() => {
+    return questionType === QuestionType.MULTIPLE_CHOICE ? QuestionMultiChoiceForm : QuestionCodeForm;
+  }, [questionType])
 
   return (
     <div>

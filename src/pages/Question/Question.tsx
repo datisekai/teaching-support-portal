@@ -80,10 +80,19 @@ const Question = () => {
     setHeaderTitle("Quản lý câu hỏi");
     setHeaderActions([
       {
-        title: "Tạo",
+        title: "Tạo trắc nghiệm",
         icon: "pi pi-plus",
         onClick: () => {
-          navigate(`/question/create`);
+          navigate(`/question/create?type=multi_choice`);
+        },
+        type: "button",
+        disabled: false,
+      },
+      {
+        title: "Tạo bài tập",
+        icon: "pi pi-plus",
+        onClick: () => {
+          navigate(`/question/create?type=code`);
         },
         type: "button",
         disabled: false,

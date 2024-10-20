@@ -4,3 +4,4 @@ export { useModalStore } from "./modalStore";
 export { useAttendanceStore } from "./attendanceStore";
 export { useRoleStore } from "./roleStore";
 export { usePermissionStore } from "./permissionStore";
+export { useLanguageStore } from "./languageStore";

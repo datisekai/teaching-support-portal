@@ -19,6 +19,7 @@ export interface IFormItem {
   apiUrl?: string;
   getOptions?: (data?: Array<any>) => IOption[];
   description?: string;
+  preConditionProp?: string;
 }
 
 export interface IForm {

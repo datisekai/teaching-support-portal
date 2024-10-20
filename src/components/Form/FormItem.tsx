@@ -16,6 +16,7 @@ import MyUploadSingleImage from "../UI/MyUploadSingleImage";
 interface IForm extends IFormItem {
   control: any;
   error?: string;
+  watch?: any
 }
 
 const FormItem: React.FC<IForm> = ({
@@ -28,7 +29,9 @@ const FormItem: React.FC<IForm> = ({
   col = 6,
   apiUrl,
   getOptions,
-  description
+  description,
+  watch,
+  preConditionProp,
 }) => {
   const windowSize = useWindowSize();
 
@@ -43,9 +46,17 @@ const FormItem: React.FC<IForm> = ({
     <Controller control={control} name={prop} render={renderFn} />
   );
 
-  const getAjaxOptions = async () => {
+
+  useEffect(() => {
+    console.log('change', watch);
+    if (preConditionProp && type === 'select-ajax' && watch) {
+      getAjaxOptions({ [preConditionProp]: watch })
+    }
+  }, [watch])
+
+  const getAjaxOptions = async (body = {}) => {
     setLoading(true);
-    const data = await sendServerRequest({ endpoint: apiUrl, method: "GET", body: { pagination: false } });
+    const data = await sendServerRequest({ endpoint: apiUrl, method: "GET", body: { pagination: false, ...body } });
     const newOptions = getOptions?.(data.data) || [];
     setAjaxOptions(newOptions)
     setLoading(false);
@@ -53,6 +64,11 @@ const FormItem: React.FC<IForm> = ({
 
   useEffect(() => {
     if (type == "select-ajax" && apiUrl && getOptions) {
+      if (preConditionProp && !watch) return;
+      if (preConditionProp && watch) {
+        getAjaxOptions({ [preConditionProp]: watch })
+        return;
+      }
       getAjaxOptions();
     }
   }, []);
@@ -153,8 +169,12 @@ const FormItem: React.FC<IForm> = ({
             invalid={!!error}
             onBlur={onBlur}
             value={value}
-            onChange={(e) =>
-              onChange({ target: { value: e.value, name: prop } })
+            name={prop}
+            onChange={(e) => {
+              console.log("🚀 ~ getInputComponent ~ e:", e)
+
+              onChange(e)
+            }
             }
             filter
             options={options}
@@ -165,15 +185,16 @@ const FormItem: React.FC<IForm> = ({
         ));
       case "select-ajax":
         return renderController(({ field: { onChange, onBlur, value } }) => {
-          console.log('value', value, ajaxOptions);
           return (
             <Dropdown
               loading={loading}
               invalid={!!error}
               onBlur={onBlur}
               value={+value}
-              onChange={(e) =>
+              disabled={Boolean(preConditionProp && !watch)}
+              onChange={(e) => {
                 onChange({ target: { value: e.value, name: prop } })
+              }
               }
               options={ajaxOptions || []}
               placeholder={`Chọn ${label.toLowerCase()}`}
