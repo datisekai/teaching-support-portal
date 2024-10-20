@@ -12,4 +12,5 @@ export const pathNames = {
   THEME: "/theme",
   PERMISSION: "/permission",
   STUDENT: "/student",
+  QUESTION: "/question",
 };

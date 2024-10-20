@@ -305,4 +305,10 @@ export const apiConfig = {
       endpoint: "/api.language",
     },
   },
+  googleAI: {
+    generateCode: {
+      method: "POST",
+      endpoint: "/api.googleai",
+    },
+  },
 };
