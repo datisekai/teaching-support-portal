@@ -10,6 +10,22 @@ export const majorService = {
     return processMiddlewareSendRequest({ ...getAll, body });
   },
 
+  updateAssignTeachers: async (id: number, body: Record<string, any>) => {
+    const { updateAssignTeachers } = apiConfig.major;
+    return sendServerRequest({
+      ...updateAssignTeachers,
+      endpoint: updateAssignTeachers.endpoint.replace(":id", id.toString()),
+      body,
+    });
+  },
+  deleteTeachersMajor: async (id: number, body: object) => {
+    const { deleteTeachersMajor } = apiConfig.major;
+    return sendServerRequest({
+      ...deleteTeachersMajor,
+      endpoint: deleteTeachersMajor.endpoint.replace(":id", id.toString()),
+      body: body,
+    });
+  },
   getSingle: async (id: string) => {
     const { getSingle } = apiConfig.major;
     return processMiddlewareSendRequest({

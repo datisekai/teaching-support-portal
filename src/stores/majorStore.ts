@@ -4,9 +4,14 @@ import { IMajor } from "../types/major";
 
 interface IMajorState {
   majors: IMajor[];
-  major: IMajor | null;
+  major: IMajor;
   total: number;
   isLoadingMajors: boolean;
+  updateAssignTeachersMajor: (
+    id: number,
+    teacherCodes: object
+  ) => Promise<boolean>;
+  deleteTeachersMajor: (id: number, teacherCodes: object) => Promise<boolean>;
   fetchMajors: (body: object) => Promise<void>;
   fetchMajor: (id: string) => Promise<void>;
   addMajor: (Major: IMajor) => Promise<boolean>;
@@ -16,7 +21,7 @@ interface IMajorState {
 
 export const useMajorStore = create<IMajorState>((set) => ({
   majors: [],
-  major: null,
+  major: {} as IMajor,
   isLoadingMajors: false,
   total: 0,
 
@@ -26,7 +31,35 @@ export const useMajorStore = create<IMajorState>((set) => ({
       set({ majors: response.data, total: response.total });
     } catch (error) {}
   },
-
+  updateAssignTeachersMajor: async (id, teacherCodes) => {
+    try {
+      const response = await majorService.updateAssignTeachers(
+        id,
+        teacherCodes
+      );
+      if (response) {
+        set({
+          major: response,
+        });
+      }
+      return !!response;
+    } catch (error) {
+      return false;
+    }
+  },
+  deleteTeachersMajor: async (id, teacherCodes) => {
+    try {
+      const response = await majorService.deleteTeachersMajor(id, teacherCodes);
+      if (response) {
+        set({
+          major: response,
+        });
+      }
+      return !!response;
+    } catch (error) {
+      return false;
+    }
+  },
   fetchMajor: async (id: string) => {
     try {
       const response = await majorService.getSingle(id);

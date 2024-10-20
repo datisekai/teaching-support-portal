@@ -6,6 +6,7 @@ export interface IFormItem {
     | "select"
     | "multi-select"
     | "select-ajax"
+    | "multi-select-ajax"
     | "date"
     | "date-time"
     | "switch"

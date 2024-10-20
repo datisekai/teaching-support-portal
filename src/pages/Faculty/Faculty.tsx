@@ -39,8 +39,8 @@ const Faculty = () => {
     const data = {
       message: "Bạn có chắc chắn muốn xoá ngành học này?",
       header: "Xác nhận xoá",
-      onAccept: () => {
-        const result = deleteFaculty(parseInt(id));
+      onAccept: async () => {
+        const result = await deleteFaculty(parseInt(id));
         if (!result) {
           return showToast({
             severity: "danger",
@@ -56,7 +56,7 @@ const Faculty = () => {
           life: 3000,
         });
       },
-      onReject: () => { },
+      onReject: () => {},
     };
     onConfirm(data);
   };

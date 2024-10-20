@@ -12,11 +12,6 @@ export const classSchemas: TableSchema[] = [
     type: "text",
   },
   {
-    label: "Giảng viên",
-    prop: "teacher",
-    type: "text",
-  },
-  {
     label: "Môn học",
     prop: "major",
     type: "text",

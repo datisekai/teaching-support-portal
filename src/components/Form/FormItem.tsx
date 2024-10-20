@@ -58,12 +58,12 @@ const FormItem: React.FC<IForm> = ({
     setLoading(true);
     const data = await sendServerRequest({ endpoint: apiUrl, method: "GET", body: { pagination: false, ...body } });
     const newOptions = getOptions?.(data.data) || [];
-    setAjaxOptions(newOptions)
+    setAjaxOptions(newOptions);
     setLoading(false);
   };
 
   useEffect(() => {
-    if (type == "select-ajax" && apiUrl && getOptions) {
+    if ((type == "select-ajax" || type == "multi-select-ajax") && apiUrl && getOptions) {
       if (preConditionProp && !watch) return;
       if (preConditionProp && watch) {
         getAjaxOptions({ [preConditionProp]: watch })
@@ -93,7 +93,11 @@ const FormItem: React.FC<IForm> = ({
         );
       case "editor":
         return renderController(({ field: { onChange, value, onBlur } }) => (
-          <MyEditor value={value} height={500} onChange={(e) => onChange({ target: { value: e, name: prop } })} />
+          <MyEditor
+            value={value}
+            height={500}
+            onChange={(e) => onChange({ target: { value: e, name: prop } })}
+          />
         ));
       case "number":
         return renderController(({ field: { onChange, value, onBlur } }) => (
@@ -201,7 +205,27 @@ const FormItem: React.FC<IForm> = ({
               className="tw-w-full"
               optionLabel="title"
             />
-          )
+          );
+        });
+      case "multi-select-ajax":
+        return renderController(({ field: { onChange, onBlur, value } }) => {
+          console.log("value", value, ajaxOptions);
+          return (
+            <MultiSelect
+              loading={loading}
+              invalid={!!error}
+              onBlur={onBlur}
+              value={+value}
+              onChange={(e) =>
+                onChange({ target: { value: e.value, name: prop } })
+              }
+              filter
+              options={ajaxOptions || []}
+              placeholder={`Chọn ${label.toLowerCase()}`}
+              className="tw-w-full"
+              optionLabel="title"
+            />
+          );
         });
       case "textarea":
         return renderController(({ field: { onChange, onBlur, value } }) => (
@@ -222,7 +246,10 @@ const FormItem: React.FC<IForm> = ({
           //   onChange={(url) => onChange({ target: { value: url, name: prop } })}
           //   value={value}
           // />
-          <MyUploadSingleImage onChange={(e) => onChange({ target: { value: e, name: prop } })} value={value || ''} />
+          <MyUploadSingleImage
+            onChange={(e) => onChange({ target: { value: e, name: prop } })}
+            value={value || ""}
+          />
         ));
       default:
         return renderController(
@@ -249,10 +276,12 @@ const FormItem: React.FC<IForm> = ({
         <label className=" tw-block" htmlFor={prop}>
           {label}
         </label>
-        {description && <div className="tw-py-0 tw-text-sm tw-my-0 tw-text-gray-600">{description}</div>}
-        <div className="mt-2">
-          {getInputComponent()}
-        </div>
+        {description && (
+          <div className="tw-py-0 tw-text-sm tw-my-0 tw-text-gray-600">
+            {description}
+          </div>
+        )}
+        <div className="mt-2">{getInputComponent()}</div>
         {error && (
           <small id={`${prop}-help`} className="tw-text-red-500">
             {error}

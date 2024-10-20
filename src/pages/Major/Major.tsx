@@ -16,7 +16,6 @@ const Major = () => {
   const actionTable: IActionTable[] = [
     {
       onClick: (data, options) => {
-        console.log("checked: ", data.teachers);
         // const transferData = teachers.map((item) => {
         //   return { content: item.code, subcontent: item.name };
         // });

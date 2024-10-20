@@ -1,3 +1,4 @@
+import { apiConfig } from "../apis";
 import { IForm, IFormItem } from "../types/form-item";
 
 export const MajorForm: IForm[] = [
@@ -18,10 +19,18 @@ export const MajorForm: IForm[] = [
       },
       {
         prop: "facultyId",
-        type: "select",
+        type: "select-ajax",
         label: "Ngành học",
+        apiUrl: apiConfig.faculty.getAll.endpoint,
         col: 6,
-        options: [],
+        getOptions: (data = []) => {
+          return data.map((item: any) => {
+            return {
+              title: `${item.name}`,
+              value: item.id,
+            };
+          });
+        },
       },
     ],
   },
