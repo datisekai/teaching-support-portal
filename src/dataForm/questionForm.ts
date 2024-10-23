@@ -56,7 +56,7 @@ export const QuestionCodeForm: IForm[] = [
       },
 
       {
-        prop: "languages",
+        prop: "acceptedLanguages",
         type: "multi-select-ajax",
         label: "Ngôn ngữ thực hiện",
         col: 6,
