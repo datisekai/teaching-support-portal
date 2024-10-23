@@ -7,6 +7,7 @@ export interface IClass {
   major: IMajor;
   duration: string;
   teachers: IUser[];
+  users: IUser[];
   createdAt: string;
   updatedAt: string;
 }

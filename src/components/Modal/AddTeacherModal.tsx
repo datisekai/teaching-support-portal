@@ -10,6 +10,7 @@ import { MultiSelect } from "primereact/multiselect";
 import { useMajorStore } from "../../stores/majorStore";
 import useConfirm from "../../hooks/useConfirm";
 import { useToast } from "../../hooks/useToast";
+import { UserType } from "../../constants";
 
 const AddTeacherModal = () => {
   const [selectTeacher, setSelectTeacher] = useState([]);
@@ -72,10 +73,9 @@ const AddTeacherModal = () => {
   const handleSubmit = () => {
     const transferData = selectTeacher.map((item: any) => item.code);
     updateAssignTeachersMajor(content.id, { teacherCodes: transferData });
-    console.log(selectTeacher);
   };
   useEffect(() => {
-    fetchTeachers({});
+    fetchTeachers({ type: UserType.TEACHER });
     fetchMajor(content.id);
   }, []);
   return (

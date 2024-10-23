@@ -50,7 +50,7 @@ const CreateNotification = () => {
   const onSubmit = async (values: any) => {
     const transferData = {
       ...values,
-      classId: Number(values.classIds[0]),
+      classIds: values.classIds.map((item: any) => Number(item)),
     };
     const result = await addNotification(transferData);
     if (!result) {

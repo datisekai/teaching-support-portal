@@ -7,6 +7,7 @@ import { uploadFile } from "../../utils";
 import { students, studentSchemas } from "../../dataTable/studentTable";
 import { useUserStore } from "../../stores/userStore";
 import { userSchemas } from "../../dataTable/userTable";
+import { useClassStore } from "../../stores/classStore";
 
 const Student = () => {
   const { id } = useParams();
@@ -39,6 +40,7 @@ const Student = () => {
   const navigate = useNavigate();
   const { onConfirm } = useConfirm();
   const { users, fetchUsers, deleteUser, total } = useUserStore();
+  const { _class, fetchClass } = useClassStore();
 
   const { setHeaderTitle, setHeaderActions, resetActions, isLoadingApi } =
     useCommonStore();
@@ -63,6 +65,11 @@ const Student = () => {
     };
     onConfirm(data);
   };
+  useEffect(() => {
+    if (id) {
+      fetchClass(id || "");
+    }
+  }, [id]);
 
   useEffect(() => {
     setHeaderTitle("Quản lý Sinh viên");
@@ -101,13 +108,14 @@ const Student = () => {
     };
   }, []);
   const handleSearch = (query: Object) => {
-    fetchUsers(query);
+    // fetchUsers(query);
+    // fetchClasses();
   };
   return (
     <div>
       <MyTable
         keySearch="name"
-        data={users}
+        data={_class.users}
         schemas={userSchemas}
         actions={actionTable}
         totalRecords={total}

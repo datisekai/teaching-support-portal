@@ -72,7 +72,7 @@ const EditNotification = () => {
   const onSubmit = async (data: any) => {
     const formattedData = {
       ...data,
-      classId: Number(data.classIds[0]),
+      classId: data.classIds.map((item: any) => Number(item)),
     };
 
     const result = await updateNotification(parseInt(id || ""), formattedData);
