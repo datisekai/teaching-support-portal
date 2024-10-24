@@ -21,7 +21,10 @@ export const ClassForm: IForm[] = [
           return data.map((item: any) => {
             return {
               title: `${item.code} - ${item.name}`,
-              value: item.code,
+              value: {
+                code: item.code,
+                name: item.name,
+              },
             };
           });
         },

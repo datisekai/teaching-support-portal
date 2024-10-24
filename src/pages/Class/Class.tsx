@@ -147,7 +147,7 @@ const Class = () => {
         data={classes.map((item) => ({
           ...item,
           // teacher: item.teacher?.name,
-          major: item.major.name,
+          major: item?.major?.name,
         }))}
         schemas={classSchemas}
         actions={actionTable}

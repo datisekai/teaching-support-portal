@@ -96,7 +96,7 @@ const Notification = () => {
         keySearch="name"
         data={notifications.map((item) => ({
           ...item,
-          class: item.class.name,
+          class: item?.class?.name,
         }))}
         schemas={notificationSchemas}
         actions={actionTable}

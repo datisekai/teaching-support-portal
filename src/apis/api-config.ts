@@ -311,4 +311,22 @@ export const apiConfig = {
       endpoint: "/api.googleai",
     },
   },
+  letter: {
+    create: {
+      method: "POST",
+      endpoint: "/api.letter",
+    },
+    update: {
+      method: "PATCH",
+      endpoint: "/api.letter/:id",
+    },
+    getAll: {
+      method: "GET",
+      endpoint: "/api.letter",
+    },
+    getSingle: {
+      method: "GET",
+      endpoint: "/api.letter/:id",
+    },
+  },
 };

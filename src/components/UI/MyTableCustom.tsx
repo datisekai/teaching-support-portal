@@ -21,6 +21,7 @@ import { ColumnGroup } from "primereact/columngroup";
 import { Row } from "primereact/row";
 import { InputNumber } from "primereact/inputnumber";
 import { IActionTable } from "./MyTable";
+import useConfirm from "../../hooks/useConfirm";
 
 interface IMyTable {
   schemas: TableSchema[];
@@ -53,20 +54,6 @@ const MyTableCustom: FC<IMyTable> = ({
       onChange({ [keySearch]: debouncedValue, page: first });
     }
   }, [debouncedValue, first]);
-
-  useEffect(() => {
-    setTableData(
-      data.length > 0
-        ? data
-        : [
-            {
-              index: 1,
-              name: "",
-              percent: 100,
-            },
-          ]
-    );
-  }, [data]);
 
   const handlePageChange = (event: PaginatorPageChangeEvent) => {
     const page = event.first;

@@ -23,7 +23,7 @@ import { Menu } from "primereact/menu";
 export interface IActionTable {
   title?: string;
   icon?: string;
-  onClick?: (data: any, options: any) => void;
+  onClick?: (data: any, options: any, index?: number) => void;
   type?: "button" | "file";
   disabled?: boolean;
   iconPos?: "right" | "left";

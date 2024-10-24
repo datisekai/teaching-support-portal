@@ -18,7 +18,7 @@ export const classSchemas: TableSchema[] = [
   },
   {
     label: "Năm học",
-    prop: "dueDate",
+    prop: "duration",
     type: "text",
   },
   {

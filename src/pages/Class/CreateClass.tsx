@@ -48,7 +48,7 @@ const CreateClass = () => {
     const transferData = {
       ...values,
       majorId: Number(values.majorId),
-      teacherCodes: values.teacherCodes.map((item: any) => Number(item.value)),
+      teacherCodes: values.teacherCodes.map((item: any) => item.value),
     };
     const result = await addClass(transferData);
     if (!result) {
