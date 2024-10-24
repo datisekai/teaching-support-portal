@@ -1,7 +1,7 @@
 export * from "./upload-file";
 export * from "./local-store";
 export * from "./translate";
-
+export const BASE_URL = import.meta.env.VITE_BASE_URL;
 export function randomString(length: number) {
   let result = "";
   const characters =
@@ -13,4 +13,10 @@ export function randomString(length: number) {
     counter += 1;
   }
   return result;
+}
+export function getImageUrl(url: string, name: string) {
+  if (!url) {
+    return `https://ui-avatars.com/api/?name=${name}`;
+  }
+  return `${BASE_URL}/${url}`;
 }
