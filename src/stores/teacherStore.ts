@@ -4,7 +4,7 @@ import { IUser } from "../types/user";
 
 interface ITeacherState {
   teachers: IUser[];
-  teacher: IUser | null;
+  teacher: IUser;
   total: number;
   isLoadingTeachers: boolean;
   fetchTeachers: (body: object) => Promise<void>;
@@ -16,7 +16,7 @@ interface ITeacherState {
 
 export const useTeacherStore = create<ITeacherState>((set) => ({
   teachers: [],
-  teacher: null,
+  teacher: {} as IUser,
   isLoadingTeachers: false,
   total: 0,
 

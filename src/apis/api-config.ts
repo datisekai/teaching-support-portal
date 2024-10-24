@@ -311,6 +311,7 @@ export const apiConfig = {
       endpoint: "/api.googleai",
     },
   },
+  //letter
   letter: {
     create: {
       method: "POST",
@@ -327,6 +328,17 @@ export const apiConfig = {
     getSingle: {
       method: "GET",
       endpoint: "/api.letter/:id",
+    },
+  },
+  //metadata
+  metadata: {
+    update: {
+      method: "PATCH",
+      endpoint: "/api.meta/setting",
+    },
+    getSingle: {
+      method: "GET",
+      endpoint: "/api.meta/setting",
     },
   },
 };

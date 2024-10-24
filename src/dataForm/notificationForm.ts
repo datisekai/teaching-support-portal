@@ -30,7 +30,6 @@ export const NotificationForm: IForm[] = [
         label: "Nhóm lớp",
         col: 6,
         getOptions: (data = []) => {
-          console.log("values: ", data);
           return data.map((item: any) => {
             return {
               title: `${item.name}`,

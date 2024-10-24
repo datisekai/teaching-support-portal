@@ -18,5 +18,5 @@ export function getImageUrl(url: string, name: string) {
   if (!url) {
     return `https://ui-avatars.com/api/?name=${name}`;
   }
-  return `${BASE_URL}/${url}`;
+  return `${url}`;
 }

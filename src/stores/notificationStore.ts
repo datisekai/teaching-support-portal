@@ -4,7 +4,7 @@ import { INotification } from "../types/notification";
 
 interface INotificationState {
   notifications: INotification[];
-  notification: INotification | null;
+  notification: INotification;
   total: number;
   isLoadingNotifications: boolean;
   fetchNotifications: (body: object) => Promise<void>;
@@ -19,7 +19,7 @@ interface INotificationState {
 
 export const useNotificationStore = create<INotificationState>((set) => ({
   notifications: [],
-  notification: null,
+  notification: {} as INotification,
   isLoadingNotifications: false,
   total: 0,
 

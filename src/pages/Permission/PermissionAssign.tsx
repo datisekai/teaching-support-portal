@@ -28,7 +28,7 @@ const PermissionAssign: React.FC = () => {
 
   // Hàm kiểm tra quyền (permission) đã có trong role hay không
   const isPermissionInRole = (resource: string, action: string) => {
-    return role?.permissions.some(
+    return role?.permissions?.some(
       (perm: IPermission) =>
         perm.resource === resource && perm.action === action
     );

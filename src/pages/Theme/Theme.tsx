@@ -8,6 +8,9 @@ import { useCommonStore } from "../../stores";
 import { IAction } from "../../stores/commonStore";
 import { UserForm } from "../../dataForm/userForm";
 import { interfaceForm } from "../../dataForm/interfaceForm";
+import { useMetaStore } from "../../stores/metaStore";
+import { useToast } from "../../hooks/useToast";
+import MyLoading from "../../components/UI/MyLoading";
 const schema = yup
   .object()
   .shape({
@@ -21,6 +24,7 @@ const Interface = () => {
     handleSubmit,
     formState: { errors },
     control,
+    setValue,
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
@@ -34,9 +38,34 @@ const Interface = () => {
   const setFooterActions = useCommonStore((state) => state.setFooterActions);
   const setHeaderTitle = useCommonStore((state) => state.setHeaderTitle);
   const resetActions = useCommonStore((state) => state.resetActions);
-
-  const onSubmit = (values: any) => {
-    console.log('values', values);
+  const { meta, fetchMeta, updateMeta, isLoadingMetas } = useMetaStore();
+  const { showToast } = useToast();
+  const onSubmit = async (values: any) => {
+    try {
+      const result = await updateMeta(values);
+      if (!result) {
+        showToast({
+          severity: "danger",
+          summary: "Thông báo",
+          message: "Cập nhật thất bại",
+          life: 3000,
+        });
+      } else {
+        showToast({
+          severity: "success",
+          summary: "Thông báo",
+          message: "Cập nhật thành công",
+          life: 3000,
+        });
+      }
+    } catch (error) {
+      showToast({
+        severity: "danger",
+        summary: "Thông báo",
+        message: "Cập nhật thất bại",
+        life: 3000,
+      });
+    }
   };
 
   useEffect(() => {
@@ -48,20 +77,38 @@ const Interface = () => {
       },
     ];
     setFooterActions(actions);
-    setHeaderTitle("Chỉnh sử giao diện");
+    setHeaderTitle("Chỉnh sửa giao diện");
 
     return () => {
       resetActions();
     };
-  }, []);
+  }, [resetActions, setHeaderTitle, setFooterActions]);
 
+  useEffect(() => {
+    fetchMeta();
+  }, []);
+  useEffect(() => {
+    if (meta) {
+      setValue("name", meta?.value?.name);
+      setValue("logo", meta?.value?.logo);
+      setValue("favicon", meta?.value?.favicon);
+    }
+  }, [meta]);
+  console.log(meta);
   return (
     <div>
-      <form onSubmit={(e) => e.preventDefault()} className="tw-space-y-4">
-        {interfaceForm.map((form, index) => (
-          <GroupItem errors={errors} {...form} key={index} control={control} />
-        ))}
-      </form>
+      <MyLoading isLoading={isLoadingMetas}>
+        <form onSubmit={(e) => e.preventDefault()} className="tw-space-y-4">
+          {interfaceForm.map((form, index) => (
+            <GroupItem
+              errors={errors}
+              {...form}
+              key={index}
+              control={control}
+            />
+          ))}
+        </form>
+      </MyLoading>
     </div>
   );
 };

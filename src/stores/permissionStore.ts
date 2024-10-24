@@ -4,7 +4,7 @@ import { IPermission } from "../types/user";
 
 interface IPermissionState {
   permissions: IPermission[];
-  permission: IPermission | null;
+  permission: IPermission;
   isLoadingPermissions: boolean;
   fetchPermissions: () => Promise<void>;
   fetchPermission: (id: number) => Promise<void>;
@@ -19,7 +19,7 @@ interface IPermissionState {
 export const usePermissionStore = create<IPermissionState>((set) => ({
   permissions: [],
   isLoadingPermissions: false,
-  permission: null,
+  permission: {} as IPermission,
 
   fetchPermissions: async () => {
     try {

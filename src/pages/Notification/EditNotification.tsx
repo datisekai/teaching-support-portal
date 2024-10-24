@@ -59,10 +59,16 @@ const EditNotification = () => {
       setValue("name", notification.name);
       setValue("image", notification.image);
       setValue("content", notification.content);
-      setValue("classIds", [notification.class.id]);
+      setValue(
+        "classIds",
+        notification?.classes?.map((item: any) => ({
+          title: `${item.name}`,
+          value: item.id,
+        }))
+      );
     }
   }, [notification]);
-
+  console.log(notification.classes);
   const navigate = useNavigate();
 
   const setFooterActions = useCommonStore((state) => state.setFooterActions);

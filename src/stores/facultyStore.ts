@@ -4,7 +4,7 @@ import { IFaculty } from "../types/faculty";
 
 interface IFacultyState {
   facultys: IFaculty[];
-  faculty: IFaculty | null;
+  faculty: IFaculty;
   total: number;
   isLoadingFacultys: boolean;
   fetchFacultys: (body: object) => Promise<void>;
@@ -16,7 +16,7 @@ interface IFacultyState {
 
 export const useFacultyStore = create<IFacultyState>((set) => ({
   facultys: [],
-  faculty: null,
+  faculty: {} as IFaculty,
   isLoadingFacultys: false,
   total: 0,
 

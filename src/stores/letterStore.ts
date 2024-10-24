@@ -4,7 +4,7 @@ import { ILetter } from "../types/letter";
 
 interface ILetterState {
   letters: ILetter[];
-  letter: ILetter | null;
+  letter: ILetter;
   total: number;
   isLoadingLetters: boolean;
   fetchLetters: (body: object) => Promise<void>;
@@ -15,7 +15,7 @@ interface ILetterState {
 
 export const useLetterStore = create<ILetterState>((set) => ({
   letters: [],
-  letter: null,
+  letter: {} as ILetter,
   isLoadingLetters: false,
   total: 0,
 

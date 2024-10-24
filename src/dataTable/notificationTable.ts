@@ -17,16 +17,6 @@ export const notificationSchemas: TableSchema[] = [
     type: "text",
   },
   {
-    label: "Ngày thông báo",
-    prop: "notificationDate",
-    type: "datetime",
-  },
-  {
-    label: "Nhóm lớp",
-    prop: "class",
-    type: "text",
-  },
-  {
     label: "Ngày tạo",
     prop: "createdAt",
     type: "datetime",

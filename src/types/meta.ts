@@ -2,12 +2,10 @@ import { IClass } from "./class";
 import { IFaculty } from "./faculty";
 import { IUser } from "./user";
 
-export interface INotification {
+export interface IMeta {
   id: number;
-  name: string;
-  image: string;
-  content: string;
-  classes: IClass[];
+  key: string;
+  value: any;
   createdAt: string;
   updatedAt: string;
 }

@@ -4,7 +4,7 @@ import { IRole } from "../types/user";
 
 interface IRoleState {
   roles: IRole[];
-  role: IRole | null;
+  role: IRole;
   total: number;
   isLoadingRoles: boolean;
   fetchRoles: (body: object) => Promise<void>;
@@ -20,7 +20,7 @@ interface IRoleState {
 
 export const useRoleStore = create<IRoleState>((set) => ({
   roles: [],
-  role: null,
+  role: {} as IRole,
   isLoadingRoles: false,
   total: 0,
 
