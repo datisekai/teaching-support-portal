@@ -2,10 +2,12 @@ import { Avatar } from "primereact/avatar";
 import { Ripple } from "primereact/ripple";
 import React, { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { sidebarData } from "../../constants";
+import { pathNames, sidebarData } from "../../constants";
 import { useAuthStore } from "../../stores";
 import { useUserStore } from "../../stores/userStore";
 import { getImageUrl } from "../../utils";
+import { Button } from "primereact/button";
+import useConfirm from "../../hooks/useConfirm";
 
 interface IMySideBar {
   isSidebarVisible: boolean;
@@ -25,6 +27,7 @@ const MySideBar: React.FC<IMySideBar> = ({
   const navigate = useNavigate();
   const [expandedMenus, setExpandedMenus] = useState<ExpandedMenus>({});
   const { user, permissions } = useUserStore();
+  const { logout } = useAuthStore();
   // console.log("current user", user);
 
   const handleExpandClick = (index: number) => {
@@ -54,7 +57,21 @@ const MySideBar: React.FC<IMySideBar> = ({
       return hasPermission(item.permission) || hasChildPermission;
     });
   }, [permissions]);
-  console.log(getImageUrl(user.avatar, user.name));
+  const { onConfirm } = useConfirm();
+  const handleLogout = () => {
+    logout();
+    const data = {
+      message: "Bạn có chắc chắn đăng xuất?",
+      header: "Xác nhận đăng xuất",
+      onAccept: () => {
+        navigate(pathNames.LOGIN);
+      },
+      onReject: () => {
+        console.log("Đã hủy bỏ hành động.");
+      },
+    };
+    onConfirm(data);
+  };
 
   return (
     <div
@@ -125,18 +142,26 @@ const MySideBar: React.FC<IMySideBar> = ({
           </ul>
         </div>
         <div className="tw-mt-auto">
-          <hr className="tw-mb-3 tw-mx-3 tw-border-top-1 tw-border-none tw-surface-border" />
-          <a className="tw-m-3 tw-flex tw-items-center tw-cursor-pointer tw-gap-2 tw-border-round tw-text-700 hover:tw-surface-100 tw-transition-duration-150 tw-transition-colors tw-p-ripple">
-            <span className="tw-inline-flex tw-items-center tw-gap-2">
-              <Avatar
-                image={getImageUrl(user.avatar, user.name)}
-                size="xlarge"
-                className="tw-object-cover tw-object-top"
-                shape="circle"
-              />
-              <span className="tw-font-bold">{user.name}</span>
-            </span>
-          </a>
+          {/* <hr className="tw-mb-3 tw-mx-3 tw-border-top-1 tw-border-none surface-border" /> */}
+          <div className="tw-flex tw-items-center tw-justify-between tw-m-3">
+            <a className=" tw-flex tw-items-center tw-cursor-pointer tw-gap-2 tw-border-round tw-text-700 hover:tw-surface-100 tw-transition-duration-150 tw-transition-colors tw-p-ripple">
+              <span className="tw-inline-flex tw-items-center tw-gap-2">
+                <Avatar
+                  image={getImageUrl(user.avatar, user.name)}
+                  size="xlarge"
+                  className="tw-object-cover tw-object-top"
+                  shape="circle"
+                />
+                <span className="tw-font-bold">{user.name}</span>
+              </span>
+            </a>
+            <Button
+              size="small"
+              icon="pi pi-sign-out"
+              outlined
+              onClick={handleLogout}
+            ></Button>
+          </div>
         </div>
       </div>
     </div>

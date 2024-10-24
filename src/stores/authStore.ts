@@ -1,12 +1,14 @@
 import { create } from "zustand";
-import { assignPermissions, localKey, users } from "../constants";
+import { assignPermissions, localKey, pathNames, users } from "../constants";
 import { AuthService } from "../services";
 import { useUserStore } from "./userStore";
 import { getObjectLocalData, setObjectLocalData } from "../utils";
+import { useNavigate } from "react-router-dom";
 
 interface IState {
   token: string;
   login: (code: string, password: string) => Promise<boolean>;
+  logout: () => void;
 }
 
 export const useAuthStore = create<IState>((set) => ({
@@ -21,5 +23,9 @@ export const useAuthStore = create<IState>((set) => ({
     }
 
     return !!result;
+  },
+  logout: () => {
+    setObjectLocalData(localKey.TOKEN, "");
+    set((state) => ({ ...state, token: "" }));
   },
 }));
