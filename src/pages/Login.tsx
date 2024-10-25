@@ -16,14 +16,13 @@ const Login = () => {
   const [password, setPassword] = useState<string>("");
   const { showToast } = useToast();
   const { login, token } = useAuthStore();
-  const navigate = useNavigate()
-
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (token) {
       return navigate(pathNames.HOME);
     }
-  }, [token])
+  }, [token]);
 
   const onSubmit = async (data: { code: string; password: string }) => {
     const result = login(data.code, data.password);
@@ -42,7 +41,6 @@ const Login = () => {
       message: "Đăng nhập thành công",
       life: 3000,
     });
-    navigate(pathNames.HOME)
   };
 
   const schema = yup
