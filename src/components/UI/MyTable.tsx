@@ -1,29 +1,21 @@
+import dayjs from "dayjs";
 import { Button } from "primereact/button";
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
 import { IconField } from "primereact/iconfield";
 import { InputIcon } from "primereact/inputicon";
 import { InputText } from "primereact/inputtext";
-import { TableSchema } from "../../types/table";
-import {
-  FC,
-  useMemo,
-  memo,
-  useState,
-  useCallback,
-  useEffect,
-  useRef,
-} from "react";
-import { Paginator, PaginatorPageChangeEvent } from "primereact/paginator";
-import { useDebounceValue } from "usehooks-ts";
-import dayjs from "dayjs";
-import { Tag } from "primereact/tag";
 import { Menu } from "primereact/menu";
+import { Paginator, PaginatorPageChangeEvent } from "primereact/paginator";
+import { Tag } from "primereact/tag";
+import { FC, memo, useCallback, useEffect, useRef, useState } from "react";
+import { useDebounceValue } from "usehooks-ts";
+import { TableSchema } from "../../types/table";
 
 export interface IActionTable {
   title?: string;
   icon?: string;
-  onClick?: (data: any, options: any, index?: number) => void;
+  onClick?: (data: any, options: any) => void;
   type?: "button" | "file";
   disabled?: boolean;
   iconPos?: "right" | "left";
@@ -59,7 +51,6 @@ const MyTable: FC<IMyTable> = ({
 }) => {
   const [first, setFirst] = useState(1);
   const [selectedRowData, setSelectedRowData] = useState<any>(null);
-  const [menuVisible, setMenuVisible] = useState(false);
   const menuRight = useRef<Menu>(null);
   const [debouncedValue, setValue] = useDebounceValue("", 500);
 
@@ -76,7 +67,6 @@ const MyTable: FC<IMyTable> = ({
 
   const handleMenuClick = (event: any, rowData: any) => {
     setSelectedRowData(rowData);
-    setMenuVisible(true);
     menuRight?.current?.toggle(event);
   };
 
@@ -218,7 +208,7 @@ const MyTable: FC<IMyTable> = ({
       </DataTable>
       {totalRecords > perPage && (
         <Paginator
-          first={first}
+          first={first - 1}
           rows={perPage}
           totalRecords={totalRecords}
           onPageChange={handlePageChange}
