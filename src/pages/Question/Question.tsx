@@ -6,6 +6,14 @@ import { Button } from "primereact/button";
 import { questions, questionSchemas } from "../../dataTable/questionTable";
 import useConfirm from "../../hooks/useConfirm";
 import { ModalName } from "../../constants";
+import { useQuestionStore } from "../../stores/questionStore";
+import { useToast } from "../../hooks/useToast";
+import { Dropdown, DropdownChangeEvent } from "primereact/dropdown";
+
+interface IStatus {
+  id: string;
+  label: string;
+}
 
 interface IStatus {
   id: string;
@@ -17,7 +25,10 @@ const Question = () => {
   const { onToggle, onDismiss } = useModalStore();
   const { onConfirm } = useConfirm();
   const { setHeaderTitle, setHeaderActions, resetActions } = useCommonStore();
-
+  const { questions, fetchQuestions, total, deleteQuestion } =
+    useQuestionStore();
+  const { isLoadingApi } = useCommonStore();
+  const { showToast } = useToast();
   const handleSubmit = (data: any) => {
     onDismiss();
   };
@@ -28,10 +39,33 @@ const Question = () => {
 
   const handleDelete = (id: number) => {
     const data = {
-      message: "Bạn có chắc chắn muốn xoá câu hỏi này?",
+      message: "Bạn có chắc chắn muốn xoá thông báo này?",
       header: "Xác nhận xoá",
-      onAccept: () => {
-        console.log("Đã xoá câu hỏi thành công!", id);
+      onAccept: async () => {
+        try {
+          const result = await deleteQuestion(id);
+          if (!result) {
+            return showToast({
+              severity: "danger",
+              summary: "Thông báo",
+              message: "Xóa thất bại",
+              life: 3000,
+            });
+          }
+          showToast({
+            severity: "success",
+            summary: "Thông báo",
+            message: "Xóa thành công",
+            life: 3000,
+          });
+        } catch (error) {
+          showToast({
+            severity: "danger",
+            summary: "Thông báo",
+            message: "Xóa thất bại",
+            life: 3000,
+          });
+        }
       },
       onReject: () => {
         console.log("Đã hủy bỏ hành động.");
@@ -48,6 +82,7 @@ const Question = () => {
       style: "tw-w-[90%] md:tw-w-[30rem]",
     });
   };
+  console.log("checked", questions);
 
   const actionTable: IActionTable[] = [
     {
@@ -101,14 +136,44 @@ const Question = () => {
     return () => {
       resetActions();
     };
-  }, []);
+  }, [setHeaderTitle, setHeaderActions, resetActions]);
+  const handleSearch = (query: Object) => {
+    fetchQuestions(query);
+  };
+  const status: IStatus[] = [
+    {
+      id: "all",
+      label: "Tất cả",
+    },
+    {
+      id: "me",
+      label: "Của tôi",
+    },
+  ];
+  const [selectedStauts, setselectedStauts] = useState<IStatus>(status[0]);
+
+  useEffect(() => {
+    fetchQuestions({ type: selectedStauts?.id });
+  }, [selectedStauts]);
 
   return (
     <div>
+      <Dropdown
+        value={selectedStauts}
+        onChange={(e: DropdownChangeEvent) => setselectedStauts(e.value)}
+        options={status}
+        optionLabel="label"
+        placeholder="Danh sách câu hỏi"
+        className="tw-w-1/2 md:tw-w-14rem tw-my-2"
+      />
       <MyTable
+        keySearch="name"
         data={questions}
         schemas={questionSchemas}
         actions={actionTable}
+        totalRecords={total}
+        isLoading={isLoadingApi}
+        onChange={handleSearch}
       />
     </div>
   );

@@ -9,35 +9,46 @@ export const questionSchemas: TableSchema[] = [
   },
   {
     label: "Đề bài",
-    prop: "topic",
+    prop: "title",
     type: "text",
   },
   {
-    label: "Chương",
-    prop: "chapter",
+    label: "Nội dung",
+    prop: "content",
     type: "text",
   },
+  // {
+  //   label: "Chương",
+  //   prop: "chapter",
+  //   type: "text",
+  // },
+  // {
+  //   label: "Độ khó",
+  //   prop: "level",
+  //   type: "badge",
+  //   getBadge: (value) => {
+  //     switch (value) {
+  //       case "easy":
+  //         return { value: "Dễ", severity: "info" };
+  //       case "medium":
+  //         return { value: "Trung bình", severity: "warning" };
+  //       case "difficult":
+  //         return { value: "Khó", severity: "danger" };
+  //       default:
+  //         return { value: "Lỗi", severity: "danger" };
+  //     }
+  //   },
+  // },
   {
-    label: "Độ khó",
-    prop: "level",
+    label: "Trạng thái",
+    prop: "isPublic",
     type: "badge",
     getBadge: (value) => {
-      switch (value) {
-        case "easy":
-          return { value: "Dễ", severity: "info" };
-        case "medium":
-          return { value: "Trung bình", severity: "warning" };
-        case "difficult":
-          return { value: "Khó", severity: "danger" };
-        default:
-          return { value: "Lỗi", severity: "danger" };
+      if (value) {
+        return { value: "Công khai", severity: "success" };
       }
+      return { value: "Riêng tư", severity: "danger" };
     },
-  },
-  {
-    label: "Giảng viên",
-    prop: "teacher",
-    type: "text",
   },
   {
     label: "Loại câu hỏi",

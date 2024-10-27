@@ -26,22 +26,31 @@ const Notification = () => {
     const data = {
       message: "Bạn có chắc chắn muốn xoá thông báo này?",
       header: "Xác nhận xoá",
-      onAccept: () => {
-        const result = deleteNotification(id);
-        if (!result) {
-          return showToast({
+      onAccept: async () => {
+        try {
+          const result = await deleteNotification(id);
+          if (!result) {
+            return showToast({
+              severity: "danger",
+              summary: "Thông báo",
+              message: "Xóa thất bại",
+              life: 3000,
+            });
+          }
+          showToast({
+            severity: "success",
+            summary: "Thông báo",
+            message: "Xóa thành công",
+            life: 3000,
+          });
+        } catch (error) {
+          showToast({
             severity: "danger",
             summary: "Thông báo",
             message: "Xóa thất bại",
             life: 3000,
           });
         }
-        showToast({
-          severity: "success",
-          summary: "Thông báo",
-          message: "Xóa thành công",
-          life: 3000,
-        });
       },
       onReject: () => {
         console.log("Đã hủy bỏ hành động.");

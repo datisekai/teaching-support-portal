@@ -19,7 +19,7 @@ export const NotificationForm: IForm[] = [
       },
       {
         prop: "content",
-        type: "textarea",
+        type: "editor",
         label: "Nội dung thông báo",
         col: 6,
       },

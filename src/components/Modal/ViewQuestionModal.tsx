@@ -7,14 +7,14 @@ const ViewQuestionModal: React.FC = () => {
   return (
     <div className="">
       <p className="tw-mb-4">
-        <strong>Câu hỏi:</strong> {content.topic}
+        <strong>Câu hỏi:</strong> {content.title}
       </p>
       <p className="tw-mb-4">
         <strong>Nội dung:</strong>
         <div dangerouslySetInnerHTML={{ __html: content.content }} />
       </p>
       <p className="tw-mb-4">
-        <strong>Đáp án đúng:</strong> {content.correctAnswer}
+        <strong>Đáp án đúng:</strong> {content.choices}
       </p>
     </div>
   );

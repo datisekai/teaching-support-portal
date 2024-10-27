@@ -6,6 +6,7 @@ import { letters, letterSchemas } from "../../dataTable/letterTable";
 import { Button } from "primereact/button";
 import { Dropdown, DropdownChangeEvent } from "primereact/dropdown";
 import { ModalName } from "../../constants";
+import { useLetterStore } from "../../stores/letterStore";
 
 interface IStatus {
   id: string;
@@ -17,6 +18,7 @@ const Letter = () => {
   const { onToggle } = useModalStore();
   const { setHeaderTitle, setHeaderActions, resetActions } = useCommonStore();
   const [selectedStatus, setSelectedStatus] = useState<IStatus | null>(null);
+  const { fetchLetters, letters, total } = useLetterStore();
 
   const handleSubmit = (data: any) => {
     console.log("Dữ liệu:", data);
@@ -24,14 +26,12 @@ const Letter = () => {
   };
   console.log("Trạng thái được chọn:", selectedStatus);
   const handleView = (data: any) => {
-    onToggle(
-      ModalName.VIEW_LETTER,
-      {
-        header: "Chi tiết đơn",
-        footer: (
-          <>
-            {data.status == 'pending' && <div className="tw-flex tw-justify-end tw-items-center">
-
+    onToggle(ModalName.VIEW_LETTER, {
+      header: "Chi tiết đơn",
+      footer: (
+        <>
+          {data.status == "pending" && (
+            <div className="tw-flex tw-justify-end tw-items-center">
               <Button
                 label="Từ chối"
                 icon="pi pi-times"
@@ -45,14 +45,13 @@ const Letter = () => {
                 autoFocus
                 onClick={() => handleSubmit(data)}
               />
-            </div>}
-          </>
-        ),
-        content: data, // Nội dung chi tiết của đơn từ
-        style: "tw-w-[90%] md:tw-w-[30rem]"
-      },
-
-    );
+            </div>
+          )}
+        </>
+      ),
+      content: data, // Nội dung chi tiết của đơn từ
+      style: "tw-w-[90%] md:tw-w-[30rem]",
+    });
   };
 
   const actionTable: IActionTable[] = [
@@ -72,8 +71,12 @@ const Letter = () => {
     return () => {
       resetActions();
     };
-  }, []);
+  }, [resetActions, setHeaderTitle]);
 
+  useEffect(() => {
+    fetchLetters({});
+  }, []);
+  console.log(letters);
   return (
     <div>
       <MyTable data={letters} schemas={letterSchemas} actions={actionTable} />
