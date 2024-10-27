@@ -26,9 +26,9 @@ const ScoreColumnManagement = () => {
 
   const actionTable: IActionTable[] = [
     {
-      onClick: (data, options, index) => {
-        console.log("click", data, options, index);
-        handleDelete(data, options, index);
+      onClick: (data, options) => {
+        console.log("click", data, options);
+        handleDelete(data, options);
       },
       tooltip: "Xóa",
       icon: "pi-trash",
