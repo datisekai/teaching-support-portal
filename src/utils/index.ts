@@ -20,3 +20,8 @@ export function getImageUrl(url: string, name: string) {
   }
   return `${url}`;
 }
+
+export function getImageServer(url:string){
+  if(url.includes('uploads/')) return `${BASE_URL}/${url}`
+  return url;
+}
