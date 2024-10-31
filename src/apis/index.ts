@@ -83,7 +83,7 @@ export const sendUploadImage = async (file: File, id?: string) => {
       endpoint: apiConfig.uploadImage.endpoint,
       method: apiConfig.uploadImage.method as HttpMethod,
     });
-    return response.url;
+    return response.filePath;
   } catch (error) {
     console.log(error);
     return "";

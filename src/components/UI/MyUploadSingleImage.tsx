@@ -4,6 +4,7 @@ import { ProgressSpinner } from 'primereact/progressspinner';
 import { Button } from 'primereact/button';
 import { sendUploadImage } from '../../apis';
 import { useToast } from '../../hooks/useToast';
+import {getImageServer} from "../../utils";
 
 interface Props {
     value?: string,
@@ -29,7 +30,7 @@ const MyUploadSingleImage: React.FC<Props> = ({ value, onChange }) => {
             {value &&
                 <div className='tw-w-40 tw-h-40 tw-flex tw-justify-center relative tw-items-center   tw-bg-slate-50 tw-border-2 tw-rounded tw-border-dotted'>
                     <div>
-                        <img src={value} alt="value" className='tw-w-full tw-h-full tw-object-cover' />
+                        <img src={getImageServer(value)} alt="value" className='tw-w-full tw-h-full tw-object-cover' />
                         <Button size='small' onClick={() => onChange && onChange('')} className='absolute top-0 right-0' icon="pi pi-times" rounded text raised severity="danger" aria-label="Delete" />
                     </div>
                 </div>
