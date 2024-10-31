@@ -6,7 +6,7 @@ export const StudentForm: IForm[] = [
     attributes: [
       {
         prop: "code",
-        type: "number",
+        type: "text",
         label: "Mã",
         col: 6,
       },
@@ -23,9 +23,15 @@ export const StudentForm: IForm[] = [
         col: 6,
       },
       {
-        prop: "phoneNumber",
+        prop: "phone",
         type: "text",
         label: "Số điện thoại",
+        col: 6,
+      },
+      {
+        prop: "password",
+        type: "text",
+        label: "Mật khẩu",
         col: 6,
       },
     ],

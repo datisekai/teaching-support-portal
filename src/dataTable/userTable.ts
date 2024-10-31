@@ -23,12 +23,12 @@ export const userSchemas: TableSchema[] = [
   },
   {
     label: "Số điện thoại",
-    prop: "phoneNumber",
+    prop: "phone",
     type: "text",
   },
   {
     label: "Thiết bị",
-    prop: "deviceId",
+    prop: "deviceUid",
     type: "text",
   },
   {

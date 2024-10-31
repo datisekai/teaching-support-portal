@@ -43,4 +43,11 @@ export const UserService = {
       endpoint: _delete.endpoint.replace(":id", id.toString()),
     });
   },
+  resetDevice: async (id: number) => {
+    const { resetDevice } = apiConfig.user;
+    return sendServerRequest({
+      ...resetDevice,
+      endpoint: resetDevice.endpoint.replace(":id", id.toString()),
+    });
+  },
 };

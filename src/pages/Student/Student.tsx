@@ -8,6 +8,7 @@ import { students, studentSchemas } from "../../dataTable/studentTable";
 import { useUserStore } from "../../stores/userStore";
 import { userSchemas } from "../../dataTable/userTable";
 import { useClassStore } from "../../stores/classStore";
+import { useToast } from "../../hooks/useToast";
 
 const Student = () => {
   const { id } = useParams();
@@ -20,14 +21,14 @@ const Student = () => {
       icon: "pi-refresh",
       severity: "help",
     },
-    {
-      onClick: (data, options) => {
-        handleEdit(data);
-      },
-      tooltip: "Sửa",
-      icon: "pi-pencil",
-      severity: "warning",
-    },
+    // {
+    //   onClick: (data, options) => {
+    //     handleEdit(data);
+    //   },
+    //   tooltip: "Sửa",
+    //   icon: "pi-pencil",
+    //   severity: "warning",
+    // },
     {
       onClick: (data, options) => {
         handleDelete(data.id);
@@ -39,17 +40,31 @@ const Student = () => {
   ];
   const navigate = useNavigate();
   const { onConfirm } = useConfirm();
-  const { users, fetchUsers, deleteUser, total } = useUserStore();
+  const { users, fetchUsers, deleteUser, total, resetDevice } = useUserStore();
   const { _class, fetchClass } = useClassStore();
-
+  const { showToast } = useToast();
   const { setHeaderTitle, setHeaderActions, resetActions, isLoadingApi } =
     useCommonStore();
 
-  const handleEdit = (data: any) => {
-    navigate(`/student/edit/${data.id}`);
-  };
-  const handleReset = (data: any) => {
-    console.log(data);
+  // const handleEdit = (data: any) => {
+  //   navigate(`/student/edit/${data.id}`);
+  // };
+  const handleReset = async (data: any) => {
+    const result = await resetDevice(data.id);
+    if (!result) {
+      showToast({
+        severity: "danger",
+        summary: "Thông báo",
+        message: "Cập nhật thất bại!",
+        life: 3000,
+      });
+    }
+    showToast({
+      severity: "success",
+      summary: "Thông báo",
+      message: "Cập nhật thành công!",
+      life: 3000,
+    });
   };
 
   const handleDelete = (id: number) => {

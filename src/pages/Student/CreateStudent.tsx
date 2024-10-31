@@ -7,19 +7,20 @@ import { set, useForm } from "react-hook-form";
 import { useCommonStore } from "../../stores";
 import { IAction } from "../../stores/commonStore";
 import { StudentForm } from "../../dataForm/studentForm";
+import { pathNames } from "../../constants";
+import { useUserStore } from "../../stores/userStore";
+import { useToast } from "../../hooks/useToast";
 const schema = yup
   .object()
   .shape({
     name: yup.string().required("Tên sinh viên là bắt buộc."),
-    code: yup
-      .number()
-      .notOneOf([0], "Mã sinh viên là bắt buộc.")
-      .required("Mã sinh viên là bắt buộc."),
+    code: yup.string().required("Mã sinh viên là bắt buộc."),
     email: yup
       .string()
       .email("Email phải là bắt buộc.")
       .required("Email phải là bắt buộc."),
-    phoneNumber: yup.string().required("Số điện thoại phải là bắt buộc."),
+    phone: yup.string().required("Số điện thoại phải là bắt buộc."),
+    password: yup.string().required("Mật khẩu phải là bắt buộc."),
   })
   .required();
 const CreateStudent = () => {
@@ -33,9 +34,10 @@ const CreateStudent = () => {
     resolver: yupResolver(schema),
     defaultValues: {
       name: "",
-      code: 0,
+      code: "",
       email: "",
-      phoneNumber: "",
+      phone: "",
+      password: "",
     },
   });
   const navigate = useNavigate();
@@ -43,8 +45,25 @@ const CreateStudent = () => {
   const setFooterActions = useCommonStore((state) => state.setFooterActions);
   const setHeaderTitle = useCommonStore((state) => state.setHeaderTitle);
   const resetActions = useCommonStore((state) => state.resetActions);
+  const { showToast } = useToast();
+  const { user, addUser } = useUserStore();
+  const onSubmit = async (data: any) => {
+    const result = await addUser(data);
+    if (!result) {
+      return showToast({
+        severity: "danger",
+        summary: "Thể báo",
+        message: "Tạo thể báo",
+        life: 3000,
+      });
+    }
+    showToast({
+      severity: "success",
+      summary: "Thể báo",
+      message: "Tạo thanh cong",
+      life: 3000,
+    });
 
-  const onSubmit = () => {
     navigate(-1);
   };
 

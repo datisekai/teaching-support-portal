@@ -16,6 +16,7 @@ interface IState {
   updateUser: (id: number, updateduser: IUser) => Promise<boolean>;
   deleteUser: (id: number) => Promise<boolean>;
   getMe: () => Promise<void>;
+  resetDevice: (id: number) => Promise<boolean>;
 }
 interface IToast {
   message?: string;
@@ -97,6 +98,19 @@ export const useUserStore = create<IState>((set) => ({
       if (response) {
         set((state) => ({
           users: state.users.filter((item) => item.id !== id),
+        }));
+      }
+      return !!response;
+    } catch (error) {
+      return false;
+    }
+  },
+  resetDevice: async (id: number) => {
+    try {
+      const response = await UserService.resetDevice(id);
+      if (response) {
+        set((state) => ({
+          users: state.users.map((item) => (item.id === id ? response : item)),
         }));
       }
       return !!response;
