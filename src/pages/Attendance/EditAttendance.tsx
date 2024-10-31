@@ -25,7 +25,6 @@ const EditAttendance = () => {
     formState: { errors },
     control,
     setValue,
-
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
@@ -36,10 +35,12 @@ const EditAttendance = () => {
   });
   const navigate = useNavigate();
   const { id } = useParams();
-  const { showToast } = useToast()
-  const { fetchAttendance, attendance, updateAttendance } = useAttendanceStore()
+  const { showToast } = useToast();
+  const { fetchAttendance, attendance, updateAttendance } =
+    useAttendanceStore();
 
-  const { setFooterActions, setHeaderTitle, resetActions, isLoadingApi } = useCommonStore();
+  const { setFooterActions, setHeaderTitle, resetActions, isLoadingApi } =
+    useCommonStore();
 
   const onSubmit = async (data: any) => {
     const result = await updateAttendance(parseInt(id || ""), data);
@@ -62,10 +63,10 @@ const EditAttendance = () => {
 
   useEffect(() => {
     if (attendance) {
-      console.log('attendance', attendance.class.id);
+      console.log("attendance", attendance.class.id);
       setValue("title", attendance.title);
       setValue("classId", attendance.class.id.toString());
-      setValue('expirationTime', attendance.expirationTime)
+      setValue("expirationTime", attendance.expirationTime);
     }
   }, [attendance]);
 
@@ -86,7 +87,6 @@ const EditAttendance = () => {
     setHeaderTitle("Chỉnh sửa phòng");
     fetchAttendance(id || "");
 
-
     return () => {
       resetActions();
     };
@@ -97,7 +97,12 @@ const EditAttendance = () => {
       <MyLoading isLoading={isLoadingApi}>
         <form onSubmit={(e) => e.preventDefault()} className="tw-space-y-4">
           {AttendanceForm.map((form, index) => (
-            <GroupItem errors={errors} {...form} key={index} control={control} />
+            <GroupItem
+              errors={errors}
+              {...form}
+              key={index}
+              control={control}
+            />
           ))}
         </form>
       </MyLoading>

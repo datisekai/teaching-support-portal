@@ -215,7 +215,12 @@ const EditQuestion = () => {
     <div className="tw-space-y-4">
       <form onSubmit={(e) => e.preventDefault()} className="tw-space-y-4">
         {QuestionForm.map((form, index) => (
-          <GroupItem errors={errors} {...form} key={index} control={control} />
+          <GroupItem
+            errors={errors}
+            {...form}
+            control={control}
+            watch={watch}
+          />
         ))}
       </form>
 
