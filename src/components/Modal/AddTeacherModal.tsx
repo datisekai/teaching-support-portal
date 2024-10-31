@@ -71,7 +71,12 @@ const AddTeacherModal = () => {
   };
 
   const handleSubmit = () => {
-    const transferData = selectTeacher.map((item: any) => item.code);
+    const transferData = selectTeacher.map((item: any) => {
+      return {
+        code: item.code,
+        name: item.name,
+      };
+    });
     updateAssignTeachersMajor(content.id, { teacherCodes: transferData });
   };
   useEffect(() => {
