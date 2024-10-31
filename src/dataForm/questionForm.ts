@@ -74,70 +74,70 @@ export const QuestionMultiChoiceForm: IForm[] = [
     title: "Thông tin câu hỏi",
     attributes: [
       {
-        prop: "question",
+        prop: "title",
         type: "text",
         label: "Câu hỏi",
         col: 6,
       },
       {
         prop: "content",
-        type: "textarea",
+        type: "editor",
         label: "Nội dung câu hỏi",
         col: 6,
       },
       {
-        prop: "correctAnswer",
-        type: "select",
-        label: "Đáp án đúng",
-        col: 6,
-        options: [
-          { title: "Đáp án A", value: "A" },
-          { title: "Đáp án B", value: "B" },
-          { title: "Đáp án C", value: "C" },
-          { title: "Đáp án D", value: "D" },
-        ],
-      },
-      {
-        prop: "major",
-        type: "select",
+        prop: "majorId",
+        type: "select-ajax",
         label: "Môn học",
+        apiUrl: apiConfig.major.getAll.endpoint,
         col: 6,
-        options: [
-          { title: "Toán học", value: "math" },
-          { title: "Vật lý", value: "physics" },
-          { title: "Hóa học", value: "chemistry" },
-        ],
+        getOptions: (data = []) => {
+          return data.map((item: any) => {
+            return {
+              title: `${item.code} - ${item.name}`,
+              value: item.id,
+            };
+          });
+        },
       },
       {
-        prop: "chapter",
-        type: "select",
+        prop: "chapterId",
+        type: "select-ajax",
         label: "Chương",
+        apiUrl: apiConfig.chapter.getAll.endpoint,
         col: 6,
-        options: [
-          { title: "Chương 1", value: "chapter1" },
-          { title: "Chương 2", value: "chapter2" },
-          { title: "Chương 3", value: "chapter3" },
-        ],
+        getOptions: (data = []) => {
+          return data.map((item: any) => {
+            return {
+              title: `${item.name}`,
+              value: item.id,
+            };
+          });
+        },
       },
       {
-        prop: "difficulty",
-        type: "select",
+        prop: "difficultyId",
+        type: "select-ajax",
         label: "Độ khó",
+        apiUrl: apiConfig.difficulty.getAll.endpoint,
         col: 6,
-        options: [
-          { title: "Dễ", value: "easy" },
-          { title: "Trung bình", value: "medium" },
-          { title: "Khó", value: "hard" },
-        ],
+        getOptions: (data = []) => {
+          return data.map((item: any) => {
+            return {
+              title: `${item.level}`,
+              value: item.id,
+            };
+          });
+        },
       },
       {
-        prop: "status",
+        prop: "isPublic",
         type: "select",
         label: "Trạng thái",
         col: 6,
         options: [
-          { title: "Private", value: "private" },
-          { title: "Public", value: "public" },
+          { title: "Private", value: false },
+          { title: "Public", value: true },
         ],
       },
     ],

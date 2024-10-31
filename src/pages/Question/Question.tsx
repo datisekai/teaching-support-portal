@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "primereact/button";
 import { questions, questionSchemas } from "../../dataTable/questionTable";
 import useConfirm from "../../hooks/useConfirm";
-import { ModalName } from "../../constants";
+import { ModalName, QuestionType } from "../../constants";
 import { useQuestionStore } from "../../stores/questionStore";
 import { useToast } from "../../hooks/useToast";
 import { Dropdown, DropdownChangeEvent } from "primereact/dropdown";
@@ -34,7 +34,9 @@ const Question = () => {
   };
 
   const handleEdit = (data: any) => {
-    navigate(`/question/edit/${data.id}`);
+    const type =
+      data.type === QuestionType.MULTIPLE_CHOICE ? "multiple_choice" : "code";
+    navigate(`/question/edit/${data.id}?type=${type}`);
   };
 
   const handleDelete = (id: number) => {
@@ -78,11 +80,10 @@ const Question = () => {
     console.log(data);
     onToggle(ModalName.VIEW_QUESTION, {
       header: "Chi tiết câu hỏi",
-      content: data, // Nội dung chi tiết của câu hỏi
+      content: data,
       style: "tw-w-[90%] md:tw-w-[30rem]",
     });
   };
-  console.log("checked", questions);
 
   const actionTable: IActionTable[] = [
     {
@@ -103,7 +104,7 @@ const Question = () => {
     },
     {
       onClick: (data, options) => {
-        handleDelete(data);
+        handleDelete(data.id);
       },
       tooltip: "Xóa",
       icon: "pi-trash",
@@ -118,7 +119,7 @@ const Question = () => {
         title: "Tạo trắc nghiệm",
         icon: "pi pi-plus",
         onClick: () => {
-          navigate(`/question/create?type=multi_choice`);
+          navigate(`/question/create?type=multiple_choice`);
         },
         type: "button",
         disabled: false,
@@ -167,7 +168,7 @@ const Question = () => {
         className="tw-w-1/2 md:tw-w-14rem tw-my-2"
       />
       <MyTable
-        keySearch="name"
+        keySearch="title"
         data={questions}
         schemas={questionSchemas}
         actions={actionTable}

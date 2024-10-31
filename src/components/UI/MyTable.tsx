@@ -44,7 +44,7 @@ const MyTable: FC<IMyTable> = ({
   schemas = [],
   keySearch = "",
   totalRecords = 0,
-  perPage = 5,
+  perPage = 10,
   onChange,
   actions = [],
   isLoading = false,
@@ -55,7 +55,7 @@ const MyTable: FC<IMyTable> = ({
   const [debouncedValue, setValue] = useDebounceValue("", 500);
 
   const handlePageChange = (event: PaginatorPageChangeEvent) => {
-    const page = Math.max(1, event.first + 1);
+    const page = Math.max(1, event.page + 1);
     setFirst(page);
   };
 
@@ -208,7 +208,7 @@ const MyTable: FC<IMyTable> = ({
       </DataTable>
       {totalRecords > perPage && (
         <Paginator
-          first={first - 1}
+          first={first * perPage - 1}
           rows={perPage}
           totalRecords={totalRecords}
           onPageChange={handlePageChange}
