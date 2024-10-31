@@ -95,7 +95,7 @@ const Letter = () => {
   return (
     <div>
       <MyTable
-        keySearch="studentName"
+        keySearch="reason"
         data={letters.map((item) => ({
           ...item,
           studentName: item.user.name,
