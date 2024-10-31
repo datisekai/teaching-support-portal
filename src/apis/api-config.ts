@@ -329,6 +329,10 @@ export const apiConfig = {
       method: "GET",
       endpoint: "/api.letter/:id",
     },
+    updateStatus: {
+      method: "PATCH",
+      endpoint: "/api.letter/:id/status",
+    },
   },
   //metadata
   metadata: {

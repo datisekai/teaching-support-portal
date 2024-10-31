@@ -8,6 +8,7 @@ export interface ILetter {
   image: string;
   content: string;
   class: IClass;
+  user: IUser;
   createdAt: string;
   updatedAt: string;
 }

@@ -11,6 +11,7 @@ interface ILetterState {
   fetchLetter: (id: string) => Promise<void>;
   addLetter: (Letter: ILetter) => Promise<boolean>;
   updateLetter: (id: number, updatedLetter: ILetter) => Promise<boolean>;
+  updateStatus: (id: number, body: object) => Promise<boolean>;
 }
 
 export const useLetterStore = create<ILetterState>((set) => ({
@@ -50,6 +51,21 @@ export const useLetterStore = create<ILetterState>((set) => ({
   updateLetter: async (id: number, updateItem: ILetter) => {
     try {
       const response = await letterService.update(id, updateItem);
+      if (response) {
+        set((state) => ({
+          letters: state.letters.map((item) =>
+            item.id === id ? response : item
+          ),
+        }));
+      }
+      return !!response;
+    } catch (error) {
+      return false;
+    }
+  },
+  updateStatus: async (id: number, body: object) => {
+    try {
+      const response = await letterService.updateStatus(id, body);
       if (response) {
         set((state) => ({
           letters: state.letters.map((item) =>

@@ -32,4 +32,12 @@ export const letterService = {
       body,
     });
   },
+  updateStatus: async (id: number, body: Record<string, any>) => {
+    const { updateStatus } = apiConfig.letter;
+    return sendServerRequest({
+      ...updateStatus,
+      endpoint: updateStatus.endpoint.replace(":id", id.toString()),
+      body,
+    });
+  },
 };

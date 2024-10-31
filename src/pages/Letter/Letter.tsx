@@ -7,6 +7,7 @@ import { Button } from "primereact/button";
 import { Dropdown, DropdownChangeEvent } from "primereact/dropdown";
 import { ModalName } from "../../constants";
 import { useLetterStore } from "../../stores/letterStore";
+import { useToast } from "../../hooks/useToast";
 
 interface IStatus {
   id: string;
@@ -17,14 +18,29 @@ const Letter = () => {
   const navigate = useNavigate();
   const { onToggle } = useModalStore();
   const { setHeaderTitle, setHeaderActions, resetActions } = useCommonStore();
-  const [selectedStatus, setSelectedStatus] = useState<IStatus | null>(null);
-  const { fetchLetters, letters, total } = useLetterStore();
 
-  const handleSubmit = (data: any) => {
-    console.log("Dữ liệu:", data);
-    console.log("Trạng thái đã chọn:", selectedStatus);
+  const { fetchLetters, letters, total, updateStatus } = useLetterStore();
+  const { isLoadingApi } = useCommonStore();
+  const { showToast } = useToast();
+  const { onDismiss } = useModalStore();
+  const handleSubmit = async (id: number, data: any) => {
+    const result = await updateStatus(id, { status: data });
+    onDismiss();
+    if (!result) {
+      return showToast({
+        severity: "danger",
+        summary: "Thông báo",
+        message: "Sửa thất bại",
+        life: 3000,
+      });
+    }
+    showToast({
+      severity: "success",
+      summary: "Thông báo",
+      message: "Sửa thành công",
+      life: 3000,
+    });
   };
-  console.log("Trạng thái được chọn:", selectedStatus);
   const handleView = (data: any) => {
     onToggle(ModalName.VIEW_LETTER, {
       header: "Chi tiết đơn",
@@ -37,13 +53,13 @@ const Letter = () => {
                 icon="pi pi-times"
                 type="button"
                 severity="danger"
-                onClick={() => handleSubmit(data)}
+                onClick={() => handleSubmit(data.id, "rejected")}
               />
               <Button
                 label="Đồng ý"
                 icon="pi pi-check"
                 autoFocus
-                onClick={() => handleSubmit(data)}
+                onClick={() => handleSubmit(data.id, "approved")}
               />
             </div>
           )}
@@ -73,13 +89,24 @@ const Letter = () => {
     };
   }, [resetActions, setHeaderTitle]);
 
-  useEffect(() => {
-    fetchLetters({});
-  }, []);
-  console.log(letters);
+  const handleSearch = (query: Object) => {
+    fetchLetters(query);
+  };
   return (
     <div>
-      <MyTable data={letters} schemas={letterSchemas} actions={actionTable} />
+      <MyTable
+        keySearch="studentName"
+        data={letters.map((item) => ({
+          ...item,
+          studentName: item.user.name,
+          studentCode: item.user.code,
+        }))}
+        schemas={letterSchemas}
+        actions={actionTable}
+        onChange={handleSearch}
+        totalRecords={total}
+        isLoading={isLoadingApi}
+      />
     </div>
   );
 };

@@ -13,9 +13,33 @@ export const letterSchemas: TableSchema[] = [
     type: "text",
   },
   {
-    label: "Lý do",
-    prop: "reason",
-    type: "text",
+    label: "Trạng thái",
+    prop: "status",
+    type: "badge",
+    getBadge(value) {
+      switch (value) {
+        case "pending":
+          return {
+            value: "Chưa xử lý",
+            severity: "warning",
+          };
+        case "accepted":
+          return {
+            value: "Chấp nhận",
+            severity: "success",
+          };
+        case "rejected":
+          return {
+            value: "Từ chối",
+            severity: "danger",
+          };
+        default:
+          return {
+            value: "Lỗi",
+            severity: "danger",
+          };
+      }
+    },
   },
   {
     label: "MSSV",
@@ -29,7 +53,7 @@ export const letterSchemas: TableSchema[] = [
   },
   {
     label: "Ngày xin nghỉ",
-    prop: "absenceDate",
+    prop: "createdAt",
     type: "datetime",
   },
 ];
