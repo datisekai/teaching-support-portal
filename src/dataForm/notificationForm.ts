@@ -32,7 +32,7 @@ export const NotificationForm: IForm[] = [
         getOptions: (data = []) => {
           return data.map((item: any) => {
             return {
-              title: `${item.name}`,
+              title: item.name,
               value: item.id,
             };
           });

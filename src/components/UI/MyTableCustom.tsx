@@ -2,7 +2,7 @@ import { Button } from "primereact/button";
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
 import { InputText } from "primereact/inputtext";
-import {
+import React, {
   FC,
   useState,
   useCallback,
@@ -22,9 +22,11 @@ import { Row } from "primereact/row";
 import { InputNumber } from "primereact/inputnumber";
 import { IActionTable } from "./MyTable";
 import useConfirm from "../../hooks/useConfirm";
+import MyCard from "./MyCard";
 
 interface IMyTable {
   schemas: TableSchema[];
+  isLoading?: boolean;
   data: any[];
   keySearch?: string;
   totalRecords?: number;
@@ -32,6 +34,9 @@ interface IMyTable {
   onChange?: (query: object) => void;
   actions?: IActionTable[];
   isFooter?: boolean;
+  headerTable?: React.ReactNode;
+  footer?: React.ReactNode;
+  setData?: any;
 }
 
 const MyTableCustom: FC<IMyTable> = ({
@@ -42,13 +47,16 @@ const MyTableCustom: FC<IMyTable> = ({
   perPage = 5,
   onChange,
   actions = [],
+  isLoading = false,
   isFooter = false,
+  headerTable,
+  footer,
+  setData,
 }) => {
   const [first, setFirst] = useState(0);
-  const [tableData, setTableData] = useState(data);
   const menuRight = useRef<Menu>(null);
   const [debouncedValue, setValue] = useDebounceValue("", 500);
-
+  const [selectedRowData, setSelectedRowData] = useState<any>(null);
   useEffect(() => {
     if (onChange && typeof onChange === "function") {
       onChange({ [keySearch]: debouncedValue, page: first });
@@ -59,19 +67,22 @@ const MyTableCustom: FC<IMyTable> = ({
     const page = event.first;
     setFirst(page);
   };
+  const handleMenuClick = (event: any, rowData: any) => {
+    setSelectedRowData(rowData);
+    menuRight?.current?.toggle(event);
+  };
 
   const handleInputChange = (rowIndex: number, field: string, value: any) => {
-    const newData = [...tableData];
+    const newData = [...data];
     newData[rowIndex] = { ...newData[rowIndex], [field]: value };
-    setTableData(newData);
+    setData(newData);
   };
 
   const bodyTemplate = (row: any, options: any) => {
     const key = options.field;
     const schema = schemas.find((item) => item.prop === key);
     const value = row[key] || "";
-    const rowIndex = tableData.indexOf(row);
-
+    const rowIndex = data.indexOf(row);
     const editable = schema?.editable ?? false;
     switch (schema?.type) {
       case "text":
@@ -88,7 +99,7 @@ const MyTableCustom: FC<IMyTable> = ({
           <InputNumber
             min={1}
             max={100}
-            prefix="%"
+            prefix={schema?.prefix}
             value={value}
             onChange={(e) => handleInputChange(rowIndex, key, e.value)}
           />
@@ -130,24 +141,22 @@ const MyTableCustom: FC<IMyTable> = ({
   }, [keySearch]);
 
   const renderActions = useCallback(
-    (data: any, options: any) => {
-      const items = useMemo(() => {
-        let dropdown = [
-          {
-            label: "Hành động",
-            items: actions.map((action) => ({
-              label: action.tooltip,
-              icon: `pi ${action.icon}`,
-              command: () => {
-                if (action.onClick) {
-                  action.onClick(data, options);
-                }
-              },
-            })),
-          },
-        ];
-        return dropdown;
-      }, [actions]);
+    (rowData: any, options: any) => {
+      const items = [
+        {
+          label: "Hành động",
+          items: actions.map((action) => ({
+            label: action.tooltip,
+            icon: `pi ${action.icon}`,
+            command: () => {
+              if (action.onClick) {
+                action.onClick(selectedRowData, options);
+              }
+            },
+          })),
+        },
+      ];
+
       return (
         <div className="tw-w-full tw-flex tw-gap-2 tw-flex-wrap tw-items-center">
           {actions && actions.length > 0 && (
@@ -168,7 +177,7 @@ const MyTableCustom: FC<IMyTable> = ({
                 size="small"
                 icon="pi pi-angle-down"
                 className="mr-2"
-                onClick={(event) => menuRight?.current?.toggle(event)}
+                onClick={(event) => handleMenuClick(event, rowData)}
                 aria-controls="popup_menu_right"
                 aria-haspopup
               />
@@ -199,7 +208,7 @@ const MyTableCustom: FC<IMyTable> = ({
         </div>
       );
     },
-    [actions]
+    [actions, selectedRowData]
   );
 
   const header = useMemo(() => {
@@ -208,34 +217,13 @@ const MyTableCustom: FC<IMyTable> = ({
   const displayPaginator = useMemo(() => {
     return totalRecords > perPage;
   }, [totalRecords, perPage]);
-  const handleAdd = () => {
-    setTableData([
-      ...tableData,
-      {
-        index: tableData.length + 1,
-        name: "",
-        percent: 0,
-      },
-    ]);
-  };
-  const footer = (
-    <Button text className="tw-w-full" label="Thêm Cột" onClick={handleAdd} />
-  );
 
   return (
     <div className="card">
-      <div className="tw-flex tw-items-center tw-justify-between tw-mb-4">
-        <div className="tw-text-start">
-          <div>Môn: Lập trình web</div>
-          <div>Nhóm: 02</div>
-        </div>
-        <div className="tw-text-end">
-          <div>Năm học: 2023 -2024</div>
-          <div>Giảng viên: Nguyễn Thanh Sang</div>
-        </div>
-      </div>
+      <div>{headerTable}</div>
       <DataTable
-        value={tableData}
+        loading={isLoading}
+        value={data}
         header={header}
         footer={isFooter && footer}
         tableStyle={{ minWidth: "10rem" }}

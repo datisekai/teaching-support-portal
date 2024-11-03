@@ -349,4 +349,26 @@ export const apiConfig = {
       endpoint: "/api.meta/setting",
     },
   },
+  //score-column
+  scoreColumn: {
+    update: {
+      method: "POST",
+      endpoint: "/api.score-column",
+    },
+    getSingle: {
+      method: "GET",
+      endpoint: "/api.score-column/:id",
+    },
+  },
+  //student-score
+  studentScore: {
+    update: {
+      method: "POST",
+      endpoint: "/api.student-score",
+    },
+    getSingle: {
+      method: "GET",
+      endpoint: "/api.student-score/class/:id",
+    },
+  },
 };

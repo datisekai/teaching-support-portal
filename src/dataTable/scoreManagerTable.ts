@@ -22,12 +22,14 @@ export const scoreManagerSchemas: TableSchema[] = [
     prop: "cc",
     type: "number",
     editable: true,
+    prefix: "",
   },
   {
     label: "kt10%",
     prop: "kt",
     type: "number",
     editable: true,
+    prefix: "",
   },
 ];
 

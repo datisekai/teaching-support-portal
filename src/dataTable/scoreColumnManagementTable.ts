@@ -2,7 +2,7 @@ import { TableSchema } from "../types/table";
 
 export const scoreColumnManagementSchemas: TableSchema[] = [
   {
-    label: "Cột",
+    label: "#",
     prop: "index",
     type: "number",
   },
@@ -14,7 +14,7 @@ export const scoreColumnManagementSchemas: TableSchema[] = [
   },
   {
     label: "Hệ số (%)",
-    prop: "percent",
+    prop: "weight",
     type: "number",
     editable: true,
   },
@@ -24,11 +24,11 @@ export const scoreColumnManagements = [
   {
     index: 1,
     name: "Điểm A",
-    percent: 20,
+    weight: 20,
   },
   {
     index: 2,
     name: "Điểm B",
-    percent: 20,
+    weight: 20,
   },
 ];

@@ -209,7 +209,6 @@ const EditQuestion = () => {
         : QuestionCodeForm,
     [questionType]
   );
-  console.log(QuestionForm);
 
   return (
     <div className="tw-space-y-4">
