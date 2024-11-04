@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import MyTableCustom from "../../components/UI/MyTableCustom";
 import { students, studentSchemas } from "../../dataTable/studentTable";
 import {
@@ -13,6 +13,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useParams } from "react-router-dom";
 import { usestudentScoreStore } from "../../stores/studentScoreStore";
+import { useClassStore } from "../../stores/classStore";
 const schema = yup
   .object()
   .shape({
@@ -39,8 +40,12 @@ const ScoreManagement = () => {
   const { id } = useParams();
   const { fetchstudentScore, studentScore, updatestudentScore } =
     usestudentScoreStore();
+  const { fetchScoreColumn, scoreColumn, updateScoreColumn } =
+    useScoreColumnStore();
+
   const { setFooterActions, setHeaderTitle, resetActions, isLoadingApi } =
     useCommonStore();
+  const { students, getStudentClass } = useClassStore();
   const { showToast } = useToast();
 
   const onSubmit = async (values: any) => {
@@ -98,16 +103,86 @@ const ScoreManagement = () => {
   //   }
   // }, [id]);
 
+  const loadData = () => {
+    fetchScoreColumn(id || "");
+    fetchstudentScore(id || "");
+    getStudentClass(id || "");
+  };
+  const [scoreColumnSchema, setScoreColumnSchema] =
+    useState(scoreManagerSchemas);
+  const [studentScoreTransfer, setStudentScoreTransfer] = useState<any>([]);
+  useEffect(() => {
+    const transferdata =
+      scoreColumn?.data?.columns.map((item: any, index: number) => {
+        return {
+          label: item.name,
+          prop: item.id,
+          type: "number",
+          editable: true,
+          prefix: "",
+        };
+      }) || [];
+    setScoreColumnSchema([
+      ...scoreManagerSchemas,
+      ...transferdata,
+      {
+        label: "Điểm QT",
+        prop: "total",
+        type: "number",
+        editable: true,
+        disabled: true,
+        prefix: "",
+      },
+    ]);
+    let sum = 0;
+    const studentScoreTransferData = students.map(
+      (student: any, index: number) => {
+        // Tìm tất cả điểm của sinh viên
+        const studentScores = studentScore.data?.filter((item: any) => {
+          // Kiểm tra điều kiện cho student.id
+          return item.student.id === student.id;
+        });
+
+        // Tạo columnData từ transferdata
+        const columnData = transferdata.reduce((acc: any, item1: any) => {
+          // Kiểm tra nếu columnId của item bằng prop của item1
+          const matchingItem = studentScores.find(
+            (scoreItem: any) => scoreItem.columnId === item1.prop
+          );
+          sum += matchingItem ? matchingItem.score : 0;
+
+          // Sử dụng cú pháp tính toán cho khóa
+          acc[item1.prop] = matchingItem ? matchingItem.score : 0;
+
+          return acc; // Trả về accumulator để tiếp tục
+        }, {});
+
+        console.log("Column Data:", columnData);
+
+        return {
+          id: index + 1,
+          studentId: student.code,
+          studentName: student.name,
+          ...columnData, // Thêm dữ liệu điểm vào đối tượng
+          total: sum,
+        };
+      }
+    );
+
+    console.log("cheked", studentScoreTransferData);
+    setStudentScoreTransfer(studentScoreTransferData);
+  }, [scoreColumn, students, studentScore]);
+  console.log(scoreColumnSchema, students, studentScore);
   return (
     <div>
       <MyTableCustom
         isLoading={isLoadingApi}
-        data={studentScore}
-        schemas={scoreManagerSchemas}
+        data={studentScoreTransfer}
+        schemas={scoreColumnSchema}
         // actions={actionTable}
         // setData={setTableData}
         isFooter={true}
-        onChange={() => fetchstudentScore(id || "")}
+        onChange={() => loadData()}
       />
     </div>
   );

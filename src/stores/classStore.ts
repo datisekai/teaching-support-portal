@@ -1,11 +1,14 @@
 import { create } from "zustand";
 import { classService } from "../services/classService";
 import { IClass } from "../types/class";
+import { User } from "../types/attendance";
 
 interface IClassState {
   classes: IClass[];
   _class: IClass;
+  students: User[];
   total: number;
+  totalStudent: number;
   isLoadingClasss: boolean;
   fetchClasses: (body: object) => Promise<void>;
   fetchClass: (id: string) => Promise<void>;
@@ -16,13 +19,16 @@ interface IClassState {
   ) => Promise<boolean>;
   updateClass: (id: number, updatedClass: IClass) => Promise<boolean>;
   deleteClass: (id: number) => Promise<boolean>;
+  getStudentClass: (id: string) => Promise<void>;
 }
 
 export const useClassStore = create<IClassState>((set) => ({
   classes: [],
+  students: [],
   _class: {} as IClass,
   isLoadingClasss: false,
   total: 0,
+  totalStudent: 0,
 
   fetchClasses: async (body) => {
     try {
@@ -99,5 +105,11 @@ export const useClassStore = create<IClassState>((set) => ({
     } catch (error) {
       return false;
     }
+  },
+  getStudentClass: async (id: string) => {
+    try {
+      const response = await classService.getStudentClass(id);
+      set({ students: response.data, totalStudent: response.total });
+    } catch (error) {}
   },
 }));

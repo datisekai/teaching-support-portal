@@ -23,7 +23,6 @@ export const useScoreColumnStore = create<IScoreColumnState>((set) => ({
   fetchScoreColumn: async (id: string) => {
     try {
       const response = await scoreColumnService.getSingle(id);
-      console.log("fetchScoreColumn", response);
       set({ scoreColumn: response });
     } catch (error) {}
   },

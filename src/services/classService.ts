@@ -48,4 +48,11 @@ export const classService = {
       endpoint: _delete.endpoint.replace(":id", id.toString()),
     });
   },
+  getStudentClass: async (id: string) => {
+    const { getStudentClass } = apiConfig.class;
+    return sendServerRequest({
+      ...getStudentClass,
+      endpoint: getStudentClass.endpoint.replace(":id", id.toString()),
+    });
+  },
 };

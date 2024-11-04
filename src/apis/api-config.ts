@@ -122,6 +122,10 @@ export const apiConfig = {
       method: "PATCH",
       endpoint: "/api.class/:id/assign-teachers",
     },
+    getStudentClass: {
+      method: "GET",
+      endpoint: "/api.class/:id/student",
+    },
   },
   // User
   user: {

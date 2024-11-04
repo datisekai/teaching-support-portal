@@ -23,7 +23,6 @@ export const usestudentScoreStore = create<IStudentScoreState>((set) => ({
   fetchstudentScore: async (id: string) => {
     try {
       const response = await studentScoreService.getSingle(id);
-      console.log("fetchstudentScore", response);
       set({ studentScore: response });
     } catch (error) {}
   },

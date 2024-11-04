@@ -10,4 +10,5 @@ export interface TableSchema {
   minWidth?: string;
   children?: TableSchema[];
   prefix?: "%" | "currency" | "time" | "";
+  disabled?: boolean;
 }

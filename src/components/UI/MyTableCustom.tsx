@@ -84,10 +84,12 @@ const MyTableCustom: FC<IMyTable> = ({
     const value = row[key] || "";
     const rowIndex = data.indexOf(row);
     const editable = schema?.editable ?? false;
+    const disabled = schema?.disabled ?? false;
     switch (schema?.type) {
       case "text":
         return editable ? (
           <InputText
+            disabled={disabled}
             value={value}
             onChange={(e) => handleInputChange(rowIndex, key, e.target.value)}
           />
@@ -97,6 +99,7 @@ const MyTableCustom: FC<IMyTable> = ({
       case "number":
         return editable ? (
           <InputNumber
+            disabled={disabled}
             min={1}
             max={100}
             prefix={schema?.prefix}
