@@ -1,3 +1,4 @@
+import { get } from "react-hook-form";
 import {
   apiConfig,
   processMiddlewareSendRequest,
@@ -46,6 +47,14 @@ export const attendanceService = {
     return sendServerRequest({
       ..._delete,
       endpoint: _delete.endpoint.replace(":id", id.toString()),
+    });
+  },
+  getAttendanceStatistic: async (id: string, body: object) => {
+    const { getAttendanceStatistic } = apiConfig.attendance;
+    return processMiddlewareSendRequest({
+      ...getAttendanceStatistic,
+      body,
+      endpoint: getAttendanceStatistic.endpoint.replace(":id", id.toString()),
     });
   },
 };

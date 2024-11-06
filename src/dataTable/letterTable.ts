@@ -10,7 +10,26 @@ export const letterSchemas: TableSchema[] = [
   {
     label: "Loại đơn từ",
     prop: "type",
-    type: "text",
+    type: "badge",
+    getBadge(value) {
+      switch (value) {
+        case "leave_application":
+          return {
+            value: "Đơn xin nghị học",
+            severity: "info",
+          };
+        case "":
+          return {
+            value: "null",
+            severity: "warning",
+          };
+        default:
+          return {
+            value: "Lỗi",
+            severity: "danger",
+          };
+      }
+    },
   },
   {
     label: "Trạng thái",

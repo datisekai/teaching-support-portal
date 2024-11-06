@@ -8,7 +8,7 @@ import {
 import { useScoreColumnStore } from "../../stores/scoreColumnStore";
 import { IAction, useCommonStore } from "../../stores/commonStore";
 import { useToast } from "../../hooks/useToast";
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useParams } from "react-router-dom";
@@ -38,8 +38,12 @@ const ScoreManagement = () => {
     },
   });
   const { id } = useParams();
-  const { fetchstudentScore, studentScore, updatestudentScore } =
-    usestudentScoreStore();
+  const {
+    fetchstudentScore,
+    studentScore,
+    updatestudentScore,
+    setstudentScore,
+  } = usestudentScoreStore();
   const { fetchScoreColumn, scoreColumn, updateScoreColumn } =
     useScoreColumnStore();
 
@@ -47,10 +51,31 @@ const ScoreManagement = () => {
     useCommonStore();
   const { students, getStudentClass } = useClassStore();
   const { showToast } = useToast();
+  const [scoreColumnSchema, setScoreColumnSchema] =
+    useState(scoreManagerSchemas);
 
-  const onSubmit = async (values: any) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [tableData, setTableData] = useState<any[]>([]);
+  console.log(tableData);
+  const onSubmit = async () => {
+    const transformedData = {
+      studentScore: tableData.flatMap((item) => {
+        // Lọc các cột điểm từ đối tượng và chuyển thành mảng các đối tượng score
+        return Object.entries(item)
+          .filter(
+            ([key]) =>
+              !["id", "studentId", "studentName", "total"].includes(key)
+          ) // Loại bỏ các trường không phải là điểm
+          .map(([scoreColumnId, score]) => ({
+            studentId: item.studentId, // Lấy `id` làm `studentId`
+            scoreColumnId: Number(scoreColumnId), // Chuyển `scoreColumnId` thành số
+            score, // Giá trị điểm
+          }));
+      }),
+    };
+    console.log(transformedData);
     try {
-      const result = await updatestudentScore(values);
+      const result = await updatestudentScore(transformedData);
       if (!result) {
         showToast({
           severity: "danger",
@@ -84,7 +109,7 @@ const ScoreManagement = () => {
         action: "back",
       },
       {
-        onClick: () => onSubmit(""),
+        onClick: () => onSubmit(),
         title: "Lưu thay đổi",
         // icon: "pi-plus",
       },
@@ -95,7 +120,7 @@ const ScoreManagement = () => {
     return () => {
       resetActions();
     };
-  }, [resetActions, setHeaderTitle, setFooterActions]);
+  }, [resetActions, setHeaderTitle, setFooterActions, tableData]);
 
   // useEffect(() => {
   //   if (id) {
@@ -108,10 +133,9 @@ const ScoreManagement = () => {
     fetchstudentScore(id || "");
     getStudentClass(id || "");
   };
-  const [scoreColumnSchema, setScoreColumnSchema] =
-    useState(scoreManagerSchemas);
-  const [studentScoreTransfer, setStudentScoreTransfer] = useState<any>([]);
+  console.log(studentScore, scoreColumn, students);
   useEffect(() => {
+    setIsLoading(true);
     const transferdata =
       scoreColumn?.data?.columns.map((item: any, index: number) => {
         return {
@@ -140,13 +164,13 @@ const ScoreManagement = () => {
         // Tìm tất cả điểm của sinh viên
         const studentScores = studentScore.data?.filter((item: any) => {
           // Kiểm tra điều kiện cho student.id
-          return item.student.id === student.id;
+          return item?.student?.id === student.id;
         });
 
         // Tạo columnData từ transferdata
         const columnData = transferdata.reduce((acc: any, item1: any) => {
           // Kiểm tra nếu columnId của item bằng prop của item1
-          const matchingItem = studentScores.find(
+          const matchingItem = studentScores?.find(
             (scoreItem: any) => scoreItem.columnId === item1.prop
           );
           sum += matchingItem ? matchingItem.score : 0;
@@ -157,11 +181,11 @@ const ScoreManagement = () => {
           return acc; // Trả về accumulator để tiếp tục
         }, {});
 
-        console.log("Column Data:", columnData);
+        // console.log("Column Data:", columnData);
 
         return {
           id: index + 1,
-          studentId: student.code,
+          studentId: student.id,
           studentName: student.name,
           ...columnData, // Thêm dữ liệu điểm vào đối tượng
           total: sum,
@@ -169,18 +193,17 @@ const ScoreManagement = () => {
       }
     );
 
-    console.log("cheked", studentScoreTransferData);
-    setStudentScoreTransfer(studentScoreTransferData);
+    setTableData(studentScoreTransferData);
+    setIsLoading(false);
   }, [scoreColumn, students, studentScore]);
-  console.log(scoreColumnSchema, students, studentScore);
   return (
     <div>
       <MyTableCustom
-        isLoading={isLoadingApi}
-        data={studentScoreTransfer}
+        isLoading={isLoadingApi || isLoading}
+        data={tableData}
         schemas={scoreColumnSchema}
         // actions={actionTable}
-        // setData={setTableData}
+        setData={setTableData}
         isFooter={true}
         onChange={() => loadData()}
       />

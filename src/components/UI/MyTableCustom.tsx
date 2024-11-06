@@ -99,6 +99,8 @@ const MyTableCustom: FC<IMyTable> = ({
       case "number":
         return editable ? (
           <InputNumber
+            minFractionDigits={2}
+            maxFractionDigits={5}
             disabled={disabled}
             min={1}
             max={100}

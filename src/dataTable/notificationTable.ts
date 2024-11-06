@@ -11,11 +11,11 @@ export const notificationSchemas: TableSchema[] = [
     prop: "name",
     type: "text",
   },
-  {
-    label: "Nội dung thông báo",
-    prop: "content",
-    type: "text",
-  },
+  // {
+  //   label: "Nội dung thông báo",
+  //   prop: "content",
+  //   type: "text",
+  // },
   {
     label: "Ngày tạo",
     prop: "createdAt",

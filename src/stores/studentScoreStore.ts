@@ -27,7 +27,7 @@ export const usestudentScoreStore = create<IStudentScoreState>((set) => ({
     } catch (error) {}
   },
 
-  updatestudentScore: async (updateItem: IStudentScore) => {
+  updatestudentScore: async (updateItem: any) => {
     try {
       const response = await studentScoreService.update(updateItem);
       if (response) {

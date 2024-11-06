@@ -21,7 +21,29 @@ export function getImageUrl(url: string, name: string) {
   return `${url}`;
 }
 
-export function getImageServer(url:string){
-  if(url.includes('uploads/')) return `${BASE_URL}/${url}`
+export function getImageServer(url: string) {
+  if (url.includes("uploads/")) return `${BASE_URL}/${url}`;
   return url;
+}
+export function getStatus(value: string) {
+  switch (value) {
+    case "pending":
+      return "Đang xuất bản";
+    case "approved":
+      return "Đã duyệt";
+    case "rejected":
+      return "Đã từ chối";
+    default:
+      return "Lỗi";
+  }
+}
+export function getTypeLetter(value: string) {
+  switch (value) {
+    case "leave_application":
+      return "Đơn xin nghỉ học";
+    case "":
+      return "null";
+    default:
+      return "Lỗi";
+  }
 }

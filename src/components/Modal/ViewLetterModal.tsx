@@ -2,7 +2,7 @@ import React from "react";
 import { useModalStore } from "../../stores";
 import dayjs from "dayjs";
 import { Image } from "primereact/image";
-import { getImageServer } from "../../utils";
+import { getImageServer, getStatus, getTypeLetter } from "../../utils";
 
 const ViewLetterModal: React.FC = () => {
   const { content } = useModalStore();
@@ -12,7 +12,7 @@ const ViewLetterModal: React.FC = () => {
       <div>
         <p>
           <strong>Loại đơn từ: </strong>
-          {content.type}
+          {getTypeLetter(content.type)}
         </p>
         <p>
           <strong>Lý do: </strong>
@@ -20,7 +20,7 @@ const ViewLetterModal: React.FC = () => {
         </p>
         <p>
           <strong>Trạng thái: </strong>
-          {content.status}
+          {getStatus(content.status)}
         </p>
         <p>
           <strong>MSSV: </strong>

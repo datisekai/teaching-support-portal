@@ -12,11 +12,11 @@ export const questionSchemas: TableSchema[] = [
     prop: "title",
     type: "text",
   },
-  {
-    label: "Nội dung",
-    prop: "content",
-    type: "text",
-  },
+  // {
+  //   label: "Nội dung",
+  //   prop: "content",
+  //   type: "text",
+  // },
   // {
   //   label: "Chương",
   //   prop: "chapter",
@@ -53,7 +53,13 @@ export const questionSchemas: TableSchema[] = [
   {
     label: "Loại câu hỏi",
     prop: "type",
-    type: "text",
+    type: "badge",
+    getBadge: (value) => {
+      if (value === "multiple_choice") {
+        return { value: "Trắc nghiệm", severity: "info" };
+      }
+      return { value: "Tự luận", severity: "warning" };
+    },
   },
   {
     label: "Ngày tạo",

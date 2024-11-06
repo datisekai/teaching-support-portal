@@ -229,6 +229,10 @@ export const apiConfig = {
       method: "GET",
       endpoint: "/api.attendance/:id/attendees",
     },
+    getAttendanceStatistic: {
+      method: "GET",
+      endpoint: "/api.attendance/class/:id/statistic",
+    },
   },
   // teacher
   teacher: {

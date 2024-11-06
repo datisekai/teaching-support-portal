@@ -75,10 +75,16 @@ const MyTable: FC<IMyTable> = ({
 
     const schema = schemas.find((item) => item.prop === key);
     const value = row[key] || "";
+    const isHtml = /<\/?[a-z][\s\S]*>/i.test(value);
+
     switch (schema?.type) {
       case "text":
       case "number":
-        return <span>{value}</span>;
+        return isHtml ? (
+          <div dangerouslySetInnerHTML={{ __html: value }} />
+        ) : (
+          <span>{value}</span>
+        );
       case "date":
         return <span>{dayjs(value).format("DD/MM/YYYY")}</span>;
       case "datetime":

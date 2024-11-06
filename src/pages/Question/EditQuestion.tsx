@@ -200,7 +200,14 @@ const EditQuestion = () => {
     }
 
     return () => resetActions();
-  }, [handleSubmit, setFooterActions, setHeaderTitle, resetActions, question]);
+  }, [
+    handleSubmit,
+    setFooterActions,
+    setHeaderTitle,
+    resetActions,
+    question,
+    answers,
+  ]);
 
   const QuestionForm = useMemo(
     () =>

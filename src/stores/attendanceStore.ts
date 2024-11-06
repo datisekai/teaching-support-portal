@@ -4,6 +4,7 @@ import { IAttendance, IAttendee } from "../types/attendance";
 
 interface IAttendanceState {
   attendances: IAttendance[];
+  attendancesStatisticClass: any;
   attendance: IAttendance | null;
   attendees: IAttendee[];
   total: number;
@@ -18,6 +19,7 @@ interface IAttendanceState {
   ) => Promise<boolean>;
   deleteAttendance: (id: number) => Promise<boolean>;
   updateStatus: (id: number, isOpen: boolean) => void;
+  getAttendancesStatistic: (classId: string, body: object) => Promise<void>;
 }
 
 export const useAttendanceStore = create<IAttendanceState>((set) => ({
@@ -26,6 +28,7 @@ export const useAttendanceStore = create<IAttendanceState>((set) => ({
   isLoadingAttendances: false,
   attendees: [],
   total: 0,
+  attendancesStatisticClass: [],
 
   fetchAttendances: async (body) => {
     try {
@@ -89,5 +92,14 @@ export const useAttendanceStore = create<IAttendanceState>((set) => ({
         attendance.id === id ? { ...attendance, isOpen } : attendance
       ),
     }));
+  },
+  getAttendancesStatistic: async (classId, body) => {
+    try {
+      const response = await attendanceService.getAttendanceStatistic(
+        classId,
+        body
+      );
+      set({ attendancesStatisticClass: response });
+    } catch (error) {}
   },
 }));
