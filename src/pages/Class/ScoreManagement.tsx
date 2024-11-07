@@ -14,6 +14,7 @@ import * as yup from "yup";
 import { useParams } from "react-router-dom";
 import { usestudentScoreStore } from "../../stores/studentScoreStore";
 import { useClassStore } from "../../stores/classStore";
+import { exportExcel } from "../../utils/my-export-excel";
 const schema = yup
   .object()
   .shape({
@@ -44,11 +45,15 @@ const ScoreManagement = () => {
     updatestudentScore,
     setstudentScore,
   } = usestudentScoreStore();
-  const { fetchScoreColumn, scoreColumn, updateScoreColumn } =
-    useScoreColumnStore();
+  const { fetchScoreColumn, scoreColumn } = useScoreColumnStore();
 
-  const { setFooterActions, setHeaderTitle, resetActions, isLoadingApi } =
-    useCommonStore();
+  const {
+    setFooterActions,
+    setHeaderTitle,
+    resetActions,
+    isLoadingApi,
+    setHeaderActions,
+  } = useCommonStore();
   const { students, getStudentClass } = useClassStore();
   const { showToast } = useToast();
   const [scoreColumnSchema, setScoreColumnSchema] =
@@ -56,7 +61,7 @@ const ScoreManagement = () => {
 
   const [isLoading, setIsLoading] = useState(false);
   const [tableData, setTableData] = useState<any[]>([]);
-  console.log(tableData);
+
   const onSubmit = async () => {
     const transformedData = {
       studentScore: tableData.flatMap((item) => {
@@ -73,7 +78,7 @@ const ScoreManagement = () => {
           }));
       }),
     };
-    console.log(transformedData);
+
     try {
       const result = await updatestudentScore(transformedData);
       if (!result) {
@@ -114,13 +119,44 @@ const ScoreManagement = () => {
         // icon: "pi-plus",
       },
     ];
+    console.log(scoreColumn);
+    setHeaderActions([
+      {
+        title: "Export",
+        icon: "pi pi-file-export",
+        onClick: () => {
+          setHeaderActions([
+            {
+              title: "Export",
+              icon: "pi pi-file-export",
+              onClick: () => {
+                const _class = scoreColumn?.data?.major?.classes?.find(
+                  (item: any) => item.id == id
+                );
+                if (_class && tableData.length > 0 && scoreColumnSchema) {
+                  exportExcel(
+                    `Danh sách điểm ${_class.name}`,
+                    tableData,
+                    scoreColumnSchema
+                  );
+                }
+              },
+              type: "button",
+              disabled: false,
+            },
+          ]);
+        },
+        type: "button",
+        disabled: false,
+      },
+    ]);
     setFooterActions(actions);
     setHeaderTitle("Quản lý cột điểm");
 
     return () => {
       resetActions();
     };
-  }, [resetActions, setHeaderTitle, setFooterActions, tableData]);
+  }, [resetActions, setHeaderTitle, setFooterActions, tableData, scoreColumn]);
 
   // useEffect(() => {
   //   if (id) {
@@ -133,7 +169,7 @@ const ScoreManagement = () => {
     fetchstudentScore(id || "");
     getStudentClass(id || "");
   };
-  console.log(studentScore, scoreColumn, students);
+
   useEffect(() => {
     setIsLoading(true);
     const transferdata =
