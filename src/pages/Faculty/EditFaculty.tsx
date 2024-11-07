@@ -16,6 +16,7 @@ const schema = yup
   .shape({
     name: yup.string().required("Tên ngành học là bắt buộc."),
     description: yup.string().required("Mô tả ngành học là bắt buộc."),
+    code: yup.string().required('Mã ngành học là bắt buộc.'),
   })
   .required();
 const EditFaculty = () => {
@@ -33,6 +34,7 @@ const EditFaculty = () => {
     defaultValues: {
       name: "",
       description: "",
+      code: ''
     },
   });
 
@@ -43,6 +45,7 @@ const EditFaculty = () => {
     if (faculty) {
       setValue("name", faculty.name);
       setValue("description", faculty.description);
+      setValue("code", faculty.code);
     }
   }, [faculty]);
   const navigate = useNavigate();

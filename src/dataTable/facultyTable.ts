@@ -7,6 +7,11 @@ export const facultySchemas: TableSchema[] = [
     type: "number",
   },
   {
+    label: "Mã ngành",
+    prop: "code",
+    type: "text",
+  },
+  {
     label: "Tên ngành",
     prop: "name",
     type: "text",

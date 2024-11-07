@@ -15,6 +15,7 @@ const schema = yup
   .shape({
     name: yup.string().required("Tên ngành học là bắt buộc."),
     description: yup.string().required("Mô tả ngành học là bắt buộc."),
+    code: yup.string().required('Mã ngành học là bắt buộc.'),
   })
   .required();
 const CreateFaculty = () => {
@@ -27,6 +28,7 @@ const CreateFaculty = () => {
     defaultValues: {
       description: "",
       name: "",
+      code: ""
     },
   });
   const navigate = useNavigate();

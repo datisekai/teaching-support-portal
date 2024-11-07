@@ -4,4 +4,5 @@ export interface IFaculty {
   description: string;
   createdAt: string;
   updatedAt: string;
+  code: string;
 }

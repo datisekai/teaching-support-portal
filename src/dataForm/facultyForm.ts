@@ -5,6 +5,12 @@ export const FacultyForm: IForm[] = [
     title: "Thông tin cơ bản",
     attributes: [
       {
+        prop: "code",
+        type: "text",
+        label: "Mã ngành",
+        col: 6,
+      },
+      {
         prop: "name",
         type: "text",
         label: "Tên ngành",
