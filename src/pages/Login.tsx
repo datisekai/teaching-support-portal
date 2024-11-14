@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { useToast } from "../hooks/useToast";
-import { useAuthStore } from "../stores";
+import { useAuthStore, useCommonStore } from "../stores";
 import { useNavigate } from "react-router-dom";
 import { pathNames } from "../constants";
 
@@ -17,6 +17,7 @@ const Login = () => {
   const { showToast } = useToast();
   const { login, token } = useAuthStore();
   const navigate = useNavigate();
+  const {isLoadingApi} = useCommonStore()
 
   useEffect(() => {
     if (token) {
@@ -25,7 +26,7 @@ const Login = () => {
   }, [token]);
 
   const onSubmit = async (data: { code: string; password: string }) => {
-    const result = login(data.code, data.password);
+    const result = await login(data.code, data.password);
     if (!result) {
       return showToast({
         severity: "danger",
@@ -104,8 +105,6 @@ const Login = () => {
                         keyfilter="int"
                         {...register("code")}
                         id="code"
-                        value={code}
-                        onChange={(e) => setCode(e.target.value)}
                         invalid={!!errors.code}
                       />
                       <label htmlFor="code">Mã số giảng viên</label>
@@ -127,8 +126,6 @@ const Login = () => {
                       <InputText
                         id="password"
                         {...register("password")}
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
                         type="password"
                         invalid={!!errors.password}
                         className="tw-pr-10"
@@ -144,19 +141,20 @@ const Login = () => {
 
               <div className="tw-mb-4 ">
                 <Button
+                loading={isLoadingApi}
                   label="Đăng nhập"
                   className="tw-border-white tw-w-full"
                 />
               </div>
 
-              <div className="tw-text-center">
+              {/* <div className="tw-text-center">
                 <a
                   href="#"
                   className="tw-text-sm tw-text-white md:tw-text-[#6366f1] md:hover:tw-text-[#4f46e5]"
                 >
                   Quên mật khẩu?
                 </a>
-              </div>
+              </div> */}
             </form>
           </div>
         </div>
