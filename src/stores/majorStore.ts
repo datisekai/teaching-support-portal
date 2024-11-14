@@ -27,9 +27,16 @@ export const useMajorStore = create<IMajorState>((set) => ({
 
   fetchMajors: async (body) => {
     try {
+      set({ isLoadingMajors: true });
       const response = await majorService.getAll(body);
-      set({ majors: response.data, total: response.total });
-    } catch (error) {}
+      set({
+        majors: response.data,
+        total: response.total,
+        isLoadingMajors: false,
+      });
+    } catch (error) {
+      set({ isLoadingMajors: false });
+    }
   },
   updateAssignTeachersMajor: async (id, teacherCodes) => {
     try {

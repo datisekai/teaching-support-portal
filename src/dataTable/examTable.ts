@@ -9,17 +9,7 @@ export const examSchemas: TableSchema[] = [
   },
   {
     label: "Tên đề thi",
-    prop: "examName",
-    type: "text",
-  },
-  {
-    label: "Tên môn học",
-    prop: "majorName",
-    type: "text",
-  },
-  {
-    label: "Nhóm lớp",
-    prop: "classGroup",
+    prop: "title",
     type: "text",
   },
   {
@@ -34,23 +24,15 @@ export const examSchemas: TableSchema[] = [
   },
   {
     label: "Trạng thái",
-    prop: "status",
+    prop: "showResult",
     type: "badge",
     getBadge: (value) => {
-      switch (value) {
-        case "notStarted":
-          return { value: "Chưa bắt đầu", severity: "warning" };
-        case "started":
-          return { value: "Đang thực hiện", severity: "info" };
-        default:
-          return { value: "Lỗi", severity: "danger" };
+      if (value) {
+        return { value: "Hiển thị kết quả", severity: "success" };
+      } else {
+        return { value: "Không hiển thị kết quả", severity: "danger" };
       }
     },
-  },
-  {
-    label: "Loại đề thi",
-    prop: "examType",
-    type: "text",
   },
 ];
 

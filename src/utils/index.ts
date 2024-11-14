@@ -47,3 +47,25 @@ export function getTypeLetter(value: string) {
       return "Lỗi";
   }
 }
+export function getTypeQuestion(value: string) {
+  switch (value) {
+    case "multiple_choice":
+      return "Trắc nghiệm";
+    case "code":
+      return "Tự luận";
+    default:
+      return "Lỗi";
+  }
+}
+export function getDifficulty(value: string) {
+  switch (value) {
+    case "Low":
+      return "Dễ";
+    case "Medium":
+      return "Trung bình";
+    case "High":
+      return "Khó";
+    default:
+      return "Lỗi";
+  }
+}

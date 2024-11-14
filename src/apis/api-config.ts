@@ -379,4 +379,31 @@ export const apiConfig = {
       endpoint: "/api.student-score/class/:id",
     },
   },
+  //exam
+  exam: {
+    getAll: {
+      method: "GET",
+      endpoint: "/api.exam",
+    },
+    getSingle: {
+      method: "GET",
+      endpoint: "/api.exam/:id",
+    },
+    update: {
+      method: "PUT",
+      endpoint: "/api.exam/:id",
+    },
+    create: {
+      method: "POST",
+      endpoint: "/api.exam",
+    },
+    _delete: {
+      method: "DELETE",
+      endpoint: "/api.exam/:id",
+    },
+    getHistory: {
+      method: "GET",
+      endpoint: "/api.submission/score/:id",
+    },
+  },
 };

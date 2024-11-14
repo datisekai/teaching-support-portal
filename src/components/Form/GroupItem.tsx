@@ -16,7 +16,6 @@ const GroupItem: React.FC<IGroup> = ({
   errors,
   watch,
 }) => {
-  console.log(attributes, watch);
   return (
     <MyCard
       title={title}

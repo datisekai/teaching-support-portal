@@ -1,3 +1,4 @@
+import { apiConfig } from "../apis";
 import { IForm } from "../types/form-item";
 
 export const ExamForm: IForm[] = [
@@ -5,33 +6,17 @@ export const ExamForm: IForm[] = [
     title: "Thông tin bài thi",
     attributes: [
       {
-        prop: "examTitle",
+        prop: "title",
         type: "text",
         label: "Tiêu đề bài thi",
         col: 6,
       },
+
       {
-        prop: "major",
-        type: "select",
-        label: "Môn học",
+        prop: "description",
+        type: "editor",
+        label: "Mô tả",
         col: 6,
-        options: [
-          { title: "Toán học", value: "math" },
-          { title: "Vật lý", value: "physics" },
-          { title: "Hóa học", value: "chemistry" },
-        ],
-      },
-      {
-        prop: "classGroup",
-        type: "select",
-        label: "Nhóm lớp",
-        col: 6,
-        options: [
-          { title: "Nhóm A", value: "A" },
-          { title: "Nhóm B", value: "B" },
-          { title: "Nhóm C", value: "C" },
-          { title: "Tất cả nhóm", value: "" },
-        ],
       },
       {
         prop: "startTime",
@@ -46,14 +31,30 @@ export const ExamForm: IForm[] = [
         col: 6,
       },
       {
-        prop: "type",
-        type: "select",
-        label: "Loại đề thi",
+        prop: "showResult",
+        type: "switch",
+        label: "Hiển thị kết quả",
         col: 6,
         options: [
-          { title: "Tự luận", value: "essay" },
-          { title: "Trắc nghiệm", value: "multiple-choice" },
+          { title: "Hiển thị kết quả", value: true },
+          { title: "Không hiển thị kết quả", value: false },
         ],
+      },
+      {
+        prop: "classId",
+        type: "select-ajax",
+        apiUrl: apiConfig.class.getAll.endpoint,
+        label: "Lớp học",
+        col: 6,
+        getOptions: (data = []) => {
+          console.log("data", data);
+          return data.map((item: any) => {
+            return {
+              title: `${item.major.name} - ${item.name}`,
+              value: item.id,
+            };
+          });
+        },
       },
     ],
   },

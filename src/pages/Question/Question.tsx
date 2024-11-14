@@ -15,11 +15,6 @@ interface IStatus {
   label: string;
 }
 
-interface IStatus {
-  id: string;
-  label: string;
-}
-
 const Question = () => {
   const navigate = useNavigate();
   const { onToggle, onDismiss } = useModalStore();

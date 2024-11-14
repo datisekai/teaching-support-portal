@@ -1,15 +1,18 @@
 import { useEffect } from "react";
 import { useCommonStore } from "../../stores";
 import MyTable, { IActionTable } from "../../components/UI/MyTable";
-import { useNavigate } from "react-router-dom";
-import { scores, scoreSchemas } from "../../dataTable/scoreTable";
+import { useNavigate, useParams } from "react-router-dom";
+import { scoreSchemas } from "../../dataTable/scoreTable";
+import { useExamStore } from "../../stores/examStore";
+import { exportExcel } from "../../utils/my-export-excel";
 
 const ExamViewScore = () => {
   const navigate = useNavigate();
-
+  const { id } = useParams();
   const { setHeaderTitle, setHeaderActions, resetActions } = useCommonStore();
-
+  const { examHistorys, getHistory } = useExamStore();
   const actionTable: IActionTable[] = [];
+  console.log(examHistorys);
 
   useEffect(() => {
     setHeaderTitle("Xem điểm thi");
@@ -18,7 +21,16 @@ const ExamViewScore = () => {
         title: "Export",
         icon: "pi pi-file-export",
         onClick: () => {
-          console.log("a");
+          exportExcel(
+            "Danh sách điểm",
+            examHistorys.map((item: any, index: number) => {
+              return {
+                ...item,
+                index: index + 1,
+              };
+            }),
+            scoreSchemas
+          );
         },
         type: "button",
         disabled: false,
@@ -27,11 +39,24 @@ const ExamViewScore = () => {
     return () => {
       resetActions();
     };
-  }, []);
+  }, [setHeaderTitle, setHeaderActions, resetActions, examHistorys]);
+  const handleSearch = () => {
+    getHistory(id || "");
+  };
 
   return (
     <div>
-      <MyTable data={scores} schemas={scoreSchemas} actions={actionTable} />
+      <MyTable
+        onChange={handleSearch}
+        data={examHistorys.map((item: any, index: number) => {
+          return {
+            ...item,
+            index: index + 1,
+          };
+        })}
+        schemas={scoreSchemas}
+        actions={actionTable}
+      />
     </div>
   );
 };

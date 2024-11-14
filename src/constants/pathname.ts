@@ -13,4 +13,5 @@ export const pathNames = {
   PERMISSION: "/permission",
   STUDENT: "/student",
   QUESTION: "/question",
+  EXAM: "/exam",
 };

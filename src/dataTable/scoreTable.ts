@@ -4,49 +4,49 @@ import { TableSchema } from "../types/table";
 export const scoreSchemas: TableSchema[] = [
   {
     label: "#",
-    prop: "id",
+    prop: "index",
     type: "number",
   },
   {
     label: "MSSV",
-    prop: "studentId",
+    prop: "user_code",
     type: "text",
   },
   {
     label: "Tên sinh viên",
-    prop: "studentName",
+    prop: "user_name",
     type: "text",
   },
   {
     label: "Tên đề thi",
-    prop: "examName",
+    prop: "exam_title",
     type: "text",
   },
   {
     label: "Số điểm",
-    prop: "score",
+    prop: "grade",
     type: "text",
   },
-  {
-    label: "Thời gian vào làm bài",
-    prop: "startTime",
-    type: "datetime",
-  },
-  {
-    label: "Trạng thái",
-    prop: "status",
-    type: "badge",
-    getBadge: (value) => {
-      switch (value) {
-        case "cheat":
-          return { value: "Cảnh báo gian lận", severity: "warning" };
-        case "normal":
-          return { value: "Bình thường", severity: "info" };
-        default:
-          return { value: "Lỗi", severity: "danger" };
-      }
-    },
-  },
+  // {
+  //   label: "Thời gian vào làm bài",
+  //   prop: "startTime",
+  //   type: "datetime",
+  // },
+  // {
+  //   label: "Trạng thái",
+  //   prop: "status",
+  //   type: "badge",
+  //   getBadge: (value) => {
+  //     switch (value) {
+  //       case "cheat":
+  //         return { value: "Cảnh báo gian lận", severity: "warning" };
+  //       case "normal":
+  //         return { value: "Bình thường", severity: "info" };
+  //       default:
+  //         return { value: "Lỗi", severity: "danger" };
+  //     }
+  //   },
+  // },
 ];
 
 // Dữ liệu mẫu cho bảng exam results
