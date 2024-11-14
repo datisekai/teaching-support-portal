@@ -7,7 +7,7 @@ import {
 export const AuthService = {
   login: async (code: string, password: string) => {
     const { login } = apiConfig;
-    const resp = await sendServerRequest({
+    const resp = await processMiddlewareSendRequest({
       ...login,
       body: {
         code,
