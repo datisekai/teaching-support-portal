@@ -10,6 +10,7 @@ import { useScoreColumnStore } from "../../stores/scoreColumnStore";
 import { usestudentScoreStore } from "../../stores/studentScoreStore";
 import { useModalStore } from "../../stores";
 import { ModalName } from "../../constants";
+import { Tooltip } from "primereact/tooltip";
 
 
 const ScoreManagement = () => {
@@ -150,13 +151,17 @@ const ScoreManagement = () => {
         return ({
           label: "", renderHeader: () => {
             return <div className="tw-flex tw-items-center">
-              <span>{item.name}</span>
+              <div>
+                <p className="custom-target-weight">
+                  {item.name}</p>
+              </div>
               <i onClick={() => onToggle(ModalName.LINK_STUDENT_SCORE, {
                 header: `Liên kết điểm ${item.name}`,
                 content: item
-              })} className="pi pi-cog tw-ml-2 hover:tw-opacity-50 tw-cursor-pointer"></i>
+              })} data-pr-tooltip={`Liên kết điểm (${item.weight}%)`} className="custom-target-icon pi pi-cog tw-ml-2 hover:tw-opacity-50 tw-cursor-pointer"></i>
+              <Tooltip target=".custom-target-icon" />
             </div>
-          }, prop: item.id, width: 120, render: (data: any) => isEdit ? <InputNumber className="input-edit-score" min={0} max={10} value={hashStudentScore[data.code]?.[item.id]?.score ?? 0}
+          }, prop: item.id, width: 120, render: (data: any) => isEdit ? <InputNumber minFractionDigits={2} className="input-edit-score" min={0} max={10} value={hashStudentScore[data.code]?.[item.id]?.score ?? 0}
             onValueChange={(e) => setHashStudentScore({
               ...hashStudentScore, [data.code]: {
                 ...hashStudentScore[data.code],
