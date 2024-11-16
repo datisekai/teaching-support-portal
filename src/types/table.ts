@@ -1,7 +1,7 @@
 export interface TableSchema {
   prop: string;
   label: string;
-  type: "text" | "number" | "date" | "badge" | "datetime";
+  type?: "text" | "number" | "date" | "badge" | "datetime";
   editable?: boolean; // Thêm thuộc tính editable để phân biệt cột có thể chỉnh sửa
   getBadge?: (value: any) => {
     value: string;
@@ -11,4 +11,5 @@ export interface TableSchema {
   children?: TableSchema[];
   prefix?: "%" | "currency" | "time" | "";
   disabled?: boolean;
+  render?: (data: any) => React.ReactNode;
 }

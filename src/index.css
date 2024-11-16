@@ -25,3 +25,8 @@ body.modal-open {
 .p-datatable-wrapper {
   max-width: calc(100vw - 28px);
 }
+
+.input-edit-score input,
+.input-modal-link input {
+  width: 80px;
+}

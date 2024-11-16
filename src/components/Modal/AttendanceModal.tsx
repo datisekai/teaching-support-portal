@@ -28,10 +28,13 @@ const AttendanceModal = () => {
             console.log('response,', response);
             const { message, success, data } = response;
             setRoomState(data);
-            showToast({
-                summary: "Thông báo", message,
-                severity: success ? 'success' : 'danger'
-            })
+            if (!success) {
+                showToast({
+                    summary: "Thông báo", message,
+                    severity: 'danger'
+                })
+            }
+
         })
 
         socket?.on(SocketMessage.ROOM_STATUS_UPDATED, (data: IRoomState) => {

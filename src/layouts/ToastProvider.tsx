@@ -11,7 +11,7 @@ interface IToastContext {
 
 interface IToast {
     message?: string,
-    severity?: 'info' | 'success' | 'warning' | 'danger' | 'secondary' | 'contrast',
+    severity?: 'info' | 'success' | 'warning' | 'danger' | 'secondary' | 'contrast' | 'error' | 'warn',
     summary?: string
     life?: number
 }

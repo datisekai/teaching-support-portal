@@ -10,17 +10,18 @@ import { StudentForm } from "../../dataForm/studentForm";
 import { pathNames } from "../../constants";
 import { useUserStore } from "../../stores/userStore";
 import { useToast } from "../../hooks/useToast";
+import { useClassStore } from "../../stores/classStore";
 const schema = yup
   .object()
   .shape({
     name: yup.string().required("Tên sinh viên là bắt buộc."),
     code: yup.string().required("Mã sinh viên là bắt buộc."),
-    email: yup
-      .string()
-      .email("Email phải là bắt buộc.")
-      .required("Email phải là bắt buộc."),
-    phone: yup.string().required("Số điện thoại phải là bắt buộc."),
-    password: yup.string().required("Mật khẩu phải là bắt buộc."),
+    // email: yup
+    //   .string()
+    //   .email("Email phải là bắt buộc.")
+    //   .required("Email phải là bắt buộc."),
+    // phone: yup.string().required("Số điện thoại phải là bắt buộc."),
+    // password: yup.string().required("Mật khẩu phải là bắt buộc."),
   })
   .required();
 const CreateStudent = () => {
@@ -35,9 +36,9 @@ const CreateStudent = () => {
     defaultValues: {
       name: "",
       code: "",
-      email: "",
-      phone: "",
-      password: "",
+      // email: "",
+      // phone: "",
+      // password: "",
     },
   });
   const navigate = useNavigate();
@@ -46,25 +47,26 @@ const CreateStudent = () => {
   const setHeaderTitle = useCommonStore((state) => state.setHeaderTitle);
   const resetActions = useCommonStore((state) => state.resetActions);
   const { showToast } = useToast();
-  const { user, addUser } = useUserStore();
+  const { importUsers, fetchClass } = useClassStore()
   const onSubmit = async (data: any) => {
-    const result = await addUser(data);
+    const result = await importUsers(id as string, { users: [data] });
     if (!result) {
       return showToast({
         severity: "danger",
-        summary: "Thể báo",
-        message: "Tạo thể báo",
+        summary: "Thông báo",
+        message: "Thêm thất bại",
         life: 3000,
       });
     }
     showToast({
       severity: "success",
-      summary: "Thể báo",
-      message: "Tạo thanh cong",
+      summary: "Thông báo",
+      message: "Thêm thanh cong",
       life: 3000,
     });
+    fetchClass(id as string)
+    navigate(`/student/detail/${id}`)
 
-    navigate(-1);
   };
 
   useEffect(() => {
@@ -76,12 +78,12 @@ const CreateStudent = () => {
       },
       {
         onClick: handleSubmit(onSubmit),
-        title: "Tạo",
+        title: "Thêm sinh viên",
         icon: "pi-plus",
       },
     ];
     setFooterActions(actions);
-    setHeaderTitle("Tạo sinh viên");
+    setHeaderTitle("Thêm sinh viên");
 
     return () => {
       resetActions();

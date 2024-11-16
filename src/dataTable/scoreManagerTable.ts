@@ -9,7 +9,7 @@ export const scoreManagerSchemas: TableSchema[] = [
   },
   {
     label: "MSSV",
-    prop: "studentId",
+    prop: "studentCode",
     type: "text",
   },
   {

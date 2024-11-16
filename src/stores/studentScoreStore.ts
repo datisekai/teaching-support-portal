@@ -9,6 +9,7 @@ interface IStudentScoreState {
   fetchstudentScore: (id: string) => Promise<void>;
   setstudentScore: (studentScores: IStudentScore[]) => void;
   updatestudentScore: (updatedstudentScore: any) => Promise<boolean>;
+  linkStudentScore: (data: any) => Promise<boolean>;
 }
 
 export const usestudentScoreStore = create<IStudentScoreState>((set) => ({
@@ -35,6 +36,14 @@ export const usestudentScoreStore = create<IStudentScoreState>((set) => ({
           studentScore: (state.studentScore.data.columns = response),
         }));
       }
+      return !!response;
+    } catch (error) {
+      return false;
+    }
+  },
+  linkStudentScore: async (data: any) => {
+    try {
+      const response = await studentScoreService.update({ studentScore: data });
       return !!response;
     } catch (error) {
       return false;

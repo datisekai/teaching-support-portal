@@ -130,7 +130,7 @@ const Student = () => {
     <div>
       <MyTable
         keySearch="name"
-        data={_class.users}
+        data={_class.users.map((item, index) => ({ ...item, index: index + 1 }))}
         schemas={userSchemas}
         actions={actionTable}
         totalRecords={total}

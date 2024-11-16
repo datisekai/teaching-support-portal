@@ -126,6 +126,10 @@ export const apiConfig = {
       method: "GET",
       endpoint: "/api.class/:id/student",
     },
+    importUser: {
+      method: "POST",
+      endpoint: "/api.class/:id/import-users",
+    },
   },
   // User
   user: {

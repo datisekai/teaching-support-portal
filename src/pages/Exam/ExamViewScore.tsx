@@ -2,9 +2,9 @@ import { useEffect } from "react";
 import { useCommonStore } from "../../stores";
 import MyTable, { IActionTable } from "../../components/UI/MyTable";
 import { useNavigate, useParams } from "react-router-dom";
-import { scoreSchemas } from "../../dataTable/scoreTable";
 import { useExamStore } from "../../stores/examStore";
 import { exportExcel } from "../../utils/my-export-excel";
+import { scoreSchemas } from "../../dataTable/scoreTable";
 
 const ExamViewScore = () => {
   const navigate = useNavigate();

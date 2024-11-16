@@ -1,49 +1,23 @@
-import React, { useEffect, useState } from "react";
-import MyTableCustom from "../../components/UI/MyTableCustom";
-import { students, studentSchemas } from "../../dataTable/studentTable";
-import {
-  scoreManagerSchemas,
-  scoresManager,
-} from "../../dataTable/scoreManagerTable";
-import { useScoreColumnStore } from "../../stores/scoreColumnStore";
-import { IAction, useCommonStore } from "../../stores/commonStore";
-import { useToast } from "../../hooks/useToast";
-import { set, useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
+import { Button } from "primereact/button";
+import { InputNumber } from "primereact/inputnumber";
+import { useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
-import { usestudentScoreStore } from "../../stores/studentScoreStore";
+import * as yup from "yup";
+import { useToast } from "../../hooks/useToast";
 import { useClassStore } from "../../stores/classStore";
-import { exportExcel } from "../../utils/my-export-excel";
-const schema = yup
-  .object()
-  .shape({
-    name: yup.string().required("Tên người dùng là bắt buộc."),
-    logo: yup.string().required("Logo phải là bắt buộc."),
-    favicon: yup.string().required("Favicon phải là bắt buộc."),
-  })
-  .required();
+import { IAction, useCommonStore } from "../../stores/commonStore";
+import { useScoreColumnStore } from "../../stores/scoreColumnStore";
+import { usestudentScoreStore } from "../../stores/studentScoreStore";
+import { useModalStore } from "../../stores";
+import { ModalName } from "../../constants";
+
 
 const ScoreManagement = () => {
-  const {
-    handleSubmit,
-    formState: { errors },
-    control,
-    setValue,
-  } = useForm({
-    resolver: yupResolver(schema),
-    defaultValues: {
-      name: "",
-      logo: "",
-      favicon: "",
-    },
-  });
+
   const { id } = useParams();
   const {
     fetchstudentScore,
     studentScore,
-    updatestudentScore,
-    setstudentScore,
   } = usestudentScoreStore();
   const { fetchScoreColumn, scoreColumn } = useScoreColumnStore();
 
@@ -56,55 +30,24 @@ const ScoreManagement = () => {
   } = useCommonStore();
   const { students, getStudentClass } = useClassStore();
   const { showToast } = useToast();
-  const [scoreColumnSchema, setScoreColumnSchema] =
-    useState(scoreManagerSchemas);
+  const [hashStudentScore, setHashStudentScore] = useState<any>({});
 
-  const [isLoading, setIsLoading] = useState(false);
-  const [tableData, setTableData] = useState<any[]>([]);
+  const [isEdit, setIsEdit] = useState(false)
+  const { onToggle } = useModalStore()
 
-  const onSubmit = async () => {
-    const transformedData = {
-      studentScore: tableData.flatMap((item) => {
-        // Lọc các cột điểm từ đối tượng và chuyển thành mảng các đối tượng score
-        return Object.entries(item)
-          .filter(
-            ([key]) =>
-              !["id", "studentId", "studentName", "total"].includes(key)
-          ) // Loại bỏ các trường không phải là điểm
-          .map(([scoreColumnId, score]) => ({
-            studentId: item.studentId, // Lấy `id` làm `studentId`
-            scoreColumnId: Number(scoreColumnId), // Chuyển `scoreColumnId` thành số
-            score, // Giá trị điểm
-          }));
-      }),
-    };
-
-    try {
-      const result = await updatestudentScore(transformedData);
-      if (!result) {
-        showToast({
-          severity: "danger",
-          summary: "Thông báo",
-          message: "Cập nhật thất bại",
-          life: 3000,
-        });
+  useEffect(() => {
+    const hash: any = { ...hashStudentScore }
+    if (!studentScore || !studentScore?.data || (studentScore && studentScore.data && studentScore.data.length == 0)) return;
+    for (const item of studentScore.data) {
+      if (!hash[item.studentCode]) {
+        hash[item.studentCode] = { [item.scoreColumnId]: item }
       } else {
-        showToast({
-          severity: "success",
-          summary: "Thông báo",
-          message: "Cập nhật thành công",
-          life: 3000,
-        });
+        hash[item.studentCode][item.scoreColumnId] = item
       }
-    } catch (error) {
-      showToast({
-        severity: "danger",
-        summary: "Thông báo",
-        message: "Cập nhật thất bại",
-        life: 3000,
-      });
     }
-  };
+    setHashStudentScore(hash)
+  }, [studentScore.data])
+
 
   useEffect(() => {
     const actions: IAction[] = [
@@ -114,7 +57,6 @@ const ScoreManagement = () => {
         action: "back",
       },
       {
-        onClick: () => onSubmit(),
         title: "Lưu thay đổi",
         // icon: "pi-plus",
       },
@@ -130,16 +72,16 @@ const ScoreManagement = () => {
               title: "Export",
               icon: "pi pi-file-export",
               onClick: () => {
-                const _class = scoreColumn?.data?.major?.classes?.find(
-                  (item: any) => item.id == id
-                );
-                if (_class && tableData.length > 0 && scoreColumnSchema) {
-                  exportExcel(
-                    `Danh sách điểm ${_class.name}`,
-                    tableData,
-                    scoreColumnSchema
-                  );
-                }
+                // const _class = scoreColumn?.data?.major?.classes?.find(
+                //   (item: any) => item.id == id
+                // );
+                // if (_class && tableData.length > 0 && scoreColumnSchema) {
+                //   exportExcel(
+                //     `Danh sách điểm ${_class.name}`,
+                //     tableData,
+                //     scoreColumnSchema
+                //   );
+                // }
               },
               type: "button",
               disabled: false,
@@ -156,13 +98,13 @@ const ScoreManagement = () => {
     return () => {
       resetActions();
     };
-  }, [resetActions, setHeaderTitle, setFooterActions, tableData, scoreColumn]);
+  }, [resetActions, setHeaderTitle, setFooterActions, scoreColumn]);
 
-  // useEffect(() => {
-  //   if (id) {
-  //     fetchstudentScore(id);
-  //   }
-  // }, [id]);
+  useEffect(() => {
+    if (id) {
+      loadData();
+    }
+  }, [id]);
 
   const loadData = () => {
     fetchScoreColumn(id || "");
@@ -170,79 +112,94 @@ const ScoreManagement = () => {
     getStudentClass(id || "");
   };
 
-  useEffect(() => {
-    setIsLoading(true);
-    const transferdata =
-      scoreColumn?.data?.columns.map((item: any, index: number) => {
-        return {
-          label: item.name,
-          prop: item.id,
-          type: "number",
-          editable: true,
-          prefix: "",
-        };
-      }) || [];
-    setScoreColumnSchema([
-      ...scoreManagerSchemas,
-      ...transferdata,
+
+  console.log('students', students);
+  console.log('scoreColumn', scoreColumn);
+  console.log('studentScore', studentScore)
+
+  const getAverage = (score: any = {}) => {
+    let total = 0;
+    for (const key in score) {
+      const item = score[key];
+      total += item.score * (item?.scoreColumnWeight / 100);
+    }
+    return total.toFixed(2);
+  }
+
+  const tableSchemas = useMemo(() => {
+    console.log('score', scoreColumn);
+    const columns = scoreColumn?.data?.columns || [];
+    return [
       {
-        label: "Điểm QT",
-        prop: "total",
-        type: "number",
-        editable: true,
-        disabled: true,
-        prefix: "",
+        label: '#',
+        prop: 'index',
+        width: 40,
+        render: (data: any, index: number) => index + 1
       },
-    ]);
-    let sum = 0;
-    const studentScoreTransferData = students.map(
-      (student: any, index: number) => {
-        // Tìm tất cả điểm của sinh viên
-        const studentScores = studentScore.data?.filter((item: any) => {
-          // Kiểm tra điều kiện cho student.id
-          return item?.student?.id === student.id;
+      {
+        label: 'MSSV',
+        prop: 'code',
+        width: 100
+      },
+      {
+        label: 'Họ và tên',
+        prop: 'name',
+        width: 150
+      },
+      ...columns.map((item: any, index: number) => {
+        return ({
+          label: "", renderHeader: () => {
+            return <div className="tw-flex tw-items-center">
+              <span>{item.name}</span>
+              <i onClick={() => onToggle(ModalName.LINK_STUDENT_SCORE, {
+                header: `Liên kết điểm ${item.name}`,
+                content: item
+              })} className="pi pi-cog tw-ml-2 hover:tw-opacity-50 tw-cursor-pointer"></i>
+            </div>
+          }, prop: item.id, width: 120, render: (data: any) => isEdit ? <InputNumber className="input-edit-score" min={0} max={10} value={hashStudentScore[data.code]?.[item.id]?.score ?? 0}
+            onValueChange={(e) => setHashStudentScore({
+              ...hashStudentScore, [data.code]: {
+                ...hashStudentScore[data.code],
+                [item.id]: {
+                  ...hashStudentScore[data.code]?.[item.id],
+                  score: e.value
+                }
+              }
+            })} /> : `${hashStudentScore[data.code]?.[item.id]?.score.toFixed(2) ?? 0}`
         });
+      }),
+      {
+        label: 'Điểm QT',
+        prop: 'average',
+        width: 100,
+        render: (data: any) => getAverage(hashStudentScore[data.code])
+      },
 
-        // Tạo columnData từ transferdata
-        const columnData = transferdata.reduce((acc: any, item1: any) => {
-          // Kiểm tra nếu columnId của item bằng prop của item1
-          const matchingItem = studentScores?.find(
-            (scoreItem: any) => scoreItem.columnId === item1.prop
-          );
-          sum += matchingItem ? matchingItem.score : 0;
+    ]
 
-          // Sử dụng cú pháp tính toán cho khóa
-          acc[item1.prop] = matchingItem ? matchingItem.score : 0;
+  }, [scoreColumn, hashStudentScore, isEdit])
 
-          return acc; // Trả về accumulator để tiếp tục
-        }, {});
-
-        // console.log("Column Data:", columnData);
-
-        return {
-          id: index + 1,
-          studentId: student.id,
-          studentName: student.name,
-          ...columnData, // Thêm dữ liệu điểm vào đối tượng
-          total: sum,
-        };
-      }
-    );
-
-    setTableData(studentScoreTransferData);
-    setIsLoading(false);
-  }, [scoreColumn, students, studentScore]);
   return (
     <div>
-      <MyTableCustom
-        isLoading={isLoadingApi || isLoading}
-        data={tableData}
-        schemas={scoreColumnSchema}
-        // actions={actionTable}
-        setData={setTableData}
-        isFooter={true}
-        onChange={() => loadData()}
-      />
+      <div className="tw-flex tw-justify-end tw-mb-2">
+        <Button onClick={() => setIsEdit(!isEdit)} label={!isEdit ? "Cập nhật" : "Huỷ"} icon="pi pi-pencil"></Button>
+      </div>
+      <div className="tw-overflow-x-auto">
+        <div className="tw-flex tw-bg-[#f9fafb] tw-border-t tw-border-b tw-px-2">
+          {tableSchemas.map((item: any, index: number) => {
+            return <div className="tw-font-bold tw-py-4 tw-text-[#374151]" key={item.prop} style={{ width: item.width }}>{item.renderHeader ? item.renderHeader() : item.label}</div>;
+          })}
+        </div>
+        <div>
+          {students?.map((item: any, index: number) => {
+            return <div key={item.id} className="tw-flex tw-py-4 tw-border-b tw-px-2">
+              {tableSchemas?.map(cell => {
+                return <div key={`${cell.prop}_${item.id}`} style={{ width: cell.width }}>{cell.render ? cell.render(item, index) : item[cell.prop] || ""}</div>
+              })}
+            </div>
+          })}
+        </div>
+      </div >
     </div>
   );
 };

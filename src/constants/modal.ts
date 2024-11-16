@@ -6,4 +6,5 @@ export enum ModalName {
   ADD_TEACHER = "add-teacher",
   ATTENDANCE = "attendance",
   VIEW_QUESTION = "view-question",
+  LINK_STUDENT_SCORE = "link-student-score",
 }

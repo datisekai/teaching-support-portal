@@ -18,6 +18,7 @@ interface IModalState {
   ) => void;
   onDismiss: () => void;
   clearContent: () => void;
+  setHeader: (header: React.ReactNode) => void;
 }
 
 export const useModalStore = create<IModalState>((set) => ({
@@ -38,5 +39,8 @@ export const useModalStore = create<IModalState>((set) => ({
   },
   clearContent: () => {
     set((state) => ({ ...state, content: null }));
+  },
+  setHeader: (header) => {
+    set((state) => ({ ...state, header: header }));
   },
 }));

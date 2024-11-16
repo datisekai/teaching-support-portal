@@ -55,4 +55,12 @@ export const classService = {
       endpoint: getStudentClass.endpoint.replace(":id", id.toString()),
     });
   },
+  importUsers: async (id: string, body: any) => {
+    const { importUser } = apiConfig.class;
+    return sendServerRequest({
+      ...importUser,
+      endpoint: importUser.endpoint.replace(":id", id.toString()),
+      body,
+    });
+  },
 };

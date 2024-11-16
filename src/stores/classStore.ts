@@ -20,6 +20,7 @@ interface IClassState {
   updateClass: (id: number, updatedClass: IClass) => Promise<boolean>;
   deleteClass: (id: number) => Promise<boolean>;
   getStudentClass: (id: string) => Promise<void>;
+  importUsers: (id: string, body: any) => Promise<boolean>;
 }
 
 export const useClassStore = create<IClassState>((set) => ({
@@ -111,5 +112,13 @@ export const useClassStore = create<IClassState>((set) => ({
       const response = await classService.getStudentClass(id);
       set({ students: response.data, totalStudent: response.total });
     } catch (error) {}
+  },
+  importUsers: async (id: string, body: any) => {
+    try {
+      const response = await classService.importUsers(id, body);
+      return !!response;
+    } catch (error) {
+      return false;
+    }
   },
 }));

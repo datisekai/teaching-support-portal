@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import MyTable, { IActionTable } from "../../components/UI/MyTable";
-import { examSchemas } from "../../dataTable/examTable";
 import useConfirm from "../../hooks/useConfirm";
 import { useCommonStore } from "../../stores";
 import { uploadFile } from "../../utils";
 import { useExamStore } from "../../stores/examStore"; // assuming there's an examStore similar to facultyStore
 import { useToast } from "../../hooks/useToast";
 import { pathNames } from "../../constants";
+import { examSchemas } from "../../dataTable/examTable";
 
 const Exam = () => {
   const { exams, fetchExams, total, deleteExam } = useExamStore();
@@ -43,7 +43,7 @@ const Exam = () => {
         });
         fetchExams({}); // Refresh data after delete
       },
-      onReject: () => {},
+      onReject: () => { },
     };
     onConfirm(confirmData);
   };
@@ -115,7 +115,7 @@ const Exam = () => {
   return (
     <div>
       <MyTable
-        keySearch="name"
+        keySearch="title"
         data={exams}
         schemas={examSchemas}
         actions={actionTable}

@@ -77,6 +77,11 @@ const MyTable: FC<IMyTable> = ({
     const value = row[key] || "";
     const isHtml = /<\/?[a-z][\s\S]*>/i.test(value);
 
+    if (schema?.render && typeof schema.render === "function") {
+      return schema.render(row);
+    }
+
+
     switch (schema?.type) {
       case "text":
       case "number":
@@ -113,7 +118,7 @@ const MyTable: FC<IMyTable> = ({
           <InputIcon className="pi pi-search" />
           <InputText
             onChange={(event) => setValue(event.target.value)}
-            placeholder="Keyword Search"
+            placeholder={`Search by ${keySearch}`}
           />
         </IconField>
       </div>
