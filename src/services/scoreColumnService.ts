@@ -20,4 +20,11 @@ export const scoreColumnService = {
       body,
     });
   },
+  getSingleClass: async (id: string) => {
+    const { getSingleClass } = apiConfig.scoreColumn;
+    return processMiddlewareSendRequest({
+      ...getSingleClass,
+      endpoint: getSingleClass.endpoint.replace(":id", id.toString()),
+    });
+  },
 };

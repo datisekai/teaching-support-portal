@@ -23,6 +23,7 @@ export interface IActionTable {
   loading?: boolean;
   action?: "back";
   tooltip?: string;
+  isHidden?: (data: any) => boolean
 }
 export interface QueryParams {
   page?: number;
@@ -32,6 +33,7 @@ interface IMyTable {
   schemas: TableSchema[];
   data: any[];
   keySearch?: string;
+  keySearchLabel?: string;
   totalRecords?: number;
   perPage?: number;
   onChange?: (query: object) => void;
@@ -48,6 +50,7 @@ const MyTable: FC<IMyTable> = ({
   onChange,
   actions = [],
   isLoading = false,
+  keySearchLabel
 }) => {
   const [first, setFirst] = useState(1);
   const [selectedRowData, setSelectedRowData] = useState<any>(null);
@@ -88,7 +91,7 @@ const MyTable: FC<IMyTable> = ({
         return isHtml ? (
           <div dangerouslySetInnerHTML={{ __html: value }} />
         ) : (
-          <span>{value}</span>
+          <span>{value || "Chưa có"}</span>
         );
       case "date":
         return <span>{dayjs(value).format("DD/MM/YYYY")}</span>;
@@ -118,7 +121,7 @@ const MyTable: FC<IMyTable> = ({
           <InputIcon className="pi pi-search" />
           <InputText
             onChange={(event) => setValue(event.target.value)}
-            placeholder={`Search by ${keySearch}`}
+            placeholder={`Search by ${keySearchLabel || keySearch}`}
           />
         </IconField>
       </div>
@@ -127,10 +130,13 @@ const MyTable: FC<IMyTable> = ({
 
   const renderActions = useCallback(
     (rowData: any, options: any) => {
+
+      const actionActives = actions.filter((action) => !action?.isHidden?.(rowData));
+
       const items = [
         {
           label: "Hành động",
-          items: actions.map((action) => ({
+          items: actionActives.map((action) => ({
             label: action.tooltip,
             icon: `pi ${action.icon}`,
             command: () => {
@@ -144,10 +150,10 @@ const MyTable: FC<IMyTable> = ({
 
       return (
         <div className="tw-w-full tw-flex tw-gap-2 tw-flex-wrap tw-items-center">
-          {actions && actions.length > 0 && (
+          {actionActives && actionActives.length > 0 && (
             <div
               className={
-                actions.length < 4 ? "tw-flex md:tw-hidden" : "tw-flex"
+                actionActives.length < 4 ? "tw-flex md:tw-hidden" : "tw-flex"
               }
             >
               <Menu
@@ -168,11 +174,11 @@ const MyTable: FC<IMyTable> = ({
               />
             </div>
           )}
-          {actions?.map((action, index) => (
+          {actionActives?.map((action, index) => (
             <Button
               size="small"
               className={
-                actions.length < 4 ? "md:tw-flex tw-hidden" : "tw-hidden"
+                actionActives.length < 4 ? "md:tw-flex tw-hidden" : "tw-hidden"
               }
               tooltip={action.tooltip}
               tooltipOptions={{ position: "top" }}

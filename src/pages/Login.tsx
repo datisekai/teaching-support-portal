@@ -17,7 +17,7 @@ const Login = () => {
   const { showToast } = useToast();
   const { login, token } = useAuthStore();
   const navigate = useNavigate();
-  const {isLoadingApi} = useCommonStore()
+  const { isLoadingApi } = useCommonStore()
 
   useEffect(() => {
     if (token) {
@@ -29,7 +29,7 @@ const Login = () => {
     const result = await login(data.code, data.password);
     if (!result) {
       return showToast({
-        severity: "danger",
+        severity: "error",
         summary: "Thông báo",
         message: "Sai tài khoản hoặc mật khẩu",
         life: 3000,
@@ -141,7 +141,7 @@ const Login = () => {
 
               <div className="tw-mb-4 ">
                 <Button
-                loading={isLoadingApi}
+                  loading={isLoadingApi}
                   label="Đăng nhập"
                   className="tw-border-white tw-w-full"
                 />

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useModalStore } from "../../stores";
+import { generateCharacter } from "../../utils";
 
 const ViewQuestionModal: React.FC = () => {
   const { content } = useModalStore();
@@ -25,20 +26,20 @@ const ViewQuestionModal: React.FC = () => {
       </p>
 
       {content?.choices?.length > 0 && (
-          <p className="tw-mb-4">
-            <strong>Câu trả lời:</strong>
-          </p>
-        ) &&
+        <p className="tw-mb-4">
+          <strong>Câu trả lời:</strong>
+        </p>
+      ) &&
         content.choices.map((choice: any, index: number) => (
-          <p className="tw-mb-4" key={index}>
-            {choice.text}
+          <p className={`tw-mb-4 ${choice.isCorrect ? "tw-font-bold tw-bg-green-500 tw-text-white" : ""}`} key={index}>
+            {generateCharacter(index)}. {choice.text}
           </p>
         ))}
-      {answerCorrect && (
+      {/* {answerCorrect && (
         <p className="tw-mb-4">
           <strong>Đáp án đúng:</strong> {answerCorrect}
         </p>
-      )}
+      )} */}
     </div>
   );
 };

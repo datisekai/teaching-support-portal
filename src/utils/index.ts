@@ -69,3 +69,7 @@ export function getDifficulty(value: string) {
       return "Lỗi";
   }
 }
+
+export function generateCharacter(index: number) {
+  return String.fromCharCode(65 + index);
+}

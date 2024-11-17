@@ -9,6 +9,7 @@ interface IState {
   permissions: string[];
   users: IUser[];
   total: number;
+  userEdit: IUser;
   isLoadingUsers: boolean;
   fetchUsers: (body: object) => Promise<void>;
   fetchUser: (id: string) => Promise<void>;
@@ -35,6 +36,7 @@ export const useUserStore = create<IState>((set) => ({
   user: {} as IUser,
   permissions: [],
   users: [],
+  userEdit: {} as IUser,
   isLoadingUsers: false,
   total: 0,
   getMe: async () => {
@@ -60,7 +62,7 @@ export const useUserStore = create<IState>((set) => ({
   fetchUser: async (id: string) => {
     try {
       const response = await UserService.getSingle(id);
-      set({ user: response });
+      set({ userEdit: response });
     } catch (error) {}
   },
 

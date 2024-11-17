@@ -5,10 +5,11 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "primereact/button";
 import { questions, questionSchemas } from "../../dataTable/questionTable";
 import useConfirm from "../../hooks/useConfirm";
-import { ModalName, QuestionType } from "../../constants";
+import { ModalName, QuestionType, UserType } from "../../constants";
 import { useQuestionStore } from "../../stores/questionStore";
 import { useToast } from "../../hooks/useToast";
 import { Dropdown, DropdownChangeEvent } from "primereact/dropdown";
+import { useUserStore } from "../../stores/userStore";
 
 interface IStatus {
   id: string;
@@ -24,6 +25,7 @@ const Question = () => {
     useQuestionStore();
   const { isLoadingApi } = useCommonStore();
   const { showToast } = useToast();
+  const { user } = useUserStore()
   const handleSubmit = (data: any) => {
     onDismiss();
   };
@@ -96,6 +98,9 @@ const Question = () => {
       tooltip: "Sửa",
       icon: "pi-pencil",
       severity: "warning",
+      isHidden(data) {
+        return data.user.id !== user.id && user.type !== UserType.MASTER
+      },
     },
     {
       onClick: (data, options) => {
@@ -104,6 +109,9 @@ const Question = () => {
       tooltip: "Xóa",
       icon: "pi-trash",
       severity: "danger",
+      isHidden(data) {
+        return data.user.id !== user.id && user.type !== UserType.MASTER
+      },
     },
   ];
 
@@ -160,7 +168,7 @@ const Question = () => {
         options={status}
         optionLabel="label"
         placeholder="Danh sách câu hỏi"
-        className="tw-w-1/2 md:tw-w-14rem tw-my-2"
+        className="tw-my-2"
       />
       <MyTable
         keySearch="title"

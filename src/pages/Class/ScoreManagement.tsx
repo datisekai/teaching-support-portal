@@ -15,7 +15,7 @@ import { Tooltip } from "primereact/tooltip";
 const ScoreManagement = () => {
   const { id } = useParams();
   const { fetchstudentScore, studentScore } = usestudentScoreStore();
-  const { fetchScoreColumn, scoreColumn } = useScoreColumnStore();
+  const { fetchScoreColumn, scoreColumn, fetchScoreColumnClass } = useScoreColumnStore();
 
   const {
     setFooterActions,
@@ -108,14 +108,10 @@ const ScoreManagement = () => {
   }, [id]);
 
   const loadData = () => {
-    fetchScoreColumn(id || "");
+    fetchScoreColumnClass(id || "");
     fetchstudentScore(id || "");
-    getStudentClass(id || "", {});
+    getStudentClass(id || "");
   };
-
-  console.log("students", students);
-  console.log("scoreColumn", scoreColumn);
-  console.log("studentScore", studentScore);
 
   const getAverage = (score: any = {}) => {
     let total = 0;
@@ -126,8 +122,9 @@ const ScoreManagement = () => {
     return total.toFixed(2);
   };
 
+
+  console.log('scoreColumn', scoreColumn);
   const tableSchemas = useMemo(() => {
-    console.log("score", scoreColumn);
     const columns = scoreColumn?.data?.columns || [];
     return [
       {

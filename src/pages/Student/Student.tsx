@@ -28,14 +28,14 @@ const Student = () => {
   //   },
   // ];
   const actionTable: IActionTable[] = [
-    {
-      onClick: (data, options) => {
-        handleReset(data);
-      },
-      tooltip: "Reset thiết bị",
-      icon: "pi-refresh",
-      severity: "help",
-    },
+    // {
+    //   onClick: (data, options) => {
+    //     handleReset(data);
+    //   },
+    //   tooltip: "Reset thiết bị",
+    //   icon: "pi-refresh",
+    //   severity: "help",
+    // },
     {
       onClick: (data, options) => {
         handleDelete(data.code);
@@ -53,10 +53,8 @@ const Student = () => {
     fetchClass,
     getStudentClass,
     students,
-    deleteStudentClass,
     importUsers,
   } = useClassStore();
-  console.log("checked", students);
   const { showToast } = useToast();
   const { setHeaderTitle, setHeaderActions, resetActions, isLoadingApi } =
     useCommonStore();
@@ -65,6 +63,10 @@ const Student = () => {
   const { onDismiss } = useModalStore();
   const { setContent, setFooter } = useModalStore();
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    getStudentClass(id as string);
+  }, [id])
 
   // const handleEdit = (data: any) => {
   //   navigate(`/student/edit/${data.id}`);
@@ -89,7 +91,7 @@ const Student = () => {
       message: "Cập nhật thành công!",
       life: 3000,
     });
-    getStudentClass(id as string, {});
+    getStudentClass(id as string);
   };
   useEffect(() => {
     if (dataImports.length > 0) {
@@ -287,7 +289,7 @@ const Student = () => {
       message: "Thêm thành công",
       life: 3000,
     });
-    getStudentClass(id || "", {});
+    getStudentClass(id || "");
   };
 
   useEffect(() => {
@@ -329,21 +331,21 @@ const Student = () => {
   const handleSearch = (query: Object) => {
     // fetchUsers(query);
     // fetchClasses();
-    getStudentClass(id || "", query);
+    getStudentClass(id || "");
   };
   return (
     <div>
       <MyTable
-        keySearch="name"
+        // keySearch="name"
         data={students.map((item, index) => ({
           ...item,
           index: index + 1,
         }))}
         schemas={userSchemas}
         actions={actionTable}
-        totalRecords={total}
+        // totalRecords={total}
         isLoading={isLoadingApi}
-        onChange={handleSearch}
+      // onChange={handleSearch}
       />
     </div>
   );

@@ -9,6 +9,7 @@ interface IScoreColumnState {
   fetchScoreColumn: (id: string) => Promise<void>;
   setScoreColumn: (scoreColumns: IScoreColumn[]) => void;
   updateScoreColumn: (updatedScoreColumn: any) => Promise<boolean>;
+  fetchScoreColumnClass: (id: string) => Promise<void>;
 }
 
 export const useScoreColumnStore = create<IScoreColumnState>((set) => ({
@@ -39,5 +40,18 @@ export const useScoreColumnStore = create<IScoreColumnState>((set) => ({
     } catch (error) {
       return false;
     }
+  },
+
+  fetchScoreColumnClass: async (id: string) => {
+    try {
+      const response = await scoreColumnService.getSingleClass(id);
+      set((state) => ({
+        scoreColumn: {
+          data: {
+            columns: response.data,
+          },
+        },
+      }));
+    } catch (error) {}
   },
 }));

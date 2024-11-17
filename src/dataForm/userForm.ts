@@ -1,3 +1,4 @@
+import { apiConfig } from "../apis";
 import { IForm, IFormItem } from "../types/form-item";
 
 export const UserForm: IForm[] = [
@@ -6,8 +7,8 @@ export const UserForm: IForm[] = [
     attributes: [
       {
         prop: "code",
-        type: "number",
-        label: "Mã",
+        type: "text",
+        label: "Mã SV/GV",
         col: 6,
       },
       {
@@ -23,15 +24,25 @@ export const UserForm: IForm[] = [
         col: 6,
       },
       {
-        prop: "phoneNumber",
+        prop: "phone",
         type: "text",
         label: "Số điện thoại",
         col: 6,
       },
       {
-        prop: "role",
+        prop: "roleId",
         type: "select-ajax",
         label: "Loại quyền",
+        apiUrl: apiConfig.role.getAll.endpoint,
+        getOptions: (data = []) => {
+          console.log("data", data);
+          return data.map((item: any) => {
+            return {
+              title: item.name,
+              value: item.id,
+            };
+          });
+        },
         col: 6,
       },
     ],

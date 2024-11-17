@@ -58,7 +58,7 @@ export const questionSchemas: TableSchema[] = [
       if (value === "multiple_choice") {
         return { value: "Trắc nghiệm", severity: "info" };
       }
-      return { value: "Tự luận", severity: "warning" };
+      return { value: "Bài tậpa", severity: "warning" };
     },
   },
   {

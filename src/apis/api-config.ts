@@ -379,6 +379,10 @@ export const apiConfig = {
       method: "GET",
       endpoint: "/api.score-column/:id",
     },
+    getSingleClass: {
+      method: "GET",
+      endpoint: "/api.score-column/class/:id",
+    },
   },
   //student-score
   studentScore: {

@@ -31,16 +31,6 @@ export const ExamForm: IForm[] = [
         col: 6,
       },
       {
-        prop: "showResult",
-        type: "switch",
-        label: "Hiển thị kết quả",
-        col: 6,
-        options: [
-          { title: "Hiển thị kết quả", value: true },
-          { title: "Không hiển thị kết quả", value: false },
-        ],
-      },
-      {
         prop: "classId",
         type: "select-ajax",
         apiUrl: apiConfig.class.getAll.endpoint,
@@ -55,6 +45,35 @@ export const ExamForm: IForm[] = [
             };
           });
         },
+      },
+    ],
+  },
+  {
+    title: "Cài đặt",
+    attributes: [
+      {
+        prop: "showResult",
+        type: "switch",
+        label: "Hiển thị kết quả",
+        col: 6,
+      },
+      {
+        prop: "logOutTab",
+        type: "switch",
+        label: "Ghi nhận chuyển tab",
+        col: 6,
+      },
+      {
+        prop: "blockMouseRight",
+        type: "switch",
+        label: "Chặn chuột phải",
+        col: 6,
+      },
+      {
+        prop: "blockControlCVX",
+        type: "switch",
+        label: "Chặn Copy, Paste",
+        col: 6,
       },
     ],
   },

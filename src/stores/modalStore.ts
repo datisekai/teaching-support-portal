@@ -37,7 +37,7 @@ export const useModalStore = create<IModalState>((set) => ({
     }));
   },
   onDismiss: () => {
-    set((state) => ({ ...state, visible: false }));
+    set((state) => ({ ...state, visible: false, header: "", footer: "" }));
   },
   clearContent: () => {
     set((state) => ({ ...state, content: null }));
