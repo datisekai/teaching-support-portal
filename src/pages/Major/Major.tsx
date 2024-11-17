@@ -9,6 +9,9 @@ import { ModalName, pathNames } from "../../constants";
 import { useMajorStore } from "../../stores/majorStore";
 import { teachers } from "../../dataTable/teacherTable"; // Import teachers
 import { useToast } from "../../hooks/useToast";
+import { Button } from "primereact/button";
+import ExcelJS from "exceljs";
+import { exportExcel } from "../../utils/my-export-excel";
 
 const Major = () => {
   const { onToggle } = useModalStore();
@@ -27,6 +30,14 @@ const Major = () => {
       },
       tooltip: "Thêm giảng viên",
       icon: "pi-user-plus",
+    },
+    {
+      onClick: (data, options) => {
+        handleScoreColumn(data);
+      },
+      tooltip: "Quản lý cột điểm",
+      icon: "pi-chart-bar",
+      severity: "help",
     },
     {
       onClick: (data, options) => {
@@ -51,12 +62,20 @@ const Major = () => {
   const { showToast } = useToast();
   const { setHeaderTitle, setHeaderActions, resetActions, isLoadingApi } =
     useCommonStore();
-  const { majors, total, deleteMajor, fetchMajors } = useMajorStore();
+  const { majors, total, deleteMajor, fetchMajors, importMajors } =
+    useMajorStore();
+
+  const [dataImports, setDataImports] = useState<any[]>([]);
+  const { onDismiss } = useModalStore();
+  const { setContent, setFooter } = useModalStore();
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleEdit = (data: any) => {
     navigate(`${pathNames.MAJOR}/edit/${data.id}`);
   };
-
+  const handleScoreColumn = (data: any) => {
+    navigate(`${pathNames.MAJOR}/score-column-management/${data.id}`);
+  };
   const handleDelete = (id: number) => {
     const data = {
       message: "Bạn có chắc chắn muốn xoá môn học này?",
@@ -86,6 +105,156 @@ const Major = () => {
   };
 
   useEffect(() => {
+    if (dataImports.length > 0) {
+      setContent(
+        <MyTable
+          keySearch="name"
+          data={dataImports.map((item, index) => ({
+            ...item,
+            index: index + 1,
+          }))}
+          schemas={majorSchemas}
+          isLoading={isLoading}
+          // actions={actionTableIport}
+          totalRecords={total}
+          onChange={handleSearch}
+        />
+      );
+      setFooter(
+        <div>
+          <a href="/danhsachmon.xlsx" download={"danhsachmon.xlsx"}>
+            <Button label="Download mẫu"></Button>
+          </a>
+          <Button label="Chọn file import" onClick={handleChooseFile}></Button>
+          <Button label="Import" onClick={handleImport}></Button>,
+        </div>
+      );
+    }
+  }, [dataImports]);
+  const handleOpenModal = () => {
+    onToggle(ModalName.REVIEW_IMPORT, {
+      header: "Import danh sách môn học",
+      content: (
+        <MyTable
+          keySearch="name"
+          data={dataImports.map((item, index) => ({
+            ...item,
+            index: index + 1,
+          }))}
+          schemas={majorSchemas}
+          isLoading={isLoading}
+          // actions={actionTableIport}
+          totalRecords={total}
+          onChange={handleSearch}
+        />
+      ),
+      footer: (
+        <div>
+          <a href="/danhsachmon.xlsx" download={"danhsachmon.xlsx"}>
+            <Button label="Download mẫu"></Button>
+          </a>
+          <Button label="Chọn file import" onClick={handleChooseFile}></Button>
+          <Button label="Import" onClick={handleImport}></Button>,
+        </div>
+      ),
+      // style: "tw-w-[90%] md:tw-w-[50rem]",
+    });
+  };
+  const importExcel = async (file: any) => {
+    try {
+      const workbook = new ExcelJS.Workbook();
+
+      // Convert the file to an ArrayBuffer
+      const arrayBuffer = await file.arrayBuffer();
+      await workbook.xlsx.load(arrayBuffer);
+
+      // Get the first worksheet
+      const worksheet = workbook.getWorksheet(1); // 1-based index
+
+      if (!worksheet) {
+        showToast({
+          severity: "danger",
+          summary: "Thông báo",
+          message: "Không tìm thấy worksheet",
+          life: 3000,
+        });
+        return;
+      }
+
+      const data: any[] = [];
+
+      worksheet.eachRow((row, rowNumber) => {
+        if (rowNumber > 1) {
+          const teachersCell = row.getCell(5)?.value || "";
+          const teachersArray =
+            typeof teachersCell === "string"
+              ? teachersCell.split(",").map((entry) => {
+                  const [code, name] = entry
+                    .split("-")
+                    .map((item) => item.trim());
+                  return {
+                    code: code || "",
+                    name: name || "",
+                  };
+                })
+              : [];
+
+          const rowData = {
+            index: row.getCell(1)?.value || "",
+            code: row.getCell(2)?.value || "",
+            name: row.getCell(3)?.value || "",
+            faculty: row.getCell(4)?.value || "",
+            teachers: teachersArray, // Array of { code, name }
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+          };
+          data.push(rowData);
+        }
+      });
+
+      console.log("Processed Data:", data);
+      setDataImports(data);
+    } catch (error) {
+      showToast({
+        severity: "danger",
+        summary: "Thông báo",
+        message: "Không thể đọc được file excel này",
+        life: 3000,
+      });
+    }
+  };
+
+  const handleChooseFile = async () => {
+    setIsLoading(true);
+    const file = await uploadFile();
+    importExcel(file);
+    setIsLoading(false);
+    // const mergedArray = mergeArrays(students, importData as []);
+    // console.log(importData, students);
+  };
+
+  const handleImport = async () => {
+    const result = await importMajors({ majors: dataImports });
+    onDismiss();
+    setDataImports([]);
+    if (!result) {
+      return showToast({
+        severity: "danger",
+        summary: "Thông báo",
+        message: "Thêm thất bại",
+        life: 3000,
+      });
+    }
+    showToast({
+      severity: "success",
+      summary: "Thông báo",
+      message: "Thêm thành công",
+      life: 3000,
+    });
+    fetchMajors({});
+  };
+
+  useEffect(() => {
     setHeaderTitle("Quản lý môn học");
     setHeaderActions([
       {
@@ -101,8 +270,7 @@ const Major = () => {
         title: "Import",
         icon: "pi pi-file-import",
         onClick: async () => {
-          const file = await uploadFile();
-          console.log("File imported:", file);
+          handleOpenModal();
         },
         type: "file",
         disabled: false,
@@ -111,7 +279,17 @@ const Major = () => {
         title: "Export",
         icon: "pi pi-file-export",
         onClick: () => {
-          console.log("Export functionality here");
+          exportExcel(
+            "Danh sách môn học",
+            majors.map((item, index) => {
+              return {
+                ...item,
+                index: index + 1,
+                faculty: item.faculty.name,
+              };
+            }),
+            majorSchemas
+          );
         },
         type: "button",
         disabled: false,
@@ -121,7 +299,7 @@ const Major = () => {
     return () => {
       resetActions();
     };
-  }, [navigate, resetActions, setHeaderActions, setHeaderTitle]);
+  }, [majors, resetActions, setHeaderActions, setHeaderTitle]);
 
   const handleSearch = (query: Object) => {
     fetchMajors(query);
@@ -131,8 +309,9 @@ const Major = () => {
     <div>
       <MyTable
         keySearch="name"
-        data={majors.map((item) => ({
+        data={majors.map((item, index) => ({
           ...item,
+          index: index + 1,
           faculty: item.faculty.name,
         }))}
         schemas={majorSchemas}

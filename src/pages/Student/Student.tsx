@@ -196,8 +196,8 @@ const Student = () => {
             updatedAt: new Date().toISOString(),
             // classCode: row.getCell(5)?.value || "",
             // className: row.getCell(6)?.value || "",
-            phone: row.getCell(7)?.value || "",
-            email: row.getCell(8)?.value || "",
+            // phone: row.getCell(7)?.value || "",
+            // email: row.getCell(8)?.value || "",
           };
           data.push(rowData);
         }
@@ -275,6 +275,7 @@ const Student = () => {
   const handleImport = async () => {
     const result = await importUsers(id as string, { users: dataImports });
     onDismiss();
+    setDataImports([]);
     if (!result) {
       return showToast({
         severity: "danger",

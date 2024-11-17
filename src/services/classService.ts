@@ -81,4 +81,11 @@ export const classService = {
         .replace(":classId", classId.toString()),
     });
   },
+  importClass: async (body: any) => {
+    const { importClass } = apiConfig.class;
+    return sendServerRequest({
+      ...importClass,
+      body,
+    });
+  },
 };

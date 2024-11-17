@@ -10,6 +10,9 @@ interface IScoreColumnState {
   setScoreColumn: (scoreColumns: IScoreColumn[]) => void;
   updateScoreColumn: (updatedScoreColumn: any) => Promise<boolean>;
   fetchScoreColumnClass: (id: string) => Promise<void>;
+  getSingleClass: (id: string) => Promise<void>;
+  createMultiple: (body: Record<string, any>) => Promise<boolean>;
+  deleteScoreColumn: (id: string) => Promise<boolean>;
 }
 
 export const useScoreColumnStore = create<IScoreColumnState>((set) => ({
@@ -41,7 +44,6 @@ export const useScoreColumnStore = create<IScoreColumnState>((set) => ({
       return false;
     }
   },
-
   fetchScoreColumnClass: async (id: string) => {
     try {
       const response = await scoreColumnService.getSingleClass(id);
@@ -53,5 +55,27 @@ export const useScoreColumnStore = create<IScoreColumnState>((set) => ({
         },
       }));
     } catch (error) {}
+  },
+  createMultiple: async (body: Record<string, any>) => {
+    try {
+      const response = await scoreColumnService.createMultiple(body);
+      return !!response;
+    } catch (error) {
+      return false;
+    }
+  },
+  getSingleClass: async (id: string) => {
+    try {
+      const response = await scoreColumnService.getSingleClass(id);
+      set({ scoreColumn: response });
+    } catch (error) {}
+  },
+  deleteScoreColumn: async (id: string) => {
+    try {
+      const response = await scoreColumnService.delete(id);
+      return !!response;
+    } catch (error) {
+      return false;
+    }
   },
 }));
