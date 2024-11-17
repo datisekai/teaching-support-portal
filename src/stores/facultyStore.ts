@@ -12,6 +12,7 @@ interface IFacultyState {
   addFaculty: (Faculty: IFaculty) => Promise<boolean>;
   updateFaculty: (id: number, updatedFaculty: IFaculty) => Promise<boolean>;
   deleteFaculty: (id: number) => Promise<boolean>;
+  importFacultys: (body: any) => Promise<boolean>;
 }
 
 export const useFacultyStore = create<IFacultyState>((set) => ({
@@ -72,6 +73,14 @@ export const useFacultyStore = create<IFacultyState>((set) => ({
           facultys: state.facultys.filter((faculty) => faculty.id !== id),
         }));
       }
+      return !!response;
+    } catch (error) {
+      return false;
+    }
+  },
+  importFacultys: async (body: any) => {
+    try {
+      const response = await facultyService.importFaculty(body);
       return !!response;
     } catch (error) {
       return false;

@@ -60,6 +60,10 @@ export const apiConfig = {
       method: "GET",
       endpoint: "/api.faculty/:id",
     },
+    importFaculty: {
+      method: "POST",
+      endpoint: "/api.faculty/multiple",
+    },
   },
   // Major
   major: {
@@ -90,6 +94,10 @@ export const apiConfig = {
     deleteTeachersMajor: {
       method: "DELETE",
       endpoint: "/api.major/:id/teacher/:teacherCode",
+    },
+    importMajor: {
+      method: "POST",
+      endpoint: "/api.major/multiple",
     },
   },
   // Class
@@ -137,6 +145,10 @@ export const apiConfig = {
     deleteStudentClass: {
       method: "DELETE",
       endpoint: "/api.class/:classId/student/:studentCode",
+    },
+    importClass: {
+      method: "POST",
+      endpoint: "/api.class/multiple",
     },
   },
   // User

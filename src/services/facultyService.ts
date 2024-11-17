@@ -40,4 +40,11 @@ export const facultyService = {
       endpoint: _delete.endpoint.replace(":id", id.toString()),
     });
   },
+  importFaculty: async (body: Record<string, any>) => {
+    const { importFaculty } = apiConfig.faculty;
+    return sendServerRequest({
+      ...importFaculty,
+      body,
+    });
+  },
 };

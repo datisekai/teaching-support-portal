@@ -3,7 +3,7 @@ import { TableSchema } from "../types/table";
 export const majorSchemas: TableSchema[] = [
   {
     label: "#",
-    prop: "id",
+    prop: "index",
     type: "number",
   },
   {

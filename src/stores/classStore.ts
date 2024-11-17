@@ -31,6 +31,7 @@ interface IClassState {
     classId: string,
     studentCode: string
   ) => Promise<boolean>;
+  importClass: (body: any) => Promise<boolean>;
 }
 
 export const useClassStore = create<IClassState>((set) => ({
@@ -160,6 +161,14 @@ export const useClassStore = create<IClassState>((set) => ({
           students: state.students.filter((item) => item.code !== studentCode),
         }));
       }
+      return !!response;
+    } catch (error) {
+      return false;
+    }
+  },
+  importClass: async (body: any) => {
+    try {
+      const response = await classService.importClass(body);
       return !!response;
     } catch (error) {
       return false;

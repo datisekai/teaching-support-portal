@@ -56,4 +56,11 @@ export const majorService = {
       endpoint: _delete.endpoint.replace(":id", id.toString()),
     });
   },
+  importMajor: async (body: Record<string, any>) => {
+    const { importMajor } = apiConfig.major;
+    return sendServerRequest({
+      ...importMajor,
+      body,
+    });
+  },
 };

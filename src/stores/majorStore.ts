@@ -17,6 +17,7 @@ interface IMajorState {
   addMajor: (Major: IMajor) => Promise<boolean>;
   updateMajor: (id: number, updatedMajor: IMajor) => Promise<boolean>;
   deleteMajor: (id: number) => Promise<boolean>;
+  importMajors: (body: any) => Promise<boolean>;
 }
 
 export const useMajorStore = create<IMajorState>((set) => ({
@@ -112,6 +113,14 @@ export const useMajorStore = create<IMajorState>((set) => ({
           majors: state.majors.filter((major) => major.id !== id),
         }));
       }
+      return !!response;
+    } catch (error) {
+      return false;
+    }
+  },
+  importMajors: async (body) => {
+    try {
+      const response = await majorService.importMajor(body);
       return !!response;
     } catch (error) {
       return false;
