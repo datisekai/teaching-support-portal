@@ -20,6 +20,8 @@ const Step2: React.FC<Props> = ({ type, onLink }) => {
     const [first, setFirst] = useState(1);
     const { isLoadingApi } = useCommonStore()
 
+    const { id: classId } = useParams()
+
 
     useEffect(() => {
         setFirst(1)
@@ -28,7 +30,8 @@ const Step2: React.FC<Props> = ({ type, onLink }) => {
     useEffect(() => {
         if (type == 'attendance') {
             const query: any = {
-                page: first
+                page: first,
+                classId,
             }
             if (searchText) {
                 query['title'] = searchText
@@ -37,7 +40,8 @@ const Step2: React.FC<Props> = ({ type, onLink }) => {
         }
         if (type == 'exam') {
             const query: any = {
-                page: first
+                page: first,
+                classId,
             }
             if (searchText) {
                 query['title'] = searchText
@@ -56,7 +60,7 @@ const Step2: React.FC<Props> = ({ type, onLink }) => {
         <MyLoading isLoading={isLoadingApi}>
             {type === 'attendance' && <div>
                 {attendances?.map((item) => <div className='tw-py-2 tw-border-b tw-flex tw-justify-between tw-items-center'>
-                    <div>
+                    <div key={item.id}>
                         <p className='tw-font-bold'>{item.title}</p>
                         <p>{item.class.major.name} - {item.class.name}</p>
                         <div>
@@ -67,9 +71,11 @@ const Step2: React.FC<Props> = ({ type, onLink }) => {
                         <Button onClick={() => onLink(item.id)} label='Liên kết'></Button>
                     </div>
                 </div>)}
+                {attendances?.length == 0 && <div className='tw-text-center'>
+                    Không có phòng điểm danh nào</div>}
             </div>}
             {type === 'exam' && <div>
-                {exams?.map((item) => <div className='tw-py-2 tw-border-b tw-flex tw-justify-between tw-items-center'>
+                {exams?.map((item) => <div key={item.id} className='tw-py-2 tw-border-b tw-flex tw-justify-between tw-items-center'>
                     <div>
                         <p className='tw-font-bold'>{item.title}</p>
                         <p>{item.class.major.name} - {item.class.name}</p>
@@ -81,6 +87,8 @@ const Step2: React.FC<Props> = ({ type, onLink }) => {
                         <Button onClick={() => onLink(item.id)} label='Liên kết'></Button>
                     </div>
                 </div>)}
+                {exams?.length == 0 && <div className='tw-text-center'>
+                    Không có bài kiểm tra nào.</div>}
             </div>}
             <Paginator
                 first={first * 10 - 1}

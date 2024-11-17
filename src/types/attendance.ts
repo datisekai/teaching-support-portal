@@ -53,6 +53,7 @@ export interface IAttendee {
 }
 
 export interface User2 {
+  id: any;
   code: string;
   email: null;
   phone: null;

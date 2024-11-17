@@ -10,6 +10,7 @@ import { useScoreColumnStore } from "../../stores/scoreColumnStore";
 import { usestudentScoreStore } from "../../stores/studentScoreStore";
 import { useModalStore } from "../../stores";
 import { ModalName } from "../../constants";
+import { Tooltip } from "primereact/tooltip";
 
 const ScoreManagement = () => {
   const { id } = useParams();

@@ -3,10 +3,12 @@ import { useExamStore } from '../../../stores/examStore'
 import { useClassStore } from '../../../stores/classStore'
 import { InputNumber } from 'primereact/inputnumber'
 import { Button } from 'primereact/button'
-import { useCommonStore, useModalStore } from '../../../stores'
+import { useAttendanceStore, useCommonStore, useModalStore } from '../../../stores'
 import { usestudentScoreStore } from '../../../stores/studentScoreStore'
 import { useToast } from '../../../hooks/useToast'
 import { useParams } from 'react-router-dom'
+import Step3Exam from './Step3Exam'
+import Step3Attendance from './Step3Attendance'
 
 type Props = {
     type: string,
@@ -17,18 +19,38 @@ const Step3: React.FC<Props> = ({ refId, type }) => {
     const { getHistory, examHistorys } = useExamStore()
     const { students } = useClassStore()
     const [hashScore, setHashScore] = useState<any>({})
+    const [hashAttendance, setHashAttendance] = useState<any>({})
     const { isLoadingApi } = useCommonStore()
     const { content, onDismiss } = useModalStore()
-    const { linkStudentScore, fetchstudentScore } = usestudentScoreStore()
+    const { linkStudentScore, fetchstudentScore, studentScore } = usestudentScoreStore()
     const { showToast } = useToast()
     const { id } = useParams()
+    const { fetchAttendees, attendees } = useAttendanceStore()
+    const [score, setScore] = useState(0.25)
 
 
     useEffect(() => {
         if (type == 'exam' && refId) {
             getHistory(refId.toString())
         }
+        if (type == 'attendance' && refId) {
+            fetchAttendees(refId.toString())
+        }
     }, [type, refId])
+
+    const hashCurrentScore = useMemo(() => {
+        const hash: any = {}
+        if (!studentScore || !studentScore?.data || (studentScore && studentScore.data && studentScore.data.length == 0)) return;
+        for (const item of studentScore.data) {
+            if (!hash[item.studentCode]) {
+                hash[item.studentCode] = { [item.scoreColumnId]: item }
+            } else {
+                hash[item.studentCode][item.scoreColumnId] = item
+            }
+        }
+
+        return hash
+    }, [studentScore])
 
 
     useEffect(() => {
@@ -47,58 +69,37 @@ const Step3: React.FC<Props> = ({ refId, type }) => {
         }
     }, [examHistorys, students])
 
+    useEffect(() => {
+        if (attendees) {
+            const hash: any = {}
+            for (const item of attendees) {
+                hash[item.user.id] = item;
+            }
+            setHashAttendance(hash)
+        }
+    }, [attendees])
 
-    const tableSchemas = useMemo(() => {
-        return [
-            {
-                label: '#',
-                prop: 'index',
-                width: 40,
-                render: (data: any, index: number) => index + 1
-            },
-            {
-                label: 'MSSV',
-                prop: 'code',
-                width: 100
-            },
-            {
-                label: 'Họ và tên',
-                prop: 'name',
-                width: 150
-            },
-            {
-                label: "Điểm",
-                width: 100,
-                render: (data: any) => {
-                    return <InputNumber min={0} max={10} className='input-modal-link' onValueChange={e => setHashScore({ ...hashScore, [data.code]: { ...hashScore[data.code], grade: e.value } })} value={hashScore[data.code]?.grade || 0} />
-                }
-            },
-            {
-                label: "Hành động",
-                prop: "action",
-                type: "text",
-                render(data: any) {
-                    console.log('data', data);
-                    const { outTabCount = 0, mouseRight = 0, controlCVX = 0 } = hashScore[data.code] || {};
-                    return <>
-                        <p><strong>{outTabCount} lần</strong>  chuyển tab.</p>
-                        <p><strong>{mouseRight} lần</strong>  click chuột phải.</p>
-                        <p><strong>{controlCVX} lần</strong>  Control C, V, X.</p>
-                    </>
-                },
-            },
+    console.log('attendees', attendees);
 
-        ]
+    console.log(hashCurrentScore, content);
 
-    }, [hashScore])
 
     console.log('hashScore', hashScore);
 
     const handleLink = async () => {
         const payload = []
-        for (const key in hashScore) {
-            const item = hashScore[key];
-            payload.push({ studentId: item.userId || item.user_id, score: item.grade || 0, scoreColumnId: content.id })
+        if (type === 'exam') {
+            for (const key in hashScore) {
+                const item = hashScore[key];
+                payload.push({ studentId: item.userId || item.user_id, score: item.grade || 0, scoreColumnId: content.id })
+            }
+        }
+        if (type === 'attendance') {
+            for (const key in hashAttendance) {
+                const item = hashAttendance[key];
+                const newScore = hashCurrentScore[item.user.code][content.id]?.score || 0;
+                payload.push({ studentId: +key, score: item.isSuccess ? +newScore + +score : +newScore, scoreColumnId: content.id })
+            }
         }
 
         const result = await linkStudentScore(payload);
@@ -123,22 +124,8 @@ const Step3: React.FC<Props> = ({ refId, type }) => {
 
     return (
         <div>
-            <div className="tw-overflow-x-auto">
-                <div className="tw-flex tw-bg-[#f9fafb] tw-border-t tw-border-b tw-px-2">
-                    {tableSchemas.map((item: any, index: number) => {
-                        return <div className="tw-font-bold tw-py-4 tw-text-[#374151]" key={item.prop} style={{ width: item.width }}>{item.renderHeader ? item.renderHeader() : item.label}</div>;
-                    })}
-                </div>
-                <div>
-                    {students?.map((item: any, index: number) => {
-                        return <div key={item.id} className="tw-flex tw-py-4 tw-border-b tw-px-2 tw-items-center">
-                            {tableSchemas?.map(cell => {
-                                return <div key={`${cell.prop}_${item.id}`} style={{ width: cell.width }}>{cell.render ? cell.render(item, index) : item[cell.prop] || ""}</div>
-                            })}
-                        </div>
-                    })}
-                </div>
-            </div>
+            {type === 'exam' && <Step3Exam hashCurrentScore={hashCurrentScore} hashScore={hashScore} setHashScore={setHashScore} />}
+            {type === 'attendance' && <Step3Attendance score={score} setScore={setScore} hashCurrentScore={hashCurrentScore} hashAttendance={hashAttendance} setHashAttendance={setHashAttendance} />}
             <div className='tw-flex tw-justify-end tw-mt-4'>
                 <Button loading={isLoadingApi} onClick={handleLink} label='Liên kết điểm'></Button>
             </div>
