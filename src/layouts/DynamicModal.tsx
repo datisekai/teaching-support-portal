@@ -9,6 +9,7 @@ import AddTeacherModal from "../components/Modal/AddTeacherModal";
 import ViewQuestionModal from "../components/Modal/ViewQuestionModal";
 import AttendanceModal from "../components/Modal/AttendanceModal";
 import LinkStudentScore from "../components/Modal/LinkStudentScore";
+import ReviewModal from "../components/Modal/ReviewModal";
 
 const DynamicModal = () => {
   const { modalName, onDismiss, onToggle, visible, footer, header, style } =
@@ -37,6 +38,7 @@ const DynamicModal = () => {
       {modalName === ModalName.ATTENDANCE && <AttendanceModal />}
       {modalName === ModalName.VIEW_QUESTION && <ViewQuestionModal />}
       {modalName === ModalName.LINK_STUDENT_SCORE && <LinkStudentScore />}
+      {modalName === ModalName.REVIEW_IMPORT && <ReviewModal />}
     </Dialog>
   );
 };

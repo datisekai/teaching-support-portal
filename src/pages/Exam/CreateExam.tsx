@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import * as yup from "yup";
 import GroupItem from "../../components/Form/GroupItem";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import { useCommonStore, useModalStore } from "../../stores";
 import { IAction } from "../../stores/commonStore";
 import { ExamForm } from "../../dataForm/examForm";
@@ -77,6 +77,7 @@ const CreateExam = () => {
   const setHeaderTitle = useCommonStore((state) => state.setHeaderTitle);
   const resetActions = useCommonStore((state) => state.resetActions);
   const { onConfirm } = useConfirm();
+  const { isLoadingApi } = useCommonStore();
   const { onToggle } = useModalStore();
   const { questions, fetchQuestions, total } = useQuestionStore();
   const { addExam } = useExamStore();
@@ -96,6 +97,8 @@ const CreateExam = () => {
   const [selectedQuestionTypes, setSelectedQuestionTypes] =
     useState<IQuestionType>({} as IQuestionType);
 
+  const [selectQuery, setSelectQuery] = useState<object | null>(null);
+
   const [source, setSource] = useState<ISource[]>([]);
   const [target, setTarget] = useState<ISource[]>([]);
   const { showToast } = useToast();
@@ -114,15 +117,17 @@ const CreateExam = () => {
     });
   };
   useEffect(() => {
-    loadDataQuestions();
+    loadDataQuestions(selectQuery);
   }, [
     selectedChapters,
     selectedDifficultys,
     selectedMajors,
     selectedQuestionTypes,
   ]);
-  const loadDataQuestions = () => {
+  const loadDataQuestions = (query: any) => {
+    setSelectQuery(query);
     fetchQuestions({
+      ...query,
       chapterId: selectedChapters?.id,
       difficultyId: selectedDifficultys?.id,
       majorId: selectedMajors?.id,
@@ -320,6 +325,7 @@ const CreateExam = () => {
             source={source}
             target={target}
             totalRecords={total}
+            isLoading={isLoadingApi}
             onChange={onChange}
             handleOpenModal={handleOpenModal}
           />

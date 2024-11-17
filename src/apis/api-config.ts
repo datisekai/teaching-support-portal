@@ -130,6 +130,14 @@ export const apiConfig = {
       method: "POST",
       endpoint: "/api.class/:id/import-users",
     },
+    createStudentClass: {
+      method: "POST",
+      endpoint: "/api.class/student/:id",
+    },
+    deleteStudentClass: {
+      method: "DELETE",
+      endpoint: "/api.class/:classId/student/:studentCode",
+    },
   },
   // User
   user: {

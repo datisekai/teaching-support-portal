@@ -47,9 +47,10 @@ const CreateStudent = () => {
   const setHeaderTitle = useCommonStore((state) => state.setHeaderTitle);
   const resetActions = useCommonStore((state) => state.resetActions);
   const { showToast } = useToast();
-  const { importUsers, fetchClass } = useClassStore()
+  const { importUsers, fetchClass, createStudentClass } = useClassStore();
   const onSubmit = async (data: any) => {
-    const result = await importUsers(id as string, { users: [data] });
+    // const result = await createStudentClass(id as string, { users: [data] });
+    const result = await createStudentClass(id as string, data);
     if (!result) {
       return showToast({
         severity: "danger",
@@ -61,12 +62,10 @@ const CreateStudent = () => {
     showToast({
       severity: "success",
       summary: "Thông báo",
-      message: "Thêm thanh cong",
+      message: "Thêm thành công",
       life: 3000,
     });
-    fetchClass(id as string)
-    navigate(`/student/detail/${id}`)
-
+    navigate(`/student/detail/${id}`);
   };
 
   useEffect(() => {

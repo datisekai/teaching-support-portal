@@ -156,6 +156,7 @@ const MyPickList: React.FC<IMyPickList> = ({
           targetStyle={{ height: "24rem" }}
           sourceFilterPlaceholder="Tìm kiếm nội dung"
           targetFilterPlaceholder="Tìm kiếm nội dung"
+          breakpoint="1280px"
         />
 
         {totalRecords > perPage && (

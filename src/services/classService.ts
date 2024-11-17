@@ -48,11 +48,12 @@ export const classService = {
       endpoint: _delete.endpoint.replace(":id", id.toString()),
     });
   },
-  getStudentClass: async (id: string) => {
+  getStudentClass: async (id: string, body: object) => {
     const { getStudentClass } = apiConfig.class;
     return sendServerRequest({
       ...getStudentClass,
       endpoint: getStudentClass.endpoint.replace(":id", id.toString()),
+      body,
     });
   },
   importUsers: async (id: string, body: any) => {
@@ -61,6 +62,23 @@ export const classService = {
       ...importUser,
       endpoint: importUser.endpoint.replace(":id", id.toString()),
       body,
+    });
+  },
+  createStudentClass: async (id: string, body: Record<string, any>) => {
+    const { createStudentClass } = apiConfig.class;
+    return sendServerRequest({
+      ...createStudentClass,
+      endpoint: createStudentClass.endpoint.replace(":id", id.toString()),
+      body,
+    });
+  },
+  deleteStudentClass: async (classId: string, studentCode: string) => {
+    const { deleteStudentClass } = apiConfig.class;
+    return sendServerRequest({
+      ...deleteStudentClass,
+      endpoint: deleteStudentClass.endpoint
+        .replace(":studentCode", studentCode.toString())
+        .replace(":classId", classId.toString()),
     });
   },
 };

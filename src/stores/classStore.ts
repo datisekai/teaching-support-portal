@@ -2,11 +2,13 @@ import { create } from "zustand";
 import { classService } from "../services/classService";
 import { IClass } from "../types/class";
 import { User } from "../types/attendance";
+import { IUser } from "../types/user";
 
 interface IClassState {
   classes: IClass[];
   _class: IClass;
   students: User[];
+  student: User;
   total: number;
   totalStudent: number;
   isLoadingClasss: boolean;
@@ -19,14 +21,23 @@ interface IClassState {
   ) => Promise<boolean>;
   updateClass: (id: number, updatedClass: IClass) => Promise<boolean>;
   deleteClass: (id: number) => Promise<boolean>;
-  getStudentClass: (id: string) => Promise<void>;
+  getStudentClass: (id: string, body: object) => Promise<void>;
   importUsers: (id: string, body: any) => Promise<boolean>;
+  createStudentClass: (
+    id: string,
+    body: Record<string, any>
+  ) => Promise<boolean>;
+  deleteStudentClass: (
+    classId: string,
+    studentCode: string
+  ) => Promise<boolean>;
 }
 
 export const useClassStore = create<IClassState>((set) => ({
   classes: [],
   students: [],
   _class: {} as IClass,
+  student: {} as IUser,
   isLoadingClasss: false,
   total: 0,
   totalStudent: 0,
@@ -107,15 +118,48 @@ export const useClassStore = create<IClassState>((set) => ({
       return false;
     }
   },
-  getStudentClass: async (id: string) => {
+  getStudentClass: async (id: string, body: object) => {
     try {
-      const response = await classService.getStudentClass(id);
+      const response = await classService.getStudentClass(id, body);
       set({ students: response.data, totalStudent: response.total });
     } catch (error) {}
   },
   importUsers: async (id: string, body: any) => {
     try {
       const response = await classService.importUsers(id, body);
+      return !!response;
+    } catch (error) {
+      return false;
+    }
+  },
+  createStudentClass: async (id: string, body: Record<string, any>) => {
+    try {
+    } catch (error) {
+      return false;
+    }
+    try {
+      const response = await classService.createStudentClass(id, body);
+      if (response) {
+        set((state) => ({
+          students: [response, ...state.students],
+        }));
+      }
+      return !!response;
+    } catch (error) {
+      return false;
+    }
+  },
+  deleteStudentClass: async (classId: string, studentCode: string) => {
+    try {
+      const response = await classService.deleteStudentClass(
+        classId,
+        studentCode
+      );
+      if (response) {
+        set((state) => ({
+          students: state.students.filter((item) => item.code !== studentCode),
+        }));
+      }
       return !!response;
     } catch (error) {
       return false;
