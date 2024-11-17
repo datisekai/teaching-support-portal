@@ -33,6 +33,14 @@ const Major = () => {
     },
     {
       onClick: (data, options) => {
+        handleScoreColumn(data);
+      },
+      tooltip: "Quản lý cột điểm",
+      icon: "pi-chart-bar",
+      severity: "help",
+    },
+    {
+      onClick: (data, options) => {
         handleEdit(data);
       },
       tooltip: "Sửa",
@@ -65,7 +73,9 @@ const Major = () => {
   const handleEdit = (data: any) => {
     navigate(`${pathNames.MAJOR}/edit/${data.id}`);
   };
-
+  const handleScoreColumn = (data: any) => {
+    navigate(`${pathNames.MAJOR}/score-column-management/${data.id}`);
+  };
   const handleDelete = (id: number) => {
     const data = {
       message: "Bạn có chắc chắn muốn xoá môn học này?",

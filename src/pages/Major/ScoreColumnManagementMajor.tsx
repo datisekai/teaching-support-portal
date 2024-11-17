@@ -4,7 +4,6 @@ import {
   scoreColumnManagements,
   scoreColumnManagementSchemas,
 } from "../../dataTable/scoreColumnManagementTable";
-import { classes, classSchemas } from "../../dataTable/classTable";
 import { IActionTable } from "../../components/UI/MyTable";
 import useConfirm from "../../hooks/useConfirm";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -17,17 +16,26 @@ import { useToast } from "../../hooks/useToast";
 import { IAction } from "../../stores/commonStore";
 import MyCard from "../../components/UI/MyCard";
 import { Button } from "primereact/button";
+import { useClassStore } from "../../stores/classStore";
 
-const ScoreColumnManagement = () => {
+const ScoreColumnManagementMajor = () => {
   const { id } = useParams();
-  const { scoreColumn, getSingleClass, updateScoreColumn } =
-    useScoreColumnStore();
+  const {
+    scoreColumn,
+    fetchScoreColumn,
+    updateScoreColumn,
+    createMultiple,
+    deleteScoreColumn,
+  } = useScoreColumnStore();
+
   const { setFooterActions, setHeaderTitle, resetActions, isLoadingApi } =
     useCommonStore();
   const { showToast } = useToast();
   const [tableData, setTableData] = useState<any[]>([]);
   console.log("scoreColumn", scoreColumn);
+
   const onSubmit = async (values: any) => {
+    console.log(values);
     const hasEmptyName = values.some((column: any) => !column.name);
     const totalWeight = values.reduce(
       (sum: number, column: any) => sum + (column.weight || 0),
@@ -44,23 +52,23 @@ const ScoreColumnManagement = () => {
       return;
     }
 
-    if (totalWeight !== 100) {
-      showToast({
-        severity: "warning",
-        summary: "Thông báo",
-        message: "Tổng trọng số phải bằng 100.",
-        life: 3000,
-      });
-      return;
-    }
+    // if (totalWeight !== 100) {
+    //   showToast({
+    //     severity: "warning",
+    //     summary: "Thông báo",
+    //     message: "Tổng trọng số phải bằng 100.",
+    //     life: 3000,
+    //   });
+    //   return;
+    // }
 
-    const data = {
-      classId: Number(id),
+    const scoreColumns = scoreColumn.data?.major?.classes.map((item: any) => ({
+      classId: item.id,
       scoreColumns: values,
-    };
+    }));
 
     try {
-      const result = await updateScoreColumn(data);
+      const result = await createMultiple({ scoreColumns });
       if (!result) {
         showToast({
           severity: "danger",
@@ -69,7 +77,7 @@ const ScoreColumnManagement = () => {
           life: 3000,
         });
       } else {
-        getSingleClass(id || "");
+        fetchScoreColumn(id || "");
         showToast({
           severity: "success",
           summary: "Thông báo",
@@ -87,18 +95,12 @@ const ScoreColumnManagement = () => {
     }
   };
 
-  // useEffect(() => {
-  //   if (id) {
-  //     fetchScoreColumn(id);
-  //   }
-  // }, [id]);
-
   useEffect(() => {
     setTableData(
-      scoreColumn?.data?.length > 0
-        ? scoreColumn?.data?.map((column: any, index: number) => ({
-            ...column,
+      scoreColumn?.data?.columns?.length > 0
+        ? scoreColumn?.data?.columns?.map((item: any, index: number) => ({
             index: index + 1,
+            ...item,
           }))
         : [
             {
@@ -144,10 +146,26 @@ const ScoreColumnManagement = () => {
   const { onConfirm } = useConfirm();
 
   const handleDelete = (data: any, option: any) => {
+    console.log(data, tableData);
     const result = {
       message: "Bạn có chắc chắn muốn xoá lớp học này?",
       header: "Xác nhận xoá",
-      onAccept: () => {
+      onAccept: async () => {
+        const result = await deleteScoreColumn(data.id);
+        if (!result) {
+          return showToast({
+            severity: "danger",
+            summary: "Thông báo",
+            message: "Xóa thất bại",
+            life: 3000,
+          });
+        }
+        showToast({
+          severity: "success",
+          summary: "Thông báo",
+          message: "Xóa thành công",
+          life: 3000,
+        });
         setTableData(
           tableData.filter((item: any) => item.index !== data.index)
         );
@@ -158,23 +176,24 @@ const ScoreColumnManagement = () => {
     };
     onConfirm(result);
   };
+
   const headerTable = useMemo(
     () => (
       <div className="tw-flex tw-items-center tw-justify-between tw-mb-4">
         <MyCard>
           <div className="md:tw-min-w-[280px]">
-            <div>Môn: {scoreColumn.data?.major?.name}</div>
-            <div>Nhóm: {scoreColumn.data?.major?.name}</div>
+            <div>Khoa: {scoreColumn.data?.major?.faculty?.name}</div>
+
+            <div>Mã lớp: {scoreColumn.data?.major?.code}</div>
           </div>
         </MyCard>
         <MyCard className="md:tw-min-w-[280px]">
           <div className="tw-text-end">
-            <div>Năm học: {scoreColumn.data?.major?.name}</div>
-            {scoreColumn.data?.major?.teachers?.length > 0 && (
-              <div>
-                Giảng viên: {scoreColumn.data?.major?.teachers[0]?.name}
-              </div>
-            )}
+            <div>Môn: {scoreColumn.data?.major?.name}</div>
+            <div>
+              Giảng viên:{" "}
+              {scoreColumn.data?.major?.teachers[0]?.name || "Chưa có"}
+            </div>
           </div>
         </MyCard>
       </div>
@@ -198,21 +217,21 @@ const ScoreColumnManagement = () => {
   return (
     <div>
       <MyTableCustom
-        // footer={footer}
-        // headerTable={headerTable}
+        footer={footer}
+        headerTable={headerTable}
         isLoading={isLoadingApi}
         data={tableData.map((item: any, index) => ({
           ...item,
           index: index + 1,
         }))}
         schemas={scoreColumnManagementSchemas}
-        // actions={actionTable}
+        actions={actionTable}
         setData={setTableData}
-        // isFooter={true}
-        onChange={() => getSingleClass(id || "")}
+        isFooter={true}
+        onChange={() => fetchScoreColumn(id || "")}
       />
     </div>
   );
 };
 
-export default ScoreColumnManagement;
+export default ScoreColumnManagementMajor;

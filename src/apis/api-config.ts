@@ -387,8 +387,20 @@ export const apiConfig = {
       method: "POST",
       endpoint: "/api.score-column",
     },
+    createMultiple: {
+      method: "POST",
+      endpoint: "/api.score-column/multiple",
+    },
     getSingle: {
       method: "GET",
+      endpoint: "/api.score-column/:id",
+    },
+    getSingleClass: {
+      method: "GET",
+      endpoint: "/api.score-column/class/:id",
+    },
+    _delete: {
+      method: "DELETE",
       endpoint: "/api.score-column/:id",
     },
   },
