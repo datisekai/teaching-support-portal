@@ -11,6 +11,9 @@ import { exportExcel } from "../../utils/my-export-excel";
 import { Button } from "primereact/button";
 import { ModalName } from "../../constants";
 import ExcelJS from "exceljs";
+import dayjs from "dayjs";
+import { DataTable } from "primereact/datatable";
+import { Column } from "primereact/column";
 
 const Class = () => {
   const actionTable: IActionTable[] = [
@@ -68,8 +71,14 @@ const Class = () => {
 
   const { setHeaderTitle, setHeaderActions, resetActions, isLoadingApi } =
     useCommonStore();
-  const { classes, total, fetchClasses, deleteClass, importClass } =
-    useClassStore();
+  const {
+    classes,
+    classesUnlimited,
+    total,
+    fetchClasses,
+    deleteClass,
+    importClass,
+  } = useClassStore();
   const { showToast } = useToast();
 
   const { onToggle, onDismiss } = useModalStore();
@@ -113,18 +122,18 @@ const Class = () => {
   useEffect(() => {
     if (dataImports.length > 0) {
       setContent(
-        <MyTable
-          keySearch="name"
-          data={dataImports.map((item, index) => ({
+        <DataTable
+          scrollable
+          value={dataImports.map((item, index) => ({
             ...item,
             index: index + 1,
           }))}
-          schemas={classSchemas}
-          isLoading={isLoading}
-          // actions={actionTableIport}
-          totalRecords={total}
-          onChange={handleSearch}
-        />
+          tableStyle={{ minWidth: "50rem" }}
+        >
+          {classSchemas.map((col, i) => (
+            <Column key={col.prop} field={col.prop} header={col.label} />
+          ))}
+        </DataTable>
       );
       setFooter(
         <div>
@@ -141,18 +150,18 @@ const Class = () => {
     onToggle(ModalName.REVIEW_IMPORT, {
       header: "Import danh sách lớp",
       content: (
-        <MyTable
-          keySearch="name"
-          data={dataImports.map((item, index) => ({
+        <DataTable
+          scrollable
+          value={dataImports.map((item, index) => ({
             ...item,
             index: index + 1,
           }))}
-          schemas={classSchemas}
-          isLoading={isLoading}
-          // actions={actionTableIport}
-          totalRecords={total}
-          onChange={handleSearch}
-        />
+          tableStyle={{ minWidth: "50rem" }}
+        >
+          {classSchemas.map((col, i) => (
+            <Column key={col.prop} field={col.prop} header={col.label} />
+          ))}
+        </DataTable>
       ),
       footer: (
         <div>
@@ -190,7 +199,7 @@ const Class = () => {
       const data: any[] = [];
 
       worksheet.eachRow((row, rowNumber) => {
-        if (rowNumber > 1) {
+        if (rowNumber > 8) {
           const teachersCell = row.getCell(5)?.value || "";
           const teachersArray =
             typeof teachersCell === "string"
@@ -284,18 +293,22 @@ const Class = () => {
       {
         title: "Export",
         icon: "pi pi-file-export",
-        onClick: () => {
+        onClick: async () => {
+          await fetchClasses({ pagination: false });
+          const headerContent = "Danh sách lớp học";
           exportExcel(
             "Danh sách lớp học",
-            classes.map((item, index) => {
+            classesUnlimited.map((item, index) => {
               return {
                 ...item,
                 index: index + 1,
-
+                createdAt: dayjs(item.createdAt).format("DD/MM/YYYY HH:mm:ss"),
+                updatedAt: dayjs(item.updatedAt).format("DD/MM/YYYY HH:mm:ss"),
                 major: item?.major?.name,
               };
             }),
-            classSchemas
+            classSchemas,
+            headerContent
           );
         },
         type: "button",
@@ -306,7 +319,13 @@ const Class = () => {
     return () => {
       resetActions();
     };
-  }, [setHeaderTitle, setHeaderActions, resetActions, classes]);
+  }, [
+    setHeaderTitle,
+    setHeaderActions,
+    resetActions,
+    classes,
+    classesUnlimited,
+  ]);
 
   const handleSearch = (query: Object) => {
     fetchClasses(query);

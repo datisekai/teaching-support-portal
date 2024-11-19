@@ -14,6 +14,10 @@ import ExcelJS from "exceljs";
 import { set } from "react-hook-form";
 import { Button } from "primereact/button";
 import { saveAs } from "file-saver";
+import { DataTable } from "primereact/datatable";
+import { Column } from "primereact/column";
+import { exportExcel } from "../../utils/my-export-excel";
+import dayjs from "dayjs";
 
 const Student = () => {
   const { id } = useParams();
@@ -50,6 +54,7 @@ const Student = () => {
   const { users, fetchUsers, deleteUser, total, resetDevice } = useUserStore();
   const {
     _class,
+    studentsUnlimited,
     fetchClass,
     getStudentClass,
     students,
@@ -65,8 +70,8 @@ const Student = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    getStudentClass(id as string);
-  }, [id])
+    getStudentClass(id as string, {});
+  }, [id]);
 
   // const handleEdit = (data: any) => {
   //   navigate(`/student/edit/${data.id}`);
@@ -91,23 +96,23 @@ const Student = () => {
       message: "Cập nhật thành công!",
       life: 3000,
     });
-    getStudentClass(id as string);
+    getStudentClass(id as string, {});
   };
   useEffect(() => {
     if (dataImports.length > 0) {
       setContent(
-        <MyTable
-          keySearch="name"
-          data={dataImports.map((item, index) => ({
+        <DataTable
+          scrollable
+          value={dataImports.map((item, index) => ({
             ...item,
             index: index + 1,
           }))}
-          schemas={userSchemas}
-          isLoading={isLoading}
-          // actions={actionTableIport}
-          totalRecords={total}
-          onChange={handleSearch}
-        />
+          tableStyle={{ minWidth: "50rem" }}
+        >
+          {studentSchemas.map((col, i) => (
+            <Column key={col.prop} field={col.prop} header={col.label} />
+          ))}
+        </DataTable>
       );
       setFooter(
         <div>
@@ -220,7 +225,7 @@ const Student = () => {
       message: "Bạn có chắc chắn muốn xoá sinh viên này?",
       header: "Xác nhận xoá",
       onAccept: () => {
-        deleteStudentClass(id as string, studentCode);
+        // deleteStudentClass(id as string, studentCode);
       },
       onReject: () => {
         console.log("Đã hủy bỏ hành động.");
@@ -237,18 +242,18 @@ const Student = () => {
     onToggle(ModalName.REVIEW_IMPORT, {
       header: "Import danh sách sinh viên",
       content: (
-        <MyTable
-          keySearch="name"
-          data={dataImports.map((item, index) => ({
+        <DataTable
+          scrollable
+          value={dataImports.map((item, index) => ({
             ...item,
             index: index + 1,
           }))}
-          schemas={userSchemas}
-          isLoading={isLoading}
-          // actions={actionTableIport}
-          totalRecords={total}
-          onChange={handleSearch}
-        />
+          tableStyle={{ minWidth: "50rem" }}
+        >
+          {studentSchemas.map((col, i) => (
+            <Column key={col.prop} field={col.prop} header={col.label} />
+          ))}
+        </DataTable>
       ),
       footer: (
         <div>
@@ -290,7 +295,7 @@ const Student = () => {
       message: "Thêm thành công",
       life: 3000,
     });
-    getStudentClass(id || "");
+    getStudentClass(id || "", {});
   };
 
   useEffect(() => {
@@ -317,8 +322,20 @@ const Student = () => {
       {
         title: "Export",
         icon: "pi pi-file-export",
-        onClick: () => {
-          console.log("a");
+        onClick: async () => {
+          await getStudentClass(id || "", { pagination: false });
+          const headerContent = `Danh sách sinh viên\nLớp ${_class.name}\nMôn học: ${_class.major.name}`;
+          exportExcel(
+            `Danh sách sinh viên_Lớp ${_class.name}_Môn học: ${_class.major.name}`,
+            studentsUnlimited.map((item, index) => {
+              return {
+                ...item,
+                index: index + 1,
+              };
+            }),
+            studentSchemas,
+            headerContent
+          );
         },
         type: "button",
         disabled: false,
@@ -328,11 +345,17 @@ const Student = () => {
     return () => {
       resetActions();
     };
-  }, [students, setHeaderTitle, setHeaderActions, resetActions]);
+  }, [
+    students,
+    studentsUnlimited,
+    setHeaderTitle,
+    setHeaderActions,
+    resetActions,
+  ]);
   const handleSearch = (query: Object) => {
     // fetchUsers(query);
     // fetchClasses();
-    getStudentClass(id || "");
+    getStudentClass(id || "", {});
   };
   return (
     <div>
@@ -346,7 +369,7 @@ const Student = () => {
         actions={actionTable}
         // totalRecords={total}
         isLoading={isLoadingApi}
-      // onChange={handleSearch}
+        // onChange={handleSearch}
       />
     </div>
   );

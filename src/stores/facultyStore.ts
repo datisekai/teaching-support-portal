@@ -7,7 +7,7 @@ interface IFacultyState {
   faculty: IFaculty;
   total: number;
   isLoadingFacultys: boolean;
-  fetchFacultys: (body: object) => Promise<void>;
+  fetchFacultys: (body: object) => Promise<IFaculty[]>;
   fetchFaculty: (id: string) => Promise<void>;
   addFaculty: (Faculty: IFaculty) => Promise<boolean>;
   updateFaculty: (id: number, updatedFaculty: IFaculty) => Promise<boolean>;
@@ -25,6 +25,7 @@ export const useFacultyStore = create<IFacultyState>((set) => ({
     try {
       const response = await facultyService.getAll(body);
       set({ facultys: response.data, total: response.total });
+      return response.data;
     } catch (error) {}
   },
 

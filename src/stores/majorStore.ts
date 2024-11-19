@@ -4,6 +4,7 @@ import { IMajor } from "../types/major";
 
 interface IMajorState {
   majors: IMajor[];
+  majorsUnlimited: IMajor[];
   major: IMajor;
   total: number;
   isLoadingMajors: boolean;
@@ -12,7 +13,7 @@ interface IMajorState {
     teacherCodes: object
   ) => Promise<boolean>;
   deleteTeachersMajor: (id: number, teacherCode: number) => Promise<boolean>;
-  fetchMajors: (body: object) => Promise<void>;
+  fetchMajors: (body: any) => Promise<IMajor[]>;
   fetchMajor: (id: string) => Promise<void>;
   addMajor: (Major: IMajor) => Promise<boolean>;
   updateMajor: (id: number, updatedMajor: IMajor) => Promise<boolean>;
@@ -25,16 +26,25 @@ export const useMajorStore = create<IMajorState>((set) => ({
   major: {} as IMajor,
   isLoadingMajors: false,
   total: 0,
+  majorsUnlimited: [],
 
   fetchMajors: async (body) => {
     try {
       set({ isLoadingMajors: true });
       const response = await majorService.getAll(body);
-      set({
-        majors: response.data,
-        total: response.total,
-        isLoadingMajors: false,
-      });
+      if (body?.pagination === false) {
+        set({
+          majorsUnlimited: response.data,
+          isLoadingMajors: false,
+        });
+      } else {
+        set({
+          majors: response.data,
+          total: response.total,
+          isLoadingMajors: false,
+        });
+      }
+      return response.data;
     } catch (error) {
       set({ isLoadingMajors: false });
     }

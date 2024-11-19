@@ -14,7 +14,7 @@ interface IState {
   fetchUsers: (body: object) => Promise<void>;
   fetchUser: (id: string) => Promise<void>;
   addUser: (user: IUser) => Promise<boolean>;
-  updateUser: (id: number, updateduser: IUser) => Promise<boolean>;
+  updateUser: (id: number, updateduser: object) => Promise<boolean>;
   deleteUser: (id: number) => Promise<boolean>;
   getMe: () => Promise<void>;
   resetDevice: (id: number) => Promise<boolean>;
@@ -80,7 +80,7 @@ export const useUserStore = create<IState>((set) => ({
     }
   },
 
-  updateUser: async (id: number, updateItem: IUser) => {
+  updateUser: async (id: number, updateItem: object) => {
     try {
       const response = await UserService.update(id, updateItem);
       if (response) {

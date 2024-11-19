@@ -11,6 +11,9 @@ import { ModalName, pathNames } from "../../constants";
 import { Button } from "primereact/button";
 import ExcelJS from "exceljs";
 import { exportExcel } from "../../utils/my-export-excel";
+import dayjs from "dayjs";
+import { DataTable } from "primereact/datatable";
+import { Column } from "primereact/column";
 
 const Faculty = () => {
   const actionTable: IActionTable[] = [
@@ -73,18 +76,18 @@ const Faculty = () => {
   useEffect(() => {
     if (dataImports.length > 0) {
       setContent(
-        <MyTable
-          keySearch="name"
-          data={dataImports.map((item, index) => ({
+        <DataTable
+          scrollable
+          value={dataImports.map((item, index) => ({
             ...item,
             index: index + 1,
           }))}
-          schemas={facultySchemas}
-          isLoading={isLoading}
-          // actions={actionTableIport}
-          totalRecords={total}
-          onChange={handleSearch}
-        />
+          tableStyle={{ minWidth: "50rem" }}
+        >
+          {facultySchemas.map((col, i) => (
+            <Column key={col.prop} field={col.prop} header={col.label} />
+          ))}
+        </DataTable>
       );
       setFooter(
         <div>
@@ -101,18 +104,18 @@ const Faculty = () => {
     onToggle(ModalName.REVIEW_IMPORT, {
       header: "Import danh sách ngành học",
       content: (
-        <MyTable
-          keySearch="name"
-          data={dataImports.map((item, index) => ({
+        <DataTable
+          scrollable
+          value={dataImports.map((item, index) => ({
             ...item,
             index: index + 1,
           }))}
-          schemas={facultySchemas}
-          isLoading={isLoading}
-          // actions={actionTableIport}
-          totalRecords={total}
-          onChange={handleSearch}
-        />
+          tableStyle={{ minWidth: "50rem" }}
+        >
+          {facultySchemas.map((col, i) => (
+            <Column key={col.prop} field={col.prop} header={col.label} />
+          ))}
+        </DataTable>
       ),
       footer: (
         <div>
@@ -229,16 +232,22 @@ const Faculty = () => {
       {
         title: "Export",
         icon: "pi pi-file-export",
-        onClick: () => {
+        onClick: async () => {
+          const headerContent = "Danh sách ngành học";
+
+          const data = await fetchFacultys({ pagination: false });
           exportExcel(
             "Danh sách ngành học",
-            facultys.map((item, index) => {
+            data.map((item, index) => {
               return {
                 ...item,
                 index: index + 1,
+                createdAt: dayjs(item.createdAt).format("DD/MM/YYYY HH:mm:ss"),
+                updatedAt: dayjs(item.updatedAt).format("DD/MM/YYYY HH:mm:ss"),
               };
             }),
-            facultySchemas
+            facultySchemas,
+            headerContent
           );
         },
         type: "button",

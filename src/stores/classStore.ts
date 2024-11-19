@@ -6,13 +6,15 @@ import { IUser } from "../types/user";
 
 interface IClassState {
   classes: IClass[];
+  classesUnlimited: IClass[];
   _class: IClass;
   students: User[];
+  studentsUnlimited: User[];
   student: User;
   total: number;
   totalStudent: number;
   isLoadingClasss: boolean;
-  fetchClasses: (body: object) => Promise<void>;
+  fetchClasses: (body: any) => Promise<void>;
   fetchClass: (id: string) => Promise<void>;
   addClass: (Class: IClass) => Promise<boolean>;
   updateAssignTeachersClass: (
@@ -21,7 +23,7 @@ interface IClassState {
   ) => Promise<boolean>;
   updateClass: (id: number, updatedClass: IClass) => Promise<boolean>;
   deleteClass: (id: number) => Promise<boolean>;
-  getStudentClass: (id: string, body: object) => Promise<void>;
+  getStudentClass: (id: string, body: any) => Promise<void>;
   importUsers: (id: string, body: any) => Promise<boolean>;
   createStudentClass: (
     id: string,
@@ -37,6 +39,8 @@ interface IClassState {
 export const useClassStore = create<IClassState>((set) => ({
   classes: [],
   students: [],
+  studentsUnlimited: [],
+  classesUnlimited: [],
   _class: {} as IClass,
   student: {} as IUser,
   isLoadingClasss: false,
@@ -46,7 +50,11 @@ export const useClassStore = create<IClassState>((set) => ({
   fetchClasses: async (body) => {
     try {
       const response = await classService.getAll(body);
-      set({ classes: response.data, total: response.total });
+      if (body?.pagination === false) {
+        set({ classesUnlimited: response.data });
+      } else {
+        set({ classes: response.data, total: response.total });
+      }
     } catch (error) {}
   },
 
@@ -119,10 +127,14 @@ export const useClassStore = create<IClassState>((set) => ({
       return false;
     }
   },
-  getStudentClass: async (id: string, body: object) => {
+  getStudentClass: async (id: string, body: any) => {
     try {
       const response = await classService.getStudentClass(id, body);
-      set({ students: response.data, totalStudent: response.total });
+      if (body?.pagination === false) {
+        set({ studentsUnlimited: response.data });
+      } else {
+        set({ students: response.data, totalStudent: response.total });
+      }
     } catch (error) {}
   },
   importUsers: async (id: string, body: any) => {

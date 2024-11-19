@@ -12,6 +12,9 @@ import { useToast } from "../../hooks/useToast";
 import { Button } from "primereact/button";
 import ExcelJS from "exceljs";
 import { exportExcel } from "../../utils/my-export-excel";
+import dayjs from "dayjs";
+import { DataTable } from "primereact/datatable";
+import { Column } from "primereact/column";
 
 const Major = () => {
   const { onToggle } = useModalStore();
@@ -62,8 +65,14 @@ const Major = () => {
   const { showToast } = useToast();
   const { setHeaderTitle, setHeaderActions, resetActions, isLoadingApi } =
     useCommonStore();
-  const { majors, total, deleteMajor, fetchMajors, importMajors } =
-    useMajorStore();
+  const {
+    majors,
+    majorsUnlimited,
+    total,
+    deleteMajor,
+    fetchMajors,
+    importMajors,
+  } = useMajorStore();
 
   const [dataImports, setDataImports] = useState<any[]>([]);
   const { onDismiss } = useModalStore();
@@ -107,18 +116,18 @@ const Major = () => {
   useEffect(() => {
     if (dataImports.length > 0) {
       setContent(
-        <MyTable
-          keySearch="name"
-          data={dataImports.map((item, index) => ({
+        <DataTable
+          scrollable
+          value={dataImports.map((item, index) => ({
             ...item,
             index: index + 1,
           }))}
-          schemas={majorSchemas}
-          isLoading={isLoading}
-          // actions={actionTableIport}
-          totalRecords={total}
-          onChange={handleSearch}
-        />
+          tableStyle={{ minWidth: "50rem" }}
+        >
+          {majorSchemas.map((col, i) => (
+            <Column key={col.prop} field={col.prop} header={col.label} />
+          ))}
+        </DataTable>
       );
       setFooter(
         <div>
@@ -135,18 +144,18 @@ const Major = () => {
     onToggle(ModalName.REVIEW_IMPORT, {
       header: "Import danh sách môn học",
       content: (
-        <MyTable
-          keySearch="name"
-          data={dataImports.map((item, index) => ({
+        <DataTable
+          scrollable
+          value={dataImports.map((item, index) => ({
             ...item,
             index: index + 1,
           }))}
-          schemas={majorSchemas}
-          isLoading={isLoading}
-          // actions={actionTableIport}
-          totalRecords={total}
-          onChange={handleSearch}
-        />
+          tableStyle={{ minWidth: "50rem" }}
+        >
+          {majorSchemas.map((col, i) => (
+            <Column key={col.prop} field={col.prop} header={col.label} />
+          ))}
+        </DataTable>
       ),
       footer: (
         <div>
@@ -278,17 +287,23 @@ const Major = () => {
       {
         title: "Export",
         icon: "pi pi-file-export",
-        onClick: () => {
+        onClick: async () => {
+          const data = await fetchMajors({ pagination: false });
+
+          const headerContent = "Danh sách môn học";
           exportExcel(
             "Danh sách môn học",
-            majors.map((item, index) => {
+            data.map((item, index) => {
               return {
                 ...item,
                 index: index + 1,
                 faculty: item.faculty.name,
+                createdAt: dayjs(item.createdAt).format("DD/MM/YYYY HH:mm:ss"),
+                updatedAt: dayjs(item.updatedAt).format("DD/MM/YYYY HH:mm:ss"),
               };
             }),
-            majorSchemas
+            majorSchemas,
+            headerContent
           );
         },
         type: "button",

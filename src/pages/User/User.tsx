@@ -7,25 +7,26 @@ import useConfirm from "../../hooks/useConfirm";
 import { uploadFile } from "../../utils";
 import { users, userSchemas } from "../../dataTable/userTable";
 import { useUserStore } from "../../stores/userStore";
+import { useToast } from "../../hooks/useToast";
 
 const User = () => {
   const actionTable: IActionTable[] = [
-    // {
-    //   onClick: (data, options) => {
-    //     handleReset(data);
-    //   },
-    //   tooltip: "Khóa",
-    //   icon: "pi-lock",
-    //   severity: "help",
-    // },
-    // {
-    //   onClick: (data, options) => {
-    //     handleReset(data);
-    //   },
-    //   tooltip: "Reset thiết bị",
-    //   icon: "pi-refresh",
-    //   severity: "help",
-    // },
+    {
+      onClick: (data, options) => {
+        handleLock(data);
+      },
+      tooltip: "Khóa",
+      icon: "pi-lock",
+      severity: "help",
+    },
+    {
+      onClick: (data, options) => {
+        handleReset(data);
+      },
+      tooltip: "Reset thiết bị",
+      icon: "pi-refresh",
+      severity: "help",
+    },
     {
       onClick: (data, options) => {
         handleEdit(data);
@@ -45,11 +46,46 @@ const User = () => {
   ];
   const navigate = useNavigate();
   const { onConfirm } = useConfirm();
-  const { users, total, fetchUsers } = useUserStore()
+  const { users, total, fetchUsers, resetDevice, updateUser } = useUserStore();
+  const { showToast } = useToast();
+  const { setHeaderTitle, setHeaderActions, resetActions, isLoadingApi } =
+    useCommonStore();
 
-  const { setHeaderTitle, setHeaderActions, resetActions, isLoadingApi } = useCommonStore();
-  const handleReset = (data: any) => {
-    console.log(data);
+  const handleLock = async (data: any) => {
+    const result = await updateUser(data.id, { active: false });
+    if (!result) {
+      showToast({
+        severity: "danger",
+        summary: ",Thông báo",
+        message: "Khóa thất bại!",
+        life: 3000,
+      });
+    }
+    showToast({
+      severity: "success",
+      summary: ",Thông báo",
+      message: "Khóa thành công!",
+      life: 3000,
+    });
+    fetchUsers({});
+  };
+  const handleReset = async (data: any) => {
+    const result = await resetDevice(data.id);
+    if (!result) {
+      showToast({
+        severity: "danger",
+        summary: "Thông báo",
+        message: "Cập nhật thất bại!",
+        life: 3000,
+      });
+    }
+    showToast({
+      severity: "success",
+      summary: "Thông báo",
+      message: "Cập nhật thành công!",
+      life: 3000,
+    });
+    fetchUsers({});
   };
   const handleEdit = (data: any) => {
     navigate(`/user/edit/${data.id}`);
@@ -71,15 +107,15 @@ const User = () => {
   useEffect(() => {
     setHeaderTitle("Quản lý người dùng");
     setHeaderActions([
-      // {
-      //   title: "Tạo",
-      //   icon: "pi pi-plus",
-      //   onClick: () => {
-      //     navigate(`/user/create`);
-      //   },
-      //   type: "button",
-      //   disabled: false,
-      // },
+      {
+        title: "Tạo",
+        icon: "pi pi-plus",
+        onClick: () => {
+          navigate(`/user/create`);
+        },
+        type: "button",
+        disabled: false,
+      },
       // {
       //   title: "Import",
       //   icon: "pi pi-file-import",

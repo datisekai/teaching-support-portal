@@ -7,11 +7,13 @@ interface IAttendanceState {
   attendancesStatisticClass: any;
   attendance: IAttendance | null;
   attendees: IAttendee[];
+  attendeesUnlimited: IAttendee[];
   total: number;
   isLoadingAttendances: boolean;
+
   fetchAttendances: (body: object) => Promise<void>;
   fetchAttendance: (id: string) => Promise<void>;
-  fetchAttendees: (id: string) => Promise<void>;
+  fetchAttendees: (id: string, body: any) => Promise<void>;
   addAttendance: (Attendance: IAttendance) => Promise<boolean>;
   updateAttendance: (
     id: number,
@@ -27,6 +29,7 @@ export const useAttendanceStore = create<IAttendanceState>((set) => ({
   attendance: null,
   isLoadingAttendances: false,
   attendees: [],
+  attendeesUnlimited: [],
   total: 0,
   attendancesStatisticClass: [],
 
@@ -37,11 +40,15 @@ export const useAttendanceStore = create<IAttendanceState>((set) => ({
       set({ attendances: response.data, total: response.total });
     } catch (error) {}
   },
-  fetchAttendees: async (id) => {
+  fetchAttendees: async (id, body) => {
     try {
-      const response = await attendanceService.getAttendees(+id);
+      const response = await attendanceService.getAttendees(+id, body);
       console.log("fetchAttendees", response);
-      set({ attendees: response.data });
+      if (body?.pagination === false) {
+        set({ attendeesUnlimited: response.data });
+      } else {
+        set({ attendees: response.data });
+      }
     } catch (error) {}
   },
 

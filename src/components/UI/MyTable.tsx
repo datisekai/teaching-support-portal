@@ -23,7 +23,7 @@ export interface IActionTable {
   loading?: boolean;
   action?: "back";
   tooltip?: string;
-  isHidden?: (data: any) => boolean
+  isHidden?: (data: any) => boolean;
 }
 export interface QueryParams {
   page?: number;
@@ -50,7 +50,7 @@ const MyTable: FC<IMyTable> = ({
   onChange,
   actions = [],
   isLoading = false,
-  keySearchLabel
+  keySearchLabel,
 }) => {
   const [first, setFirst] = useState(1);
   const [selectedRowData, setSelectedRowData] = useState<any>(null);
@@ -83,7 +83,6 @@ const MyTable: FC<IMyTable> = ({
     if (schema?.render && typeof schema.render === "function") {
       return schema.render(row);
     }
-
 
     switch (schema?.type) {
       case "text":
@@ -130,8 +129,9 @@ const MyTable: FC<IMyTable> = ({
 
   const renderActions = useCallback(
     (rowData: any, options: any) => {
-
-      const actionActives = actions.filter((action) => !action?.isHidden?.(rowData));
+      const actionActives = actions.filter(
+        (action) => !action?.isHidden?.(rowData)
+      );
 
       const items = [
         {
