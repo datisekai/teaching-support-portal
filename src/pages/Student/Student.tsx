@@ -323,14 +323,18 @@ const Student = () => {
         title: "Export",
         icon: "pi pi-file-export",
         onClick: async () => {
-          await getStudentClass(id || "", { pagination: false });
+          const dataStudent = await getStudentClass(id || "", {
+            pagination: false,
+          });
           const headerContent = `Danh sách sinh viên\nLớp ${_class.name}\nMôn học: ${_class.major.name}`;
           exportExcel(
             `Danh sách sinh viên_Lớp ${_class.name}_Môn học: ${_class.major.name}`,
-            studentsUnlimited.map((item, index) => {
+            dataStudent.map((item, index) => {
               return {
                 ...item,
                 index: index + 1,
+                createdAt: dayjs(item.createdAt).format("DD/MM/YYYY HH:mm:ss"),
+                updatedAt: dayjs(item.updatedAt).format("DD/MM/YYYY HH:mm:ss"),
               };
             }),
             studentSchemas,
@@ -345,13 +349,7 @@ const Student = () => {
     return () => {
       resetActions();
     };
-  }, [
-    students,
-    studentsUnlimited,
-    setHeaderTitle,
-    setHeaderActions,
-    resetActions,
-  ]);
+  }, [students, setHeaderTitle, setHeaderActions, resetActions]);
   const handleSearch = (query: Object) => {
     // fetchUsers(query);
     // fetchClasses();

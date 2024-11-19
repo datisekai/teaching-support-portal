@@ -131,7 +131,7 @@ const Major = () => {
       );
       setFooter(
         <div>
-          <a href="/danhsachmon.xlsx" download={"danhsachmon.xlsx"}>
+          <a href="/danhsachmon.csv" download={"danhsachmon.csv"}>
             <Button label="Download mẫu"></Button>
           </a>
           <Button label="Chọn file import" onClick={handleChooseFile}></Button>
@@ -159,7 +159,7 @@ const Major = () => {
       ),
       footer: (
         <div>
-          <a href="/danhsachmon.xlsx" download={"danhsachmon.xlsx"}>
+          <a href="/danhsachmon.csv" download={"danhsachmon.csv"}>
             <Button label="Download mẫu"></Button>
           </a>
           <Button label="Chọn file import" onClick={handleChooseFile}></Button>
