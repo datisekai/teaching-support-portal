@@ -10,6 +10,8 @@ import ViewQuestionModal from "../components/Modal/ViewQuestionModal";
 import AttendanceModal from "../components/Modal/AttendanceModal";
 import LinkStudentScore from "../components/Modal/LinkStudentScore";
 import ReviewModal from "../components/Modal/ReviewModal";
+import ChooseQuestion from "../components/Modal/ChooseQuestion";
+import AutoFillQuestion from "../components/Modal/AutoFillQuestion";
 
 const DynamicModal = () => {
   const { modalName, onDismiss, onToggle, visible, footer, header, style } =
@@ -39,6 +41,8 @@ const DynamicModal = () => {
       {modalName === ModalName.VIEW_QUESTION && <ViewQuestionModal />}
       {modalName === ModalName.LINK_STUDENT_SCORE && <LinkStudentScore />}
       {modalName === ModalName.REVIEW_IMPORT && <ReviewModal />}
+      {modalName === ModalName.CHOOSE_QUESTION && <ChooseQuestion />}
+      {modalName === ModalName.AUTOFILL_QUESTION && <AutoFillQuestion />}
     </Dialog>
   );
 };

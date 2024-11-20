@@ -16,4 +16,6 @@ export interface IQuestion {
   choices: IChoice[]; // Array of choices for questions like multiple choice
   acceptedLanguages: string[]; // Array of accepted programming languages
   initCode: Record<string, any>; // Flexible object for initial code settings
+  difficulty: { id: number; level: string };
+  chapter: { id: number; name: string };
 }

@@ -8,4 +8,6 @@ export enum ModalName {
   VIEW_QUESTION = "view-question",
   LINK_STUDENT_SCORE = "link-student-score",
   REVIEW_IMPORT = "review-import",
+  CHOOSE_QUESTION = "choose-question",
+  AUTOFILL_QUESTION = "autofill-question",
 }

@@ -40,4 +40,11 @@ export const questionService = {
       endpoint: _delete.endpoint.replace(":id", id.toString()),
     });
   },
+  generate: async (body: any) => {
+    const { generate } = apiConfig.question;
+    return sendServerRequest({
+      ...generate,
+      body,
+    });
+  },
 };

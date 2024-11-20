@@ -334,6 +334,10 @@ export const apiConfig = {
       method: "GET",
       endpoint: "/api.question/:id",
     },
+    generate: {
+      method: "GET",
+      endpoint: "/api.question/generate",
+    },
   },
   language: {
     getAll: {

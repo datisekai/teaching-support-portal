@@ -109,9 +109,9 @@ const EditExam = () => {
   const { showToast } = useToast();
 
   useEffect(() => {
-    fetchChapters({ pagination: false });
+    // fetchChapters({ pagination: false });
     fetchDifficultys({ pagination: false });
-    fetchMajors({ pagination: false });
+    // fetchMajors({ pagination: false });
   }, []);
 
   const handleOpenModal = (data: any) => {

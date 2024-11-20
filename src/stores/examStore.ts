@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { examService } from "../services/examService";
 import { IExam } from "../types/exam";
+import { IQuestion } from "../types/question";
 
 interface IExamState {
   exams: IExam[];
@@ -23,7 +24,7 @@ export const useExamStore = create<IExamState>((set) => ({
   isLoadingExams: false,
   total: 0,
   examHistorys: [],
-
+  filterQuestions: [],
   fetchExams: async (body) => {
     try {
       const response = await examService.getAll(body);
