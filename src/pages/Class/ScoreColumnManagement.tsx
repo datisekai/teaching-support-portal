@@ -44,15 +44,15 @@ const ScoreColumnManagement = () => {
       return;
     }
 
-    if (totalWeight !== 100) {
-      showToast({
-        severity: "warning",
-        summary: "Thông báo",
-        message: "Tổng trọng số phải bằng 100.",
-        life: 3000,
-      });
-      return;
-    }
+    // if (totalWeight !== 100) {
+    //   showToast({
+    //     severity: "warning",
+    //     summary: "Thông báo",
+    //     message: "Tổng trọng số phải bằng 100.",
+    //     life: 3000,
+    //   });
+    //   return;
+    // }
 
     const data = {
       classId: Number(id),
@@ -145,7 +145,7 @@ const ScoreColumnManagement = () => {
 
   const handleDelete = (data: any, option: any) => {
     const result = {
-      message: "Bạn có chắc chắn muốn xoá lớp học này?",
+      message: "Bạn có chắc chắn muốn xoá cột điểm này?",
       header: "Xác nhận xoá",
       onAccept: () => {
         setTableData(
@@ -198,7 +198,7 @@ const ScoreColumnManagement = () => {
   return (
     <div>
       <MyTableCustom
-        // footer={footer}
+        footer={footer}
         // headerTable={headerTable}
         isLoading={isLoadingApi}
         data={tableData.map((item: any, index) => ({
@@ -206,9 +206,9 @@ const ScoreColumnManagement = () => {
           index: index + 1,
         }))}
         schemas={scoreColumnManagementSchemas}
-        // actions={actionTable}
+        actions={actionTable}
         setData={setTableData}
-        // isFooter={true}
+        isFooter={true}
         onChange={() => getSingleClass(id || "")}
       />
     </div>

@@ -4,7 +4,11 @@ import MyTable, { IActionTable } from "../../components/UI/MyTable";
 import { useNavigate, useParams } from "react-router-dom";
 import useConfirm from "../../hooks/useConfirm";
 import { uploadFile } from "../../utils";
-import { students, studentSchemas } from "../../dataTable/studentTable";
+import {
+  importStudentSchemas,
+  students,
+  studentSchemas,
+} from "../../dataTable/studentTable";
 import { useUserStore } from "../../stores/userStore";
 import { userSchemas } from "../../dataTable/userTable";
 import { useClassStore } from "../../stores/classStore";
@@ -109,7 +113,7 @@ const Student = () => {
           }))}
           tableStyle={{ minWidth: "50rem" }}
         >
-          {studentSchemas.map((col, i) => (
+          {importStudentSchemas.map((col, i) => (
             <Column key={col.prop} field={col.prop} header={col.label} />
           ))}
         </DataTable>

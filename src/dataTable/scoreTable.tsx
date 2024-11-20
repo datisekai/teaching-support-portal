@@ -27,7 +27,7 @@ export const scoreSchemas: TableSchema[] = [
     prop: "grade",
     type: "text",
     render(data) {
-      return `${parseFloat(data.grade)} điểm`;
+      return `${parseFloat(data.grade.toFixed(1))} điểm`;
     },
   },
   {
@@ -36,11 +36,19 @@ export const scoreSchemas: TableSchema[] = [
     type: "text",
     render(data) {
       const { outTabCount = 0, mouseRight = 0, controlCVX = 0 } = data;
-      return <>
-        <p><strong>{outTabCount} lần</strong>  chuyển tab.</p>
-        <p><strong>{mouseRight} lần</strong>  click chuột phải.</p>
-        <p><strong>{controlCVX} lần</strong>  Control C, V, X.</p>
-      </>
+      return (
+        <>
+          <p>
+            <strong>{outTabCount} lần</strong> chuyển tab.
+          </p>
+          <p>
+            <strong>{mouseRight} lần</strong> click chuột phải.
+          </p>
+          <p>
+            <strong>{controlCVX} lần</strong> Control C, V, X.
+          </p>
+        </>
+      );
     },
   },
   // {

@@ -43,6 +43,24 @@ export const studentSchemas: TableSchema[] = [
   },
 ];
 
+export const importStudentSchemas: TableSchema[] = [
+  {
+    label: "#",
+    prop: "index",
+    type: "number",
+  },
+  {
+    label: "Mã",
+    prop: "code",
+    type: "number",
+  },
+  {
+    label: "Tên",
+    prop: "name",
+    type: "text",
+  },
+];
+
 export const students = [
   {
     id: 1,
