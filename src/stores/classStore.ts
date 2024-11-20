@@ -14,7 +14,7 @@ interface IClassState {
   total: number;
   totalStudent: number;
   isLoadingClasss: boolean;
-  fetchClasses: (body: any) => Promise<void>;
+  fetchClasses: (body: any) => Promise<IClass[]>;
   fetchClass: (id: string) => Promise<void>;
   addClass: (Class: IClass) => Promise<boolean>;
   updateAssignTeachersClass: (
@@ -23,7 +23,7 @@ interface IClassState {
   ) => Promise<boolean>;
   updateClass: (id: number, updatedClass: IClass) => Promise<boolean>;
   deleteClass: (id: number) => Promise<boolean>;
-  getStudentClass: (id: string, body: any) => Promise<void>;
+  getStudentClass: (id: string, body: any) => Promise<IUser[]>;
   importUsers: (id: string, body: any) => Promise<boolean>;
   createStudentClass: (
     id: string,
@@ -55,7 +55,10 @@ export const useClassStore = create<IClassState>((set) => ({
       } else {
         set({ classes: response.data, total: response.total });
       }
-    } catch (error) {}
+      return response.data;
+    } catch (error) {
+      return [];
+    }
   },
 
   fetchClass: async (id: string) => {
@@ -135,7 +138,10 @@ export const useClassStore = create<IClassState>((set) => ({
       } else {
         set({ students: response.data, totalStudent: response.total });
       }
-    } catch (error) {}
+      return response.data;
+    } catch (error) {
+      return [];
+    }
   },
   importUsers: async (id: string, body: any) => {
     try {

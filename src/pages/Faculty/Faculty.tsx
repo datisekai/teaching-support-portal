@@ -91,7 +91,7 @@ const Faculty = () => {
       );
       setFooter(
         <div>
-          <a href="/danhsachnganh.xlsx" download={"danhsachnganh.xlsx"}>
+          <a href="/danhsachnganh.csv" download={"danhsachnganh.csv"}>
             <Button label="Download mẫu"></Button>
           </a>
           <Button label="Chọn file import" onClick={handleChooseFile}></Button>
@@ -119,7 +119,7 @@ const Faculty = () => {
       ),
       footer: (
         <div>
-          <a href="/danhsachnganh.xlsx" download={"danhsachnganh.xlsx"}>
+          <a href="/danhsachnganh.csv" download={"danhsachnganh.csv"}>
             <Button label="Download mẫu"></Button>
           </a>
           <Button label="Chọn file import" onClick={handleChooseFile}></Button>
@@ -242,6 +242,7 @@ const Faculty = () => {
               return {
                 ...item,
                 index: index + 1,
+                // description: item.description.replace(/<[^>]*>/g, ""),
                 createdAt: dayjs(item.createdAt).format("DD/MM/YYYY HH:mm:ss"),
                 updatedAt: dayjs(item.updatedAt).format("DD/MM/YYYY HH:mm:ss"),
               };

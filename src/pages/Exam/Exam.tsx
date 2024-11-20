@@ -43,7 +43,7 @@ const Exam = () => {
         });
         fetchExams({}); // Refresh data after delete
       },
-      onReject: () => { },
+      onReject: () => {},
     };
     onConfirm(confirmData);
   };
@@ -82,25 +82,25 @@ const Exam = () => {
         type: "button",
         disabled: false,
       },
-      {
-        title: "Import",
-        icon: "pi pi-file-import",
-        onClick: async () => {
-          const file = await uploadFile();
-          // Handle the imported file here
-        },
-        type: "file",
-        disabled: false,
-      },
-      {
-        title: "Export",
-        icon: "pi pi-file-export",
-        onClick: () => {
-          console.log("Export logic");
-        },
-        type: "button",
-        disabled: false,
-      },
+      // {
+      //   title: "Import",
+      //   icon: "pi pi-file-import",
+      //   onClick: async () => {
+      //     const file = await uploadFile();
+      //     // Handle the imported file here
+      //   },
+      //   type: "file",
+      //   disabled: false,
+      // },
+      // {
+      //   title: "Export",
+      //   icon: "pi pi-file-export",
+      //   onClick: () => {
+      //     console.log("Export logic");
+      //   },
+      //   type: "button",
+      //   disabled: false,
+      // },
     ]);
 
     return () => {

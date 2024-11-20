@@ -17,7 +17,7 @@ const User = () => {
       },
       tooltip: "Khóa",
       icon: "pi-lock",
-      severity: "help",
+      severity: "info",
     },
     {
       onClick: (data, options) => {

@@ -137,7 +137,7 @@ const Class = () => {
       );
       setFooter(
         <div>
-          <a href="/danhsachlop.xlsx" download={"danhsachlop.xlsx"}>
+          <a href="/danhsachlop.csv" download={"danhsachlop.csv"}>
             <Button label="Download mẫu"></Button>
           </a>
           <Button label="Chọn file import" onClick={handleChooseFile}></Button>
@@ -165,7 +165,7 @@ const Class = () => {
       ),
       footer: (
         <div>
-          <a href="/danhsachlop.xlsx" download={"danhsachlop.xlsx"}>
+          <a href="/danhsachlop.csv" download={"danhsachlop.csv"}>
             <Button label="Download mẫu"></Button>
           </a>
           <Button label="Chọn file import" onClick={handleChooseFile}></Button>
@@ -294,11 +294,11 @@ const Class = () => {
         title: "Export",
         icon: "pi pi-file-export",
         onClick: async () => {
-          await fetchClasses({ pagination: false });
+          const data = await fetchClasses({ pagination: false });
           const headerContent = "Danh sách lớp học";
           exportExcel(
             "Danh sách lớp học",
-            classesUnlimited.map((item, index) => {
+            data.map((item, index) => {
               return {
                 ...item,
                 index: index + 1,
@@ -319,13 +319,7 @@ const Class = () => {
     return () => {
       resetActions();
     };
-  }, [
-    setHeaderTitle,
-    setHeaderActions,
-    resetActions,
-    classes,
-    classesUnlimited,
-  ]);
+  }, [setHeaderTitle, setHeaderActions, resetActions, classes]);
 
   const handleSearch = (query: Object) => {
     fetchClasses(query);
