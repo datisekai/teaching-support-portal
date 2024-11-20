@@ -12,6 +12,7 @@ import LinkStudentScore from "../components/Modal/LinkStudentScore";
 import ReviewModal from "../components/Modal/ReviewModal";
 import ChooseQuestion from "../components/Modal/ChooseQuestion";
 import AutoFillQuestion from "../components/Modal/AutoFillQuestion";
+import QuestionExamSetting from "../components/Modal/QuestionExamSetting";
 
 const DynamicModal = () => {
   const { modalName, onDismiss, onToggle, visible, footer, header, style } =
@@ -43,6 +44,7 @@ const DynamicModal = () => {
       {modalName === ModalName.REVIEW_IMPORT && <ReviewModal />}
       {modalName === ModalName.CHOOSE_QUESTION && <ChooseQuestion />}
       {modalName === ModalName.AUTOFILL_QUESTION && <AutoFillQuestion />}
+      {modalName === ModalName.QUESTION_EXAM_SETTING && <QuestionExamSetting />}
     </Dialog>
   );
 };

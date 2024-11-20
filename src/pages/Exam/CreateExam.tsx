@@ -1,37 +1,22 @@
-import React, { useEffect, useState, useRef } from "react";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { Button } from "primereact/button";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import * as yup from "yup";
 import GroupItem from "../../components/Form/GroupItem";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { set, useForm } from "react-hook-form";
-import { useCommonStore, useModalStore } from "../../stores";
-import { IAction } from "../../stores/commonStore";
-import { ExamForm } from "../../dataForm/examForm";
-import { PickListChangeEvent } from "primereact/picklist";
-import MyPickList, { ISource } from "../../components/UI/MyPickList";
-import { questions } from "../../dataTable/questionTable";
 import MyCard from "../../components/UI/MyCard";
 import { ModalName, pathNames } from "../../constants";
+import { ExamForm } from "../../dataForm/examForm";
 import useConfirm from "../../hooks/useConfirm";
-import { useQuestionStore } from "../../stores/questionStore";
-import { getDifficulty, getTypeQuestion } from "../../utils";
 import { useToast } from "../../hooks/useToast";
-import { useExamStore } from "../../stores/examStore";
-import { Dropdown, DropdownChangeEvent } from "primereact/dropdown";
-import { useChapterStore } from "../../stores/chapterStore";
-import { useDifficultyStore } from "../../stores/difficultStore";
-import { useMajorStore } from "../../stores/majorStore";
-import { IChapter } from "../../types/chapter";
-import { IDifficulty } from "../../types/difficulty";
-import { IMajor } from "../../types/major";
-import { Button } from "primereact/button";
+import { useCommonStore, useModalStore } from "../../stores";
 import { useClassStore } from "../../stores/classStore";
+import { IAction } from "../../stores/commonStore";
+import { useDifficultyStore } from "../../stores/difficultStore";
+import { useExamStore } from "../../stores/examStore";
 import { IQuestion } from "../../types/question";
 
-interface IQuestionType {
-  id: string;
-  label: string;
-}
 
 const schema = yup
   .object()
@@ -53,6 +38,7 @@ const schema = yup
       ),
     classId: yup.string().required("Nhóm lớp là bắt buộc."),
     showResult: yup.boolean().required("Loại đề thi là bắt buộc."),
+    duration: yup.number().min(1, "Thời gian làm bài phải lớn hơn 1 phút."),
   })
   .required();
 
@@ -72,10 +58,12 @@ const CreateExam = () => {
       classId: "",
       showResult: true,
       description: "",
+      duration: 5
     },
   });
 
   const navigate = useNavigate();
+  const [hashScore, setHashScore] = useState<any>({});
 
   const setFooterActions = useCommonStore((state) => state.setFooterActions);
   const setHeaderTitle = useCommonStore((state) => state.setHeaderTitle);
@@ -105,21 +93,59 @@ const CreateExam = () => {
     });
   };
 
+  useEffect(() => {
+    if (previewQuestion && previewQuestion?.length > 0) {
+      const hash: any = {}
+      previewQuestion.forEach((item: IQuestion) => {
+        hash[item.id] = (10 / previewQuestion.length).toFixed(2)
+      })
+      setHashScore(hash)
+    }
+  }, [previewQuestion])
+
+
+  console.log('previewQuestion', previewQuestion);
   const onSubmit = (data: any) => {
-    const transferData = {
+    console.log('onSubmit', previewQuestion);
+    const payload = {
       ...data,
       classId: Number(data.classId),
+      questions: previewQuestion?.map((item) => ({ questionId: item.id, score: hashScore[item.id] || 0 })),
     };
-    const payload = {
-      message: "Bạn có chắc chắn muốn tạo khi chưa thêm câu hỏi?",
+    onConfirm({
+      message: "Bạn có chắc chắn muốn tạo đề thi này?",
       header: "Xác nhận tạo",
-      onAccept: () => {
-        // handleSubmitCreate(transferData);
-        return;
+      onAccept: async () => {
+        const result = await addExam(payload);
+        if (result) {
+          showToast({
+            severity: "success",
+            summary: "Thông báo",
+            message: "Tạo đề thi thành công.",
+            life: 3000,
+          });
+          navigate(pathNames.EXAM);
+          return;
+        }
+        showToast({
+          severity: "danger",
+          summary: "Thông báo",
+          message: "Tạo đề thi thất bại.",
+          life: 3000,
+        });
       },
-      onReject: () => {},
-    };
+      onReject: () => { },
+    })
   };
+
+  useEffect(() => {
+
+    setHeaderTitle("Tạo bài thi");
+
+    return () => {
+      resetActions();
+    };
+  }, [handleSubmit, setFooterActions, setHeaderTitle, resetActions]);
 
   useEffect(() => {
     const actions: IAction[] = [
@@ -135,12 +161,7 @@ const CreateExam = () => {
       },
     ];
     setFooterActions(actions);
-    setHeaderTitle("Tạo bài thi");
-
-    return () => {
-      resetActions();
-    };
-  }, [handleSubmit, setFooterActions, setHeaderTitle, resetActions]);
+  }, [previewQuestion])
 
   const classId = watch("classId");
 
@@ -155,6 +176,22 @@ const CreateExam = () => {
         <MyCard
           title="Danh sách câu hỏi"
           tooltip={"Vui lòng chọn lớp học trước"}
+          action={{
+            title: "Thiết lập điểm",
+            icon: 'pi pi-cog',
+            disabled: previewQuestion?.length === 0,
+            onClick: () => {
+              onToggle(ModalName.QUESTION_EXAM_SETTING, {
+                header: "Thiết lập điểm",
+                content: {
+                  questions: previewQuestion,
+                  onApply: (data: any) => {
+                    setHashScore(data)
+                  }
+                }
+              })
+            }
+          }}
         >
           <div className="tw-space-y-2">
             {previewQuestion?.map((item, index) => (
@@ -163,8 +200,11 @@ const CreateExam = () => {
                 className="tw-border tw-shadow-sm tw-px-4 tw-py-2 tw-rounded tw-flex tw-justify-between tw-items-center tw-w-full"
               >
                 <div>
-                  <div className="tw-font-bold tw-line-clamp-1">
-                    {index + 1}. {item.title}
+                  <div className="tw-flex tw-items-center tw-gap-2">
+                    <div className="tw-font-bold tw-line-clamp-1">
+                      {index + 1}. {item.title}
+                    </div>
+                    <i onClick={() => handleOpenModal(item)} className="hover:tw-opacity-50 tw-cursor-pointer pi pi-question-circle"> </i>
                   </div>
                   <div className="tw-flex tw-items-center tw-gap-2">
                     <p>

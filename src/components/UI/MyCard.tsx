@@ -30,7 +30,7 @@ const MyCard: React.FC<CardProps> = ({
             {title && <h2 className="tw-text-xl tw-font-bold">{title}</h2>}
             {tooltip && <i className={`pi pi-question-circle ${randomID}`}></i>}
           </div>
-          {action && <Button icon={action.icon} label={action.title} onClick={action.onClick} />}
+          {action && <Button icon={action.icon} label={action.title} disabled={action.disabled} onClick={action.onClick} />}
 
         </div>
         {description && <p className="tw-text-gray-600">{description}</p>}

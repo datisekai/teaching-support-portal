@@ -66,7 +66,7 @@ const ChooseQuestion = () => {
 
   return (
     <div className="tw-space-y-4">
-      <div className={"tw-flex tw-items-end tw-gap-4"}>
+      <div className={"tw-flex tw-items-end tw-gap-4 tw-flex-wrap"}>
         <div>
           <div className={"mb-1"}>Lọc theo chương</div>
           <Dropdown
@@ -129,11 +129,10 @@ const ChooseQuestion = () => {
         {questions?.map((item, index) => (
           <div
             key={item.id}
-            className={`tw-cursor-pointer tw-border tw-shadow-sm tw-px-4 tw-py-2 tw-rounded tw-flex tw-justify-between tw-items-center tw-w-full ${
-              previewQuestions.some((p) => p.id === item.id)
+            className={`tw-cursor-pointer tw-border tw-shadow-sm tw-px-4 tw-py-2 tw-rounded tw-flex tw-justify-between tw-items-center tw-w-full ${previewQuestions.some((p) => p.id === item.id)
                 ? "border-primary tw-bg-gray-50"
                 : ""
-            }`}
+              }`}
             onClick={() => {
               const isExisted = previewQuestions.some((p) => p.id === item.id);
               if (isExisted) {

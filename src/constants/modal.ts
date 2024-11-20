@@ -10,4 +10,5 @@ export enum ModalName {
   REVIEW_IMPORT = "review-import",
   CHOOSE_QUESTION = "choose-question",
   AUTOFILL_QUESTION = "autofill-question",
+  QUESTION_EXAM_SETTING = "question-exam-setting",
 }

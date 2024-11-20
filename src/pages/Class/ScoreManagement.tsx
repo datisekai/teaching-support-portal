@@ -110,7 +110,7 @@ const ScoreManagement = () => {
   const loadData = () => {
     fetchScoreColumnClass(id || "");
     fetchstudentScore(id || "");
-    getStudentClass(id || "");
+    getStudentClass(id || "", {});
   };
 
   const getAverage = (score: any = {}) => {

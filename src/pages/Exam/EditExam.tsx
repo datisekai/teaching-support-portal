@@ -1,42 +1,29 @@
-import React, { useEffect, useState, useRef } from "react";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { Button } from "primereact/button";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import * as yup from "yup";
 import GroupItem from "../../components/Form/GroupItem";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { useForm } from "react-hook-form";
-import { useCommonStore, useModalStore } from "../../stores";
-import { IAction } from "../../stores/commonStore";
-import { ExamForm } from "../../dataForm/examForm";
-import { PickListChangeEvent } from "primereact/picklist";
-import MyPickList, { ISource } from "../../components/UI/MyPickList";
-import { questions } from "../../dataTable/questionTable";
 import MyCard from "../../components/UI/MyCard";
 import { ModalName, pathNames } from "../../constants";
+import { ExamForm } from "../../dataForm/examForm";
 import useConfirm from "../../hooks/useConfirm";
-import { Dropdown, DropdownChangeEvent } from "primereact/dropdown";
 import { useToast } from "../../hooks/useToast";
+import { useCommonStore, useModalStore } from "../../stores";
+import { useClassStore } from "../../stores/classStore";
+import { IAction } from "../../stores/commonStore";
 import { useDifficultyStore } from "../../stores/difficultStore";
-import { useChapterStore } from "../../stores/chapterStore";
-import { useMajorStore } from "../../stores/majorStore";
-import { IChapter } from "../../types/chapter";
-import { IDifficulty } from "../../types/difficulty";
-import { IMajor } from "../../types/major";
 import { useExamStore } from "../../stores/examStore";
+import { IQuestion } from "../../types/question";
 import { useQuestionStore } from "../../stores/questionStore";
-import { getTypeQuestion } from "../../utils";
 
-interface IQuestionType {
-  id: string;
-  label: string;
-}
 
-// Schema validation
 const schema = yup
   .object()
   .shape({
     title: yup.string().required("Tiêu đề bài thi là bắt buộc."),
-    description: yup.string().required("Mô tả là bắt buộc."),
-    classId: yup.string().required("Nhóm lớp là bắt buộc."),
+    description: yup.string().required("Mô tả bài thi là bắt buộc."),
     startTime: yup.date().nullable().required("Thời gian bắt đầu là bắt buộc."),
     endTime: yup
       .date()
@@ -50,69 +37,58 @@ const schema = yup
           return !startTime || !value || value > startTime;
         }
       ),
+    classId: yup.string().required("Nhóm lớp là bắt buộc."),
     showResult: yup.boolean().required("Loại đề thi là bắt buộc."),
+    duration: yup.number().min(1, "Thời gian làm bài phải lớn hơn 1 phút."),
   })
   .required();
 
 const EditExam = () => {
-  const { id } = useParams(); // Lấy ID của bài thi từ URL
-  const navigate = useNavigate();
-  const targetRef = useRef<ISource[]>([]); // Sửa useRef để lưu trữ giá trị target mới nhất
-
-  const setFooterActions = useCommonStore((state) => state.setFooterActions);
-  const setHeaderTitle = useCommonStore((state) => state.setHeaderTitle);
-  const resetActions = useCommonStore((state) => state.resetActions);
-  const { onConfirm } = useConfirm();
-  const { onToggle } = useModalStore();
-  const { questions, fetchQuestions, total } = useQuestionStore();
-  const { updateExam, exam, fetchExam } = useExamStore();
-
   const {
     handleSubmit,
     formState: { errors },
     control,
-    setValue, // Sử dụng reset để điền dữ liệu vào form
+    getValues,
+    watch,
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
       title: "",
-      description: "",
-      classId: "",
       startTime: undefined,
       endTime: undefined,
+      classId: "",
       showResult: true,
+      description: "",
+      duration: 5
     },
   });
 
-  useEffect(() => {
-    fetchExam(id || "");
-  }, []);
+  const navigate = useNavigate();
+  const [hashScore, setHashScore] = useState<any>({});
+  const { fetchQuestion, question } = useQuestionStore()
 
-  const { chapters, fetchChapters, isLoadingChapters } = useChapterStore();
+  const { onConfirm } = useConfirm();
+  const { isLoadingApi, setFooterActions, setHeaderTitle, resetActions } = useCommonStore();
+  const { onToggle } = useModalStore();
+  const { addExam } = useExamStore();
+  const { fetchClasses } = useClassStore();
+  const [previewQuestion, setPreviewQuestion] = useState<IQuestion[]>([]);
+
   const { difficultys, fetchDifficultys, isLoadingDifficultys } =
     useDifficultyStore();
-  const { majors, fetchMajors, isLoadingMajors } = useMajorStore();
+  const { id } = useParams()
 
-  const [selectedChapters, setSelectedChapters] = useState<IChapter>(
-    {} as IChapter
-  );
-  const [selectedDifficultys, setSelectedDifficultys] = useState<IDifficulty>(
-    {} as IDifficulty
-  );
-  const [selectedMajors, setSelectedMajors] = useState<IMajor>({} as IMajor);
-  const [selectedQuestionTypes, setSelectedQuestionTypes] =
-    useState<IQuestionType>({} as IQuestionType);
-
-  const [source, setSource] = useState<ISource[]>([]);
-
-  const [target, setTarget] = useState<ISource[]>([]);
   const { showToast } = useToast();
+  console.log('question', question);
 
   useEffect(() => {
-    // fetchChapters({ pagination: false });
-    fetchDifficultys({ pagination: false });
-    // fetchMajors({ pagination: false });
-  }, []);
+    if (id) {
+      fetchDifficultys({ pagination: false });
+      fetchClasses({ pagination: false });
+      fetchQuestion(id)
+    }
+  }, [id]);
+
 
   const handleOpenModal = (data: any) => {
     onToggle(ModalName.VIEW_QUESTION, {
@@ -123,154 +99,58 @@ const EditExam = () => {
   };
 
   useEffect(() => {
-    loadDataQuestions();
-  }, [
-    selectedChapters,
-    selectedDifficultys,
-    selectedMajors,
-    selectedQuestionTypes,
-  ]);
-
-  const loadDataQuestions = () => {
-    fetchQuestions({
-      chapterId: selectedChapters?.id,
-      difficultyId: selectedDifficultys?.id,
-      majorId: selectedMajors?.id,
-      questionType: selectedQuestionTypes?.id,
-    });
-  };
-  const onChange = (event: PickListChangeEvent) => {
-    setSource(event.source);
-    setTarget(event.target);
-    targetRef.current = event.target; // Cập nhật giá trị của targetRef với giá trị mới nhất của target
-  };
-
-  const handleSubmitUpdate = async (data: any) => {
-    let sumScore = 0;
-    try {
-      const questions = target.map((item: any) => {
-        sumScore += item.score;
-        return {
-          questionId: item.id,
-          score: item.score,
-        };
-      });
-      if (sumScore !== 10) {
-        return showToast({
-          severity: "danger",
-          summary: "Thông báo",
-          message: "Tổng điểm phải bằng 10",
-          life: 3000,
-        });
-      }
-      const result = await updateExam(parseInt(id || ""), {
-        ...data,
-        questions,
-      });
-
-      if (!result) {
-        return showToast({
-          severity: "danger",
-          summary: "Thông báo",
-          message: "Sửa thất bại",
-          life: 3000,
-        });
-      }
-      showToast({
-        severity: "success",
-        summary: "Thông báo",
-        message: "Sửa thành công",
-        life: 3000,
-      });
-
-      navigate(pathNames.EXAM);
-    } catch (error) {
-      return showToast({
-        severity: "danger",
-        summary: "Thông báo",
-        message: "Sửa thất bại",
-        life: 3000,
-      });
+    if (previewQuestion && previewQuestion?.length > 0) {
+      const hash: any = {}
+      previewQuestion.forEach((item: IQuestion) => {
+        hash[item.id] = (10 / previewQuestion.length).toFixed(2)
+      })
+      setHashScore(hash)
     }
-  };
+  }, [previewQuestion])
 
+
+  console.log('previewQuestion', previewQuestion);
   const onSubmit = (data: any) => {
-    // Xử lý logic lưu trữ dữ liệu
-    const transferData = {
+    console.log('onSubmit', previewQuestion);
+    const payload = {
       ...data,
       classId: Number(data.classId),
+      questions: previewQuestion?.map((item) => ({ questionId: item.id, score: hashScore[item.id] || 0 })),
     };
-    const payload = {
-      message: "Bạn có chắc chắn muốn cập nhật khi chưa thêm câu hỏi?",
-      header: "Xác nhận cập nhật",
-      onAccept: () => {
-        handleSubmitUpdate(transferData);
-        return;
+    onConfirm({
+      message: "Bạn có chắc chắn muốn tạo đề thi này?",
+      header: "Xác nhận tạo",
+      onAccept: async () => {
+        const result = await addExam(payload);
+        if (result) {
+          showToast({
+            severity: "success",
+            summary: "Thông báo",
+            message: "Tạo đề thi thành công.",
+            life: 3000,
+          });
+          navigate(pathNames.EXAM);
+          return;
+        }
+        showToast({
+          severity: "danger",
+          summary: "Thông báo",
+          message: "Tạo đề thi thất bại.",
+          life: 3000,
+        });
       },
-      onReject: () => {
-        console.log("Đã hủy bỏ hành động.");
-      },
-    };
-
-    if (targetRef.current.length === 0) {
-      onConfirm(payload);
-      return;
-    }
-    handleSubmitUpdate(transferData);
+      onReject: () => { },
+    })
   };
 
   useEffect(() => {
-    // Exclude questions already in target from source
-    const filteredSource = questions
-      .filter(
-        (question) =>
-          !target.some((targetQuestion) => targetQuestion.id === question.id)
-      )
-      .map((question) => ({
-        id: question.id,
-        content: question.title,
-        subcontent: (
-          <div className="tw-flex tw-items-center tw-space-x-4">
-            <span className="tw-flex tw-items-center">
-              <i className="pi pi-bookmark text-sm tw-mr-1"></i>
-              <div>{getTypeQuestion(question.type)}</div>
-            </span>
-            <span className="tw-flex tw-items-center">
-              <i className="pi pi-star text-sm tw-mr-1"></i>
-              <div>{question.isPublic ? "Công khai" : "Riêng tư"}</div>
-            </span>
-          </div>
-        ),
-        detail: question,
-      }));
 
-    setSource(filteredSource);
-  }, [questions, target]);
+    setHeaderTitle("Tạo bài thi");
 
-  useEffect(() => {
-    if (exam) {
-      if (questions) {
-        const dataTarget = exam?.examQuestions
-          ?.map((question) => {
-            const foundQuestion = questions.find(
-              (item: any) => item.id === question.question.id
-            );
-            return foundQuestion
-              ? { ...foundQuestion, score: question.score }
-              : null;
-          })
-          .filter(Boolean);
-
-        setTarget(dataTarget || []);
-      }
-      setValue("title", exam.title);
-      setValue("classId", exam?.class?.id.toString());
-      setValue("description", exam.description);
-      setValue("startTime", new Date(exam.startTime));
-      setValue("endTime", new Date(exam.endTime));
-      setValue("showResult", exam.showResult);
-    }
-  }, [exam, questions]);
+    return () => {
+      resetActions();
+    };
+  }, [handleSubmit, setFooterActions, setHeaderTitle, resetActions]);
 
   useEffect(() => {
     const actions: IAction[] = [
@@ -281,88 +161,132 @@ const EditExam = () => {
       },
       {
         onClick: handleSubmit(onSubmit),
-        title: "Cập nhật",
-        icon: "pi-save",
+        title: "Tạo",
+        icon: "pi-plus",
       },
     ];
     setFooterActions(actions);
-    setHeaderTitle("Chỉnh sửa bài thi");
+  }, [previewQuestion])
 
-    return () => {
-      resetActions();
-    };
-  }, [handleSubmit, setFooterActions, setHeaderTitle, resetActions, target]);
-  const questionType: IQuestionType[] = [
-    {
-      id: "",
-      label: "Tất cả",
-    },
-    {
-      id: "multiple_choice",
-      label: "Trắc nghiệm",
-    },
-    {
-      id: "code",
-      label: "Tự luận",
-    },
-  ];
+  const classId = watch("classId");
+
   return (
     <div>
       <form onSubmit={(e) => e.preventDefault()} className="tw-space-y-4">
         {ExamForm.map((form, index) => (
           <GroupItem errors={errors} {...form} key={index} control={control} />
         ))}
-        <div className="tw-flex tw-justify-between tw-items-center">
-          <Dropdown
-            value={selectedQuestionTypes}
-            onChange={(e: DropdownChangeEvent) =>
-              setSelectedQuestionTypes(e.value)
+
+        <div></div>
+        <MyCard
+          title="Danh sách câu hỏi"
+          tooltip={"Vui lòng chọn lớp học trước"}
+          action={{
+            title: "Thiết lập điểm",
+            icon: 'pi pi-cog',
+            disabled: previewQuestion?.length === 0,
+            onClick: () => {
+              onToggle(ModalName.QUESTION_EXAM_SETTING, {
+                header: "Thiết lập điểm",
+                content: {
+                  questions: previewQuestion,
+                  onApply: (data: any) => {
+                    setHashScore(data)
+                  }
+                }
+              })
             }
-            options={questionType}
-            optionLabel="label"
-            placeholder="Loại câu hỏi"
-            className="tw-w-1/2 md:tw-w-14rem tw-my-2"
-          />
-          <Dropdown
-            loading={isLoadingChapters}
-            value={selectedChapters}
-            onChange={(e: DropdownChangeEvent) => setSelectedChapters(e.value)}
-            options={[{ id: "", name: "Tất cả" }, ...chapters]}
-            optionLabel="name"
-            placeholder="Chương"
-            className="tw-w-1/2 md:tw-w-14rem tw-my-2"
-          />
-          <Dropdown
-            loading={isLoadingDifficultys}
-            value={selectedDifficultys}
-            onChange={(e: DropdownChangeEvent) =>
-              setSelectedDifficultys(e.value)
-            }
-            options={[{ id: "", level: "Tất cả" }, ...difficultys]}
-            optionLabel="level"
-            placeholder="Độ khó"
-            className="tw-w-1/2 md:tw-w-14rem tw-my-2"
-          />
-          <Dropdown
-            loading={isLoadingMajors}
-            value={selectedMajors}
-            onChange={(e: DropdownChangeEvent) => setSelectedMajors(e.value)}
-            options={[{ id: "", name: "Tất cả" }, ...majors]}
-            optionLabel="name"
-            placeholder="Loại câu hỏi"
-            className="tw-w-1/2 md:tw-w-14rem tw-my-2"
-          />
-        </div>
-        <MyCard title="Danh sách câu hỏi">
-          <MyPickList
-            keySearch="title"
-            onChangeLoadData={loadDataQuestions}
-            source={source}
-            target={target}
-            totalRecords={total}
-            onChange={onChange}
-            handleOpenModal={handleOpenModal}
-          />
+          }}
+        >
+          <div className="tw-space-y-2">
+            {previewQuestion?.map((item, index) => (
+              <div
+                key={item.id}
+                className="tw-border tw-shadow-sm tw-px-4 tw-py-2 tw-rounded tw-flex tw-justify-between tw-items-center tw-w-full"
+              >
+                <div>
+                  <div className="tw-flex tw-items-center tw-gap-2">
+                    <div className="tw-font-bold tw-line-clamp-1">
+                      {index + 1}. {item.title}
+                    </div>
+                    <i onClick={() => handleOpenModal(item)} className="hover:tw-opacity-50 tw-cursor-pointer pi pi-question-circle"> </i>
+                  </div>
+                  <div className="tw-flex tw-items-center tw-gap-2">
+                    <p>
+                      Chương:{" "}
+                      <span className="text-primary">{item.chapter.name}</span>
+                    </p>
+                    <p>
+                      Độ khó:{" "}
+                      <span className="text-primary">
+                        {item.difficulty.level}
+                      </span>
+                    </p>
+                  </div>
+                </div>
+                <div>
+                  <Button
+                    onClick={() =>
+                      onConfirm({
+                        message: "Bạn có chắc chắn muốn xoá câu hỏi này?",
+                        onAccept: () => {
+                          setPreviewQuestion(
+                            previewQuestion.filter((p) => p.id !== item.id)
+                          );
+                        },
+                      })
+                    }
+                    icon="pi pi-trash"
+                    severity="danger"
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="tw-flex tw-gap-2 tw-mt-4">
+            <Button
+              label="Thêm câu hỏi"
+              icon="pi pi-plus"
+              disabled={!classId}
+              onClick={() =>
+                onToggle(ModalName.CHOOSE_QUESTION, {
+                  header: "Chọn câu hỏi",
+                  content: {
+                    onApply: (data: IQuestion[]) => {
+                      const newQuestion = Array.from(
+                        new Map(
+                          data.map((item: IQuestion) => [item.id, item])
+                        ).values()
+                      );
+                      setPreviewQuestion(newQuestion as IQuestion[]);
+                    },
+                    ...getValues(),
+                  },
+                })
+              }
+            ></Button>
+            <Button
+              label="Tự động chọn"
+              icon="pi pi-plus"
+              disabled={!classId}
+              onClick={() =>
+                onToggle(ModalName.AUTOFILL_QUESTION, {
+                  header: "Tự động chọn câu hỏi",
+                  content: {
+                    onApply: (data: IQuestion[]) => {
+                      const newQuestion = Array.from(
+                        new Map(
+                          data.map((item: IQuestion) => [item.id, item])
+                        ).values()
+                      );
+                      setPreviewQuestion(newQuestion as IQuestion[]);
+                    },
+                    ...getValues(),
+                  },
+                })
+              }
+            ></Button>
+          </div>
         </MyCard>
       </form>
     </div>

@@ -18,18 +18,7 @@ export const ExamForm: IForm[] = [
         label: "Mô tả",
         col: 6,
       },
-      {
-        prop: "startTime",
-        type: "date-time",
-        label: "Thời gian bắt đầu",
-        col: 6,
-      },
-      {
-        prop: "endTime",
-        type: "date-time",
-        label: "Thời gian kết thúc",
-        col: 6,
-      },
+
       {
         prop: "classId",
         type: "select-ajax",
@@ -45,6 +34,29 @@ export const ExamForm: IForm[] = [
             };
           });
         },
+      },
+    ],
+  },
+  {
+    title: "Thời gian làm bài",
+    attributes: [
+      {
+        prop: "startTime",
+        type: "date-time",
+        label: "Thời gian bắt đầu",
+        col: 6,
+      },
+      {
+        prop: "endTime",
+        type: "date-time",
+        label: "Thời gian kết thúc",
+        col: 6,
+      },
+      {
+        prop: "duration",
+        type: "number",
+        label: "Thời gian làm bài (phút)",
+        col: 6,
       },
     ],
   },
