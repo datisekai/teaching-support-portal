@@ -11,4 +11,8 @@ export interface IExam {
   questions: any;
   showResult: boolean;
   examQuestions: IExamQuestion[];
+  duration: number;
+  blockControlCVX: boolean;
+  blockMouseRight: boolean;
+  logOutTab: boolean;
 }

@@ -17,7 +17,7 @@ import { useDifficultyStore } from "../../stores/difficultStore";
 import { useExamStore } from "../../stores/examStore";
 import { IQuestion } from "../../types/question";
 import { useQuestionStore } from "../../stores/questionStore";
-
+import { getQuestionTypeText } from "../../utils";
 
 const schema = yup
   .object()
@@ -40,6 +40,9 @@ const schema = yup
     classId: yup.string().required("Nhóm lớp là bắt buộc."),
     showResult: yup.boolean().required("Loại đề thi là bắt buộc."),
     duration: yup.number().min(1, "Thời gian làm bài phải lớn hơn 1 phút."),
+    logOutTab: yup.boolean(),
+    blockControlCVX: yup.boolean(),
+    blockMouseRight: yup.boolean(),
   })
   .required();
 
@@ -50,6 +53,8 @@ const EditExam = () => {
     control,
     getValues,
     watch,
+    setValue,
+    reset,
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
@@ -59,36 +64,66 @@ const EditExam = () => {
       classId: "",
       showResult: true,
       description: "",
-      duration: 5
+      duration: 5,
+      logOutTab: true,
+      blockControlCVX: false,
+      blockMouseRight: false,
     },
   });
 
   const navigate = useNavigate();
   const [hashScore, setHashScore] = useState<any>({});
-  const { fetchQuestion, question } = useQuestionStore()
+  const { fetchQuestion, question } = useQuestionStore();
 
   const { onConfirm } = useConfirm();
-  const { isLoadingApi, setFooterActions, setHeaderTitle, resetActions } = useCommonStore();
+  const { isLoadingApi, setFooterActions, setHeaderTitle, resetActions } =
+    useCommonStore();
   const { onToggle } = useModalStore();
-  const { addExam } = useExamStore();
+  const { addExam, fetchExam, exam } = useExamStore();
   const { fetchClasses } = useClassStore();
   const [previewQuestion, setPreviewQuestion] = useState<IQuestion[]>([]);
 
   const { difficultys, fetchDifficultys, isLoadingDifficultys } =
     useDifficultyStore();
-  const { id } = useParams()
+  const { id } = useParams();
 
   const { showToast } = useToast();
-  console.log('question', question);
+  console.log("question", question);
 
   useEffect(() => {
     if (id) {
       fetchDifficultys({ pagination: false });
       fetchClasses({ pagination: false });
-      fetchQuestion(id)
+      fetchExam(id);
     }
   }, [id]);
 
+  useEffect(() => {
+    if (exam && Object.keys(exam).length > 0) {
+      reset({
+        classId: exam.class.id.toString(),
+        title: exam.title,
+        description: exam.description,
+        startTime: new Date(exam.startTime),
+        endTime: new Date(exam.endTime),
+        showResult: exam.showResult,
+        duration: exam.duration || 0,
+        blockControlCVX: exam.blockControlCVX,
+        blockMouseRight: exam.blockMouseRight,
+        logOutTab: exam.logOutTab,
+      });
+
+      const newPreviewQuestions = exam.examQuestions.map((item) => ({
+        ...item.question,
+      }));
+      const newHashScore: any = {};
+      exam.examQuestions.forEach((item) => {
+        newHashScore[item.question.id] = item.score;
+      });
+      setPreviewQuestion(newPreviewQuestions);
+      setHashScore(newHashScore);
+    }
+  }, [exam]);
 
   const handleOpenModal = (data: any) => {
     onToggle(ModalName.VIEW_QUESTION, {
@@ -100,26 +135,28 @@ const EditExam = () => {
 
   useEffect(() => {
     if (previewQuestion && previewQuestion?.length > 0) {
-      const hash: any = {}
+      const hash: any = {};
       previewQuestion.forEach((item: IQuestion) => {
-        hash[item.id] = (10 / previewQuestion.length).toFixed(2)
-      })
-      setHashScore(hash)
+        hash[item.id] = (10 / previewQuestion.length).toFixed(2);
+      });
+      setHashScore(hash);
     }
-  }, [previewQuestion])
+  }, [previewQuestion]);
 
-
-  console.log('previewQuestion', previewQuestion);
+  console.log("previewQuestion", previewQuestion);
   const onSubmit = (data: any) => {
-    console.log('onSubmit', previewQuestion);
+    console.log("onSubmit", previewQuestion);
     const payload = {
       ...data,
       classId: Number(data.classId),
-      questions: previewQuestion?.map((item) => ({ questionId: item.id, score: hashScore[item.id] || 0 })),
+      questions: previewQuestion?.map((item) => ({
+        questionId: item.id,
+        score: hashScore[item.id] || 0,
+      })),
     };
     onConfirm({
-      message: "Bạn có chắc chắn muốn tạo đề thi này?",
-      header: "Xác nhận tạo",
+      message: "Bạn có chắc chắn muốn cập nhật đề thi này?",
+      header: "Xác nhận cập nhật",
       onAccept: async () => {
         const result = await addExam(payload);
         if (result) {
@@ -139,13 +176,12 @@ const EditExam = () => {
           life: 3000,
         });
       },
-      onReject: () => { },
-    })
+      onReject: () => {},
+    });
   };
 
   useEffect(() => {
-
-    setHeaderTitle("Tạo bài thi");
+    setHeaderTitle("Cập nhật bài thi");
 
     return () => {
       resetActions();
@@ -161,12 +197,12 @@ const EditExam = () => {
       },
       {
         onClick: handleSubmit(onSubmit),
-        title: "Tạo",
-        icon: "pi-plus",
+        title: "Lưu thay đổi",
+        icon: "pi-save",
       },
     ];
     setFooterActions(actions);
-  }, [previewQuestion])
+  }, [previewQuestion]);
 
   const classId = watch("classId");
 
@@ -183,7 +219,7 @@ const EditExam = () => {
           tooltip={"Vui lòng chọn lớp học trước"}
           action={{
             title: "Thiết lập điểm",
-            icon: 'pi pi-cog',
+            icon: "pi pi-cog",
             disabled: previewQuestion?.length === 0,
             onClick: () => {
               onToggle(ModalName.QUESTION_EXAM_SETTING, {
@@ -191,11 +227,11 @@ const EditExam = () => {
                 content: {
                   questions: previewQuestion,
                   onApply: (data: any) => {
-                    setHashScore(data)
-                  }
-                }
-              })
-            }
+                    setHashScore(data);
+                  },
+                },
+              });
+            },
           }}
         >
           <div className="tw-space-y-2">
@@ -209,17 +245,30 @@ const EditExam = () => {
                     <div className="tw-font-bold tw-line-clamp-1">
                       {index + 1}. {item.title}
                     </div>
-                    <i onClick={() => handleOpenModal(item)} className="hover:tw-opacity-50 tw-cursor-pointer pi pi-question-circle"> </i>
+                    <i
+                      onClick={() => handleOpenModal(item)}
+                      className="hover:tw-opacity-50 tw-cursor-pointer pi pi-question-circle"
+                    >
+                      {" "}
+                    </i>
                   </div>
                   <div className="tw-flex tw-items-center tw-gap-2">
                     <p>
                       Chương:{" "}
-                      <span className="text-primary">{item.chapter.name}</span>
+                      <span className="text-primary">
+                        {item?.chapter?.name}
+                      </span>
                     </p>
                     <p>
                       Độ khó:{" "}
                       <span className="text-primary">
-                        {item.difficulty.level}
+                        {item?.difficulty?.level}
+                      </span>
+                    </p>
+                    <p>
+                      Loại:{" "}
+                      <span className="text-primary">
+                        {getQuestionTypeText(item.type)}
                       </span>
                     </p>
                   </div>
@@ -255,7 +304,9 @@ const EditExam = () => {
                     onApply: (data: IQuestion[]) => {
                       const newQuestion = Array.from(
                         new Map(
-                          data.map((item: IQuestion) => [item.id, item])
+                          [...previewQuestion, ...data].map(
+                            (item: IQuestion) => [item.id, item]
+                          )
                         ).values()
                       );
                       setPreviewQuestion(newQuestion as IQuestion[]);

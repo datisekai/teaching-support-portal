@@ -73,3 +73,14 @@ export function getDifficulty(value: string) {
 export function generateCharacter(index: number) {
   return String.fromCharCode(65 + index);
 }
+
+export function getQuestionTypeText(value: string) {
+  switch (value) {
+    case "multiple_choice":
+      return "Trắc nghiệm";
+    case "code":
+      return "Bài tập";
+    default:
+      return "Không xác định";
+  }
+}

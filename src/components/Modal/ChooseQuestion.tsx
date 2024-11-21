@@ -9,6 +9,7 @@ import { Dropdown } from "primereact/dropdown";
 import { useChapterStore } from "../../stores/chapterStore";
 import { useDifficultyStore } from "../../stores/difficultStore";
 import { Paginator, PaginatorPageChangeEvent } from "primereact/paginator";
+import { getQuestionTypeText } from "../../utils";
 
 const questionTypes = [
   {
@@ -37,8 +38,12 @@ const ChooseQuestion = () => {
   });
 
   const major = useMemo(() => {
-    return classesUnlimited.find((item) => item.id === content.classId)?.major;
+    return classesUnlimited.find((item) => item.id === +content.classId)?.major;
   }, [content, classesUnlimited]);
+
+  console.log("major", major);
+  console.log("classId", content.classId);
+  console.log("classesUnlimited", classesUnlimited);
 
   useEffect(() => {
     if (major) {
@@ -129,10 +134,11 @@ const ChooseQuestion = () => {
         {questions?.map((item, index) => (
           <div
             key={item.id}
-            className={`tw-cursor-pointer tw-border tw-shadow-sm tw-px-4 tw-py-2 tw-rounded tw-flex tw-justify-between tw-items-center tw-w-full ${previewQuestions.some((p) => p.id === item.id)
+            className={`tw-cursor-pointer tw-border tw-shadow-sm tw-px-4 tw-py-2 tw-rounded tw-flex tw-justify-between tw-items-center tw-w-full ${
+              previewQuestions.some((p) => p.id === item.id)
                 ? "border-primary tw-bg-gray-50"
                 : ""
-              }`}
+            }`}
             onClick={() => {
               const isExisted = previewQuestions.some((p) => p.id === item.id);
               if (isExisted) {
@@ -156,6 +162,12 @@ const ChooseQuestion = () => {
                 <p>
                   Độ khó:{" "}
                   <span className="text-primary">{item.difficulty.level}</span>
+                </p>
+                <p>
+                  Loại:{" "}
+                  <span className="text-primary">
+                    {getQuestionTypeText(item.type)}
+                  </span>
                 </p>
               </div>
             </div>

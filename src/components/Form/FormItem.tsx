@@ -176,6 +176,7 @@ const FormItem: React.FC<IForm> = ({
             onChange={(e) =>
               onChange({ target: { value: e.value, name: prop } })
             }
+            id={prop}
             onBlur={onBlur}
           />
         ));

@@ -16,7 +16,7 @@ import { IAction } from "../../stores/commonStore";
 import { useDifficultyStore } from "../../stores/difficultStore";
 import { useExamStore } from "../../stores/examStore";
 import { IQuestion } from "../../types/question";
-
+import { getQuestionTypeText } from "../../utils";
 
 const schema = yup
   .object()
@@ -39,6 +39,9 @@ const schema = yup
     classId: yup.string().required("Nhóm lớp là bắt buộc."),
     showResult: yup.boolean().required("Loại đề thi là bắt buộc."),
     duration: yup.number().min(1, "Thời gian làm bài phải lớn hơn 1 phút."),
+    logOutTab: yup.boolean(),
+    blockControlCVX: yup.boolean(),
+    blockMouseRight: yup.boolean(),
   })
   .required();
 
@@ -58,7 +61,10 @@ const CreateExam = () => {
       classId: "",
       showResult: true,
       description: "",
-      duration: 5
+      duration: 5,
+      logOutTab: true,
+      blockControlCVX: false,
+      blockMouseRight: false,
     },
   });
 
@@ -95,22 +101,24 @@ const CreateExam = () => {
 
   useEffect(() => {
     if (previewQuestion && previewQuestion?.length > 0) {
-      const hash: any = {}
+      const hash: any = {};
       previewQuestion.forEach((item: IQuestion) => {
-        hash[item.id] = (10 / previewQuestion.length).toFixed(2)
-      })
-      setHashScore(hash)
+        hash[item.id] = (10 / previewQuestion.length).toFixed(2);
+      });
+      setHashScore(hash);
     }
-  }, [previewQuestion])
+  }, [previewQuestion]);
 
-
-  console.log('previewQuestion', previewQuestion);
+  console.log("previewQuestion", previewQuestion);
   const onSubmit = (data: any) => {
-    console.log('onSubmit', previewQuestion);
+    console.log("onSubmit", previewQuestion);
     const payload = {
       ...data,
       classId: Number(data.classId),
-      questions: previewQuestion?.map((item) => ({ questionId: item.id, score: hashScore[item.id] || 0 })),
+      questions: previewQuestion?.map((item) => ({
+        questionId: item.id,
+        score: hashScore[item.id] || 0,
+      })),
     };
     onConfirm({
       message: "Bạn có chắc chắn muốn tạo đề thi này?",
@@ -134,12 +142,11 @@ const CreateExam = () => {
           life: 3000,
         });
       },
-      onReject: () => { },
-    })
+      onReject: () => {},
+    });
   };
 
   useEffect(() => {
-
     setHeaderTitle("Tạo bài thi");
 
     return () => {
@@ -161,7 +168,7 @@ const CreateExam = () => {
       },
     ];
     setFooterActions(actions);
-  }, [previewQuestion])
+  }, [previewQuestion]);
 
   const classId = watch("classId");
 
@@ -178,7 +185,7 @@ const CreateExam = () => {
           tooltip={"Vui lòng chọn lớp học trước"}
           action={{
             title: "Thiết lập điểm",
-            icon: 'pi pi-cog',
+            icon: "pi pi-cog",
             disabled: previewQuestion?.length === 0,
             onClick: () => {
               onToggle(ModalName.QUESTION_EXAM_SETTING, {
@@ -186,11 +193,11 @@ const CreateExam = () => {
                 content: {
                   questions: previewQuestion,
                   onApply: (data: any) => {
-                    setHashScore(data)
-                  }
-                }
-              })
-            }
+                    setHashScore(data);
+                  },
+                },
+              });
+            },
           }}
         >
           <div className="tw-space-y-2">
@@ -204,7 +211,12 @@ const CreateExam = () => {
                     <div className="tw-font-bold tw-line-clamp-1">
                       {index + 1}. {item.title}
                     </div>
-                    <i onClick={() => handleOpenModal(item)} className="hover:tw-opacity-50 tw-cursor-pointer pi pi-question-circle"> </i>
+                    <i
+                      onClick={() => handleOpenModal(item)}
+                      className="hover:tw-opacity-50 tw-cursor-pointer pi pi-question-circle"
+                    >
+                      {" "}
+                    </i>
                   </div>
                   <div className="tw-flex tw-items-center tw-gap-2">
                     <p>
@@ -215,6 +227,12 @@ const CreateExam = () => {
                       Độ khó:{" "}
                       <span className="text-primary">
                         {item.difficulty.level}
+                      </span>
+                    </p>
+                    <p>
+                      Loại:{" "}
+                      <span className="text-primary">
+                        {getQuestionTypeText(item.type)}
                       </span>
                     </p>
                   </div>
@@ -250,7 +268,9 @@ const CreateExam = () => {
                     onApply: (data: IQuestion[]) => {
                       const newQuestion = Array.from(
                         new Map(
-                          data.map((item: IQuestion) => [item.id, item])
+                          [...previewQuestion, ...data].map(
+                            (item: IQuestion) => [item.id, item]
+                          )
                         ).values()
                       );
                       setPreviewQuestion(newQuestion as IQuestion[]);
