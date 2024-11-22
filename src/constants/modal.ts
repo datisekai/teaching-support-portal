@@ -11,4 +11,5 @@ export enum ModalName {
   CHOOSE_QUESTION = "choose-question",
   AUTOFILL_QUESTION = "autofill-question",
   QUESTION_EXAM_SETTING = "question-exam-setting",
+  SMART_SEARCH = "smart-search",
 }

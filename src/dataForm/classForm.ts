@@ -11,24 +11,14 @@ export const ClassForm: IForm[] = [
         label: "Tên",
         col: 6,
       },
-      {
-        prop: "teacherCodes",
-        type: "search",
-        label: "Giảng viên",
-        apiUrl: apiConfig.teacher.getPublicTeachers.endpoint,
-        col: 6,
-        getOptions: (data = []) => {
-          return data.map((item: any) => {
-            return {
-              title: `${item.code} - ${item.name}`,
-              value: {
-                code: item.code,
-                name: item.name,
-              },
-            };
-          });
-        },
-      },
+      // {
+      //   prop: "teacherCodes",
+      //   type: "smart-select",
+      //   label: "Giảng viên",
+      //   apiUrl: apiConfig.user.search.endpoint,
+      //   query: { type: "teacher" },
+      //   col: 6,
+      // },
       {
         prop: "majorId",
         type: "select-ajax",

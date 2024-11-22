@@ -1,56 +1,41 @@
-import React, { useEffect } from "react";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import * as yup from "yup";
 import GroupItem from "../../components/Form/GroupItem";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { set, useForm } from "react-hook-form";
-import { useCommonStore } from "../../stores";
-import { IAction } from "../../stores/commonStore";
 import { StudentForm } from "../../dataForm/studentForm";
-import { pathNames } from "../../constants";
-import { useUserStore } from "../../stores/userStore";
 import { useToast } from "../../hooks/useToast";
+import { useCommonStore } from "../../stores";
 import { useClassStore } from "../../stores/classStore";
-const schema = yup
-  .object()
-  .shape({
-    name: yup.string().required("Tên sinh viên là bắt buộc."),
-    code: yup.string().required("Mã sinh viên là bắt buộc."),
-    // email: yup
-    //   .string()
-    //   .email("Email phải là bắt buộc.")
-    //   .required("Email phải là bắt buộc."),
-    // phone: yup.string().required("Số điện thoại phải là bắt buộc."),
-    // password: yup.string().required("Mật khẩu phải là bắt buộc."),
-  })
-  .required();
+import { IAction } from "../../stores/commonStore";
+import MyCard from "../../components/UI/MyCard";
+import { Avatar } from "primereact/avatar";
+import { getImageUrl } from "../../utils";
+import MySmartSelect from "../../components/UI/MySmartSelect";
+import { Button } from "primereact/button";
+import { ISearchUser } from "../../types/user";
+
 const CreateStudent = () => {
   const { id } = useParams();
 
-  const {
-    handleSubmit,
-    formState: { errors },
-    control,
-  } = useForm({
-    resolver: yupResolver(schema),
-    defaultValues: {
-      name: "",
-      code: "",
-      // email: "",
-      // phone: "",
-      // password: "",
-    },
-  });
   const navigate = useNavigate();
 
   const setFooterActions = useCommonStore((state) => state.setFooterActions);
   const setHeaderTitle = useCommonStore((state) => state.setHeaderTitle);
   const resetActions = useCommonStore((state) => state.resetActions);
+  const [students, setStudents] = useState<ISearchUser[]>([]);
   const { showToast } = useToast();
   const { importUsers, fetchClass, createStudentClass } = useClassStore();
-  const onSubmit = async (data: any) => {
+  const onSubmit = async () => {
     // const result = await createStudentClass(id as string, { users: [data] });
-    const result = await createStudentClass(id as string, data);
+    if (!students)
+      return showToast({
+        severity: "error",
+        summary: "Thông báo",
+        message: "Vui lòng chọn sinh viên",
+      });
+    const result = await importUsers(id as string, { users: students });
     if (!result) {
       return showToast({
         severity: "danger",
@@ -69,19 +54,6 @@ const CreateStudent = () => {
   };
 
   useEffect(() => {
-    const actions: IAction[] = [
-      {
-        title: "Trở lại",
-        severity: "secondary",
-        action: "back",
-      },
-      {
-        onClick: handleSubmit(onSubmit),
-        title: "Thêm sinh viên",
-        icon: "pi-plus",
-      },
-    ];
-    setFooterActions(actions);
     setHeaderTitle("Thêm sinh viên");
 
     return () => {
@@ -89,13 +61,68 @@ const CreateStudent = () => {
     };
   }, []);
 
+  useEffect(() => {
+    const actions: IAction[] = [
+      {
+        title: "Trở lại",
+        severity: "secondary",
+        action: "back",
+      },
+      {
+        onClick: () => onSubmit(),
+        title: "Thêm sinh viên",
+        icon: "pi-plus",
+      },
+    ];
+    setFooterActions(actions);
+  }, [students]);
+
   return (
     <div>
-      <form onSubmit={(e) => e.preventDefault()} className="tw-space-y-4">
-        {StudentForm.map((form, index) => (
-          <GroupItem errors={errors} {...form} key={index} control={control} />
-        ))}
-      </form>
+      <MyCard title="Sinh viên">
+        {students &&
+          students.length > 0 &&
+          students.map((item: any, index: number) => (
+            <div className="tw-py-2 tw-px-4 tw-flex tw-items-center tw-justify-between tw-gap-4  tw-cursor-pointer tw-border-b">
+              <div className="tw-flex tw-items-center tw-gap-4">
+                <Avatar
+                  shape="circle"
+                  size="large"
+                  image={getImageUrl(item.avatar || "", item.name)}
+                />
+                <div>
+                  <div className="tw-font-bold">{item.name}</div>
+                  <div>{item.code}</div>
+                </div>
+              </div>
+              <div>
+                <Button
+                  text
+                  onClick={() => {
+                    setStudents(
+                      students.filter((t: any) => t.code !== item.code)
+                    );
+                  }}
+                  icon="pi pi-times"
+                />
+              </div>
+            </div>
+          ))}
+        <div className="tw-mt-4">
+          <MySmartSelect
+            query={{ type: "student" }}
+            onChange={(value) => {
+              const isExisted = students.find(
+                (item) => item.code === value.code
+              );
+              if (!isExisted) {
+                setStudents([...students, value]);
+              }
+            }}
+            placeholder="Chọn sinh viên"
+          />
+        </div>
+      </MyCard>
     </div>
   );
 };

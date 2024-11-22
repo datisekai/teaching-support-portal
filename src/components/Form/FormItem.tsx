@@ -15,6 +15,7 @@ import MyUploadSingleImage from "../UI/MyUploadSingleImage";
 import { IconField } from "primereact/iconfield";
 import { InputIcon } from "primereact/inputicon";
 import { AutoComplete } from "primereact/autocomplete";
+import MySmartSelect from "../UI/MySmartSelect";
 
 interface IForm extends IFormItem {
   control: any;
@@ -35,6 +36,7 @@ const FormItem: React.FC<IForm> = ({
   description,
   watch,
   preConditionProp,
+  query,
 }) => {
   const windowSize = useWindowSize();
 
@@ -302,6 +304,17 @@ const FormItem: React.FC<IForm> = ({
           <MyUploadSingleImage
             onChange={(e) => onChange({ target: { value: e, name: prop } })}
             value={value || ""}
+          />
+        ));
+      case "smart-select":
+        return renderController(({ field: { onChange, onBlur, value } }) => (
+          <MySmartSelect
+            onChange={(value) =>
+              onChange({ target: { value: value, name: prop } })
+            }
+            apiUrl={apiUrl || ""}
+            value={value}
+            query={query || {}}
           />
         ));
       default:

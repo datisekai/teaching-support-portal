@@ -18,7 +18,7 @@ export function getImageUrl(url: string, name: string) {
   if (!url) {
     return `https://ui-avatars.com/api/?name=${name}`;
   }
-  return `${url}`;
+  return `${getImageServer(url)}`;
 }
 
 export function getImageServer(url: string) {

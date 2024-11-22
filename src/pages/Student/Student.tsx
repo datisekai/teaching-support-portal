@@ -63,6 +63,7 @@ const Student = () => {
     getStudentClass,
     students,
     importUsers,
+    deleteStudentClass,
   } = useClassStore();
   const { showToast } = useToast();
   const { setHeaderTitle, setHeaderActions, resetActions, isLoadingApi } =
@@ -77,31 +78,6 @@ const Student = () => {
     getStudentClass(id as string, {});
   }, [id]);
 
-  // const handleEdit = (data: any) => {
-  //   navigate(`/student/edit/${data.id}`);
-  // };
-
-  // const handleDeleteRow = (dataRow: any) => {
-  //   setDataImports((prev) => prev.filter((item) => item.code !== dataRow.code));
-  // };
-  const handleReset = async (data: any) => {
-    const result = await resetDevice(data.id);
-    if (!result) {
-      showToast({
-        severity: "danger",
-        summary: "Thông báo",
-        message: "Cập nhật thất bại!",
-        life: 3000,
-      });
-    }
-    showToast({
-      severity: "success",
-      summary: "Thông báo",
-      message: "Cập nhật thành công!",
-      life: 3000,
-    });
-    getStudentClass(id as string, {});
-  };
   useEffect(() => {
     if (dataImports.length > 0) {
       setContent(
@@ -129,46 +105,6 @@ const Student = () => {
       );
     }
   }, [dataImports]);
-
-  // Function to merge arrays
-  const mergeArrays = (existingArray: any[], newArray: any[]) => {
-    const result = [...existingArray];
-
-    newArray.forEach((newItem) => {
-      // Check if the `code` already exists in the existing array
-      const existingIndex = result.findIndex(
-        (item) => item.code === newItem.code.toString()
-      );
-
-      if (existingIndex > -1) {
-        // Update the existing record
-        result[existingIndex] = {
-          ...result[existingIndex],
-          name: newItem.name || result[existingIndex].name,
-          email: newItem.email || result[existingIndex].email,
-          phone: newItem.phone || result[existingIndex].phone,
-          updatedAt: new Date().toISOString(), // Update timestamp
-        };
-      } else {
-        // Add new record to the result
-        result.push({
-          id: result.length + 1, // Assign new ID
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
-          code: newItem.code.toString(),
-          name: newItem.name || null,
-          email: newItem.email || null,
-          phone: newItem.phone || null,
-          avatar: null,
-          deviceUid: null,
-          active: true,
-          type: "student",
-        });
-      }
-    });
-
-    return result;
-  };
 
   const importExcel = async (file: any) => {
     try {
@@ -228,8 +164,22 @@ const Student = () => {
     const data = {
       message: "Bạn có chắc chắn muốn xoá sinh viên này?",
       header: "Xác nhận xoá",
-      onAccept: () => {
-        // deleteStudentClass(id as string, studentCode);
+      onAccept: async () => {
+        const result = await deleteStudentClass(id as string, studentCode);
+        if (result) {
+          return showToast({
+            severity: "success",
+            summary: "Thông báo",
+            message: "Xóa sinh viên thành công",
+            life: 3000,
+          });
+        }
+        showToast({
+          severity: "error",
+          summary: "Thông báo",
+          message: "Xóa sinh viên thất bại.",
+          life: 3000,
+        });
       },
       onReject: () => {
         console.log("Đã hủy bỏ hành động.");

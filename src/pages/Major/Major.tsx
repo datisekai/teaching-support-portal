@@ -22,20 +22,6 @@ const Major = () => {
   const actionTable: IActionTable[] = [
     {
       onClick: (data, options) => {
-        // const transferData = teachers.map((item) => {
-        //   return { content: item.code, subcontent: item.name };
-        // });
-        onToggle(ModalName.ADD_TEACHER, {
-          header: "Thêm giảng viên",
-          content: { id: data.id, contents: data.teachers },
-          style: "tw-w-[90%] md:tw-w-[30rem]",
-        });
-      },
-      tooltip: "Thêm giảng viên",
-      icon: "pi-user-plus",
-    },
-    {
-      onClick: (data, options) => {
         handleScoreColumn(data);
       },
       tooltip: "Quản lý cột điểm",

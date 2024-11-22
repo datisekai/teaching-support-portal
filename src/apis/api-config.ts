@@ -177,6 +177,10 @@ export const apiConfig = {
       method: "PUT",
       endpoint: "/api.user/:id/reset-device",
     },
+    search: {
+      method: "GET",
+      endpoint: "/api.user/search",
+    },
   },
   // Notification
   notification: {

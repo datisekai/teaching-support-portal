@@ -12,6 +12,12 @@ import { useMajorStore } from "../../stores/majorStore";
 import { useFacultyStore } from "../../stores/facultyStore";
 import { pathNames } from "../../constants";
 import MyLoading from "../../components/UI/MyLoading";
+import { ISearchUser } from "../../types/user";
+import MyCard from "../../components/UI/MyCard";
+import { Avatar } from "primereact/avatar";
+import { getImageUrl } from "../../utils";
+import { Button } from "primereact/button";
+import MySmartSelect from "../../components/UI/MySmartSelect";
 
 const schema = yup
   .object()
@@ -38,6 +44,7 @@ const EditMajor = () => {
   const [facultyOptions, setFacultyOptions] = useState<any>([]);
   const { isLoadingApi } = useCommonStore();
   const [isLoading, setIsLoading] = useState(false);
+  const [teachers, setTeachers] = useState<ISearchUser[]>([]);
   const {
     handleSubmit,
     formState: { errors },
@@ -63,6 +70,13 @@ const EditMajor = () => {
       setValue("name", major.name);
       setValue("code", major.code);
       setValue("facultyId", major?.faculty?.id);
+      setTeachers(
+        major?.teachers?.map((item) => ({
+          code: item.code,
+          name: item.name,
+          avatar: item.avatar,
+        }))
+      );
     }
     if (facultys) {
       const updatedOptions = facultys.map((faculty: any) => ({
@@ -77,7 +91,7 @@ const EditMajor = () => {
   }, [major, facultys]);
 
   const onSubmit = async (data: any) => {
-    const result = await updateMajor(parseInt(id || ""), data);
+    const result = await updateMajor(parseInt(id || ""), { ...data, teachers });
     if (!result) {
       showToast({
         severity: "danger",
@@ -96,6 +110,14 @@ const EditMajor = () => {
   };
 
   useEffect(() => {
+    setHeaderTitle("Chỉnh sửa môn học");
+
+    return () => {
+      resetActions();
+    };
+  }, []);
+
+  useEffect(() => {
     const actions: IAction[] = [
       {
         title: "Trở lại",
@@ -108,12 +130,7 @@ const EditMajor = () => {
       },
     ];
     setFooterActions(actions);
-    setHeaderTitle("Chỉnh sửa môn học");
-
-    return () => {
-      resetActions();
-    };
-  }, []);
+  }, [teachers]);
 
   return (
     <div>
@@ -135,6 +152,54 @@ const EditMajor = () => {
             ))}
           </form>
         )}
+
+        <div className="tw-mt-4">
+          <MyCard title="Giảng viên">
+            {teachers &&
+              teachers.length > 0 &&
+              teachers.map((item: any, index: number) => (
+                <div className="tw-py-2 tw-px-4 tw-flex tw-items-center tw-justify-between tw-gap-4  tw-cursor-pointer tw-border-b">
+                  <div className="tw-flex tw-items-center tw-gap-4">
+                    <Avatar
+                      shape="circle"
+                      size="large"
+                      image={getImageUrl(item.avatar || "", item.name)}
+                    />
+                    <div>
+                      <div className="tw-font-bold">{item.name}</div>
+                      <div>{item.code}</div>
+                    </div>
+                  </div>
+                  <div>
+                    <Button
+                      text
+                      onClick={() => {
+                        setTeachers(
+                          teachers.filter((t: any) => t.code !== item.code)
+                        );
+                      }}
+                      icon="pi pi-times"
+                    />
+                  </div>
+                </div>
+              ))}
+            {teachers.length == 0 && <div>Chưa có giảng viên nào</div>}
+            <div className="tw-mt-4">
+              <MySmartSelect
+                query={{ type: "teacher" }}
+                onChange={(value) => {
+                  const isExisted = teachers.find(
+                    (item) => item.code === value.code
+                  );
+                  if (!isExisted) {
+                    setTeachers([...teachers, value]);
+                  }
+                }}
+                placeholder="Chọn giảng viên"
+              />
+            </div>
+          </MyCard>
+        </div>
       </MyLoading>
     </div>
   );

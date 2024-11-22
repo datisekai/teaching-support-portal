@@ -28,3 +28,9 @@ export interface IPermission {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface ISearchUser {
+  code: string;
+  name: string;
+  avatar?: string;
+}

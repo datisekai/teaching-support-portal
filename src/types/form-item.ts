@@ -14,7 +14,8 @@ export interface IFormItem {
     | "textarea"
     | "file"
     | "editor"
-    | "image";
+    | "image"
+    | "smart-select";
   prop: string;
   options?: IOption[];
   col?: number;
@@ -22,6 +23,7 @@ export interface IFormItem {
   getOptions?: (data?: Array<any>) => IOption[];
   description?: string;
   preConditionProp?: string;
+  query?: any;
 }
 
 export interface IForm {
