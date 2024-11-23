@@ -29,11 +29,9 @@ type Props = {
 
 const MyHtmlCodeEditor: React.FC<Props> = ({ cssInitialValue = '', htmlInitialValue = '', jsInitialValue = '', onChange, heightItem = '20vh' }) => {
     const iframeRef = useRef(null);
-    const [code, setCode] = useState<CodeType>({ html: cssInitialValue, css: htmlInitialValue, javascript: jsInitialValue });
+    const [code, setCode] = useState<CodeType>({ html: htmlInitialValue, css: cssInitialValue, javascript: jsInitialValue });
     const [live, setLive] = useState<LiveModeType>({ htmlCss: true, js: false });
     const [iframeLogs, setIframeLogs] = useState<any[]>([]);
-    const logEndRef = useRef(null)
-
     const handleRunCode = (isRunJs: boolean = false) => {
         if (iframeRef.current && code) {
             const iframe: any = iframeRef.current;
@@ -55,10 +53,7 @@ const MyHtmlCodeEditor: React.FC<Props> = ({ cssInitialValue = '', htmlInitialVa
     };
 
     useEffect(() => {
-        if (live) {
-            handleRunCode(live.htmlCss);
-        }
-
+        handleRunCode(live.js);
     }, [code, live]);
 
     useEffect(() => {

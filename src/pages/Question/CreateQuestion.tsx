@@ -22,6 +22,7 @@ import { useQuestionStore } from "../../stores/questionStore";
 import { InputText } from "primereact/inputtext";
 import { RadioButton } from "primereact/radiobutton";
 import MyHtmlCodeEditor from "../../components/UI/MyHtmlCodeEditor";
+import { defaultHtmlCode } from "../../constants/html";
 
 interface IAnswer {
   text: string;
@@ -373,7 +374,7 @@ const CreateQuestion = () => {
       )}
 
       {questionType === QuestionType.CODE_HTML && <MyCard title="Code khởi tạo">
-        <MyHtmlCodeEditor />
+        <MyHtmlCodeEditor htmlInitialValue={defaultHtmlCode} />
       </MyCard>}
     </div>
   );
