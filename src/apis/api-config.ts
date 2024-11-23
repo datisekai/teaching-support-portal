@@ -449,5 +449,17 @@ export const apiConfig = {
       method: "GET",
       endpoint: "/api.submission/score/:id",
     },
+    getExamHistory: {
+      method: "GET",
+      endpoint: "/api.submission/history/:id/user/:userId",
+    },
+    getTakeOrder: {
+      method: "GET",
+      endpoint: "/api.exam/take-order/:id",
+    },
+    updateSubmission: {
+      method: "PUT",
+      endpoint: "/api.submission/:submissionId",
+    },
   },
 };

@@ -7,10 +7,18 @@ import {
 } from "../../dataTable/detailRoomTable";
 import { useParams } from "react-router-dom";
 import { exportExcel } from "../../utils/my-export-excel";
+import { useClassStore } from "../../stores/classStore";
+import { useQuery } from "../../hooks/useQuery";
 
 const DetailAttendance = () => {
   const actionTable: IActionTable[] = [];
   const { id } = useParams();
+  const [classId] = useQuery({
+    key: 'classId',
+    defaultValue: ""
+  })
+
+  const { getStudentClass, students } = useClassStore()
 
   const { fetchAttendees, attendees, attendeesUnlimited } =
     useAttendanceStore();
@@ -52,6 +60,13 @@ const DetailAttendance = () => {
       resetActions();
     };
   }, []);
+
+  useEffect(() => {
+    if (classId) {
+      // console.log('classId', classId);
+      getStudentClass(classId as string, {});
+    }
+  }, [classId])
 
   const data = useMemo(() => {
     return attendees?.map((item) => ({

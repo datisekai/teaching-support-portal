@@ -15,7 +15,7 @@ const Attendance = () => {
     return [
       {
         onClick: (data, options) => {
-          handleClick(`/attendance/detail/${data.id}`, data);
+          handleClick(`/attendance/detail/${data.id}?classId=${data.class.id}`, data);
         },
         tooltip: "Danh sách điểm danh",
         icon: "pi-users",

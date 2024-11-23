@@ -29,7 +29,7 @@ export const detailRoomSchemas: TableSchema[] = [
   {
     label: "Trạng thái",
     prop: "isSuccess",
-    type: "badge",
+    type: "text",
 
     getBadge: (value) => {
       switch (value) {

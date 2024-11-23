@@ -9,17 +9,12 @@ export const scoreSchemas: TableSchema[] = [
   },
   {
     label: "MSSV",
-    prop: "user_code",
+    prop: "code",
     type: "text",
   },
   {
     label: "Tên sinh viên",
-    prop: "user_name",
-    type: "text",
-  },
-  {
-    label: "Tên đề thi",
-    prop: "exam_title",
+    prop: "name",
     type: "text",
   },
   {
@@ -27,7 +22,8 @@ export const scoreSchemas: TableSchema[] = [
     prop: "grade",
     type: "text",
     render(data) {
-      return `${parseFloat(data.grade.toFixed(1))} điểm`;
+
+      return `${data?.grade?.toFixed(2) || 0} điểm`;
     },
   },
   {
@@ -45,7 +41,7 @@ export const scoreSchemas: TableSchema[] = [
             <strong>{mouseRight} lần</strong> click chuột phải.
           </p>
           <p>
-            <strong>{controlCVX} lần</strong> Control C, V, X.
+            <strong>{controlCVX} lần</strong> control C, V, X.
           </p>
         </>
       );

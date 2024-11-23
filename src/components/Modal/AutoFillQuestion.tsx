@@ -11,12 +11,6 @@ import { Button } from "primereact/button";
 import { randomString } from "../../utils";
 import { questionService } from "../../services/questionService";
 
-const items = [
-  { name: "Option 1", value: 1 },
-  { name: "Option 2", value: 2 },
-  { name: "Option 3", value: 3 },
-];
-
 const AutoFillQuestion = () => {
   const { difficultys } = useDifficultyStore();
   const { content, onDismiss } = useModalStore();

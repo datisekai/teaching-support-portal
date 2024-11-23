@@ -47,4 +47,31 @@ export const examService = {
       endpoint: getHistory.endpoint.replace(":id", id.toString()),
     });
   },
+  getExamHistory: async (id: number, userId: number) => {
+    const { getExamHistory } = apiConfig.exam;
+    return processMiddlewareSendRequest({
+      ...getExamHistory,
+      endpoint: getExamHistory.endpoint
+        .replace(":id", id.toString())
+        .replace(":userId", userId.toString()),
+    });
+  },
+  getTakeOrder: async (id: string) => {
+    const { getTakeOrder } = apiConfig.exam;
+    return processMiddlewareSendRequest({
+      ...getTakeOrder,
+      endpoint: getTakeOrder.endpoint.replace(":id", id.toString()),
+    });
+  },
+  updateSubmission: async (id: number, body: Record<string, any>) => {
+    const { updateSubmission } = apiConfig.exam;
+    return sendServerRequest({
+      ...updateSubmission,
+      endpoint: updateSubmission.endpoint.replace(
+        ":submissionId",
+        id.toString()
+      ),
+      body,
+    });
+  },
 };

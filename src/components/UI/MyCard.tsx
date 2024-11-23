@@ -12,6 +12,7 @@ interface CardProps {
   className?: string;
   tooltip?: React.ReactNode
   action?: IAction
+  containerClassName?: string
 }
 const MyCard: React.FC<CardProps> = ({
   title,
@@ -19,11 +20,12 @@ const MyCard: React.FC<CardProps> = ({
   children,
   footer,
   className,
-  tooltip, action
+  tooltip, action,
+  containerClassName = ''
 }) => {
   const randomID = "tooltip-card"
   return (
-    <div className={`tw-border tw-shadow-md tw-rounded-lg tw-p-4 tw-bg-white `}>
+    <div className={`tw-border tw-shadow-md tw-rounded-lg tw-p-4 tw-bg-white ${containerClassName}`}>
       <div className="tw-mb-4">
         <div className="tw-flex tw-items-center tw-justify-between">
           <div className="tw-flex tw-gap-1 tw-items-center">

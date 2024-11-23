@@ -60,7 +60,7 @@ const EditClass = () => {
       setValue("duration", _class.duration);
       setValue("majorId", _class?.major?.id.toString());
       setTeachers(
-        _class?.teachers.map((item) => ({
+        _class?.teachers?.map((item) => ({
           code: item.code,
           name: item.name,
           avatar: item.avatar,
@@ -144,8 +144,8 @@ const EditClass = () => {
         <div className="tw-mt-4">
           <MyCard title="Giảng viên">
             {teachers &&
-              teachers.length > 0 &&
-              teachers.map((item: any, index: number) => (
+              teachers?.length > 0 &&
+              teachers?.map((item: any, index: number) => (
                 <div className="tw-py-2 tw-px-4 tw-flex tw-items-center tw-justify-between tw-gap-4  tw-cursor-pointer tw-border-b">
                   <div className="tw-flex tw-items-center tw-gap-4">
                     <Avatar
@@ -171,7 +171,7 @@ const EditClass = () => {
                   </div>
                 </div>
               ))}
-            {teachers.length == 0 && <div>Chưa có giảng viên nào</div>}
+            {teachers?.length == 0 && <div>Chưa có giảng viên nào</div>}
             <div className="tw-mt-4">
               <MySmartSelect
                 query={{ type: "teacher" }}

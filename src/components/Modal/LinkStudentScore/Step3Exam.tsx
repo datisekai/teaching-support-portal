@@ -2,6 +2,10 @@ import { InputNumber } from "primereact/inputnumber";
 import React, { useMemo, useState } from "react";
 import { useModalStore } from "../../../stores";
 import { useClassStore } from "../../../stores/classStore";
+import MyCard from "../../UI/MyCard";
+import { Button } from "primereact/button";
+import { InputText } from "primereact/inputtext";
+import { useDebounceValue } from "usehooks-ts";
 
 type Props = {
   hashCurrentScore: any;
@@ -13,10 +17,9 @@ const Step3Exam: React.FC<Props> = ({
   hashScore,
   setHashScore,
 }) => {
-  console.log("hashCurrentScore", hashCurrentScore);
-  console.log("hashScore", hashScore);
   const { content } = useModalStore();
   const { students } = useClassStore();
+  const [debouncedValue, setValue] = useDebounceValue('', 500)
   const tableSchemas = useMemo(() => {
     return [
       {
@@ -90,7 +93,7 @@ const Step3Exam: React.FC<Props> = ({
                 <strong>{mouseRight} lần</strong> click chuột phải.
               </p>
               <p>
-                <strong>{controlCVX} lần</strong> Control C, V, X.
+                <strong>{controlCVX} lần</strong> control C, V, X.
               </p>
             </>
           );
@@ -98,45 +101,67 @@ const Step3Exam: React.FC<Props> = ({
       },
     ];
   }, [hashScore, hashCurrentScore]);
+
+
+  const studentFilter = useMemo(() => {
+    if (!debouncedValue || !debouncedValue?.trim()) {
+      return students;
+    }
+    return students?.filter((item: any) => {
+      const fullTextSearch = `${item.code} ${item.name}`.toLowerCase();
+      return fullTextSearch.includes(debouncedValue.toLowerCase());
+    })
+  }, [debouncedValue])
+
   return (
-    <div className="tw-overflow-x-auto">
-      <div className="tw-flex tw-bg-[#f9fafb] tw-border-t tw-border-b tw-px-2">
-        {tableSchemas.map((item: any, index: number) => {
-          return (
-            <div
-              className="tw-font-bold tw-py-4 tw-text-[#374151]"
-              key={item.prop}
-              style={{ width: item.width }}
-            >
-              {item.renderHeader ? item.renderHeader() : item.label}
-            </div>
-          );
-        })}
+    <div>
+      <div className="tw-mb-4 tw-shadow-sm">
+        <div className={"tw-flex tw-items-end tw-gap-4"}>
+          <div>
+            <div className={"mb-1"}>Tìm kiếm theo msv, tên</div>
+            <InputText onChange={e => setValue(e.target.value)} placeholder="Tìm kiếm" />
+          </div>
+        </div>
+      </div >
+      <div className="tw-overflow-x-auto">
+        <div className="tw-flex tw-bg-[#f9fafb] tw-border-t tw-border-b tw-px-2">
+          {tableSchemas.map((item: any, index: number) => {
+            return (
+              <div
+                className="tw-font-bold tw-py-4 tw-text-[#374151]"
+                key={item.prop}
+                style={{ width: item.width }}
+              >
+                {item.renderHeader ? item.renderHeader() : item.label}
+              </div>
+            );
+          })}
+        </div>
+        <div>
+          {studentFilter?.map((item: any, index: number) => {
+            return (
+              <div
+                key={item.id}
+                className="tw-flex tw-py-4 tw-border-b tw-px-2 tw-items-center"
+              >
+                {tableSchemas?.map((cell) => {
+                  return (
+                    <div
+                      key={`${cell.prop}_${item.id}`}
+                      style={{ width: cell.width }}
+                    >
+                      {cell.render
+                        ? cell.render(item, index)
+                        : item[cell.prop] || ""}
+                    </div>
+                  );
+                })}
+              </div>
+            );
+          })}
+        </div>
       </div>
-      <div>
-        {students?.map((item: any, index: number) => {
-          return (
-            <div
-              key={item.id}
-              className="tw-flex tw-py-4 tw-border-b tw-px-2 tw-items-center"
-            >
-              {tableSchemas?.map((cell) => {
-                return (
-                  <div
-                    key={`${cell.prop}_${item.id}`}
-                    style={{ width: cell.width }}
-                  >
-                    {cell.render
-                      ? cell.render(item, index)
-                      : item[cell.prop] || ""}
-                  </div>
-                );
-              })}
-            </div>
-          );
-        })}
-      </div>
-    </div>
+    </div >
   );
 };
 

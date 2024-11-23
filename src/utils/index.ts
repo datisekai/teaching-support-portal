@@ -84,3 +84,9 @@ export function getQuestionTypeText(value: string) {
       return "Không xác định";
   }
 }
+
+export function zeroPad(n: any, width: any, z?: string) {
+  z = z || "0";
+  n = n + "";
+  return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
+}

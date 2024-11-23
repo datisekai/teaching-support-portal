@@ -43,12 +43,12 @@ const Exam = () => {
         });
         fetchExams({}); // Refresh data after delete
       },
-      onReject: () => {},
+      onReject: () => { },
     };
     onConfirm(confirmData);
   };
   const handleViewScore = (data: any) => {
-    navigate(`${pathNames.EXAM}/view/${data.id}`);
+    navigate(`${pathNames.EXAM}/view/${data.id}?classId=${data.class.id}`);
   };
 
   const actionTable: IActionTable[] = [
