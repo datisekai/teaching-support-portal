@@ -136,6 +136,15 @@ const Question = () => {
         type: "button",
         disabled: false,
       },
+      {
+        title: "Tạo bài tập HTML",
+        icon: "pi pi-plus",
+        onClick: () => {
+          navigate(`/question/create?type=code_html`);
+        },
+        type: "button",
+        disabled: false,
+      },
     ]);
     return () => {
       resetActions();

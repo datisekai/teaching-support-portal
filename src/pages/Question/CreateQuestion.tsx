@@ -10,6 +10,7 @@ import MyCard from "../../components/UI/MyCard";
 import { pathNames, QuestionType } from "../../constants";
 import {
   QuestionCodeForm,
+  QuestionCodeHtmlForm,
   QuestionMultiChoiceForm,
 } from "../../dataForm/questionForm";
 import { useQuery } from "../../hooks/useQuery";
@@ -20,6 +21,7 @@ import { useToast } from "../../hooks/useToast";
 import { useQuestionStore } from "../../stores/questionStore";
 import { InputText } from "primereact/inputtext";
 import { RadioButton } from "primereact/radiobutton";
+import MyHtmlCodeEditor from "../../components/UI/MyHtmlCodeEditor";
 
 interface IAnswer {
   text: string;
@@ -177,10 +179,19 @@ const CreateQuestion = () => {
 
   const QuestionForm = useMemo(() => {
     console.log(questionType);
-    const form =
-      questionType === QuestionType.MULTIPLE_CHOICE
-        ? QuestionMultiChoiceForm
-        : QuestionCodeForm;
+    let form;
+    switch (questionType) {
+      case QuestionType.MULTIPLE_CHOICE:
+        form = QuestionMultiChoiceForm;
+        break;
+      case QuestionType.CODE:
+        form = QuestionCodeForm;
+        break;
+      case QuestionType.CODE_HTML:
+        form = QuestionCodeHtmlForm
+        break;
+    }
+
 
     return form;
   }, [questionType]);
@@ -360,6 +371,10 @@ const CreateQuestion = () => {
           />
         </>
       )}
+
+      {questionType === QuestionType.CODE_HTML && <MyCard title="Code khởi tạo">
+        <MyHtmlCodeEditor />
+      </MyCard>}
     </div>
   );
 };
