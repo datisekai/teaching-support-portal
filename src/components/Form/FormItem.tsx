@@ -41,8 +41,8 @@ const FormItem: React.FC<IForm> = ({
   const windowSize = useWindowSize();
 
   const width = useMemo(() => {
-    if (windowSize.width < 768) return "100%";
-    return `${(col / 12) * 100}%`;
+    if (windowSize.width < 768) return "95%";
+    return `${(col / 12) * 95}%`;
   }, [col, windowSize.width]);
   const [ajaxOptions, setAjaxOptions] = useState<IOption[] | null>(null);
   const [loading, setLoading] = useState(false);

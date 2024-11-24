@@ -11,18 +11,14 @@ export const NotificationForm: IForm[] = [
         label: "Tên thông báo",
         col: 6,
       },
+
       {
         prop: "image",
         type: "image",
         label: "Ảnh thông báo",
-        col: 6,
+        col: 12,
       },
-      {
-        prop: "content",
-        type: "editor",
-        label: "Nội dung thông báo",
-        col: 6,
-      },
+
       {
         prop: "classIds",
         type: "multi-select-ajax",
@@ -37,6 +33,12 @@ export const NotificationForm: IForm[] = [
             };
           });
         },
+      },
+      {
+        prop: "content",
+        type: "editor",
+        label: "Nội dung thông báo",
+        col: 12,
       },
     ],
   },

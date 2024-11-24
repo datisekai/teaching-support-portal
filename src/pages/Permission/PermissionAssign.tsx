@@ -2,11 +2,12 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { InputSwitch, InputSwitchChangeEvent } from "primereact/inputswitch";
 import { Checkbox, CheckboxChangeEvent } from "primereact/checkbox";
-import { usePermissionStore, useRoleStore } from "../../stores";
+import { useCommonStore, usePermissionStore, useRoleStore } from "../../stores";
 import { IPermission } from "../../types/user";
 import { translateAction, translateResource } from "../../utils";
 import MyCard from "../../components/UI/MyCard";
 import { useToast } from "../../hooks/useToast";
+import MyLoading from "../../components/UI/MyLoading";
 
 const PermissionAssign: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -18,6 +19,7 @@ const PermissionAssign: React.FC = () => {
   const { permissions, fetchPermissions } = usePermissionStore();
   const { role, fetchRole, updateRolePermissions } = useRoleStore();
   const { showToast } = useToast();
+  const { isLoadingApi } = useCommonStore()
 
   useEffect(() => {
     fetchPermissions();
@@ -205,50 +207,51 @@ const PermissionAssign: React.FC = () => {
 
   return (
     <div>
-      <MyCard title="Danh sách quyền">
-        <div className="tw-grid tw-grid-cols-1 md:tw-grid-cols-3 tw-gap-4">
-          {Object.values(transformedData).map((item: any) => (
-            <div key={item.key} className="tw-p-2 tw-border tw-rounded">
-              <div className="tw-flex tw-items-center">
-                <Checkbox
-                  inputId={item.key}
-                  value={item.key}
-                  onChange={(e) => togglePermission(e, item)}
-                  checked={isParentChecked(item)}
-                />
-                <label
-                  className="tw-ml-2 tw-font-bold tw-text-lg text-primary"
-                  htmlFor={item.key}
-                >
-                  {item.title}
-                </label>
-              </div>
-              {item.children && (
-                <div>
-                  {item.children.map((child: any) => (
-                    <div
-                      className="tw-mx-4 tw-my-2 tw-flex tw-items-center"
-                      key={child.key}
-                    >
-                      <InputSwitch
-                        checked={
-                          checkedStates[child.key] || child.isChecked || false
-                        }
-                        onChange={(e: InputSwitchChangeEvent) =>
-                          handleSwitchChange(child.id, child.key, e.value)
-                        }
-                      />
-                      <label className="tw-ml-2 tw-font-medium">
-                        {child.title}
-                      </label>
-                    </div>
-                  ))}
+      <MyLoading isLoading={isLoadingApi}>
+        <MyCard title="Danh sách quyền">
+          <div className="tw-grid tw-grid-cols-1 md:tw-grid-cols-3 tw-gap-4">
+            {Object.values(transformedData).map((item: any) => (
+              <div key={item.key} className="tw-p-2 tw-border tw-rounded">
+                <div className="tw-flex tw-items-center">
+                  <Checkbox
+                    inputId={item.key}
+                    value={item.key}
+                    onChange={(e) => togglePermission(e, item)}
+                    checked={isParentChecked(item)}
+                  />
+                  <label
+                    className="tw-ml-2 tw-font-bold tw-text-lg text-primary"
+                    htmlFor={item.key}
+                  >
+                    {item.title}
+                  </label>
                 </div>
-              )}
-            </div>
-          ))}
-        </div>
-      </MyCard>
+                {item.children && (
+                  <div>
+                    {item.children.map((child: any) => (
+                      <div
+                        className="tw-mx-4 tw-my-2 tw-flex tw-items-center"
+                        key={child.key}
+                      >
+                        <InputSwitch
+                          checked={
+                            checkedStates[child.key] || child.isChecked || false
+                          }
+                          onChange={(e: InputSwitchChangeEvent) =>
+                            handleSwitchChange(child.id, child.key, e.value)
+                          }
+                        />
+                        <label className="tw-ml-2 tw-font-medium">
+                          {child.title}
+                        </label>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </MyCard></MyLoading>
     </div>
   );
 };

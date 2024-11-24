@@ -7,7 +7,7 @@ export const translateResource = (resource: string): string => {
     case "permission":
       return "Quyền";
     case "role":
-      return "Vai trò";
+      return "Loại người dùng";
     case "faculty":
       return "Khoa";
     case "major":
@@ -28,6 +28,14 @@ export const translateResource = (resource: string): string => {
       return "Câu trả lời";
     case "exam":
       return "Kỳ thi";
+    case "difficulty":
+      return "Độ khó";
+    case "meta":
+      return "Meta";
+    case "score_column":
+      return "Cột điểm";
+    case "student_score":
+      return "Điểm sinh viên";
     default:
       return "Không rõ";
   }

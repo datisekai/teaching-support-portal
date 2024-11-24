@@ -1,3 +1,4 @@
+import { QuestionType } from "../constants";
 import { TableSchema } from "../types/table";
 
 // Định nghĩa schema cho bảng question
@@ -55,10 +56,12 @@ export const questionSchemas: TableSchema[] = [
     prop: "type",
     type: "badge",
     getBadge: (value) => {
-      if (value === "multiple_choice") {
+      if (value === QuestionType.MULTIPLE_CHOICE) {
         return { value: "Trắc nghiệm", severity: "info" };
       }
-      return { value: "Bài tập", severity: "warning" };
+      if (value === QuestionType.CODE_HTML)
+        return { value: "Code HTML", severity: "success" };
+      return { value: "Code", severity: "warning" };
     },
   },
   {

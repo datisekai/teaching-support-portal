@@ -13,16 +13,11 @@ export const QuestionCodeForm: IForm[] = [
       },
       {
         prop: "content",
-        type: "textarea",
+        type: "editor",
         label: "Nội dung câu hỏi",
-        col: 6,
+        col: 12,
       },
-      {
-        prop: "isPublic",
-        type: "switch",
-        label: "Public",
-        col: 6,
-      },
+
       {
         prop: "majorId",
         type: "select-ajax",
@@ -65,6 +60,12 @@ export const QuestionCodeForm: IForm[] = [
           return data.map((item) => ({ title: item.name, value: item.id }));
         },
       },
+      {
+        prop: "isPublic",
+        type: "switch",
+        label: "Public",
+        col: 6,
+      },
     ],
   },
 ];
@@ -83,7 +84,7 @@ export const QuestionMultiChoiceForm: IForm[] = [
         prop: "content",
         type: "editor",
         label: "Nội dung câu hỏi",
-        col: 6,
+        col: 12,
       },
       {
         prop: "majorId",
@@ -158,7 +159,7 @@ export const QuestionCodeHtmlForm: IForm[] = [
         prop: "content",
         type: "editor",
         label: "Nội dung câu hỏi",
-        col: 6,
+        col: 12,
       },
       {
         prop: "majorId",

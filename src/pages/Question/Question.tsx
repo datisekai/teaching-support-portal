@@ -31,9 +31,7 @@ const Question = () => {
   };
 
   const handleEdit = (data: any) => {
-    const type =
-      data.type === QuestionType.MULTIPLE_CHOICE ? "multiple_choice" : "code";
-    navigate(`/question/edit/${data.id}?type=${type}`);
+    navigate(`/question/edit/${data.id}?type=${data.type}`);
   };
 
   const handleDelete = (id: number) => {

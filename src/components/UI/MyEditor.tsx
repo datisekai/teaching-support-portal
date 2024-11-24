@@ -2,6 +2,7 @@ import { Editor } from '@tinymce/tinymce-react'
 import React, { useMemo } from 'react'
 import { sendUploadImage } from '../../apis'
 import { useToast } from '../../hooks/useToast'
+import { BASE_URL } from '../../constants'
 
 interface Props {
     height?: number,
@@ -43,7 +44,7 @@ const MyEditor: React.FC<Props> = ({ onChange, value, height }) => {
                     return new Promise((resolve, reject) => {
                         sendUploadImage(file)
                             .then(data => {
-                                resolve(data);
+                                resolve(`${BASE_URL}/${data}`);
                             })
                             .catch(e => {
                                 showToast({

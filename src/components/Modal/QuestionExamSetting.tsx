@@ -6,7 +6,7 @@ import { Button } from "primereact/button";
 import { getQuestionTypeText } from "../../utils";
 
 const QuestionExamSetting = () => {
-  const { content } = useModalStore();
+  const { content, onDismiss } = useModalStore();
   const [hashScore, setHashScore] = useState<any>({});
 
   const sumScore = useMemo(() => {
@@ -33,7 +33,7 @@ const QuestionExamSetting = () => {
   const disabled = useMemo(() => {
     return (
       Object.values(hashScore).reduce((pre: any, cur: any) => pre + +cur, 0) !==
-        10 || Object.values(hashScore).some((item: any) => item < 0)
+      10 || Object.values(hashScore).some((item: any) => item < 0)
     );
   }, [hashScore]);
 
@@ -41,6 +41,7 @@ const QuestionExamSetting = () => {
     if (content?.onApply && typeof content.onApply === "function") {
       content.onApply(hashScore);
     }
+    onDismiss()
   };
 
   return (
@@ -94,9 +95,10 @@ const QuestionExamSetting = () => {
                     severity="warning"
                     icon="pi pi-sliders-v"
                     onClick={() => {
-                      const newScore =
-                        10 - sumScore + (hashScore[item.id] || 0);
-                      setHashScore({ ...hashScore, [item.id]: newScore });
+                      const sumExcept = sumScore - (+hashScore?.[item.id] || 0);
+                      const remainScore = 10 - sumExcept;
+
+                      setHashScore({ ...hashScore, [item.id]: remainScore });
                     }}
                     tooltip="Điểm còn lại"
                   ></Button>

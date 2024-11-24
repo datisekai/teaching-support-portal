@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useQuestionStore } from "../../stores/questionStore";
 import { Button } from "primereact/button";
-import { useModalStore } from "../../stores";
+import { useCommonStore, useModalStore } from "../../stores";
 import { useClassStore } from "../../stores/classStore";
 import { IQuestion } from "../../types/question";
 import { Card } from "primereact/card";
@@ -10,6 +10,7 @@ import { useChapterStore } from "../../stores/chapterStore";
 import { useDifficultyStore } from "../../stores/difficultStore";
 import { Paginator, PaginatorPageChangeEvent } from "primereact/paginator";
 import { getQuestionTypeText } from "../../utils";
+import MyLoading from "../UI/MyLoading";
 
 const questionTypes = [
   {
@@ -27,6 +28,7 @@ const ChooseQuestion = () => {
   const { classesUnlimited } = useClassStore();
   const { fetchChapters, chapters } = useChapterStore();
   const { difficultys } = useDifficultyStore();
+  const { isLoadingApi } = useCommonStore()
 
   const { questions, fetchQuestions, total } = useQuestionStore();
   const [previewQuestions, setPreviewQuestions] = useState<IQuestion[]>([]);
@@ -130,53 +132,54 @@ const ChooseQuestion = () => {
           </div>
         </div>
       </div>
-      <div className="tw-space-y-2">
-        {questions?.map((item, index) => (
-          <div
-            key={item.id}
-            className={`tw-cursor-pointer tw-border tw-shadow-sm tw-px-4 tw-py-2 tw-rounded tw-flex tw-justify-between tw-items-center tw-w-full ${
-              previewQuestions.some((p) => p.id === item.id)
-                ? "border-primary tw-bg-gray-50"
-                : ""
-            }`}
-            onClick={() => {
-              const isExisted = previewQuestions.some((p) => p.id === item.id);
-              if (isExisted) {
-                setPreviewQuestions(
-                  previewQuestions.filter((p) => p.id !== item.id)
-                );
-              } else {
-                setPreviewQuestions([...previewQuestions, item]);
-              }
-            }}
-          >
-            <div>
-              <div className="tw-font-bold tw-line-clamp-1">
-                {index + 1}. {item.title}
-              </div>
-              <div className="tw-flex tw-items-center tw-gap-2">
-                <p>
-                  Chương:{" "}
-                  <span className="text-primary">{item.chapter.name}</span>
-                </p>
-                <p>
-                  Độ khó:{" "}
-                  <span className="text-primary">{item.difficulty.level}</span>
-                </p>
-                <p>
-                  Loại:{" "}
-                  <span className="text-primary">
-                    {getQuestionTypeText(item.type)}
-                  </span>
-                </p>
+      <MyLoading isLoading={isLoadingApi}>
+        <div className="tw-space-y-2">
+          {questions?.map((item, index) => (
+            <div
+              key={item.id}
+              className={`tw-cursor-pointer tw-border tw-shadow-sm tw-px-4 tw-py-2 tw-rounded tw-flex tw-justify-between tw-items-center tw-w-full ${previewQuestions.some((p) => p.id === item.id)
+                  ? "border-primary tw-bg-gray-50"
+                  : ""
+                }`}
+              onClick={() => {
+                const isExisted = previewQuestions.some((p) => p.id === item.id);
+                if (isExisted) {
+                  setPreviewQuestions(
+                    previewQuestions.filter((p) => p.id !== item.id)
+                  );
+                } else {
+                  setPreviewQuestions([...previewQuestions, item]);
+                }
+              }}
+            >
+              <div>
+                <div className="tw-font-bold tw-line-clamp-1">
+                  {index + 1}. {item.title}
+                </div>
+                <div className="tw-flex tw-items-center tw-gap-2">
+                  <p>
+                    Chương:{" "}
+                    <span className="text-primary">{item.chapter.name}</span>
+                  </p>
+                  <p>
+                    Độ khó:{" "}
+                    <span className="text-primary">{item.difficulty.level}</span>
+                  </p>
+                  <p>
+                    Loại:{" "}
+                    <span className="text-primary">
+                      {getQuestionTypeText(item.type)}
+                    </span>
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
-        {questions?.length == 0 && (
-          <div className="tw-text-center tw-my-8">Không có câu hỏi nào.</div>
-        )}
-      </div>
+          ))}
+          {questions?.length == 0 && (
+            <div className="tw-text-center tw-my-8">Không có câu hỏi nào.</div>
+          )}
+        </div>
+      </MyLoading>
 
       <div className="tw-flex tw-items-center tw-justify-between">
         <div>

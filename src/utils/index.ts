@@ -80,6 +80,8 @@ export function getQuestionTypeText(value: string) {
       return "Trắc nghiệm";
     case "code":
       return "Bài tập";
+    case "code_html":
+      return "Bài tập HTML";
     default:
       return "Không xác định";
   }

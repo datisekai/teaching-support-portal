@@ -20,7 +20,7 @@ export const FacultyForm: IForm[] = [
         prop: "description",
         type: "editor",
         label: "Mô tả",
-        col: 6,
+        col: 12,
       },
       // {
       //   prop: "count",

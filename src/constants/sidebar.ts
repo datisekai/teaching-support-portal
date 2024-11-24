@@ -130,19 +130,19 @@ export const sidebarData: IMenuItem[] = [
       },
     ],
   },
-  {
-    title: "Giao diện",
-    icon: "",
-    path: pathNames.THEME,
-    children: [
-      {
-        title: "Quản lý giao diện",
-        icon: "pi pi-cog",
-        path: pathNames.THEME,
-        permission: "theme:view",
-      },
-    ],
-  },
+  // {
+  //   title: "Giao diện",
+  //   icon: "",
+  //   path: pathNames.THEME,
+  //   children: [
+  //     {
+  //       title: "Quản lý giao diện",
+  //       icon: "pi pi-cog",
+  //       path: pathNames.THEME,
+  //       permission: "theme:view",
+  //     },
+  //   ],
+  // },
 ];
 
 interface IMenuItem {

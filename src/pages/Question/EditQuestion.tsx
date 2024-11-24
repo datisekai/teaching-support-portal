@@ -10,6 +10,7 @@ import MyCard from "../../components/UI/MyCard";
 import { pathNames, QuestionType } from "../../constants";
 import {
   QuestionCodeForm,
+  QuestionCodeHtmlForm,
   QuestionMultiChoiceForm,
 } from "../../dataForm/questionForm";
 import { useQuery } from "../../hooks/useQuery";
@@ -20,6 +21,9 @@ import { RadioButton } from "primereact/radiobutton";
 import { useToast } from "../../hooks/useToast";
 import { useQuestionStore } from "../../stores/questionStore";
 import InitCode from "./components/InitCode";
+import MyHtmlCodeEditor from "../../components/UI/MyHtmlCodeEditor";
+import { defaultHtmlCode } from "../../constants/html";
+import MyLoading from "../../components/UI/MyLoading";
 
 interface IAnswer {
   text: string;
@@ -50,6 +54,7 @@ const EditQuestion = () => {
   const navigate = useNavigate();
 
   const [answers, setAnswers] = useState<IAnswer[]>([]);
+  const { isLoadingApi } = useCommonStore()
   const [testcases, setTestCases] = useState([
     { input: "", expectedOutput: "" },
   ]);
@@ -181,7 +186,7 @@ const EditQuestion = () => {
       return newTestcases;
     });
   };
-  const initCode = watch("initCode");
+  const initCode: any = watch("initCode");
   const languages = watch("acceptedLanguages") as string[];
 
   useEffect(() => {
@@ -210,143 +215,158 @@ const EditQuestion = () => {
   ]);
 
   const QuestionForm = useMemo(
-    () =>
-      questionType === QuestionType.MULTIPLE_CHOICE
-        ? QuestionMultiChoiceForm
-        : QuestionCodeForm,
+    () => {
+      if (questionType === QuestionType.MULTIPLE_CHOICE) {
+        return QuestionMultiChoiceForm;
+      }
+      if (questionType === QuestionType.CODE) {
+        return QuestionCodeForm;
+      }
+      if (questionType === QuestionType.CODE_HTML) {
+        return QuestionCodeHtmlForm;
+      }
+      return QuestionMultiChoiceForm;
+    },
     [questionType]
   );
 
+
   return (
-    <div className="tw-space-y-4">
-      <form onSubmit={(e) => e.preventDefault()} className="tw-space-y-4">
-        {QuestionForm.map((form, index) => (
-          <GroupItem
-            errors={errors}
-            {...form}
-            control={control}
-            watch={watch}
-          />
-        ))}
-      </form>
-
-      {questionType === QuestionType.MULTIPLE_CHOICE && (
-        <MyCard title="Đáp án" className="tw-flex tw-flex-col tw-gap-4">
-          {answers.map((answer, index) => (
-            <div
-              className="tw-flex tw-items-center tw-justify-between tw-gap-2"
-              key={index}
-            >
-              <div className="tw-flex tw-items-center tw-gap-2 tw-w-full">
-                <RadioButton
-                  inputId={`answer-${index}`}
-                  name="choices"
-                  value={answer.text}
-                  onChange={() =>
-                    handleSetValue(index, answer.text, "isCorrect")
-                  }
-                  checked={answer.isCorrect}
-                />
-                <InputText
-                  placeholder={`Đáp án ${index + 1}`}
-                  value={answer.text}
-                  onChange={(e) =>
-                    handleSetValue(index, e.target.value, "text")
-                  }
-                  className="tw-w-full"
-                />
-              </div>
-              <Button
-                icon="pi pi-trash"
-                severity="danger"
-                tooltip="Xóa"
-                tooltipOptions={{ position: "top" }}
-                onClick={() =>
-                  setAnswers(answers.filter((_, idx) => idx !== index))
-                }
-              />
-            </div>
+    <MyLoading isLoading={isLoadingApi}>
+      <div className="tw-space-y-4">
+        <form onSubmit={(e) => e.preventDefault()} className="tw-space-y-4">
+          {QuestionForm.map((form, index) => (
+            <GroupItem
+              errors={errors}
+              {...form}
+              control={control}
+              watch={watch}
+            />
           ))}
-          <Button
-            text
-            className="tw-w-full"
-            label="Thêm đáp án"
-            onClick={() =>
-              setAnswers([...answers, { text: "", isCorrect: false }])
-            }
-          />
-        </MyCard>
-      )}
+        </form>
 
-      {questionType === QuestionType.CODE && (
-        <>
-          <MyCard title="Test case" className="">
-            {testcases.map((item, index) => {
-              return (
-                <div key={index} className="tw-flex tw-items-center tw-gap-4">
-                  <div>
-                    <p>Input</p>
-                    <InputTextarea
-                      value={item.input}
-                      onChange={(e) =>
-                        handleChangeTestCase("input", e.target.value, index)
-                      }
-                      rows={5}
-                      cols={30}
-                    />
-                  </div>
-                  <div>
-                    <p>Kết quả mong đợi</p>
-                    <InputTextarea
-                      value={item.expectedOutput}
-                      onChange={(e) =>
-                        handleChangeTestCase(
-                          "expectedOutput",
-                          e.target.value,
-                          index
-                        )
-                      }
-                      rows={5}
-                      cols={30}
-                    />
-                  </div>
-                  <Button
-                    onClick={() =>
-                      setTestCases(testcases.filter((_, i) => i !== index))
+        {questionType === QuestionType.MULTIPLE_CHOICE && (
+          <MyCard title="Đáp án" className="tw-flex tw-flex-col tw-gap-4">
+            {answers.map((answer, index) => (
+              <div
+                className="tw-flex tw-items-center tw-justify-between tw-gap-2"
+                key={index}
+              >
+                <div className="tw-flex tw-items-center tw-gap-2 tw-w-full">
+                  <RadioButton
+                    inputId={`answer-${index}`}
+                    name="choices"
+                    value={answer.text}
+                    onChange={() =>
+                      handleSetValue(index, answer.text, "isCorrect")
                     }
-                    icon="pi pi-times"
-                    rounded
-                    outlined
-                    severity="danger"
-                    aria-label="Cancel"
+                    checked={answer.isCorrect}
+                  />
+                  <InputText
+                    placeholder={`Đáp án ${index + 1}`}
+                    value={answer.text}
+                    onChange={(e) =>
+                      handleSetValue(index, e.target.value, "text")
+                    }
+                    className="tw-w-full"
                   />
                 </div>
-              );
-            })}
-
-            <div className="tw-mt-2">
-              <Button
-                onClick={() =>
-                  setTestCases([
-                    ...testcases,
-                    { input: "", expectedOutput: "" },
-                  ])
-                }
-                icon="pi pi-plus"
-                label="Thêm test case"
-              ></Button>
-            </div>
+                <Button
+                  icon="pi pi-trash"
+                  severity="danger"
+                  tooltip="Xóa"
+                  tooltipOptions={{ position: "top" }}
+                  onClick={() =>
+                    setAnswers(answers.filter((_, idx) => idx !== index))
+                  }
+                />
+              </div>
+            ))}
+            <Button
+              text
+              className="tw-w-full"
+              label="Thêm đáp án"
+              onClick={() =>
+                setAnswers([...answers, { text: "", isCorrect: false }])
+              }
+            />
           </MyCard>
+        )}
 
-          <InitCode
-            languages={languages}
-            setInitCode={(value) => setValue("initCode", value)}
-            code={initCode}
-            testcases={testcases}
-          />
-        </>
-      )}
-    </div>
+        {questionType === QuestionType.CODE && (
+          <>
+            <MyCard title="Test case" className="">
+              {testcases.map((item, index) => {
+                return (
+                  <div key={index} className="tw-flex tw-items-center tw-gap-4">
+                    <div>
+                      <p>Input</p>
+                      <InputTextarea
+                        value={item.input}
+                        onChange={(e) =>
+                          handleChangeTestCase("input", e.target.value, index)
+                        }
+                        rows={5}
+                        cols={30}
+                      />
+                    </div>
+                    <div>
+                      <p>Kết quả mong đợi</p>
+                      <InputTextarea
+                        value={item.expectedOutput}
+                        onChange={(e) =>
+                          handleChangeTestCase(
+                            "expectedOutput",
+                            e.target.value,
+                            index
+                          )
+                        }
+                        rows={5}
+                        cols={30}
+                      />
+                    </div>
+                    <Button
+                      onClick={() =>
+                        setTestCases(testcases.filter((_, i) => i !== index))
+                      }
+                      icon="pi pi-times"
+                      rounded
+                      outlined
+                      severity="danger"
+                      aria-label="Cancel"
+                    />
+                  </div>
+                );
+              })}
+
+              <div className="tw-mt-2">
+                <Button
+                  onClick={() =>
+                    setTestCases([
+                      ...testcases,
+                      { input: "", expectedOutput: "" },
+                    ])
+                  }
+                  icon="pi pi-plus"
+                  label="Thêm test case"
+                ></Button>
+              </div>
+            </MyCard>
+
+            <InitCode
+              languages={languages}
+              setInitCode={(value) => setValue("initCode", value)}
+              code={initCode}
+              testcases={testcases}
+            />
+          </>
+        )}
+
+        {questionType === QuestionType.CODE_HTML && question && <MyCard title="Code khởi tạo">
+          <MyHtmlCodeEditor key={question?.id} onChange={(value) => setValue("initCode", value)} htmlInitialValue={question?.initCode?.html || ""} cssInitialValue={question?.initCode?.css || ""} jsInitialValue={question?.initCode?.js || ""} />
+        </MyCard>}
+      </div>
+    </MyLoading>
   );
 };
 

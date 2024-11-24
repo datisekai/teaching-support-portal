@@ -32,6 +32,7 @@ const MyHtmlCodeEditor: React.FC<Props> = ({ cssInitialValue = '', htmlInitialVa
     const [code, setCode] = useState<CodeType>({ html: htmlInitialValue, css: cssInitialValue, javascript: jsInitialValue });
     const [live, setLive] = useState<LiveModeType>({ htmlCss: true, js: false });
     const [iframeLogs, setIframeLogs] = useState<any[]>([]);
+
     const handleRunCode = (isRunJs: boolean = false) => {
         if (iframeRef.current && code) {
             const iframe: any = iframeRef.current;
@@ -78,7 +79,7 @@ const MyHtmlCodeEditor: React.FC<Props> = ({ cssInitialValue = '', htmlInitialVa
                         )
                         .join(" ");
 
-                    setIframeLogs((prevLogs) => [logMessage]);
+                    setIframeLogs((prevLogs) => [...prevLogs, logMessage]);
 
                     originalConsoleLog.apply(iframeWindow.console, args);
                 };

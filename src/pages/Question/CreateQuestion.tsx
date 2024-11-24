@@ -374,7 +374,7 @@ const CreateQuestion = () => {
       )}
 
       {questionType === QuestionType.CODE_HTML && <MyCard title="Code khởi tạo">
-        <MyHtmlCodeEditor htmlInitialValue={defaultHtmlCode} />
+        <MyHtmlCodeEditor onChange={(value) => setValue("initCode", value)} htmlInitialValue={defaultHtmlCode} />
       </MyCard>}
     </div>
   );
