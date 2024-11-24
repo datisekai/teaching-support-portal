@@ -90,3 +90,7 @@ export function zeroPad(n: any, width: any, z?: string) {
   n = n + "";
   return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
 }
+
+export const getIndex = (index: number, rowPerPage: number, page: number) => {
+  return (page - 1) * rowPerPage + (index + 1);
+};

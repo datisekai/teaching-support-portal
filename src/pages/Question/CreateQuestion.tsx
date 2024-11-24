@@ -239,7 +239,7 @@ const CreateQuestion = () => {
   return (
     <div className="tw-space-y-4">
       <form onSubmit={(e) => e.preventDefault()} className="tw-space-y-4">
-        {QuestionForm.map((form, index) => (
+        {QuestionForm?.map((form, index) => (
           <GroupItem
             watch={watch}
             errors={errors}

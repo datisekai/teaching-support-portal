@@ -4,7 +4,7 @@ import React from 'react'
 type Props = {
     onChange: (type: 'attendance' | 'exam') => void,
 }
-const Step1: React.FC<Props> = ({ onChange, onBack }) => {
+const Step1: React.FC<Props> = ({ onChange }) => {
     return (
         <div>
             <div className='tw-flex tw-gap-4'>

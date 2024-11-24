@@ -11,6 +11,7 @@ import { Tag } from "primereact/tag";
 import { FC, memo, useCallback, useEffect, useRef, useState } from "react";
 import { useDebounceValue } from "usehooks-ts";
 import { TableSchema } from "../../types/table";
+import { getIndex } from "../../utils";
 
 export interface IActionTable {
   title?: string;
@@ -73,7 +74,7 @@ const MyTable: FC<IMyTable> = ({
     menuRight?.current?.toggle(event);
   };
 
-  const bodyTemplate = (row: any, options: any) => {
+  const bodyTemplate = (row: any, options: any, index: number = 0) => {
     const key = options.field;
 
     const schema = schemas.find((item) => item.prop === key);
@@ -82,6 +83,10 @@ const MyTable: FC<IMyTable> = ({
 
     if (schema?.render && typeof schema.render === "function") {
       return schema.render(row);
+    }
+
+    if (schema?.prop == 'index') {
+      return getIndex((options?.rowIndex || index), perPage, first);
     }
 
     switch (schema?.type) {
