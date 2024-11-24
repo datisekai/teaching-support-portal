@@ -15,7 +15,7 @@ export const letterSchemas: TableSchema[] = [
       switch (value) {
         case "leave_application":
           return {
-            value: "Đơn xin nghị học",
+            value: "Đơn xin nghỉ học",
             severity: "info",
           };
         case "":
