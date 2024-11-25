@@ -22,6 +22,7 @@ interface IAttendanceState {
   deleteAttendance: (id: number) => Promise<boolean>;
   updateStatus: (id: number, isOpen: boolean) => void;
   getAttendancesStatistic: (classId: string, body: object) => Promise<void>;
+  toggleAttendee: (id: number, userId: number) => Promise<void>;
 }
 
 export const useAttendanceStore = create<IAttendanceState>((set) => ({
@@ -107,6 +108,11 @@ export const useAttendanceStore = create<IAttendanceState>((set) => ({
         body
       );
       set({ attendancesStatisticClass: response });
+    } catch (error) {}
+  },
+  toggleAttendee: async (id, userId) => {
+    try {
+      await attendanceService.toggleAttendee(id, userId);
     } catch (error) {}
   },
 }));

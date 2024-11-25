@@ -58,4 +58,14 @@ export const attendanceService = {
       endpoint: getAttendanceStatistic.endpoint.replace(":id", id.toString()),
     });
   },
+  toggleAttendee: async (id: number, userId: number) => {
+    const { toggleAttendee } = apiConfig.attendance;
+    return processMiddlewareSendRequest({
+      ...toggleAttendee,
+      endpoint: toggleAttendee.endpoint
+        .replace(":id", id.toString())
+        .replace(":userId", userId.toString()),
+      body: {},
+    });
+  },
 };

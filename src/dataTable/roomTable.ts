@@ -7,10 +7,13 @@ export const roomSchemas: TableSchema[] = [
     type: "number",
   },
   {
-    label: "Môn học",
-    prop: "majorName",
+    label: "Lớp học",
+    prop: "major",
     type: "text",
     minWidth: "100px",
+    render(data) {
+      return `${data.class.major.name} - ${data.class.name}`;
+    },
   },
   {
     label: "Tiêu đề",

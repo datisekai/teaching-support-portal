@@ -261,6 +261,10 @@ export const apiConfig = {
       method: "GET",
       endpoint: "/api.attendance/class/:id/statistic",
     },
+    toggleAttendee: {
+      method: "POST",
+      endpoint: "/api.attendance/:id/attendees/:userId",
+    },
   },
   // teacher
   teacher: {
