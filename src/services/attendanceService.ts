@@ -60,12 +60,19 @@ export const attendanceService = {
   },
   toggleAttendee: async (id: number, userId: number) => {
     const { toggleAttendee } = apiConfig.attendance;
-    return processMiddlewareSendRequest({
+    return sendServerRequest({
       ...toggleAttendee,
       endpoint: toggleAttendee.endpoint
         .replace(":id", id.toString())
         .replace(":userId", userId.toString()),
       body: {},
+    });
+  },
+  link: async (id: number) => {
+    const { link } = apiConfig.attendance;
+    return sendServerRequest({
+      ...link,
+      endpoint: link.endpoint.replace(":id", id.toString()),
     });
   },
 };

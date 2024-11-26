@@ -79,7 +79,7 @@ const EditExam = () => {
   const { isLoadingApi, setFooterActions, setHeaderTitle, resetActions } =
     useCommonStore();
   const { onToggle } = useModalStore();
-  const { addExam, fetchExam, exam } = useExamStore();
+  const { addExam, fetchExam, exam, updateExam } = useExamStore();
   const { fetchClasses } = useClassStore();
   const [previewQuestion, setPreviewQuestion] = useState<IQuestion[]>([]);
 
@@ -143,9 +143,7 @@ const EditExam = () => {
     }
   }, [previewQuestion]);
 
-  console.log("previewQuestion", previewQuestion);
   const onSubmit = (data: any) => {
-    console.log("onSubmit", previewQuestion);
     const payload = {
       ...data,
       classId: Number(data.classId),
@@ -158,7 +156,7 @@ const EditExam = () => {
       message: "Bạn có chắc chắn muốn cập nhật đề thi này?",
       header: "Xác nhận cập nhật",
       onAccept: async () => {
-        const result = await addExam(payload);
+        const result = await updateExam(+(id || 0), payload);
         if (result) {
           showToast({
             severity: "success",

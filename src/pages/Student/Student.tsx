@@ -137,12 +137,10 @@ const Student = () => {
             index: row.getCell(1)?.value || "",
             code: row.getCell(2)?.value || "",
             name: row.getCell(3)?.value + " " + row.getCell(4)?.value || "",
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString(),
-            // classCode: row.getCell(5)?.value || "",
+            classCode: row.getCell(5)?.value || "",
             // className: row.getCell(6)?.value || "",
-            // phone: row.getCell(7)?.value || "",
-            // email: row.getCell(8)?.value || "",
+            phone: row.getCell(7)?.value || "",
+            email: row.getCell(8)?.value || "",
           };
           data.push(rowData);
         }
@@ -204,7 +202,7 @@ const Student = () => {
           }))}
           tableStyle={{ minWidth: "50rem" }}
         >
-          {studentSchemas.map((col, i) => (
+          {importStudentSchemas.map((col, i) => (
             <Column key={col.prop} field={col.prop} header={col.label} />
           ))}
         </DataTable>
@@ -214,7 +212,7 @@ const Student = () => {
           <a href="/Mau_Danh_Sach_SV.xlsx" download={"Mau_Danh_Sach_SV.xlsx"}>
             <Button label="Download mẫu"></Button>
           </a>
-          <Button label="Chọn file import" onClick={handleChooseFile}></Button>
+          <Button label="Chọn file" onClick={handleChooseFile}></Button>
           <Button label="Import" onClick={handleImport}></Button>,
         </div>
       ),

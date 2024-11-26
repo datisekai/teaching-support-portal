@@ -74,4 +74,11 @@ export const examService = {
       body,
     });
   },
+  link: async (id: number) => {
+    const { link } = apiConfig.exam;
+    return sendServerRequest({
+      ...link,
+      endpoint: link.endpoint.replace(":id", id.toString()),
+    });
+  },
 };

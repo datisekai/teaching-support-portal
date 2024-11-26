@@ -27,6 +27,7 @@ interface IExamState {
   getTakeOrder: (id: string) => Promise<void>;
   updateSubmission: (id: number, body: object) => Promise<boolean>;
   setUpdatedExam: (key: string, value: any) => void;
+  linkScore: (id: number) => Promise<void>;
 }
 
 export const useExamStore = create<IExamState>((set) => ({
@@ -151,5 +152,10 @@ export const useExamStore = create<IExamState>((set) => ({
         [key]: value,
       },
     }));
+  },
+  linkScore: async (id) => {
+    try {
+      await examService.link(id);
+    } catch (error) {}
   },
 }));

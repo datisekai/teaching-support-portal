@@ -123,10 +123,10 @@ const MyHtmlCodeEditor: React.FC<Props> = ({
 
   return (
     <div>
-      <div className="tw-flex tw-gap-4">
-        <div className="tw-w-full lg:tw-w-[50%] tw-space-y-2">
+      <div className=" tw-gap-4">
+        <div className="tw-w-full tw-grid tw-grid-cols-1 lg:tw-grid-cols-3 tw-gap-x-2 tw-items-center ">
           {tabs.map((tab) => (
-            <div key={tab.value}>
+            <div key={tab.value} className="w-full">
               <div className="bg-primary tw-px-4 tw-py-2 tw-rounded-tl tw-rounded-tr tw-font-bold">
                 {tab.label}
               </div>
@@ -145,7 +145,7 @@ const MyHtmlCodeEditor: React.FC<Props> = ({
             </div>
           ))}
         </div>
-        <div className="tw-flex-1 tw-border tw-flex tw-flex-col">
+        <div className="tw-flex-1 tw-border tw-flex tw-flex-col tw-mt-2">
           <div className="tw-bg-[#1e1e1e] tw-text-white tw-flex tw-justify-between tw-px-4 tw-py-2 tw-rounded-tl tw-rounded-tr">
             <div
               onClick={() => {
@@ -178,7 +178,7 @@ const MyHtmlCodeEditor: React.FC<Props> = ({
           </div>
           <iframe
             ref={iframeRef}
-            className="tw-flex-1 tw-select-none tw-cursor-not-allowed"
+            className="tw-flex-1 tw-select-none tw-cursor-not-allowed tw-min-h-[500px] tw-bg-white"
           ></iframe>
 
           <div className="tw-mt-4">

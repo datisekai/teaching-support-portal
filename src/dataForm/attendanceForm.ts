@@ -28,6 +28,13 @@ export const AttendanceForm: IForm[] = [
         },
       },
       {
+        prop: "time",
+        type: "date-time",
+        label: "Ngày điểm danh",
+        description: "Là ngày điểm danh để hiện thị tại quản lý điểm",
+        col: 6,
+      },
+      {
         prop: "expirationTime",
         type: "number",
         label: "Thời gian",

@@ -16,6 +16,7 @@ const schema = yup
     title: yup.string().required("Vui lòng điền tiêu đề"),
     expirationTime: yup.number().required("Vui lòng điền thời gian").min(1000),
     classId: yup.string().required("Vui lòng chọn lớp học"),
+    time: yup.date(),
   })
   .required();
 const CreateAttendance = () => {
@@ -29,13 +30,14 @@ const CreateAttendance = () => {
       title: "",
       classId: "",
       expirationTime: 3000,
+      time: new Date(),
     },
   });
   const navigate = useNavigate();
-  const { addAttendance } = useAttendanceStore()
+  const { addAttendance } = useAttendanceStore();
 
   const { setFooterActions, setHeaderTitle, resetActions } = useCommonStore();
-  const { showToast } = useToast()
+  const { showToast } = useToast();
 
   const onSubmit = async (values: any) => {
     const result = await addAttendance(values);

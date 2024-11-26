@@ -15,7 +15,7 @@ export const studentScoreService = {
 
   update: async (body: Record<string, any>) => {
     const { update } = apiConfig.studentScore;
-    return sendServerRequest({
+    return processMiddlewareSendRequest({
       ...update,
       body,
     });

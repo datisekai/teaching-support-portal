@@ -19,7 +19,7 @@ type Props = {
   refId: number;
 };
 const Step3: React.FC<Props> = ({ refId, type }) => {
-  const { getHistory, examHistorys } = useExamStore();
+  const { getHistory, examHistorys, linkScore: linkExam } = useExamStore();
   const { students } = useClassStore();
   const [hashScore, setHashScore] = useState<any>({});
   const [hashAttendance, setHashAttendance] = useState<any>({});
@@ -29,7 +29,12 @@ const Step3: React.FC<Props> = ({ refId, type }) => {
     usestudentScoreStore();
   const { showToast } = useToast();
   const { id } = useParams();
-  const { fetchAttendees, attendees } = useAttendanceStore();
+  const {
+    fetchAttendees,
+    attendees,
+    linkScore: linkAttendance,
+    fetchAttendances,
+  } = useAttendanceStore();
   const [score, setScore] = useState(0.25);
 
   useEffect(() => {
@@ -108,7 +113,7 @@ const Step3: React.FC<Props> = ({ refId, type }) => {
       for (const key in hashAttendance) {
         const item = hashAttendance[key];
         const newScore =
-          hashCurrentScore[item.user.code][content.id]?.score || 0;
+          hashCurrentScore?.[item.user.code]?.[content.id]?.score || 0;
         payload.push({
           studentId: +key,
           score: item.isSuccess ? +newScore + +score : +newScore,
@@ -126,6 +131,12 @@ const Step3: React.FC<Props> = ({ refId, type }) => {
         message: "Liên kết điểm thành công",
         life: 3000,
       });
+      if (type === "exam") {
+        linkExam(refId);
+      } else if (type === "attendance") {
+        linkAttendance(refId);
+        fetchAttendances({ classId: id });
+      }
       fetchstudentScore(id as string);
       return;
     }
@@ -153,6 +164,7 @@ const Step3: React.FC<Props> = ({ refId, type }) => {
           hashCurrentScore={hashCurrentScore}
           hashAttendance={hashAttendance}
           setHashAttendance={setHashAttendance}
+          refId={refId}
         />
       )}
       <div className="tw-flex tw-justify-end tw-mt-4">

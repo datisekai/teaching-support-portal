@@ -23,6 +23,7 @@ interface IAttendanceState {
   updateStatus: (id: number, isOpen: boolean) => void;
   getAttendancesStatistic: (classId: string, body: object) => Promise<void>;
   toggleAttendee: (id: number, userId: number) => Promise<void>;
+  linkScore: (id: number) => Promise<void>;
 }
 
 export const useAttendanceStore = create<IAttendanceState>((set) => ({
@@ -113,6 +114,11 @@ export const useAttendanceStore = create<IAttendanceState>((set) => ({
   toggleAttendee: async (id, userId) => {
     try {
       await attendanceService.toggleAttendee(id, userId);
+    } catch (error) {}
+  },
+  linkScore: async (id) => {
+    try {
+      await attendanceService.link(id);
     } catch (error) {}
   },
 }));

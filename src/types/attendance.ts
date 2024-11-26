@@ -8,6 +8,9 @@ export interface IAttendance {
   user: User;
   secretKey: string;
   expirationTime: number;
+  isLink: boolean;
+  time: Date;
+  attendees: any;
 }
 
 export interface Class {

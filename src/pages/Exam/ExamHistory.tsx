@@ -87,7 +87,7 @@ const HistoryExam = () => {
 
   return (
     <div className={"tw-flex tw-flex-col-reverse md:tw-flex-row tw-gap-4"}>
-      <MyCard containerClassName={"tw-w-full md:tw-w-[70%] tw-h-full"}>
+      <MyCard containerClassName={"tw-flex-1 tw-h-full"}>
         <MyLoading isLoading={!currentExam}>
           {currentExam?.questionTemp?.type === QuestionType.MULTIPLE_CHOICE && (
             <PreviewMultiChoice
@@ -126,7 +126,7 @@ const HistoryExam = () => {
           ></Button>
         </div>
       </MyCard>
-      <MyCard containerClassName={"tw-w-full md:tw-w-[30%]"}>
+      <MyCard containerClassName={"tw-w-full md:tw-w-[15%]"}>
         <div className="tw-font-bold">Cập nhật kết quả</div>
         <PreviewResult data={currentExam} />
         <p className={"tw-italic"}>

@@ -15,4 +15,5 @@ export interface IExam {
   blockControlCVX: boolean;
   blockMouseRight: boolean;
   logOutTab: boolean;
+  isLink: boolean;
 }

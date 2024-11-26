@@ -8,14 +8,22 @@ import { useClassStore } from "../../stores/classStore";
 import { IAction, useCommonStore } from "../../stores/commonStore";
 import { useScoreColumnStore } from "../../stores/scoreColumnStore";
 import { usestudentScoreStore } from "../../stores/studentScoreStore";
-import { useModalStore } from "../../stores";
+import { useAttendanceStore, useModalStore } from "../../stores";
 import { ModalName } from "../../constants";
 import { Tooltip } from "primereact/tooltip";
+import MyLoading from "../../components/UI/MyLoading";
+import dayjs from "dayjs";
+import { Checkbox } from "primereact/checkbox";
+import { InputText } from "primereact/inputtext";
+import { useDebounceValue } from "usehooks-ts";
+import useConfirm from "../../hooks/useConfirm";
 
 const ScoreManagement = () => {
   const { id } = useParams();
-  const { fetchstudentScore, studentScore } = usestudentScoreStore();
-  const { fetchScoreColumn, scoreColumn, fetchScoreColumnClass } = useScoreColumnStore();
+  const { fetchstudentScore, studentScore, updatestudentScore } =
+    usestudentScoreStore();
+  const { fetchScoreColumn, scoreColumn, fetchScoreColumnClass } =
+    useScoreColumnStore();
 
   const {
     setFooterActions,
@@ -27,9 +35,14 @@ const ScoreManagement = () => {
   const { students, getStudentClass } = useClassStore();
   const { showToast } = useToast();
   const [hashStudentScore, setHashStudentScore] = useState<any>({});
+  const { attendances, fetchAttendances, toggleAttendee } =
+    useAttendanceStore();
+  const [hashAttendance, setHashAttendance] = useState<any>({});
+  const [debouncedValue, setValue] = useDebounceValue("", 500);
 
   const [isEdit, setIsEdit] = useState(false);
   const { onToggle } = useModalStore();
+  const { onConfirm } = useConfirm();
 
   useEffect(() => {
     const hash: any = { ...hashStudentScore };
@@ -49,6 +62,45 @@ const ScoreManagement = () => {
     setHashStudentScore(hash);
   }, [studentScore.data]);
 
+  const handleUpdateManual = () => {
+    onConfirm({
+      message: "Bạn có chắc chắn muốn lưu thay đổi điểm này?",
+      header: "Xác nhận",
+      onAccept: async () => {
+        const studentScore = [];
+
+        for (const key in hashStudentScore) {
+          for (const student of Object.values(hashStudentScore[key])) {
+            if ((student as any)?.isEdit) {
+              studentScore.push({
+                studentId: (student as any)?.studentId,
+                score: (student as any)?.score || 0,
+                scoreColumnId: (student as any)?.scoreColumnId,
+              });
+            }
+          }
+        }
+
+        const result = await updatestudentScore({ studentScore });
+        if (!result) {
+          return showToast({
+            severity: "error",
+            summary: "Thông báo",
+            message: "Lưu thay đổi thất bại",
+          });
+        }
+
+        showToast({
+          severity: "success",
+          summary: "Thông báo",
+          message: "Lưu thay đổi thành công",
+        });
+        setIsEdit(!isEdit);
+        fetchstudentScore(id || "");
+      },
+    });
+  };
+
   useEffect(() => {
     const actions: IAction[] = [
       {
@@ -58,11 +110,10 @@ const ScoreManagement = () => {
       },
       {
         title: "Lưu thay đổi",
-        // icon: "pi-plus",
-        // onClick: handleSubmit(onSubmit),
+        icon: "pi-plus",
+        onClick: handleUpdateManual,
       },
     ];
-    console.log(scoreColumn);
     setHeaderActions([
       {
         title: "Export",
@@ -99,7 +150,13 @@ const ScoreManagement = () => {
     return () => {
       resetActions();
     };
-  }, [resetActions, setHeaderTitle, setFooterActions, scoreColumn]);
+  }, [
+    resetActions,
+    setHeaderTitle,
+    setFooterActions,
+    scoreColumn,
+    hashStudentScore,
+  ]);
 
   useEffect(() => {
     if (id) {
@@ -111,19 +168,32 @@ const ScoreManagement = () => {
     fetchScoreColumnClass(id || "");
     fetchstudentScore(id || "");
     getStudentClass(id || "", {});
+    fetchAttendances({ classId: id });
   };
+
+  console.log("hashScore", hashStudentScore);
+  useEffect(() => {
+    const hash: any = {};
+    for (const item of attendances) {
+      if (!hash[item.id]) {
+        hash[item.id] = {};
+      }
+      for (const attendee of item.attendees) {
+        hash[item.id][attendee.user.code] = attendee.isSuccess;
+      }
+    }
+    setHashAttendance(hash);
+  }, [attendances]);
 
   const getAverage = (score: any = {}) => {
     let total = 0;
     for (const key in score) {
       const item = score[key];
-      total += item.score * (item?.scoreColumnWeight / 100);
+      total += item.score * (item?.scoreColumnWeight / 50);
     }
     return total.toFixed(2);
   };
 
-
-  console.log('scoreColumn', scoreColumn);
   const tableSchemas = useMemo(() => {
     const columns = scoreColumn?.data?.columns || [];
     return [
@@ -143,22 +213,67 @@ const ScoreManagement = () => {
         prop: "name",
         width: 150,
       },
+      ...[...attendances]?.reverse()?.map((item) => ({
+        label: ``,
+        renderHeader: () => {
+          return (
+            <div>
+              <div className="tw-flex tw-items-center">
+                <Tooltip
+                  key={item.id}
+                  target={`.custom-tooltip-attendance-${item.id}`}
+                >
+                  <p> {item.title}</p>
+                  <p>{dayjs(item.time).format("DD/MM/YYYY HH:mm")}</p>
+                </Tooltip>
+                <span>Vắng {dayjs(item.time).format("DD/MM")}</span>
+                <i
+                  className={`custom-tooltip-attendance-${item.id} pi pi-question-circle tw-ml-2 hover:tw-opacity-50 tw-cursor-pointer`}
+                ></i>
+              </div>
+              <div>{item.isLink && <>(Đã liên kết)</>}</div>
+            </div>
+          );
+        },
+        render: (data: any) => {
+          return (
+            <Checkbox
+              onChange={(e) => {
+                setHashAttendance({
+                  ...hashAttendance,
+                  [item.id]: {
+                    ...hashAttendance?.[item.id],
+                    [data.code]: !e.checked,
+                  },
+                });
+                toggleAttendee(item.id, data.id);
+              }}
+              checked={!hashAttendance?.[item.id]?.[data.code]}
+            ></Checkbox>
+          );
+        },
+        prop: item.id,
+        width: 120,
+      })),
       ...columns.map((item: any, index: number) => {
         return {
           label: "",
           renderHeader: () => {
             return (
-              <div className="tw-flex tw-items-center">
-                <span>{item.name}</span>
-                <i
-                  onClick={() =>
-                    onToggle(ModalName.LINK_STUDENT_SCORE, {
-                      header: `Liên kết điểm ${item.name}`,
-                      content: item,
-                    })
-                  }
-                  className="pi pi-cog tw-ml-2 hover:tw-opacity-50 tw-cursor-pointer"
-                ></i>
+              <div>
+                <div className="tw-flex tw-items-center">
+                  <span>{item.name}</span>
+                  <i
+                    onClick={() =>
+                      onToggle(ModalName.LINK_STUDENT_SCORE, {
+                        header: `Liên kết điểm ${item.name}`,
+                        content: item,
+                      })
+                    }
+                    className="pi pi-cog tw-ml-2 hover:tw-opacity-50 tw-cursor-pointer"
+                  ></i>
+                </div>
+                <div>({item.weight}%)</div>
               </div>
             );
           },
@@ -170,8 +285,11 @@ const ScoreManagement = () => {
                 className="input-edit-score"
                 min={0}
                 max={10}
-                value={hashStudentScore[data.code]?.[item.id]?.score ?? 0}
-                onValueChange={(e) =>
+                value={(
+                  hashStudentScore?.[data.code]?.[item.id]?.score ?? 0
+                ).toFixed(2)}
+                minFractionDigits={2}
+                onChange={(e) =>
                   setHashStudentScore({
                     ...hashStudentScore,
                     [data.code]: {
@@ -179,33 +297,55 @@ const ScoreManagement = () => {
                       [item.id]: {
                         ...hashStudentScore[data.code]?.[item.id],
                         score: e.value,
+                        isEdit: true,
                       },
                     },
                   })
                 }
               />
             ) : (
-              `${hashStudentScore[data.code]?.[item.id]?.score.toFixed(2) ?? 0}`
+              `${(hashStudentScore[data.code]?.[item.id]?.score ?? 0).toFixed(
+                2
+              )}`
             ),
         };
       }),
       {
-        label: "Điểm QT",
+        label: "Điểm QT (50%)",
         prop: "average",
         width: 100,
         render: (data: any) => getAverage(hashStudentScore[data.code]),
       },
     ];
-  }, [scoreColumn, hashStudentScore, isEdit]);
+  }, [scoreColumn, hashStudentScore, isEdit, hashAttendance, attendances]);
+
+  const studentFilter = useMemo(() => {
+    if (!debouncedValue || !debouncedValue?.trim()) {
+      return students;
+    }
+    return students?.filter((item: any) => {
+      const fullTextSearch = `${item.code} ${item.name}`.toLowerCase();
+      return fullTextSearch.includes(debouncedValue.toLowerCase());
+    });
+  }, [debouncedValue, students]);
 
   return (
     <div>
-      <div className="tw-flex tw-justify-end tw-mb-2">
-        <Button
-          onClick={() => setIsEdit(!isEdit)}
-          label={!isEdit ? "Cập nhật" : "Huỷ"}
-          icon="pi pi-pencil"
-        ></Button>
+      <div className="tw-flex tw-justify-between tw-mb-2 tw-items-center">
+        <div>
+          <div className={"mb-1"}>Tìm kiếm theo msv, tên</div>
+          <InputText
+            onChange={(e) => setValue(e.target.value)}
+            placeholder="Tìm kiếm"
+          />
+        </div>
+        <div>
+          <Button
+            onClick={() => setIsEdit(!isEdit)}
+            label={!isEdit ? "Cập nhật" : "Huỷ"}
+            icon="pi pi-pencil"
+          ></Button>
+        </div>
       </div>
       <div className="tw-overflow-x-auto">
         <div className="tw-flex tw-bg-[#f9fafb] tw-border-t tw-border-b tw-px-2">
@@ -222,7 +362,7 @@ const ScoreManagement = () => {
           })}
         </div>
         <div>
-          {students?.map((item: any, index: number) => {
+          {studentFilter?.map((item: any, index: number) => {
             return (
               <div
                 key={item.id}

@@ -25,7 +25,7 @@ const PreviewCodeHtml: React.FC<Props> = ({ data, index }) => {
           ></div>
         </div>
       </div>
-      <div className={"tw-flex-1 tw-border-l-2 tw-px-4 overflow-x-auto"}>
+      <div className={"tw-flex-1 overflow-x-auto "}>
         <MyHtmlCodeEditor
           key={data.id}
           options={{ readOnly: true }}

@@ -265,6 +265,10 @@ export const apiConfig = {
       method: "POST",
       endpoint: "/api.attendance/:id/attendees/:userId",
     },
+    link: {
+      method: "POST",
+      endpoint: "/api.attendance/link/:id",
+    },
   },
   // teacher
   teacher: {
@@ -464,6 +468,10 @@ export const apiConfig = {
     updateSubmission: {
       method: "PUT",
       endpoint: "/api.submission/:submissionId",
+    },
+    link: {
+      method: "POST",
+      endpoint: "/api.exam/link/:id",
     },
   },
 };

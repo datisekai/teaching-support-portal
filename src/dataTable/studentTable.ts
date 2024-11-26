@@ -23,7 +23,7 @@ export const studentSchemas: TableSchema[] = [
   },
   {
     label: "Số điện thoại",
-    prop: "phoneNumber",
+    prop: "phone",
     type: "text",
   },
   {
@@ -57,6 +57,21 @@ export const importStudentSchemas: TableSchema[] = [
   {
     label: "Tên",
     prop: "name",
+    type: "text",
+  },
+  {
+    label: "Lớp",
+    prop: "classCode",
+    type: "text",
+  },
+  {
+    label: "Email",
+    prop: "email",
+    type: "text",
+  },
+  {
+    label: "Số điện thoại",
+    prop: "phone",
     type: "text",
   },
 ];

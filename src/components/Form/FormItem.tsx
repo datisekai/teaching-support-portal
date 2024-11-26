@@ -174,7 +174,7 @@ const FormItem: React.FC<IForm> = ({
         return renderController(({ field: { onChange, onBlur, value } }) => (
           <InputSwitch
             invalid={!!error}
-            checked={value}
+            checked={!!value}
             onChange={(e) =>
               onChange({ target: { value: e.value, name: prop } })
             }
@@ -188,6 +188,7 @@ const FormItem: React.FC<IForm> = ({
             className="tw-w-full"
             placeholder={label}
             invalid={!!error}
+            dateFormat="dd/mm/yy"
             value={value}
             onBlur={onBlur}
             onChange={(e) =>
@@ -203,6 +204,7 @@ const FormItem: React.FC<IForm> = ({
             invalid={!!error}
             value={value}
             onBlur={onBlur}
+            dateFormat="dd/mm/yy"
             onChange={(e) =>
               onChange({ target: { value: e.value, name: prop } })
             }
