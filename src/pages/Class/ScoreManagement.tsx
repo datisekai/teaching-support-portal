@@ -185,13 +185,13 @@ const ScoreManagement = () => {
     setHashAttendance(hash);
   }, [attendances]);
 
-  const getAverage = (score: any = {}) => {
+  const getAverage = (score: any = {}, x = 1) => {
     let total = 0;
     for (const key in score) {
       const item = score[key];
       total += item.score * (item?.scoreColumnWeight / 50);
     }
-    return total.toFixed(2);
+    return (total * x).toFixed(2);
   };
 
   const tableSchemas = useMemo(() => {
@@ -311,9 +311,31 @@ const ScoreManagement = () => {
         };
       }),
       {
-        label: "Điểm QT (50%)",
+        label: "Điểm QT ",
+        renderHeader: () => {
+          return (
+            <div>
+              <div>Điểm QT </div>
+              <div>(50% Hệ 4)</div>
+            </div>
+          );
+        },
         prop: "average",
-        width: 100,
+        width: 150,
+        render: (data: any) => getAverage(hashStudentScore[data.code], 0.4),
+      },
+      {
+        label: "Điểm QT (50% Hệ 10)",
+        prop: "average10",
+        renderHeader: () => {
+          return (
+            <div>
+              <div>Điểm QT </div>
+              <div>(50% Hệ 10)</div>
+            </div>
+          );
+        },
+        width: 150,
         render: (data: any) => getAverage(hashStudentScore[data.code]),
       },
     ];
