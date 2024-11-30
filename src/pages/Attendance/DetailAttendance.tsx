@@ -12,6 +12,51 @@ import { useQuery } from "../../hooks/useQuery";
 import { ISchema } from "yup";
 import { TableSchema } from "../../types/table";
 import { Checkbox } from "primereact/checkbox";
+import dayjs from "dayjs";
+
+const exportSchemas = [
+  {
+    label: "STT",
+    prop: "id",
+    type: "number",
+  },
+  {
+    label: "Mã sinh viên",
+    prop: "code",
+    type: "number",
+  },
+  {
+    label: "Tên sinh viên",
+    prop: "name",
+    type: "text",
+  },
+  {
+    label: "Email",
+    prop: "email",
+    type: "text",
+  },
+  {
+    label: "Số điện thoại",
+    prop: "phone",
+    type: "text",
+  },
+  {
+    label: "Vắng",
+    prop: "isSuccess",
+    type: "text",
+    render: (data: any) => {
+      return !data.isSuccess ? 'X' : ''
+    },
+  },
+  {
+    label: "Thời gian",
+    prop: "updatedAt",
+    type: "text",
+    render: (data: any) => {
+      return dayjs(data.createdAt).format('HH:mm DD/MM/YYYY')
+    }
+  }
+]
 
 const DetailAttendance = () => {
   const actionTable: IActionTable[] = [];
@@ -24,46 +69,22 @@ const DetailAttendance = () => {
 
   const { getStudentClass, students } = useClassStore();
 
-  const { fetchAttendees, attendees, attendeesUnlimited, toggleAttendee } =
+  const { fetchAttendees, attendees, attendeesUnlimited, toggleAttendee, currentAttendance } =
     useAttendanceStore();
   const { setHeaderTitle, setHeaderActions, resetActions, isLoadingApi } =
     useCommonStore();
 
   useEffect(() => {
     setHeaderTitle("Chi tiết điểm danh");
-    setHeaderActions([
-      {
-        title: "Export",
-        icon: "pi pi-file-export",
-        onClick: async () => {
-          const headerContent = "Chi tiết điểm danh";
 
-          await fetchAttendees(id || "", { pagination: false });
-          exportExcel(
-            "Danh sách điểm danh",
-            attendeesUnlimited.map((item: any, index: number) => {
-              return {
-                ...item,
-                ...item.user,
-                email: item.user.email || "Chưa có",
-                phone: item.user.phone || "Chưa có",
-              };
-            }),
-            detailRoomSchemas,
-
-            headerContent
-          );
-        },
-        type: "button",
-        disabled: false,
-      },
-    ]);
     fetchAttendees(id || "", {});
 
     return () => {
       resetActions();
     };
   }, []);
+
+
 
   useEffect(() => {
     if (classId) {
@@ -76,7 +97,7 @@ const DetailAttendance = () => {
     if (attendees) {
       const hash: any = {};
       attendees.forEach((item: any) => {
-        hash[item.user.id] = item.isSuccess;
+        hash[item.user.id] = { isSuccess: item.isSuccess, createdAt: item.createdAt };
       });
       setHashAttendees(hash);
     }
@@ -90,7 +111,7 @@ const DetailAttendance = () => {
 
   const handleUpdateAttendee = (userId: number, checked: boolean) => {
     toggleAttendee(+(id || 0), userId);
-    setHashAttendees({ ...hashAttendees, [userId]: checked });
+    setHashAttendees({ ...hashAttendees, [userId]: { ...hashAttendees?.[userId], isSuccess: checked } });
   };
 
   const schemas: TableSchema[] = useMemo(() => {
@@ -125,8 +146,7 @@ const DetailAttendance = () => {
         prop: "isSuccess",
         type: "text",
         render: (data) => {
-          console.log("record", data);
-          const isSuccess = hashAttendees?.[data?.id] || false;
+          const isSuccess = hashAttendees?.[data?.id]?.isSuccess || false;
           return (
             <Checkbox
               onClick={() => handleUpdateAttendee(data.id, !isSuccess)}
@@ -139,9 +159,39 @@ const DetailAttendance = () => {
         label: "Thời gian",
         prop: "createdAt",
         type: "datetime",
+        render(data) {
+          const createdAt = hashAttendees?.[data?.id]?.createdAt
+          return dayjs(createdAt).format("DD/MM/YYYY HH:mm:ss");
+        },
       },
     ] as TableSchema[];
   }, [hashAttendees]);
+
+  useEffect(() => {
+    setHeaderActions([
+      {
+        title: "Export",
+        icon: "pi pi-file-export",
+        onClick: async () => {
+          const headerContent = "Chi tiết điểm danh";
+
+          exportExcel(
+            "Danh sách điểm danh",
+            students.map((item: any, index: number) => {
+              return {
+                ...item, isSuccess: hashAttendees?.[item?.id] || false
+              };
+            }),
+            exportSchemas,
+            headerContent,
+            `${currentAttendance?.title} - ${dayjs(currentAttendance?.time).format("DD/MM/YYYY HH:mm:ss")}`
+          );
+        },
+        type: "button",
+        disabled: false,
+      },
+    ]);
+  }, [students, hashAttendees, currentAttendance])
 
   return (
     <div>

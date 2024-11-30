@@ -97,7 +97,7 @@ export const useExamStore = create<IExamState>((set) => ({
   getHistory: async (id: string) => {
     try {
       const response = await examService.getHistory(id);
-      set({ examHistorys: response.data });
+      set({ examHistorys: response });
     } catch (error) {}
   },
   getExamHistory: async (id, userId) => {

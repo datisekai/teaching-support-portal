@@ -11,6 +11,7 @@ type Props = {
   apiUrl?: string;
   query?: any;
   placeholder?: string;
+  titleModal?: string
 };
 const MySmartSelect: React.FC<Props> = ({
   value,
@@ -18,6 +19,7 @@ const MySmartSelect: React.FC<Props> = ({
   apiUrl = apiConfig.user.search.endpoint,
   query,
   placeholder = "Chọn người dùng",
+  titleModal = "Chọn giảng viên"
 }) => {
   const { onToggle } = useModalStore();
   return (
@@ -27,7 +29,7 @@ const MySmartSelect: React.FC<Props> = ({
         label="Chọn"
         onClick={() =>
           onToggle(ModalName.SMART_SEARCH, {
-            header: "Chọn giảng viên",
+            header: titleModal,
             content: {
               apiUrl,
               onApply: (value: any) => onChange(value),

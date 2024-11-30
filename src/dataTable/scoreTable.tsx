@@ -69,6 +69,58 @@ export const scoreSchemas: TableSchema[] = [
   // },
 ];
 
+
+export const exportScoreSchemas: TableSchema[] = [
+  {
+    label: "STT",
+    prop: "index",
+    type: "number",
+  },
+  {
+    label: "Mã sinh viên",
+    prop: "code",
+    type: "text",
+  },
+  {
+    label: "Tên sinh viên",
+    prop: "name",
+    type: "text",
+  },
+  {
+    label: "Điểm",
+    prop: "grade",
+    type: "text",
+    render(data) {
+      return `${data?.grade?.toFixed(2) || 0}`;
+    },
+  },
+  {
+    label: "Số lần out tab",
+    prop: "outTabCount",
+    type: "number",
+    render(data) {
+      return `${data?.outTabCount || 0}`;
+    },
+
+  },
+  {
+    label: "Số lần chuột phải",
+    prop: "mouseRight",
+    type: "number",
+    render(data) {
+      return `${data?.mouseRight || 0}`;
+    },
+  },
+  {
+    label: "Số lần control CVX",
+    prop: "controlCVX",
+    type: "number",
+    render(data) {
+      return `${data?.controlCVX || 0}`;
+    },
+  },
+];
+
 // Dữ liệu mẫu cho bảng exam results
 export const scores = [
   {

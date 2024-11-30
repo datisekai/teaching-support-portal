@@ -33,6 +33,37 @@ export const classSchemas: TableSchema[] = [
   },
 ];
 
+export const exportClassSchemas: TableSchema[] = [
+  {
+    label: "STT",
+    prop: "index",
+    type: "number",
+  },
+  {
+    label: "Tên lớp học",
+    prop: "name",
+    type: "text",
+  },
+  {
+    label: "Môn học",
+    prop: "major",
+    type: "text",
+  },
+  {
+    label: "Giảng viên",
+    prop: "teachers",
+    type: "text",
+    render(data) {
+      return data.teachers.map((teacher: any) => teacher.name).join(", ");
+    },
+  },
+  {
+    label: "Năm học",
+    prop: "duration",
+    type: "text",
+  },
+];
+
 export const classes = [
   {
     id: 1,

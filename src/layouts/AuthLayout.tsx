@@ -8,6 +8,7 @@ import { pathNames } from "../constants";
 import { useAuthStore, useCommonStore } from "../stores";
 import { useUserStore } from "../stores/userStore";
 import { useSocketStore } from "../stores/socketStore";
+import { useClassStore } from "../stores/classStore";
 
 const AuthLayout = () => {
 
@@ -19,13 +20,14 @@ const AuthLayout = () => {
   const { token } = useAuthStore()
   const navigate = useNavigate()
   const { connectSocket, disconnectSocket } = useSocketStore()
-  console.log('user', user);
-  console.log('permissions', permissions);
+  const { fetchClasses } = useClassStore()
 
   useEffect(() => {
     if (!token) {
       return navigate(pathNames.LOGIN)
     }
+
+    initData()
     const handleResize = () => {
       setIsSidebarVisible(window.innerWidth >= 768);
       setIsMobile(window.innerWidth < 768);
@@ -44,6 +46,9 @@ const AuthLayout = () => {
     };
   }, []);
 
+  const initData = () => {
+    Promise.allSettled([fetchClasses({ pagination: false })])
+  }
 
 
   const handleCloseSidebar = () => {

@@ -4,19 +4,20 @@ import MyTable, { IActionTable } from "../../components/UI/MyTable";
 import { useNavigate, useParams } from "react-router-dom";
 import { useExamStore } from "../../stores/examStore";
 import { exportExcel } from "../../utils/my-export-excel";
-import { scoreSchemas } from "../../dataTable/scoreTable";
+import { exportScoreSchemas, scoreSchemas } from "../../dataTable/scoreTable";
 import { pathNames } from "../../constants";
 import { useClassStore } from "../../stores/classStore";
 import { useQuery } from "../../hooks/useQuery";
 import { InputText } from "primereact/inputtext";
 import { useDebounceValue } from "usehooks-ts";
+import dayjs from "dayjs";
 
 const ExamViewScore = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const { setHeaderTitle, setHeaderActions, resetActions, isLoadingApi } = useCommonStore();
   const { examHistorys, getHistory } = useExamStore();
-  const { getStudentClass, students } = useClassStore()
+  const { getStudentClass, students, classesUnlimited } = useClassStore()
   const [classId] = useQuery({ key: 'classId', defaultValue: '' })
   const [debouncedValue, setValue] = useDebounceValue('', 500)
   const actionTable: IActionTable[] = useMemo(() => {
@@ -57,15 +58,21 @@ const ExamViewScore = () => {
         title: "Export",
         icon: "pi pi-file-export",
         onClick: () => {
+          const currentClass = classesUnlimited?.find((item: any) => item.id == classId);
           exportExcel(
             "Danh sách điểm",
-            examHistorys.map((item: any, index: number) => {
-              return {
-                ...item,
-                index: index + 1,
-              };
-            }),
-            scoreSchemas
+            students?.map((item, index) => ({ ...item, ...hashExamHistory?.[item.id] || {}, index: index + 1 })),
+            exportScoreSchemas,
+            "Kết quả bài thi",
+            `${examHistorys?.exam?.title} - ${dayjs(examHistorys?.exam?.createdAt).format("DD/MM/YYYY HH:mm:ss")}`,
+            [
+              {
+                label: "Môn học", value: currentClass?.major?.name || "",
+              },
+              {
+                label: "Học phần", value: currentClass?.name || "",
+              },
+            ]
           );
         },
         type: "button",
@@ -75,14 +82,14 @@ const ExamViewScore = () => {
     return () => {
       resetActions();
     };
-  }, [setHeaderTitle, setHeaderActions, resetActions, examHistorys]);
+  }, [setHeaderTitle, setHeaderActions, resetActions, examHistorys, students, classesUnlimited]);
   const handleSearch = () => {
     getHistory(id || "");
   };
 
   const hashExamHistory = useMemo(() => {
     const hash: any = {};
-    examHistorys.forEach((item: any) => {
+    examHistorys?.data?.forEach((item: any) => {
       hash[item.user_id] = item;
     })
     return hash;

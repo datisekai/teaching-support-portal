@@ -7,6 +7,7 @@ interface IAttendanceState {
   attendancesStatisticClass: any;
   attendance: IAttendance | null;
   attendees: IAttendee[];
+  currentAttendance: IAttendance | null;
   attendeesUnlimited: IAttendee[];
   total: number;
   isLoadingAttendances: boolean;
@@ -31,6 +32,7 @@ export const useAttendanceStore = create<IAttendanceState>((set) => ({
   attendance: null,
   isLoadingAttendances: false,
   attendees: [],
+  currentAttendance: null,
   attendeesUnlimited: [],
   total: 0,
   attendancesStatisticClass: [],
@@ -49,7 +51,10 @@ export const useAttendanceStore = create<IAttendanceState>((set) => ({
       if (body?.pagination === false) {
         set({ attendeesUnlimited: response.data });
       } else {
-        set({ attendees: response.data });
+        set({
+          attendees: response.data,
+          currentAttendance: response.attendance,
+        });
       }
     } catch (error) {}
   },

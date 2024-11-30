@@ -129,6 +129,11 @@ const Login = () => {
                         type="password"
                         invalid={!!errors.password}
                         className="tw-pr-10"
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter") {
+                            e.preventDefault()
+                          }
+                        }}
                       />
                       <label htmlFor="password">Mật khẩu</label>
                     </FloatLabel>

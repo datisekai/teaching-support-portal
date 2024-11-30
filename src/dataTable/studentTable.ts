@@ -17,6 +17,11 @@ export const studentSchemas: TableSchema[] = [
     type: "text",
   },
   {
+    label: "Mã lớp",
+    prop: "classCode",
+    type: "text",
+  },
+  {
     label: "Email",
     prop: "email",
     type: "text",
@@ -26,11 +31,11 @@ export const studentSchemas: TableSchema[] = [
     prop: "phone",
     type: "text",
   },
-  {
-    label: "Thiết bị",
-    prop: "deviceId",
-    type: "text",
-  },
+  // {
+  //   label: "Thiết bị",
+  //   prop: "deviceId",
+  //   type: "text",
+  // },
   {
     label: "Ngày tạo",
     prop: "createdAt",
@@ -40,6 +45,39 @@ export const studentSchemas: TableSchema[] = [
     label: "Ngày sửa",
     prop: "updatedAt",
     type: "datetime",
+  },
+];
+
+export const exportStudentsSchemas: TableSchema[] = [
+  {
+    label: "STT",
+    prop: "index",
+    type: "number",
+  },
+  {
+    label: "Mã sinh viên",
+    prop: "code",
+    type: "text",
+  },
+  {
+    label: "Tên sinh viên",
+    prop: "name",
+    type: "text",
+  },
+  {
+    label: "Mã lớp",
+    prop: "classCode",
+    type: "text",
+  },
+  {
+    label: "Email",
+    prop: "email",
+    type: "text",
+  },
+  {
+    label: "Số điện thoại",
+    prop: "phone",
+    type: "text",
   },
 ];
 

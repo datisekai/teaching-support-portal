@@ -111,6 +111,7 @@ const CreateStudent = () => {
         <div className="tw-mt-4">
           <MySmartSelect
             query={{ type: "student" }}
+            titleModal="Chọn sinh viên"
             onChange={(value) => {
               const isExisted = students.find(
                 (item) => item.code === value.code

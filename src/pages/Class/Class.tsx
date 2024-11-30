@@ -3,7 +3,7 @@ import { useCommonStore, useModalStore } from "../../stores";
 import MyTable, { IActionTable } from "../../components/UI/MyTable";
 import { useNavigate } from "react-router-dom";
 import useConfirm from "../../hooks/useConfirm";
-import { classes, classSchemas } from "../../dataTable/classTable";
+import { classes, classSchemas, exportClassSchemas } from "../../dataTable/classTable";
 import { uploadFile } from "../../utils";
 import { useClassStore } from "../../stores/classStore";
 import { useToast } from "../../hooks/useToast";
@@ -33,14 +33,14 @@ const Class = () => {
       icon: "pi-pen-to-square",
       severity: "secondary",
     },
-    {
-      onClick: (data, options) => {
-        handleClick(`/class/statistic/${data.id}`, data);
-      },
-      tooltip: "Thống kê",
-      icon: "pi-chart-bar",
-      severity: "help",
-    },
+    // {
+    //   onClick: (data, options) => {
+    //     handleClick(`/class/statistic/${data.id}`, data);
+    //   },
+    //   tooltip: "Thống kê",
+    //   icon: "pi-chart-bar",
+    //   severity: "help",
+    // },
     {
       onClick: (data, options) => {
         handleClick(`/student/detail/${data.id}`, data);
@@ -204,14 +204,14 @@ const Class = () => {
           const teachersArray =
             typeof teachersCell === "string"
               ? teachersCell.split(",").map((entry) => {
-                  const [code, name] = entry
-                    .split("-")
-                    .map((item) => item.trim());
-                  return {
-                    code: code || "",
-                    name: name || "",
-                  };
-                })
+                const [code, name] = entry
+                  .split("-")
+                  .map((item) => item.trim());
+                return {
+                  code: code || "",
+                  name: name || "",
+                };
+              })
               : [];
 
           const rowData = {
@@ -307,8 +307,8 @@ const Class = () => {
                 major: item?.major?.name,
               };
             }),
-            classSchemas,
-            headerContent
+            exportClassSchemas,
+            headerContent,
           );
         },
         type: "button",
