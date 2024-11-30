@@ -1,13 +1,11 @@
-import { useEffect, useMemo, useState } from "react";
-import { useAttendanceStore, useCommonStore, useModalStore } from "../../stores";
-import MyTable, { IActionTable } from "../../components/UI/MyTable";
-import { facultySchemas, facultys } from "../../dataTable/facultyTable";
+import { useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import useConfirm from "../../hooks/useConfirm";
-import { uploadFile } from "../../utils";
-import { rooms, roomSchemas } from "../../dataTable/roomTable";
+import MyTable, { IActionTable } from "../../components/UI/MyTable";
 import { ModalName } from "../../constants";
+import { roomSchemas } from "../../dataTable/roomTable";
+import useConfirm from "../../hooks/useConfirm";
 import { useToast } from "../../hooks/useToast";
+import { useAttendanceStore, useCommonStore, useModalStore } from "../../stores";
 
 const Attendance = () => {
   const { onToggle } = useModalStore();
