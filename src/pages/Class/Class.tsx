@@ -3,7 +3,11 @@ import { useCommonStore, useModalStore } from "../../stores";
 import MyTable, { IActionTable } from "../../components/UI/MyTable";
 import { useNavigate } from "react-router-dom";
 import useConfirm from "../../hooks/useConfirm";
-import { classes, classSchemas, exportClassSchemas } from "../../dataTable/classTable";
+import {
+  classes,
+  classSchemas,
+  exportClassSchemas,
+} from "../../dataTable/classTable";
 import { uploadFile } from "../../utils";
 import { useClassStore } from "../../stores/classStore";
 import { useToast } from "../../hooks/useToast";
@@ -16,56 +20,6 @@ import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 
 const Class = () => {
-  const actionTable: IActionTable[] = [
-    {
-      onClick: (data, options) => {
-        handleClick(`/class/score/${data.id}`, data);
-      },
-      tooltip: "Quản lý điểm",
-      icon: "pi-box",
-      severity: "secondary",
-    },
-    {
-      onClick: (data, options) => {
-        handleClick(`/class/score-column-management/${data.id}`, data);
-      },
-      tooltip: "Quản lý cột điểm",
-      icon: "pi-pen-to-square",
-      severity: "secondary",
-    },
-    // {
-    //   onClick: (data, options) => {
-    //     handleClick(`/class/statistic/${data.id}`, data);
-    //   },
-    //   tooltip: "Thống kê",
-    //   icon: "pi-chart-bar",
-    //   severity: "help",
-    // },
-    {
-      onClick: (data, options) => {
-        handleClick(`/student/detail/${data.id}`, data);
-      },
-      tooltip: "Xem danh sách sinh viên",
-      icon: "pi-users",
-      severity: "info",
-    },
-    {
-      onClick: (data, options) => {
-        handleClick(`/class/edit/${data.id}`, data);
-      },
-      tooltip: "Sửa",
-      icon: "pi-pencil",
-      severity: "warning",
-    },
-    {
-      onClick: (data, options) => {
-        handleDelete(data.id);
-      },
-      tooltip: "Xóa",
-      icon: "pi-trash",
-      severity: "danger",
-    },
-  ];
   const navigate = useNavigate();
   const { onConfirm } = useConfirm();
 
@@ -204,14 +158,14 @@ const Class = () => {
           const teachersArray =
             typeof teachersCell === "string"
               ? teachersCell.split(",").map((entry) => {
-                const [code, name] = entry
-                  .split("-")
-                  .map((item) => item.trim());
-                return {
-                  code: code || "",
-                  name: name || "",
-                };
-              })
+                  const [code, name] = entry
+                    .split("-")
+                    .map((item) => item.trim());
+                  return {
+                    code: code || "",
+                    name: name || "",
+                  };
+                })
               : [];
 
           const rowData = {
@@ -308,7 +262,7 @@ const Class = () => {
               };
             }),
             exportClassSchemas,
-            headerContent,
+            headerContent
           );
         },
         type: "button",
@@ -324,6 +278,70 @@ const Class = () => {
   const handleSearch = (query: Object) => {
     fetchClasses(query);
   };
+
+  const actionTable: IActionTable[] = [
+    {
+      onClick: (data, options) => {
+        onToggle(ModalName.CODE_JOIN_CLASS, {
+          content: {
+            code: data?.secretKey || "",
+          },
+          header: "Mã tham gia lớp học",
+        });
+      },
+      tooltip: "Mã tham gia",
+      icon: "pi-code",
+      severity: "secondary",
+    },
+    {
+      onClick: (data, options) => {
+        handleClick(`/class/score/${data.id}`, data);
+      },
+      tooltip: "Quản lý điểm",
+      icon: "pi-box",
+      severity: "secondary",
+    },
+    {
+      onClick: (data, options) => {
+        handleClick(`/class/score-column-management/${data.id}`, data);
+      },
+      tooltip: "Quản lý cột điểm",
+      icon: "pi-pen-to-square",
+      severity: "secondary",
+    },
+    // {
+    //   onClick: (data, options) => {
+    //     handleClick(`/class/statistic/${data.id}`, data);
+    //   },
+    //   tooltip: "Thống kê",
+    //   icon: "pi-chart-bar",
+    //   severity: "help",
+    // },
+    {
+      onClick: (data, options) => {
+        handleClick(`/student/detail/${data.id}`, data);
+      },
+      tooltip: "Xem danh sách sinh viên",
+      icon: "pi-users",
+      severity: "info",
+    },
+    {
+      onClick: (data, options) => {
+        handleClick(`/class/edit/${data.id}`, data);
+      },
+      tooltip: "Sửa",
+      icon: "pi-pencil",
+      severity: "warning",
+    },
+    {
+      onClick: (data, options) => {
+        handleDelete(data.id);
+      },
+      tooltip: "Xóa",
+      icon: "pi-trash",
+      severity: "danger",
+    },
+  ];
 
   return (
     <div>

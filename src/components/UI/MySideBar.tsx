@@ -1,7 +1,7 @@
 import { Avatar } from "primereact/avatar";
 import { Ripple } from "primereact/ripple";
 import React, { useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { pathNames, sidebarData } from "../../constants";
 import { useAuthStore } from "../../stores";
 import { useUserStore } from "../../stores/userStore";
@@ -28,6 +28,7 @@ const MySideBar: React.FC<IMySideBar> = ({
   const [expandedMenus, setExpandedMenus] = useState<ExpandedMenus>({});
   const { user, permissions } = useUserStore();
   const { logout } = useAuthStore();
+  const { pathname } = useLocation();
   // console.log("current user", user);
 
   const handleExpandClick = (index: number) => {
@@ -51,6 +52,7 @@ const MySideBar: React.FC<IMySideBar> = ({
 
   const filteredSidebarData = useMemo(() => {
     return sidebarData.filter((item) => {
+      if (!item.permission) return true;
       const hasChildPermission = item.children?.some((child) =>
         hasPermission(child?.permission)
       );
@@ -107,7 +109,16 @@ const MySideBar: React.FC<IMySideBar> = ({
                       ? handleExpandClick(index)
                       : handleMenuItemClick(item?.path)
                   }
-                  className="tw-p-ripple tw-p-3 tw-flex tw-items-center tw-justify-between tw-text-600 tw-cursor-pointer hover:tw-bg-gray-200 tw-transition-colors tw-duration-200"
+                  className={`tw-p-ripple tw-p-3 tw-flex tw-items-center tw-justify-between tw-text-600 tw-cursor-pointer ${
+                    !item.children || item?.children?.length == 0
+                      ? "hover:bg-primary"
+                      : ""
+                  } tw-transition-colors tw-duration-200 ${
+                    pathname === item.path &&
+                    (!item.children || item?.children?.length == 0)
+                      ? "bg-primary"
+                      : ""
+                  }`}
                 >
                   <span className="tw-font-medium">{item.title}</span>
                   {item.children && item.children.length > 0 && (
@@ -128,7 +139,9 @@ const MySideBar: React.FC<IMySideBar> = ({
                     <li className="ml-2" key={childIndex}>
                       <div
                         onClick={() => handleMenuItemClick(child?.path)}
-                        className="tw-p-ripple tw-flex tw-items-center tw-cursor-pointer tw-p-3 tw-border-round tw-text-700 hover:tw-bg-gray-200 tw-transition-colors tw-duration-200 tw-w-full"
+                        className={`tw-p-ripple tw-flex tw-items-center tw-cursor-pointer tw-p-3 tw-border-round tw-text-700 hover:bg-primary tw-transition-colors tw-duration-200 tw-w-full ${
+                          pathname === child.path ? "bg-primary" : ""
+                        }`}
                       >
                         <i className={`${child.icon} tw-mr-2`}></i>
                         <span className="tw-font-medium">{child.title}</span>

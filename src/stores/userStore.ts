@@ -3,6 +3,7 @@ import { assignPermissions, users } from "../constants";
 import { AuthService } from "../services";
 import { IUser } from "../types/user";
 import { UserService } from "../services/userService";
+import { IStatistic } from "../types/statistic";
 
 interface IState {
   user: IUser;
@@ -11,6 +12,7 @@ interface IState {
   total: number;
   userEdit: IUser;
   isLoadingUsers: boolean;
+  statistic: IStatistic;
   fetchUsers: (body: object) => Promise<void>;
   fetchUser: (id: string) => Promise<void>;
   addUser: (user: IUser) => Promise<boolean>;
@@ -18,6 +20,7 @@ interface IState {
   deleteUser: (id: number) => Promise<boolean>;
   getMe: () => Promise<void>;
   resetDevice: (id: number) => Promise<boolean>;
+  getStatistic: () => Promise<void>;
 }
 interface IToast {
   message?: string;
@@ -39,6 +42,12 @@ export const useUserStore = create<IState>((set) => ({
   userEdit: {} as IUser,
   isLoadingUsers: false,
   total: 0,
+  statistic: {
+    openExamsCount: 0,
+    pendingLetters: [],
+    pendingLettersCount: 0,
+    teachingClassesCount: 0,
+  },
   getMe: async () => {
     try {
       const resp = await UserService.getMe();
@@ -119,5 +128,11 @@ export const useUserStore = create<IState>((set) => ({
     } catch (error) {
       return false;
     }
+  },
+  getStatistic: async () => {
+    try {
+      const response = await UserService.getStatistics();
+      set({ statistic: response.data });
+    } catch (error) {}
   },
 }));

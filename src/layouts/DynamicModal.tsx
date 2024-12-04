@@ -14,6 +14,7 @@ import ChooseQuestion from "../components/Modal/ChooseQuestion";
 import AutoFillQuestion from "../components/Modal/AutoFillQuestion";
 import QuestionExamSetting from "../components/Modal/QuestionExamSetting";
 import SmartSearch from "../components/Modal/SmartSearch/SmartSearch";
+import CodeJoinClassModal from "../components/Modal/CodeJoinClassModal";
 
 const DynamicModal = () => {
   const { modalName, onDismiss, onToggle, visible, footer, header, style } =
@@ -47,6 +48,7 @@ const DynamicModal = () => {
       {modalName === ModalName.AUTOFILL_QUESTION && <AutoFillQuestion />}
       {modalName === ModalName.QUESTION_EXAM_SETTING && <QuestionExamSetting />}
       {modalName === ModalName.SMART_SEARCH && <SmartSearch />}
+      {modalName === ModalName.CODE_JOIN_CLASS && <CodeJoinClassModal />}
     </Dialog>
   );
 };

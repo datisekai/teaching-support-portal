@@ -32,6 +32,13 @@ export const letterSchemas: TableSchema[] = [
     },
   },
   {
+    label: "Lớp học",
+    prop: "class",
+    render(data) {
+      return `${data.class?.major?.code} - ${data.class?.major?.name} - ${data.class.name}`;
+    },
+  },
+  {
     label: "Trạng thái",
     prop: "status",
     type: "badge",

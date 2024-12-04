@@ -1,13 +1,12 @@
-import { useEffect, useState } from "react";
-import { useCommonStore, useModalStore } from "../../stores";
-import MyTable, { IActionTable } from "../../components/UI/MyTable";
-import { useNavigate } from "react-router-dom";
-import { letters, letterSchemas } from "../../dataTable/letterTable";
 import { Button } from "primereact/button";
-import { Dropdown, DropdownChangeEvent } from "primereact/dropdown";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import MyTable, { IActionTable } from "../../components/UI/MyTable";
 import { ModalName } from "../../constants";
-import { useLetterStore } from "../../stores/letterStore";
 import { useToast } from "../../hooks/useToast";
+import { useCommonStore, useModalStore } from "../../stores";
+import { useLetterStore } from "../../stores/letterStore";
+import { letterSchemas } from "../../dataTable/letterTable";
 
 interface IStatus {
   id: string;

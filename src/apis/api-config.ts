@@ -15,6 +15,10 @@ export const apiConfig = {
     method: "PUT",
     endpoint: "/api.user/:id",
   },
+  statistic: {
+    method: "GET",
+    endpoint: "/api.user/statistic",
+  },
   // Permission
   permission: {
     create: {

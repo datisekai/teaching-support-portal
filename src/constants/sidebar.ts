@@ -2,6 +2,11 @@ import { pathNames } from "./pathname";
 
 export const sidebarData: IMenuItem[] = [
   {
+    title: "Trang chủ",
+    icon: "",
+    path: pathNames.HOME,
+  },
+  {
     title: "Điểm danh",
     icon: "",
     path: pathNames.ATTENDANCE,

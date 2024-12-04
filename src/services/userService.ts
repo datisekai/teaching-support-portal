@@ -50,4 +50,8 @@ export const UserService = {
       endpoint: resetDevice.endpoint.replace(":id", id.toString()),
     });
   },
+  getStatistics: async () => {
+    const { statistic } = apiConfig;
+    return processMiddlewareSendRequest(statistic);
+  },
 };
