@@ -23,6 +23,7 @@ import { InputNumber } from "primereact/inputnumber";
 import { IActionTable } from "./MyTable";
 import useConfirm from "../../hooks/useConfirm";
 import MyCard from "./MyCard";
+import { useUserStore } from "../../stores/userStore";
 
 interface IMyTable {
   schemas: TableSchema[];
@@ -57,6 +58,15 @@ const MyTableCustom: FC<IMyTable> = ({
   const menuRight = useRef<Menu>(null);
   const [debouncedValue, setValue] = useDebounceValue("", 500);
   const [selectedRowData, setSelectedRowData] = useState<any>(null);
+  const { permissions } = useUserStore();
+
+  const actionsFiltered = useMemo(() => {
+    return actions.filter((action) => {
+      if (!action.permission) return true;
+      return permissions?.includes(action.permission);
+    });
+  }, [actions, permissions]);
+
   useEffect(() => {
     if (onChange && typeof onChange === "function") {
       onChange({ [keySearch]: debouncedValue, page: first });
@@ -150,7 +160,7 @@ const MyTableCustom: FC<IMyTable> = ({
       const items = [
         {
           label: "Hành động",
-          items: actions.map((action) => ({
+          items: actionsFiltered.map((action) => ({
             label: action.tooltip,
             icon: `pi ${action.icon}`,
             command: () => {
@@ -164,10 +174,10 @@ const MyTableCustom: FC<IMyTable> = ({
 
       return (
         <div className="tw-w-full tw-flex tw-gap-2 tw-flex-wrap tw-items-center">
-          {actions && actions.length > 0 && (
+          {actionsFiltered && actionsFiltered.length > 0 && (
             <div
               className={
-                actions.length < 4 ? "tw-flex md:tw-hidden" : "tw-flex"
+                actionsFiltered.length < 4 ? "tw-flex md:tw-hidden" : "tw-flex"
               }
             >
               <Menu
@@ -188,11 +198,13 @@ const MyTableCustom: FC<IMyTable> = ({
               />
             </div>
           )}
-          {actions?.map((action, index) => (
+          {actionsFiltered?.map((action, index) => (
             <Button
               size="small"
               className={
-                actions.length < 4 ? "md:tw-flex tw-hidden" : "tw-hidden"
+                actionsFiltered.length < 4
+                  ? "md:tw-flex tw-hidden"
+                  : "tw-hidden"
               }
               tooltip={action.tooltip}
               tooltipOptions={{ position: "top" }}
@@ -213,7 +225,7 @@ const MyTableCustom: FC<IMyTable> = ({
         </div>
       );
     },
-    [actions, selectedRowData]
+    [actionsFiltered, selectedRowData]
   );
 
   const header = useMemo(() => {
@@ -244,7 +256,7 @@ const MyTableCustom: FC<IMyTable> = ({
             ></Column>
           );
         })}
-        {actions && actions.length > 0 && (
+        {actionsFiltered && actionsFiltered.length > 0 && (
           <Column
             body={renderActions}
             field="actions"

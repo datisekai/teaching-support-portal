@@ -4,6 +4,7 @@ import { memo, useMemo, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCommonStore } from "../../stores";
 import { IAction } from "../../stores/commonStore";
+import { useUserStore } from "../../stores/userStore";
 
 const MyHeaderAction = () => {
   const {
@@ -11,6 +12,7 @@ const MyHeaderAction = () => {
   } = useCommonStore();
   const navigate = useNavigate();
   const menuRight = useRef<Menu>(null);
+  const { permissions } = useUserStore();
 
   const getIcon = (action: IAction) => {
     if (!action.icon) return undefined;
@@ -31,11 +33,18 @@ const MyHeaderAction = () => {
     return action.onClick;
   };
 
+  const actionsFiltered = useMemo(() => {
+    return actions.filter((action) => {
+      if (!action.permission) return true;
+      return permissions?.includes(action.permission);
+    });
+  }, [actions, permissions]);
+
   const items = useMemo(() => {
     let dropdown = [
       {
         label: "Hành động",
-        items: actions.map((action) => ({
+        items: actionsFiltered.map((action) => ({
           label: action.title,
           icon: getIcon(action),
           command: handleClick(action),
@@ -43,12 +52,12 @@ const MyHeaderAction = () => {
       },
     ];
     return dropdown;
-  }, [actions]);
+  }, [actionsFiltered]);
 
   return (
     <>
       <div className="tw-hidden md:tw-flex tw-pr-2  tw-flex-1 tw-w-full tw-gap-2 tw-justify-end tw-items-center">
-        {actions.map((action, index) => (
+        {actionsFiltered.map((action, index) => (
           <Button
             loading={action.loading}
             disabled={action.disabled}
@@ -61,7 +70,7 @@ const MyHeaderAction = () => {
           />
         ))}
       </div>
-      {actions && actions.length > 0 && (
+      {actionsFiltered && actionsFiltered.length > 0 && (
         <div className="tw-flex md:tw-hidden tw-flex-1 tw-justify-end">
           <Menu
             model={items}

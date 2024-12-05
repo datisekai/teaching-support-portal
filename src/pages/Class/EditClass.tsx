@@ -18,6 +18,7 @@ import { Avatar } from "primereact/avatar";
 import { getImageUrl } from "../../utils";
 import { Button } from "primereact/button";
 import MySmartSelect from "../../components/UI/MySmartSelect";
+import CanActivate from "../../components/CanActivate";
 
 const schema = yup
   .object()
@@ -141,53 +142,55 @@ const EditClass = () => {
           ))}
         </form>
 
-        <div className="tw-mt-4">
-          <MyCard title="Giảng viên">
-            {teachers &&
-              teachers?.length > 0 &&
-              teachers?.map((item: any, index: number) => (
-                <div className="tw-py-2 tw-px-4 tw-flex tw-items-center tw-justify-between tw-gap-4  tw-cursor-pointer tw-border-b">
-                  <div className="tw-flex tw-items-center tw-gap-4">
-                    <Avatar
-                      shape="circle"
-                      size="large"
-                      image={getImageUrl(item.avatar || "", item.name)}
-                    />
+        <CanActivate permission="major:update">
+          <div className="tw-mt-4">
+            <MyCard title="Giảng viên">
+              {teachers &&
+                teachers?.length > 0 &&
+                teachers?.map((item: any, index: number) => (
+                  <div className="tw-py-2 tw-px-4 tw-flex tw-items-center tw-justify-between tw-gap-4  tw-cursor-pointer tw-border-b">
+                    <div className="tw-flex tw-items-center tw-gap-4">
+                      <Avatar
+                        shape="circle"
+                        size="large"
+                        image={getImageUrl(item.avatar || "", item.name)}
+                      />
+                      <div>
+                        <div className="tw-font-bold">{item.name}</div>
+                        <div>{item.code}</div>
+                      </div>
+                    </div>
                     <div>
-                      <div className="tw-font-bold">{item.name}</div>
-                      <div>{item.code}</div>
+                      <Button
+                        text
+                        onClick={() => {
+                          setTeachers(
+                            teachers.filter((t: any) => t.code !== item.code)
+                          );
+                        }}
+                        icon="pi pi-times"
+                      />
                     </div>
                   </div>
-                  <div>
-                    <Button
-                      text
-                      onClick={() => {
-                        setTeachers(
-                          teachers.filter((t: any) => t.code !== item.code)
-                        );
-                      }}
-                      icon="pi pi-times"
-                    />
-                  </div>
-                </div>
-              ))}
-            {teachers?.length == 0 && <div>Chưa có giảng viên nào</div>}
-            <div className="tw-mt-4">
-              <MySmartSelect
-                query={{ type: "teacher" }}
-                onChange={(value) => {
-                  const isExisted = teachers.find(
-                    (item) => item.code === value.code
-                  );
-                  if (!isExisted) {
-                    setTeachers([...teachers, value]);
-                  }
-                }}
-                placeholder="Chọn giảng viên"
-              />
-            </div>
-          </MyCard>
-        </div>
+                ))}
+              {teachers?.length == 0 && <div>Chưa có giảng viên nào</div>}
+              <div className="tw-mt-4">
+                <MySmartSelect
+                  query={{ type: "teacher" }}
+                  onChange={(value) => {
+                    const isExisted = teachers.find(
+                      (item) => item.code === value.code
+                    );
+                    if (!isExisted) {
+                      setTeachers([...teachers, value]);
+                    }
+                  }}
+                  placeholder="Chọn giảng viên"
+                />
+              </div>
+            </MyCard>
+          </div>
+        </CanActivate>
       </MyLoading>
     </div>
   );

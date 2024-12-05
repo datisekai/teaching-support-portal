@@ -43,7 +43,7 @@ const Exam = () => {
         });
         fetchExams({}); // Refresh data after delete
       },
-      onReject: () => { },
+      onReject: () => {},
     };
     onConfirm(confirmData);
   };
@@ -63,12 +63,14 @@ const Exam = () => {
       tooltip: "Sửa",
       icon: "pi-pencil",
       severity: "warning",
+      permission: "exam:update",
     },
     {
       onClick: (data) => handleDelete(data.id),
       tooltip: "Xóa",
       icon: "pi-trash",
       severity: "danger",
+      permission: "exam:delete",
     },
   ];
 
@@ -81,6 +83,7 @@ const Exam = () => {
         onClick: () => navigate(`${pathNames.EXAM}/create`),
         type: "button",
         disabled: false,
+        permission: "exam:create",
       },
       // {
       //   title: "Import",

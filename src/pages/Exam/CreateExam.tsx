@@ -165,6 +165,7 @@ const CreateExam = () => {
         onClick: handleSubmit(onSubmit),
         title: "Tạo",
         icon: "pi-plus",
+        permission: "exam:create",
       },
     ];
     setFooterActions(actions);

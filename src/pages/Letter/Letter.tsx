@@ -7,6 +7,7 @@ import { useToast } from "../../hooks/useToast";
 import { useCommonStore, useModalStore } from "../../stores";
 import { useLetterStore } from "../../stores/letterStore";
 import { letterSchemas } from "../../dataTable/letterTable";
+import CanActivate from "../../components/CanActivate";
 
 interface IStatus {
   id: string;
@@ -45,23 +46,25 @@ const Letter = () => {
       header: "Chi tiết đơn",
       footer: (
         <>
-          {data.status == "pending" && (
-            <div className="tw-flex tw-justify-end tw-items-center">
-              <Button
-                label="Từ chối"
-                icon="pi pi-times"
-                type="button"
-                severity="danger"
-                onClick={() => handleSubmit(data.id, "rejected")}
-              />
-              <Button
-                label="Đồng ý"
-                icon="pi pi-check"
-                autoFocus
-                onClick={() => handleSubmit(data.id, "approved")}
-              />
-            </div>
-          )}
+          <CanActivate permission="letter:update">
+            {data.status == "pending" && (
+              <div className="tw-flex tw-justify-end tw-items-center">
+                <Button
+                  label="Từ chối"
+                  icon="pi pi-times"
+                  type="button"
+                  severity="danger"
+                  onClick={() => handleSubmit(data.id, "rejected")}
+                />
+                <Button
+                  label="Đồng ý"
+                  icon="pi pi-check"
+                  autoFocus
+                  onClick={() => handleSubmit(data.id, "approved")}
+                />
+              </div>
+            )}
+          </CanActivate>
         </>
       ),
       content: data, // Nội dung chi tiết của đơn từ

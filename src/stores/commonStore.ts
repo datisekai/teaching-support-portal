@@ -11,6 +11,7 @@ export interface IAction {
   loading?: boolean;
   action?: "back";
   tooltip?: string;
+  permission?: string;
 }
 
 interface ICommonState {

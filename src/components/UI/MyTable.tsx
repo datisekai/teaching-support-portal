@@ -8,10 +8,19 @@ import { InputText } from "primereact/inputtext";
 import { Menu } from "primereact/menu";
 import { Paginator, PaginatorPageChangeEvent } from "primereact/paginator";
 import { Tag } from "primereact/tag";
-import { FC, memo, useCallback, useEffect, useRef, useState } from "react";
+import {
+  FC,
+  memo,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { useDebounceValue } from "usehooks-ts";
 import { TableSchema } from "../../types/table";
 import { getIndex } from "../../utils";
+import { useUserStore } from "../../stores/userStore";
 
 export interface IActionTable {
   title?: string;
@@ -25,6 +34,7 @@ export interface IActionTable {
   action?: "back";
   tooltip?: string;
   isHidden?: (data: any) => boolean;
+  permission?: string;
 }
 export interface QueryParams {
   page?: number;
@@ -57,6 +67,14 @@ const MyTable: FC<IMyTable> = ({
   const [selectedRowData, setSelectedRowData] = useState<any>(null);
   const menuRight = useRef<Menu>(null);
   const [debouncedValue, setValue] = useDebounceValue("", 500);
+  const { permissions } = useUserStore();
+
+  const actionsFiltered = useMemo(() => {
+    return actions.filter((action) => {
+      if (!action.permission) return true;
+      return permissions?.includes(action.permission);
+    });
+  }, [actions, permissions]);
 
   const handlePageChange = (event: PaginatorPageChangeEvent) => {
     const page = Math.max(1, event.page + 1);
@@ -85,8 +103,8 @@ const MyTable: FC<IMyTable> = ({
       return schema.render(row);
     }
 
-    if (schema?.prop == 'index') {
-      return getIndex((options?.rowIndex || index), perPage, first);
+    if (schema?.prop == "index") {
+      return getIndex(options?.rowIndex || index, perPage, first);
     }
 
     switch (schema?.type) {
@@ -134,7 +152,7 @@ const MyTable: FC<IMyTable> = ({
 
   const renderActions = useCallback(
     (rowData: any, options: any) => {
-      const actionActives = actions.filter(
+      const actionActives = actionsFiltered.filter(
         (action) => !action?.isHidden?.(rowData)
       );
 
@@ -204,7 +222,7 @@ const MyTable: FC<IMyTable> = ({
         </div>
       );
     },
-    [actions, selectedRowData]
+    [actions, selectedRowData, actionsFiltered]
   );
 
   return (

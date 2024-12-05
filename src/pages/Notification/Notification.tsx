@@ -67,6 +67,7 @@ const Notification = () => {
       tooltip: "Sửa",
       icon: "pi-pencil",
       severity: "warning",
+      permission: "notification:update",
     },
     {
       onClick: (data, options) => {
@@ -75,6 +76,7 @@ const Notification = () => {
       tooltip: "Xóa",
       icon: "pi-trash",
       severity: "danger",
+      permission: "notification:update",
     },
   ];
 
@@ -89,6 +91,7 @@ const Notification = () => {
         },
         type: "button",
         disabled: false,
+        permission: "notification:create",
       },
     ]);
 

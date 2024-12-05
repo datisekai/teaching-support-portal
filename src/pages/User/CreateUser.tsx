@@ -79,6 +79,7 @@ const CreateUser = () => {
         onClick: handleSubmit(onSubmit),
         title: "Tạo",
         icon: "pi-plus",
+        permission: "user:create",
       },
     ];
     setFooterActions(actions);

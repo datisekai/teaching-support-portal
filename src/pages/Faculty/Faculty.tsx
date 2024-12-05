@@ -22,12 +22,14 @@ const Faculty = () => {
       tooltip: "Sửa",
       icon: "pi-pencil",
       severity: "warning",
+      permission: "faculty:update",
     },
     {
       onClick: (data) => handleDelete(data.id),
       tooltip: "Xóa",
       icon: "pi-trash",
       severity: "danger",
+      permission: "faculty:delete",
     },
   ];
   const navigate = useNavigate();
@@ -219,6 +221,7 @@ const Faculty = () => {
         onClick: () => navigate(`${pathNames.FACULTY}/create`),
         type: "button",
         disabled: false,
+        permission: "faculty:create",
       },
       {
         title: "Import",
@@ -228,6 +231,7 @@ const Faculty = () => {
         },
         type: "file",
         disabled: false,
+        permission: "faculty:create",
       },
       {
         title: "Export",

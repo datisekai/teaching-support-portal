@@ -197,6 +197,7 @@ const EditExam = () => {
         onClick: handleSubmit(onSubmit),
         title: "Lưu thay đổi",
         icon: "pi-save",
+        permission: "exam:update",
       },
     ];
     setFooterActions(actions);

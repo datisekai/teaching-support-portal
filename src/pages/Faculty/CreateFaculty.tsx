@@ -15,7 +15,7 @@ const schema = yup
   .shape({
     name: yup.string().required("Tên ngành học là bắt buộc."),
     description: yup.string().required("Mô tả ngành học là bắt buộc."),
-    code: yup.string().required('Mã ngành học là bắt buộc.'),
+    code: yup.string().required("Mã ngành học là bắt buộc."),
   })
   .required();
 const CreateFaculty = () => {
@@ -28,7 +28,7 @@ const CreateFaculty = () => {
     defaultValues: {
       description: "",
       name: "",
-      code: ""
+      code: "",
     },
   });
   const navigate = useNavigate();
@@ -68,6 +68,7 @@ const CreateFaculty = () => {
         onClick: handleSubmit(onSubmit),
         title: "Tạo",
         icon: "pi-plus",
+        permission: "faculty:create",
       },
     ];
     setFooterActions(actions);

@@ -22,19 +22,12 @@ const Major = () => {
   const actionTable: IActionTable[] = [
     {
       onClick: (data, options) => {
-        handleScoreColumn(data);
-      },
-      tooltip: "Quản lý cột điểm",
-      icon: "pi-chart-bar",
-      severity: "help",
-    },
-    {
-      onClick: (data, options) => {
         handleEdit(data);
       },
       tooltip: "Sửa",
       icon: "pi-pencil",
       severity: "warning",
+      permission: "major:update",
     },
     {
       onClick: (data, options) => {
@@ -43,6 +36,7 @@ const Major = () => {
       tooltip: "Xóa",
       icon: "pi-trash",
       severity: "danger",
+      permission: "major:delete",
     },
   ];
 
@@ -260,6 +254,7 @@ const Major = () => {
         },
         type: "button",
         disabled: false,
+        permission: "major:create",
       },
       {
         title: "Import",
@@ -269,6 +264,7 @@ const Major = () => {
         },
         type: "file",
         disabled: false,
+        permission: "major:create",
       },
       {
         title: "Export",

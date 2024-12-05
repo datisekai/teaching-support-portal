@@ -8,6 +8,7 @@ import { translateAction, translateResource } from "../../utils";
 import MyCard from "../../components/UI/MyCard";
 import { useToast } from "../../hooks/useToast";
 import MyLoading from "../../components/UI/MyLoading";
+import { useUserStore } from "../../stores/userStore";
 
 const PermissionAssign: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -19,7 +20,8 @@ const PermissionAssign: React.FC = () => {
   const { permissions, fetchPermissions } = usePermissionStore();
   const { role, fetchRole, updateRolePermissions } = useRoleStore();
   const { showToast } = useToast();
-  const { isLoadingApi } = useCommonStore()
+  const { isLoadingApi } = useCommonStore();
+  const { permissions: userPermissions } = useUserStore();
 
   useEffect(() => {
     fetchPermissions();
@@ -218,6 +220,7 @@ const PermissionAssign: React.FC = () => {
                     value={item.key}
                     onChange={(e) => togglePermission(e, item)}
                     checked={isParentChecked(item)}
+                    disabled={!userPermissions.includes("user:update")}
                   />
                   <label
                     className="tw-ml-2 tw-font-bold tw-text-lg text-primary"
@@ -234,6 +237,7 @@ const PermissionAssign: React.FC = () => {
                         key={child.key}
                       >
                         <InputSwitch
+                          disabled={!userPermissions.includes("user:update")}
                           checked={
                             checkedStates[child.key] || child.isChecked || false
                           }
@@ -251,7 +255,8 @@ const PermissionAssign: React.FC = () => {
               </div>
             ))}
           </div>
-        </MyCard></MyLoading>
+        </MyCard>
+      </MyLoading>
     </div>
   );
 };

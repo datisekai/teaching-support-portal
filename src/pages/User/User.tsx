@@ -18,14 +18,7 @@ const User = () => {
       tooltip: "Khóa",
       icon: "pi-lock",
       severity: "info",
-    },
-    {
-      onClick: (data, options) => {
-        handleReset(data);
-      },
-      tooltip: "Reset thiết bị",
-      icon: "pi-refresh",
-      severity: "help",
+      permission: "user:update",
     },
     {
       onClick: (data, options) => {
@@ -34,6 +27,7 @@ const User = () => {
       tooltip: "Sửa",
       icon: "pi-pencil",
       severity: "warning",
+      permission: "user:update",
     },
     // {
     //   onClick: (data, options) => {
@@ -56,14 +50,14 @@ const User = () => {
     if (!result) {
       showToast({
         severity: "danger",
-        summary: ",Thông báo",
+        summary: "Thông báo",
         message: "Khóa thất bại!",
         life: 3000,
       });
     }
     showToast({
       severity: "success",
-      summary: ",Thông báo",
+      summary: "Thông báo",
       message: "Khóa thành công!",
       life: 3000,
     });
@@ -115,6 +109,7 @@ const User = () => {
         },
         type: "button",
         disabled: false,
+        permission: "user:create",
       },
       // {
       //   title: "Import",

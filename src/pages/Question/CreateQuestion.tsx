@@ -167,6 +167,7 @@ const CreateQuestion = () => {
         onClick: handleSubmit(onSubmit),
         title: "Tạo",
         icon: "pi-plus",
+        permission: "question:create",
       },
     ];
     setFooterActions(actions);
@@ -189,10 +190,9 @@ const CreateQuestion = () => {
         form = QuestionCodeForm;
         break;
       case QuestionType.CODE_HTML:
-        form = QuestionCodeHtmlForm
+        form = QuestionCodeHtmlForm;
         break;
     }
-
 
     return form;
   }, [questionType]);
@@ -373,9 +373,14 @@ const CreateQuestion = () => {
         </>
       )}
 
-      {questionType === QuestionType.CODE_HTML && <MyCard title="Code khởi tạo">
-        <MyHtmlCodeEditor onChange={(value) => setValue("initCode", value)} htmlInitialValue={defaultHtmlCode} />
-      </MyCard>}
+      {questionType === QuestionType.CODE_HTML && (
+        <MyCard title="Code khởi tạo">
+          <MyHtmlCodeEditor
+            onChange={(value) => setValue("initCode", value)}
+            htmlInitialValue={defaultHtmlCode}
+          />
+        </MyCard>
+      )}
     </div>
   );
 };

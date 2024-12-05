@@ -13,6 +13,7 @@ import { ISchema } from "yup";
 import { TableSchema } from "../../types/table";
 import { Checkbox } from "primereact/checkbox";
 import dayjs from "dayjs";
+import { useUserStore } from "../../stores/userStore";
 
 const exportSchemas = [
   {
@@ -45,7 +46,7 @@ const exportSchemas = [
     prop: "isSuccess",
     type: "text",
     render: (data: any) => {
-      return !data.isSuccess ? 'X' : ''
+      return !data.isSuccess ? "X" : "";
     },
   },
   {
@@ -53,10 +54,10 @@ const exportSchemas = [
     prop: "updatedAt",
     type: "text",
     render: (data: any) => {
-      return dayjs(data.createdAt).format('HH:mm DD/MM/YYYY')
-    }
-  }
-]
+      return dayjs(data.createdAt).format("HH:mm DD/MM/YYYY");
+    },
+  },
+];
 
 const DetailAttendance = () => {
   const actionTable: IActionTable[] = [];
@@ -66,11 +67,17 @@ const DetailAttendance = () => {
     defaultValue: "",
   });
   const [hashAttendees, setHashAttendees] = useState<any>({});
+  const { permissions } = useUserStore();
 
   const { getStudentClass, students } = useClassStore();
 
-  const { fetchAttendees, attendees, attendeesUnlimited, toggleAttendee, currentAttendance } =
-    useAttendanceStore();
+  const {
+    fetchAttendees,
+    attendees,
+    attendeesUnlimited,
+    toggleAttendee,
+    currentAttendance,
+  } = useAttendanceStore();
   const { setHeaderTitle, setHeaderActions, resetActions, isLoadingApi } =
     useCommonStore();
 
@@ -84,8 +91,6 @@ const DetailAttendance = () => {
     };
   }, []);
 
-
-
   useEffect(() => {
     if (classId) {
       // console.log('classId', classId);
@@ -97,7 +102,10 @@ const DetailAttendance = () => {
     if (attendees) {
       const hash: any = {};
       attendees.forEach((item: any) => {
-        hash[item.user.id] = { isSuccess: item.isSuccess, createdAt: item.createdAt };
+        hash[item.user.id] = {
+          isSuccess: item.isSuccess,
+          createdAt: item.createdAt,
+        };
       });
       setHashAttendees(hash);
     }
@@ -111,7 +119,10 @@ const DetailAttendance = () => {
 
   const handleUpdateAttendee = (userId: number, checked: boolean) => {
     toggleAttendee(+(id || 0), userId);
-    setHashAttendees({ ...hashAttendees, [userId]: { ...hashAttendees?.[userId], isSuccess: checked } });
+    setHashAttendees({
+      ...hashAttendees,
+      [userId]: { ...hashAttendees?.[userId], isSuccess: checked },
+    });
   };
 
   const schemas: TableSchema[] = useMemo(() => {
@@ -151,6 +162,7 @@ const DetailAttendance = () => {
             <Checkbox
               onClick={() => handleUpdateAttendee(data.id, !isSuccess)}
               checked={!isSuccess}
+              disabled={!permissions.includes("attendance:update")}
             ></Checkbox>
           );
         },
@@ -160,7 +172,7 @@ const DetailAttendance = () => {
         prop: "createdAt",
         type: "datetime",
         render(data) {
-          const createdAt = hashAttendees?.[data?.id]?.createdAt
+          const createdAt = hashAttendees?.[data?.id]?.createdAt;
           return dayjs(createdAt).format("DD/MM/YYYY HH:mm:ss");
         },
       },
@@ -179,19 +191,22 @@ const DetailAttendance = () => {
             "Danh sách điểm danh",
             students.map((item: any, index: number) => {
               return {
-                ...item, isSuccess: hashAttendees?.[item?.id] || false
+                ...item,
+                isSuccess: hashAttendees?.[item?.id] || false,
               };
             }),
             exportSchemas,
             headerContent,
-            `${currentAttendance?.title} - ${dayjs(currentAttendance?.time).format("DD/MM/YYYY HH:mm:ss")}`
+            `${currentAttendance?.title} - ${dayjs(
+              currentAttendance?.time
+            ).format("DD/MM/YYYY HH:mm:ss")}`
           );
         },
         type: "button",
         disabled: false,
       },
     ]);
-  }, [students, hashAttendees, currentAttendance])
+  }, [students, hashAttendees, currentAttendance]);
 
   return (
     <div>

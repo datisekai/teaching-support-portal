@@ -54,7 +54,7 @@ const EditQuestion = () => {
   const navigate = useNavigate();
 
   const [answers, setAnswers] = useState<IAnswer[]>([]);
-  const { isLoadingApi } = useCommonStore()
+  const { isLoadingApi } = useCommonStore();
   const [testcases, setTestCases] = useState([
     { input: "", expectedOutput: "" },
   ]);
@@ -196,6 +196,7 @@ const EditQuestion = () => {
         onClick: handleSubmit(onSubmit),
         title: "Lưu thay đổi",
         icon: "pi-save",
+        permission: "question:update",
       },
     ];
 
@@ -214,22 +215,18 @@ const EditQuestion = () => {
     answers,
   ]);
 
-  const QuestionForm = useMemo(
-    () => {
-      if (questionType === QuestionType.MULTIPLE_CHOICE) {
-        return QuestionMultiChoiceForm;
-      }
-      if (questionType === QuestionType.CODE) {
-        return QuestionCodeForm;
-      }
-      if (questionType === QuestionType.CODE_HTML) {
-        return QuestionCodeHtmlForm;
-      }
+  const QuestionForm = useMemo(() => {
+    if (questionType === QuestionType.MULTIPLE_CHOICE) {
       return QuestionMultiChoiceForm;
-    },
-    [questionType]
-  );
-
+    }
+    if (questionType === QuestionType.CODE) {
+      return QuestionCodeForm;
+    }
+    if (questionType === QuestionType.CODE_HTML) {
+      return QuestionCodeHtmlForm;
+    }
+    return QuestionMultiChoiceForm;
+  }, [questionType]);
 
   return (
     <MyLoading isLoading={isLoadingApi}>
@@ -362,9 +359,17 @@ const EditQuestion = () => {
           </>
         )}
 
-        {questionType === QuestionType.CODE_HTML && question && <MyCard title="Code khởi tạo">
-          <MyHtmlCodeEditor key={question?.id} onChange={(value) => setValue("initCode", value)} htmlInitialValue={question?.initCode?.html || ""} cssInitialValue={question?.initCode?.css || ""} jsInitialValue={question?.initCode?.js || ""} />
-        </MyCard>}
+        {questionType === QuestionType.CODE_HTML && question && (
+          <MyCard title="Code khởi tạo">
+            <MyHtmlCodeEditor
+              key={question?.id}
+              onChange={(value) => setValue("initCode", value)}
+              htmlInitialValue={question?.initCode?.html || ""}
+              cssInitialValue={question?.initCode?.css || ""}
+              jsInitialValue={question?.initCode?.js || ""}
+            />
+          </MyCard>
+        )}
       </div>
     </MyLoading>
   );

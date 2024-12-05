@@ -109,6 +109,7 @@ const EditNotification = () => {
       {
         onClick: handleSubmit(onSubmit),
         title: "Lưu thay đổi",
+        permission: "notification:update",
       },
     ];
     setFooterActions(actions);

@@ -17,6 +17,7 @@ import { useToast } from "../../hooks/useToast";
 import { IAction } from "../../stores/commonStore";
 import MyCard from "../../components/UI/MyCard";
 import { Button } from "primereact/button";
+import CanActivate from "../../components/CanActivate";
 
 const ScoreColumnManagement = () => {
   const { id } = useParams();
@@ -120,6 +121,8 @@ const ScoreColumnManagement = () => {
       {
         onClick: () => onSubmit(tableData),
         title: "Lưu thay đổi",
+        icon: "pi-save",
+        permission: "score_column:update",
         // icon: "pi-plus",
       },
     ];
@@ -139,6 +142,7 @@ const ScoreColumnManagement = () => {
       tooltip: "Xóa",
       icon: "pi-trash",
       severity: "danger",
+      permission: "score_column:delete",
     },
   ];
   const { onConfirm } = useConfirm();
@@ -192,7 +196,9 @@ const ScoreColumnManagement = () => {
     ]);
   };
   const footer = (
-    <Button text className="tw-w-full" label="Thêm Cột" onClick={handleAdd} />
+    <CanActivate permission="score_column:update">
+      <Button text className="tw-w-full" label="Thêm Cột" onClick={handleAdd} />
+    </CanActivate>
   );
 
   return (

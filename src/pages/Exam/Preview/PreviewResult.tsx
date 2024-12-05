@@ -8,6 +8,7 @@ import { InputText } from "primereact/inputtext";
 import { InputNumber } from "primereact/inputnumber";
 import { Button } from "primereact/button";
 import { useCommonStore } from "../../../stores";
+import CanActivate from "../../../components/CanActivate";
 
 const choiceOptions = [
   {
@@ -111,12 +112,14 @@ const ResultCode = (props: any) => {
         minFractionDigits={2}
         value={grade}
       />
-      <Button
-        severity={!editable ? undefined : "contrast"}
-        onClick={() => setEditable(!editable)}
-        icon={!editable ? "pi pi-pencil" : "pi pi-times"}
-        tooltip={editable ? "Thay đổi" : "Huỷ"}
-      />
+      <CanActivate permission="exam:update">
+        <Button
+          severity={!editable ? undefined : "contrast"}
+          onClick={() => setEditable(!editable)}
+          icon={!editable ? "pi pi-pencil" : "pi pi-times"}
+          tooltip={editable ? "Huỷ" : "Thay đổi"}
+        />
+      </CanActivate>
       {editable && (
         <Button
           loading={isLoadingApi}

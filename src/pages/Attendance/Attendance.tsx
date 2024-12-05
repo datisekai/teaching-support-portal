@@ -5,7 +5,11 @@ import { ModalName } from "../../constants";
 import { roomSchemas } from "../../dataTable/roomTable";
 import useConfirm from "../../hooks/useConfirm";
 import { useToast } from "../../hooks/useToast";
-import { useAttendanceStore, useCommonStore, useModalStore } from "../../stores";
+import {
+  useAttendanceStore,
+  useCommonStore,
+  useModalStore,
+} from "../../stores";
 
 const Attendance = () => {
   const { onToggle } = useModalStore();
@@ -13,7 +17,10 @@ const Attendance = () => {
     return [
       {
         onClick: (data, options) => {
-          handleClick(`/attendance/detail/${data.id}?classId=${data.class.id}`, data);
+          handleClick(
+            `/attendance/detail/${data.id}?classId=${data.class.id}`,
+            data
+          );
         },
         tooltip: "Danh sách điểm danh",
         icon: "pi-users",
@@ -39,6 +46,7 @@ const Attendance = () => {
         tooltip: "Chi tiết",
         icon: "pi-info-circle",
         severity: "info",
+        permission: "attendance:update",
       },
       {
         onClick: (data, options) => {
@@ -47,6 +55,7 @@ const Attendance = () => {
         tooltip: "Chỉnh sửa",
         icon: "pi-pencil",
         severity: "warning",
+        permission: "attendance:update",
       },
       {
         onClick: (data, options) => {
@@ -55,15 +64,18 @@ const Attendance = () => {
         tooltip: "Xóa",
         icon: "pi-trash",
         severity: "danger",
+        permission: "attendance:delete",
       },
     ];
   }, []);
   const navigate = useNavigate();
   const { onConfirm } = useConfirm();
-  const { showToast } = useToast()
+  const { showToast } = useToast();
 
-  const { setHeaderTitle, setHeaderActions, resetActions, isLoadingApi } = useCommonStore();
-  const { fetchAttendances, attendances, total, deleteAttendance } = useAttendanceStore()
+  const { setHeaderTitle, setHeaderActions, resetActions, isLoadingApi } =
+    useCommonStore();
+  const { fetchAttendances, attendances, total, deleteAttendance } =
+    useAttendanceStore();
 
   const handleEdit = (data: any) => {
     navigate(`/attendance/edit/${data.id}`);
@@ -112,6 +124,7 @@ const Attendance = () => {
         },
         type: "button",
         disabled: false,
+        permission: "attendance:create",
       },
     ]);
 
@@ -120,10 +133,8 @@ const Attendance = () => {
     };
   }, []);
 
-
-
   const handleSearch = (query: Object) => {
-    fetchAttendances(query)
+    fetchAttendances(query);
   };
 
   const attendanceData = useMemo(() => {
@@ -131,14 +142,21 @@ const Attendance = () => {
       return {
         ...item,
         majorName: item.class.major.name,
-        teacherNames: item.class.teachers.map(item => item.name).join(", "),
+        teacherNames: item.class.teachers.map((item) => item.name).join(", "),
       };
-    })
-  }, [attendances])
+    });
+  }, [attendances]);
   return (
     <div>
-      <MyTable keySearch="title" onChange={handleSearch} data={attendanceData} totalRecords={total}
-        isLoading={isLoadingApi} schemas={roomSchemas} actions={actionTable} />
+      <MyTable
+        keySearch="title"
+        onChange={handleSearch}
+        data={attendanceData}
+        totalRecords={total}
+        isLoading={isLoadingApi}
+        schemas={roomSchemas}
+        actions={actionTable}
+      />
     </div>
   );
 };

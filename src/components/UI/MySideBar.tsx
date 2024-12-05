@@ -52,7 +52,8 @@ const MySideBar: React.FC<IMySideBar> = ({
 
   const filteredSidebarData = useMemo(() => {
     return sidebarData.filter((item) => {
-      if (!item.permission) return true;
+      if (!item.permission && (!item.children || !item.children.length))
+        return true;
       const hasChildPermission = item.children?.some((child) =>
         hasPermission(child?.permission)
       );

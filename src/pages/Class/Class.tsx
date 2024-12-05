@@ -234,6 +234,7 @@ const Class = () => {
         },
         type: "button",
         disabled: false,
+        permission: "class:create",
       },
       {
         title: "Import",
@@ -243,6 +244,7 @@ const Class = () => {
         },
         type: "file",
         disabled: false,
+        permission: "class:create",
       },
       {
         title: "Export",
@@ -267,6 +269,7 @@ const Class = () => {
         },
         type: "button",
         disabled: false,
+        permission: "class:view",
       },
     ]);
 
@@ -300,6 +303,7 @@ const Class = () => {
       tooltip: "Quản lý điểm",
       icon: "pi-box",
       severity: "secondary",
+      permission: "student_score:view",
     },
     {
       onClick: (data, options) => {
@@ -308,6 +312,7 @@ const Class = () => {
       tooltip: "Quản lý cột điểm",
       icon: "pi-pen-to-square",
       severity: "secondary",
+      permission: "score_column:view",
     },
     // {
     //   onClick: (data, options) => {
@@ -332,6 +337,7 @@ const Class = () => {
       tooltip: "Sửa",
       icon: "pi-pencil",
       severity: "warning",
+      permission: "class:update",
     },
     {
       onClick: (data, options) => {
@@ -340,6 +346,7 @@ const Class = () => {
       tooltip: "Xóa",
       icon: "pi-trash",
       severity: "danger",
+      permission: "class:delete",
     },
   ];
 

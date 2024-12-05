@@ -17,6 +17,7 @@ import MySmartSelect from "../../components/UI/MySmartSelect";
 import { ISearchUser } from "../../types/user";
 import { apiConfig } from "../../apis";
 import { Button } from "primereact/button";
+import { useUserStore } from "../../stores/userStore";
 
 const schema = yup
   .object()
@@ -46,21 +47,17 @@ const CreateClass = () => {
   const resetActions = useCommonStore((state) => state.resetActions);
   const { classes, fetchClass, addClass } = useClassStore();
   const [teachers, setTeachers] = useState<ISearchUser[]>([]);
+  const { user } = useUserStore();
   const { showToast } = useToast();
   const onSubmit = async (values: any) => {
-    if (teachers?.length == 0) {
-      return showToast({
-        severity: "error",
-        summary: "Thông báo",
-        message: "Vui lòng chọn giảng viên",
-        life: 3000,
-      });
-    }
-
     const transferData = {
       ...values,
       majorId: Number(values.majorId),
-      teacherCodes: teachers,
+      teacherCodes: [
+        {
+          code: user.code,
+        },
+      ],
     };
     const result = await addClass(transferData);
     if (!result) {
@@ -109,7 +106,7 @@ const CreateClass = () => {
         ))}
       </form>
 
-      <MyCard title="Giảng viên">
+      {/* <MyCard title="Giảng viên">
         {teachers &&
           teachers.length > 0 &&
           teachers.map((item: any, index: number) => (
@@ -153,7 +150,7 @@ const CreateClass = () => {
             placeholder="Chọn giảng viên"
           />
         </div>
-      </MyCard>
+      </MyCard> */}
     </div>
   );
 };

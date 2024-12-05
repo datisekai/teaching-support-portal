@@ -127,6 +127,7 @@ const EditMajor = () => {
       {
         onClick: handleSubmit(onSubmit),
         title: "Lưu thay đổi",
+        permission: "major:update",
       },
     ];
     setFooterActions(actions);

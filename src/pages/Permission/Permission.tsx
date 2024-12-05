@@ -21,6 +21,7 @@ const Permission = () => {
       tooltip: "Gán quyền",
       icon: "pi-key",
       severity: "help",
+      permission: "user:update",
     },
     {
       onClick: (data, options) => {
@@ -29,6 +30,7 @@ const Permission = () => {
       tooltip: "Sửa",
       icon: "pi-pencil",
       severity: "warning",
+      permission: "user:update",
     },
     {
       onClick: (data, options) => {
@@ -37,6 +39,7 @@ const Permission = () => {
       tooltip: "Xóa",
       icon: "pi-trash",
       severity: "danger",
+      permission: "user:update",
     },
   ];
   const { onConfirm } = useConfirm();
@@ -79,7 +82,7 @@ const Permission = () => {
           life: 3000,
         });
       },
-      onReject: () => { },
+      onReject: () => {},
     };
     onConfirm(data);
   };
@@ -99,6 +102,7 @@ const Permission = () => {
         },
         type: "button",
         disabled: false,
+        permission: "user:update",
       },
     ]);
 

@@ -82,6 +82,7 @@ const CreateNotification = () => {
         onClick: handleSubmit(onSubmit),
         title: "Tạo",
         icon: "pi-plus",
+        permission: "notification:create",
       },
     ];
     setFooterActions(actions);

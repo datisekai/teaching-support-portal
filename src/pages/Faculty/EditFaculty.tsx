@@ -16,7 +16,7 @@ const schema = yup
   .shape({
     name: yup.string().required("Tên ngành học là bắt buộc."),
     description: yup.string().required("Mô tả ngành học là bắt buộc."),
-    code: yup.string().required('Mã ngành học là bắt buộc.'),
+    code: yup.string().required("Mã ngành học là bắt buộc."),
   })
   .required();
 const EditFaculty = () => {
@@ -34,7 +34,7 @@ const EditFaculty = () => {
     defaultValues: {
       name: "",
       description: "",
-      code: ''
+      code: "",
     },
   });
 
@@ -84,6 +84,7 @@ const EditFaculty = () => {
       {
         onClick: handleSubmit(onSubmit),
         title: "Lưu thay đổi",
+        permission: "faculty:update",
         // icon: "pi-plus",
       },
     ];

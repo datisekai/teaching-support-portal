@@ -18,6 +18,7 @@ import { InputText } from "primereact/inputtext";
 import { useDebounceValue } from "usehooks-ts";
 import useConfirm from "../../hooks/useConfirm";
 import { exportExcel } from "../../utils/my-export-excel";
+import CanActivate from "../../components/CanActivate";
 
 const ScoreManagement = () => {
   const { id } = useParams();
@@ -101,8 +102,6 @@ const ScoreManagement = () => {
       },
     });
   };
-
-
 
   const tableSchemas = useMemo(() => {
     const columns = scoreColumn?.data?.columns || [];
@@ -258,13 +257,13 @@ const ScoreManagement = () => {
         label: "STT",
         prop: "index",
         width: 40,
-        type: 'number',
+        type: "number",
       },
       {
         label: "Mã số sinh viên",
         prop: "code",
         width: 100,
-        type: 'number',
+        type: "number",
       },
       {
         label: "Họ và tên",
@@ -273,9 +272,9 @@ const ScoreManagement = () => {
       },
       ...[...attendances]?.reverse()?.map((item) => ({
         label: `Vắng ${dayjs(item.time).format("DD/MM")}`,
-        type: 'number',
+        type: "number",
         render: (data: any) => {
-          return !hashAttendance?.[item.id]?.[data.code] ? 'X' : ''
+          return !hashAttendance?.[item.id]?.[data.code] ? "X" : "";
         },
         prop: item.id,
         width: 120,
@@ -285,30 +284,29 @@ const ScoreManagement = () => {
           label: `${item.name} (${item.weight}%)`,
           prop: item.id,
           width: 120,
-          type: 'number',
+          type: "number",
           render: (data: any) =>
             `${(hashStudentScore[data.code]?.[item.id]?.score ?? 0).toFixed(
               2
-            )}`
+            )}`,
         };
       }),
       {
         label: "Điểm QT (50% Hệ 4)",
         prop: "average",
-        type: 'number',
+        type: "number",
         width: 150,
         render: (data: any) => getAverage(hashStudentScore[data.code], 0.4),
       },
       {
         label: "Điểm QT (50% Hệ 10)",
         prop: "average10",
-        type: 'number',
+        type: "number",
         width: 150,
         render: (data: any) => getAverage(hashStudentScore[data.code]),
       },
     ];
   }, [scoreColumn, hashStudentScore, isEdit, hashAttendance, attendances]);
-
 
   useEffect(() => {
     const actions: IAction[] = [
@@ -321,6 +319,7 @@ const ScoreManagement = () => {
         title: "Lưu thay đổi",
         icon: "pi-plus",
         onClick: handleUpdateManual,
+        permission: "student_score:update",
       },
     ];
     setHeaderActions([
@@ -334,30 +333,36 @@ const ScoreManagement = () => {
               icon: "pi pi-file-export",
               onClick: () => {
                 const headerContent = "Bảng điểm quá trình";
-                const currentClass = classesUnlimited?.find((item: any) => item.id == id);
+                const currentClass = classesUnlimited?.find(
+                  (item: any) => item.id == id
+                );
                 exportExcel(
                   "Bảng điểm quá trình",
                   students.map((item, index) => {
                     return {
                       ...item,
-                      index: index + 1
+                      index: index + 1,
                     };
                   }),
                   exportTableSchemas,
                   headerContent,
-                  '',
+                  "",
                   [
                     {
                       label: "Học phần",
-                      value: `${currentClass?.major?.code} - ${currentClass?.major?.name} - ${currentClass?.name}`
+                      value: `${currentClass?.major?.code} - ${currentClass?.major?.name} - ${currentClass?.name}`,
                     },
                     {
                       label: "Giảng viên",
-                      value: `${currentClass?.teachers?.map((teacher: any) => `${teacher?.code} - ${teacher?.name}`).join(", ")}`
-                    }
+                      value: `${currentClass?.teachers
+                        ?.map(
+                          (teacher: any) =>
+                            `${teacher?.code} - ${teacher?.name}`
+                        )
+                        .join(", ")}`,
+                    },
                   ]
                 );
-
               },
               type: "button",
               disabled: false,
@@ -381,7 +386,7 @@ const ScoreManagement = () => {
     scoreColumn,
     exportTableSchemas,
     students,
-    classesUnlimited
+    classesUnlimited,
   ]);
 
   useEffect(() => {
@@ -420,7 +425,6 @@ const ScoreManagement = () => {
     return (total * x).toFixed(2);
   };
 
-
   const studentFilter = useMemo(() => {
     if (!debouncedValue || !debouncedValue?.trim()) {
       return students;
@@ -441,13 +445,15 @@ const ScoreManagement = () => {
             placeholder="Tìm kiếm"
           />
         </div>
-        <div>
-          <Button
-            onClick={() => setIsEdit(!isEdit)}
-            label={!isEdit ? "Cập nhật" : "Huỷ"}
-            icon="pi pi-pencil"
-          ></Button>
-        </div>
+        <CanActivate permission="student_score:update">
+          <div>
+            <Button
+              onClick={() => setIsEdit(!isEdit)}
+              label={!isEdit ? "Cập nhật" : "Huỷ"}
+              icon="pi pi-pencil"
+            ></Button>
+          </div>
+        </CanActivate>
       </div>
       <div className="tw-overflow-x-auto tw-w-full">
         <div className="tw-flex tw-bg-[#f9fafb] tw-border-t tw-border-b tw-px-2">

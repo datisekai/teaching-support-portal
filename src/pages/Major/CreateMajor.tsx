@@ -103,6 +103,7 @@ const CreateMajor = () => {
         onClick: handleSubmit(onSubmit),
         title: "Tạo",
         icon: "pi-plus",
+        permission: "major:create",
       },
     ]);
   }, [teachers]);

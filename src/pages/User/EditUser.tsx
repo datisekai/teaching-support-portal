@@ -113,6 +113,7 @@ const EditUser = () => {
         onClick: handleSubmit(onSubmit),
         title: "Lưu thay đổi",
         // icon: "pi-plus",
+        permission: "user:update",
       },
     ];
     setFooterActions(actions);

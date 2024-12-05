@@ -25,7 +25,7 @@ const Question = () => {
     useQuestionStore();
   const { isLoadingApi } = useCommonStore();
   const { showToast } = useToast();
-  const { user } = useUserStore()
+  const { user } = useUserStore();
   const handleSubmit = (data: any) => {
     onDismiss();
   };
@@ -97,8 +97,9 @@ const Question = () => {
       icon: "pi-pencil",
       severity: "warning",
       isHidden(data) {
-        return data.user.id !== user.id && user.type !== UserType.MASTER
+        return data.user.id !== user.id && user.type !== UserType.MASTER;
       },
+      permission: "question:update",
     },
     {
       onClick: (data, options) => {
@@ -108,8 +109,9 @@ const Question = () => {
       icon: "pi-trash",
       severity: "danger",
       isHidden(data) {
-        return data.user.id !== user.id && user.type !== UserType.MASTER
+        return data.user.id !== user.id && user.type !== UserType.MASTER;
       },
+      permission: "question:delete",
     },
   ];
 
@@ -124,6 +126,7 @@ const Question = () => {
         },
         type: "button",
         disabled: false,
+        permission: "question:create",
       },
       {
         title: "Tạo bài tập",
@@ -133,6 +136,7 @@ const Question = () => {
         },
         type: "button",
         disabled: false,
+        permission: "question:create",
       },
       {
         title: "Tạo bài tập HTML",
@@ -142,6 +146,7 @@ const Question = () => {
         },
         type: "button",
         disabled: false,
+        permission: "question:create",
       },
     ]);
     return () => {
