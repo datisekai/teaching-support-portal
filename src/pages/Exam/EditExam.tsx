@@ -88,7 +88,6 @@ const EditExam = () => {
   const { id } = useParams();
 
   const { showToast } = useToast();
-  console.log("question", question);
 
   useEffect(() => {
     if (id) {

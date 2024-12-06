@@ -128,7 +128,6 @@ const Student = () => {
           data.push(rowData);
         }
       });
-      console.log(data);
       setDataImports(data);
       // return data;
     } catch (error) {
@@ -162,9 +161,7 @@ const Student = () => {
           life: 3000,
         });
       },
-      onReject: () => {
-        console.log("Đã hủy bỏ hành động.");
-      },
+      onReject: () => {},
     };
     onConfirm(data);
   };
@@ -265,8 +262,6 @@ const Student = () => {
         title: "Export",
         icon: "pi pi-file-export",
         onClick: async () => {
-          console.log("students", studentSchemas);
-
           const headerContent = `Danh sách sinh viên`;
           exportExcel(
             `Danh sách sinh viên_Lớp ${_class.name}_Môn học: ${_class.major.name}`,

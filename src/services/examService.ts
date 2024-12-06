@@ -6,7 +6,6 @@ import {
 
 export const examService = {
   getAll: async (body: object) => {
-    console.log("check2: ", body);
     const { getAll } = apiConfig.exam;
     return processMiddlewareSendRequest({ ...getAll, body });
   },

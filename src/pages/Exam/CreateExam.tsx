@@ -109,9 +109,7 @@ const CreateExam = () => {
     }
   }, [previewQuestion]);
 
-  console.log("previewQuestion", previewQuestion);
   const onSubmit = (data: any) => {
-    console.log("onSubmit", previewQuestion);
     const payload = {
       ...data,
       classId: Number(data.classId),

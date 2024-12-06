@@ -55,7 +55,6 @@ const EditStudent = () => {
   const resetActions = useCommonStore((state) => state.resetActions);
 
   const onSubmit = () => {
-    console.log("data", id);
     navigate(-1);
   };
 

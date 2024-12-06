@@ -53,7 +53,6 @@ const FormItem: React.FC<IForm> = ({
   );
 
   useEffect(() => {
-    console.log("change", watch);
     if (preConditionProp && type === "select-ajax" && watch) {
       getAjaxOptions({ [preConditionProp]: watch });
     }
@@ -237,8 +236,6 @@ const FormItem: React.FC<IForm> = ({
             value={value}
             name={prop}
             onChange={(e) => {
-              console.log("🚀 ~ getInputComponent ~ e:", e);
-
               onChange(e);
             }}
             filter

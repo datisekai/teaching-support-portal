@@ -41,7 +41,7 @@ const Class = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleClick = (endpoint: string, data: any) => {
-    console.log(data);
+    data;
     navigate(endpoint);
   };
   const handleDelete = (id: number) => {
@@ -66,9 +66,7 @@ const Class = () => {
         });
       },
 
-      onReject: () => {
-        console.log("Đã hủy bỏ hành động.");
-      },
+      onReject: () => {},
     };
     onConfirm(data);
   };
@@ -181,7 +179,6 @@ const Class = () => {
         }
       });
 
-      console.log("Processed Data:", data);
       setDataImports(data);
     } catch (error) {
       showToast({
@@ -198,8 +195,6 @@ const Class = () => {
     const file = await uploadFile();
     importExcel(file);
     setIsLoading(false);
-    // const mergedArray = mergeArrays(students, importData as []);
-    // console.log(importData, students);
   };
 
   const handleImport = async () => {

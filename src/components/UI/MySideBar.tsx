@@ -29,7 +29,6 @@ const MySideBar: React.FC<IMySideBar> = ({
   const { user, permissions } = useUserStore();
   const { logout } = useAuthStore();
   const { pathname } = useLocation();
-  // console.log("current user", user);
 
   const handleExpandClick = (index: number) => {
     setExpandedMenus((prev) => ({
@@ -69,9 +68,7 @@ const MySideBar: React.FC<IMySideBar> = ({
       onAccept: () => {
         navigate(pathNames.LOGIN);
       },
-      onReject: () => {
-        console.log("Đã hủy bỏ hành động.");
-      },
+      onReject: () => {},
     };
     onConfirm(data);
   };

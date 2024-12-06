@@ -32,10 +32,8 @@ const ScoreColumnManagementMajor = () => {
     useCommonStore();
   const { showToast } = useToast();
   const [tableData, setTableData] = useState<any[]>([]);
-  console.log("scoreColumn", scoreColumn);
 
   const onSubmit = async (values: any) => {
-    console.log(values);
     const hasEmptyName = values.some((column: any) => !column.name);
     const totalWeight = values.reduce(
       (sum: number, column: any) => sum + (column.weight || 0),
@@ -146,7 +144,6 @@ const ScoreColumnManagementMajor = () => {
   const { onConfirm } = useConfirm();
 
   const handleDelete = (data: any, option: any) => {
-    console.log(data, tableData);
     const result = {
       message: "Bạn có chắc chắn muốn xoá lớp học này?",
       header: "Xác nhận xoá",
@@ -170,9 +167,7 @@ const ScoreColumnManagementMajor = () => {
           tableData.filter((item: any) => item.index !== data.index)
         );
       },
-      onReject: () => {
-        console.log("Đã hủy bỏ hành động.");
-      },
+      onReject: () => {},
     };
     onConfirm(result);
   };

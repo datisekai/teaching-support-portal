@@ -31,8 +31,6 @@ const SmartSearch = () => {
       },
     });
 
-    console.log("ressponse", response);
-
     setFilterData(response.data);
   };
 

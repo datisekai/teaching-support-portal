@@ -6,7 +6,6 @@ import {
 
 export const questionService = {
   getAll: async (body: object) => {
-    console.log("check2: ", body);
     const { getAll } = apiConfig.question;
     return processMiddlewareSendRequest({ ...getAll, body });
   },

@@ -68,7 +68,6 @@ const EditNotification = () => {
       );
     }
   }, [notification]);
-  console.log(notification.classes);
   const navigate = useNavigate();
 
   const setFooterActions = useCommonStore((state) => state.setFooterActions);

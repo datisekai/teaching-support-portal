@@ -18,7 +18,6 @@ export const facultyRoutes: RouteObject[] = [
     path: pathNames.FACULTY + "/edit/:id",
     element: <EditFaculty />,
     loader: ({ params }) => {
-      console.log(params);
       return { id: "" };
     },
   },

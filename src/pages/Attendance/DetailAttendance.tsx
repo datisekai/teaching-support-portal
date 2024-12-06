@@ -94,7 +94,6 @@ const DetailAttendance = () => {
 
   useEffect(() => {
     if (classId) {
-      // console.log('classId', classId);
       getStudentClass(classId as string, {});
     }
   }, [classId]);

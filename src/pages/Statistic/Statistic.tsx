@@ -118,7 +118,6 @@ const Statistic = () => {
       getAttendancesStatistic(id, { date });
     }
   };
-  console.log(attendancesStatisticClass);
 
   return (
     <div>

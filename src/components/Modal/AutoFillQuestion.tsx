@@ -25,7 +25,6 @@ const AutoFillQuestion = () => {
 
   useEffect(() => {
     if (major) {
-      console.log("refetch", major);
       fetchChapters({ majorId: major?.id });
     }
   }, [major]);

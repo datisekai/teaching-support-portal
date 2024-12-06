@@ -126,9 +126,7 @@ const MyTableCustom: FC<IMyTable> = ({
       case "datetime":
         return <span>{dayjs(value).format("DD/MM/YYYY HH:mm")}</span>;
       case "badge":
-        console.log("getbage", schema);
         if (schema?.getBadge && typeof schema.getBadge == "function") {
-          console.log("join");
           const { severity, value: renderValue } = schema.getBadge(value);
           return <Tag value={renderValue} severity={severity} />;
         }

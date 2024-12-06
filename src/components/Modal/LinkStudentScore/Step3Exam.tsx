@@ -78,7 +78,6 @@ const Step3Exam: React.FC<Props> = ({
         prop: "action",
         type: "text",
         render(data: any) {
-          console.log("data", data);
           const {
             outTabCount = 0,
             mouseRight = 0,

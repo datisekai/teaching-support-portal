@@ -81,7 +81,6 @@ const Attendance = () => {
     navigate(`/attendance/edit/${data.id}`);
   };
   const handleClick = (endpoint: string, data: any) => {
-    console.log(data);
     navigate(endpoint);
   };
 
@@ -106,9 +105,7 @@ const Attendance = () => {
           life: 3000,
         });
       },
-      onReject: () => {
-        console.log("Đã hủy bỏ hành động.");
-      },
+      onReject: () => {},
     };
     onConfirm(data);
   };

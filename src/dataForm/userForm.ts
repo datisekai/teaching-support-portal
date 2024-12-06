@@ -41,7 +41,6 @@ export const UserForm: IForm[] = [
         label: "Loại quyền",
         apiUrl: apiConfig.role.getAll.endpoint,
         getOptions: (data = []) => {
-          console.log("data", data);
           return data.map((item: any) => {
             return {
               title: item.name,
@@ -94,7 +93,6 @@ export const UserFormUpdate: IForm[] = [
         label: "Loại quyền",
         apiUrl: apiConfig.role.getAll.endpoint,
         getOptions: (data = []) => {
-          console.log("data", data);
           return data.map((item: any) => {
             return {
               title: item.name,

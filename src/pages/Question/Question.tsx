@@ -64,15 +64,12 @@ const Question = () => {
           });
         }
       },
-      onReject: () => {
-        console.log("Đã hủy bỏ hành động.");
-      },
+      onReject: () => {},
     };
     onConfirm(data);
   };
 
   const handleView = (data: any) => {
-    console.log(data);
     onToggle(ModalName.VIEW_QUESTION, {
       header: "Chi tiết câu hỏi",
       content: data,

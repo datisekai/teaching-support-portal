@@ -6,7 +6,6 @@ import {
 
 export const chapterService = {
   getAll: async (body: object) => {
-    console.log("check2: ", body);
     const { getAll } = apiConfig.chapter;
     return processMiddlewareSendRequest({ ...getAll, body });
   },

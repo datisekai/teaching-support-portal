@@ -169,7 +169,6 @@ const Faculty = () => {
           data.push(rowData);
         }
       });
-      console.log("chedkkk:", data);
       setDataImports(data);
       // return data;
     } catch (error) {
@@ -187,8 +186,6 @@ const Faculty = () => {
     const file = await uploadFile();
     importExcel(file);
     setIsLoading(false);
-    // const mergedArray = mergeArrays(students, importData as []);
-    // console.log(importData, students);
   };
 
   const handleImport = async () => {

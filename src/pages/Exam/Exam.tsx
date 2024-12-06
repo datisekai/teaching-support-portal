@@ -99,7 +99,6 @@ const Exam = () => {
       //   title: "Export",
       //   icon: "pi pi-file-export",
       //   onClick: () => {
-      //     console.log("Export logic");
       //   },
       //   type: "button",
       //   disabled: false,

@@ -108,7 +108,6 @@ export const useExamStore = create<IExamState>((set) => ({
       resp.data.submissions.forEach((s: any) => {
         submissions[s.examQuestion.id] = s;
       });
-      console.log("submissions", submissions);
       set((state) => ({
         ...state,
         history: {

@@ -30,7 +30,6 @@ const ScoreColumnManagement = () => {
   const { showToast } = useToast();
   const { _class, fetchClass } = useClassStore();
   const [tableData, setTableData] = useState<any[]>([]);
-  console.log("scoreColumn", scoreColumn);
   const onSubmit = async (values: any) => {
     const hasEmptyName = values.some((column: any) => !column.name);
     const totalWeight = values.reduce(
@@ -159,9 +158,7 @@ const ScoreColumnManagement = () => {
           tableData.filter((item: any) => item.index !== data.index)
         );
       },
-      onReject: () => {
-        console.log("Đã hủy bỏ hành động.");
-      },
+      onReject: () => {},
     };
     onConfirm(result);
   };

@@ -180,7 +180,6 @@ const CreateQuestion = () => {
   }, []);
 
   const QuestionForm = useMemo(() => {
-    console.log(questionType);
     let form;
     switch (questionType) {
       case QuestionType.MULTIPLE_CHOICE:

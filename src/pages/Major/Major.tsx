@@ -86,9 +86,7 @@ const Major = () => {
           life: 3000,
         });
       },
-      onReject: () => {
-        console.log("Đã hủy bỏ hành động.");
-      },
+      onReject: () => {},
     };
     onConfirm(data);
   };
@@ -201,7 +199,6 @@ const Major = () => {
         }
       });
 
-      console.log("Processed Data:", data);
       setDataImports(data);
     } catch (error) {
       showToast({
@@ -218,8 +215,6 @@ const Major = () => {
     const file = await uploadFile();
     importExcel(file);
     setIsLoading(false);
-    // const mergedArray = mergeArrays(students, importData as []);
-    // console.log(importData, students);
   };
 
   const handleImport = async () => {

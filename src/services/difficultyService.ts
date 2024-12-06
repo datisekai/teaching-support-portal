@@ -6,7 +6,6 @@ import {
 
 export const difficultyService = {
   getAll: async (body: object) => {
-    console.log("check2: ", body);
     const { getAll } = apiConfig.difficulty;
     return processMiddlewareSendRequest({ ...getAll, body });
   },

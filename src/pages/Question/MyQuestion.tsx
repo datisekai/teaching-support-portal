@@ -3,7 +3,10 @@ import { useCommonStore, useModalStore } from "../../stores";
 import MyTable, { IActionTable } from "../../components/UI/MyTable";
 import { useNavigate } from "react-router-dom";
 import useConfirm from "../../hooks/useConfirm";
-import { myQuestions, myQuestionSchemas } from "../../dataTable/myQuestionTable";
+import {
+  myQuestions,
+  myQuestionSchemas,
+} from "../../dataTable/myQuestionTable";
 
 interface IStatus {
   id: string;
@@ -23,19 +26,13 @@ const MyQuestion = () => {
     const data = {
       message: "Bạn có chắc chắn muốn xoá câu hỏi này?",
       header: "Xác nhận xoá",
-      onAccept: () => {
-        console.log("Đã xoá câu hỏi thành công!", id);
-      },
-      onReject: () => {
-        console.log("Đã hủy bỏ hành động.");
-      },
+      onAccept: () => {},
+      onReject: () => {},
     };
     onConfirm(data);
   };
 
-  const handleShare = (data: any) => {
-    console.log(data);
-  };
+  const handleShare = (data: any) => {};
 
   const actionTable: IActionTable[] = [
     {

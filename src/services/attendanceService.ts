@@ -9,7 +9,6 @@ import { useUserStore } from "../stores/userStore";
 
 export const attendanceService = {
   getAll: async (body: object) => {
-    console.log("check2: ", body);
     const { getAll } = apiConfig.attendance;
     return processMiddlewareSendRequest({ ...getAll, body });
   },

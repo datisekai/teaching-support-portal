@@ -50,9 +50,7 @@ const Chapter = () => {
           });
         }
       },
-      onReject: () => {
-        console.log("Đã hủy bỏ hành động.");
-      },
+      onReject: () => {},
     };
     onConfirm(data);
   };

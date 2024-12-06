@@ -94,7 +94,6 @@ const Interface = () => {
       setValue("favicon", meta?.value?.favicon);
     }
   }, [meta]);
-  console.log(meta);
   return (
     <div>
       <MyLoading isLoading={isLoadingMetas}>

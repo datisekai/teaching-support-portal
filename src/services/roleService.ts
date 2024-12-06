@@ -6,7 +6,6 @@ import {
 
 export const RoleService = {
   getAll: async (body: object) => {
-    console.log("check2: ", body);
     const { getAll } = apiConfig.role;
     return processMiddlewareSendRequest({ ...getAll, body });
   },

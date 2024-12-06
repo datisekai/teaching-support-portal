@@ -55,7 +55,6 @@ const EditFaculty = () => {
   const resetActions = useCommonStore((state) => state.resetActions);
 
   const onSubmit = async (data: any) => {
-    console.log(data);
     const result = await updateFaculty(parseInt(id || ""), data);
     if (!result) {
       return showToast({

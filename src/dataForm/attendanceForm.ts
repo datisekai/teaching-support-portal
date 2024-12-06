@@ -18,7 +18,6 @@ export const AttendanceForm: IForm[] = [
         label: "Lớp học",
         col: 6,
         getOptions: (data = []) => {
-          console.log("data", data);
           return data.map((item: any) => {
             return {
               title: `${item.major.name} - ${item.name}`,

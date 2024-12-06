@@ -91,12 +91,6 @@ const Step3: React.FC<Props> = ({ refId, type }) => {
     }
   }, [attendees]);
 
-  console.log("attendees", attendees);
-
-  console.log(hashCurrentScore, content);
-
-  console.log("hashScore", hashScore);
-
   const handleLink = async () => {
     const payload = [];
     if (type === "exam") {

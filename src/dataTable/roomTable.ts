@@ -25,7 +25,6 @@ export const roomSchemas: TableSchema[] = [
     prop: "isOpen",
     type: "badge",
     getBadge: (value) => {
-      console.log("value", value);
       switch (value) {
         case false:
         case "":

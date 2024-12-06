@@ -109,7 +109,6 @@ const PermissionAssign: React.FC = () => {
       });
     }
 
-    console.log(existingPermissionIds);
     const newPermissions = [...selectedPermissions, item.key]; // Thêm parent
     item.children?.forEach((child: any) => {
       newPermissions.push(child.key); // Thêm children
@@ -145,8 +144,6 @@ const PermissionAssign: React.FC = () => {
         life: 3000,
       });
     }
-
-    console.log(existingPermissionIds);
 
     let newPermissions = selectedPermissions.filter((p) => p !== item.key); // Bỏ parent
     item.children?.forEach((child: any) => {

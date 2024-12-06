@@ -63,7 +63,6 @@ const EditAttendance = () => {
 
   useEffect(() => {
     if (attendance) {
-      console.log("attendance", attendance.class.id);
       setValue("title", attendance.title);
       setValue("classId", attendance.class.id.toString());
       setValue("expirationTime", attendance.expirationTime);

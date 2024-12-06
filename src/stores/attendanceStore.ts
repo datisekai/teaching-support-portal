@@ -39,7 +39,6 @@ export const useAttendanceStore = create<IAttendanceState>((set) => ({
 
   fetchAttendances: async (body) => {
     try {
-      console.log("abc");
       const response = await attendanceService.getAll(body);
       set({ attendances: response.data, total: response.total });
     } catch (error) {}
@@ -47,7 +46,6 @@ export const useAttendanceStore = create<IAttendanceState>((set) => ({
   fetchAttendees: async (id, body) => {
     try {
       const response = await attendanceService.getAttendees(+id, body);
-      console.log("fetchAttendees", response);
       if (body?.pagination === false) {
         set({ attendeesUnlimited: response.data });
       } else {

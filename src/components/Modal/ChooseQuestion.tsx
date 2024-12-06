@@ -28,7 +28,7 @@ const ChooseQuestion = () => {
   const { classesUnlimited } = useClassStore();
   const { fetchChapters, chapters } = useChapterStore();
   const { difficultys } = useDifficultyStore();
-  const { isLoadingApi } = useCommonStore()
+  const { isLoadingApi } = useCommonStore();
 
   const { questions, fetchQuestions, total } = useQuestionStore();
   const [previewQuestions, setPreviewQuestions] = useState<IQuestion[]>([]);
@@ -42,10 +42,6 @@ const ChooseQuestion = () => {
   const major = useMemo(() => {
     return classesUnlimited.find((item) => item.id === +content.classId)?.major;
   }, [content, classesUnlimited]);
-
-  console.log("major", major);
-  console.log("classId", content.classId);
-  console.log("classesUnlimited", classesUnlimited);
 
   useEffect(() => {
     if (major) {
@@ -137,12 +133,15 @@ const ChooseQuestion = () => {
           {questions?.map((item, index) => (
             <div
               key={item.id}
-              className={`tw-cursor-pointer tw-border tw-shadow-sm tw-px-4 tw-py-2 tw-rounded tw-flex tw-justify-between tw-items-center tw-w-full ${previewQuestions.some((p) => p.id === item.id)
+              className={`tw-cursor-pointer tw-border tw-shadow-sm tw-px-4 tw-py-2 tw-rounded tw-flex tw-justify-between tw-items-center tw-w-full ${
+                previewQuestions.some((p) => p.id === item.id)
                   ? "border-primary tw-bg-gray-50"
                   : ""
-                }`}
+              }`}
               onClick={() => {
-                const isExisted = previewQuestions.some((p) => p.id === item.id);
+                const isExisted = previewQuestions.some(
+                  (p) => p.id === item.id
+                );
                 if (isExisted) {
                   setPreviewQuestions(
                     previewQuestions.filter((p) => p.id !== item.id)
@@ -163,7 +162,9 @@ const ChooseQuestion = () => {
                   </p>
                   <p>
                     Độ khó:{" "}
-                    <span className="text-primary">{item.difficulty.level}</span>
+                    <span className="text-primary">
+                      {item.difficulty.level}
+                    </span>
                   </p>
                   <p>
                     Loại:{" "}
