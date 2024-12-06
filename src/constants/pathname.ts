@@ -14,4 +14,6 @@ export const pathNames = {
   STUDENT: "/student",
   QUESTION: "/question",
   EXAM: "/exam",
+  CHAPTER: "/chapter",
+  DIFFICULTY: "/difficulty",
 };

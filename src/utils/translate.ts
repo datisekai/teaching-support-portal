@@ -27,7 +27,7 @@ export const translateResource = (resource: string): string => {
     case "answer":
       return "Câu trả lời";
     case "exam":
-      return "Kỳ thi";
+      return "Bài thi";
     case "difficulty":
       return "Độ khó";
     case "meta":

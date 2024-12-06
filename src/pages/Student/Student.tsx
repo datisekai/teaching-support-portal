@@ -11,7 +11,7 @@ import { ModalName } from "../../constants";
 import {
   exportStudentsSchemas,
   importStudentSchemas,
-  studentSchemas
+  studentSchemas,
 } from "../../dataTable/studentTable";
 import useConfirm from "../../hooks/useConfirm";
 import { useToast } from "../../hooks/useToast";
@@ -20,6 +20,7 @@ import { useClassStore } from "../../stores/classStore";
 import { useUserStore } from "../../stores/userStore";
 import { uploadFile } from "../../utils";
 import { exportExcel } from "../../utils/my-export-excel";
+import IntroCard from "../../components/UI/IntroCard";
 
 const Student = () => {
   const { id } = useParams();
@@ -54,7 +55,7 @@ const Student = () => {
   const { onDismiss } = useModalStore();
   const { setContent, setFooter } = useModalStore();
   const [isLoading, setIsLoading] = useState(false);
-  const [debouncedValue, setValue] = useDebounceValue('', 500)
+  const [debouncedValue, setValue] = useDebounceValue("", 500);
 
   useEffect(() => {
     getStudentClass(id as string, {});
@@ -208,9 +209,8 @@ const Student = () => {
     return students?.filter((item: any) => {
       const fullTextSearch = `${item.code} ${item.name}`.toLowerCase();
       return fullTextSearch.includes(debouncedValue.toLowerCase());
-    })
-  }, [debouncedValue, students])
-
+    });
+  }, [debouncedValue, students]);
 
   const handleChooseFile = async () => {
     setIsLoading(true);
@@ -265,7 +265,7 @@ const Student = () => {
         title: "Export",
         icon: "pi pi-file-export",
         onClick: async () => {
-          console.log('students', studentSchemas);
+          console.log("students", studentSchemas);
 
           const headerContent = `Danh sách sinh viên`;
           exportExcel(
@@ -278,13 +278,15 @@ const Student = () => {
             }),
             exportStudentsSchemas,
             headerContent,
-            '',
+            "",
             [
               {
-                label: "Môn học", value: _class?.major?.name || "",
+                label: "Môn học",
+                value: _class?.major?.name || "",
               },
               {
-                label: "Học phần", value: _class?.name || "",
+                label: "Học phần",
+                value: _class?.name || "",
               },
             ]
           );
@@ -301,14 +303,36 @@ const Student = () => {
 
   return (
     <div>
+      {_class && _class?.name && (
+        <IntroCard
+          data={[
+            {
+              label: "Lớp học",
+              content:
+                _class?.major?.code +
+                " - " +
+                _class?.major?.name +
+                " - " +
+                _class?.name,
+            },
+            {
+              label: "Giảng viên",
+              content: _class?.teachers?.map((item) => item.name).join(", "),
+            },
+          ]}
+        />
+      )}
       <div className="tw-mb-4 tw-shadow-sm">
         <div className={"tw-flex tw-items-end tw-gap-4"}>
           <div>
             <div className={"mb-1"}>Tìm kiếm theo msv, tên</div>
-            <InputText onChange={e => setValue(e.target.value)} placeholder="Tìm kiếm" />
+            <InputText
+              onChange={(e) => setValue(e.target.value)}
+              placeholder="Tìm kiếm"
+            />
           </div>
         </div>
-      </div >
+      </div>
       <MyTable
         data={studentFilter.map((item, index) => ({
           ...item,

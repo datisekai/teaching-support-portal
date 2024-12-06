@@ -17,6 +17,8 @@ import { userRoutes } from "./user";
 import { questionRoutes } from "./question";
 import { examRoutes } from "./exam";
 import { facultyRoutes } from "./faculty";
+import { chapterRoutes } from "./chapter";
+import { difficultyRoutes } from "./difficulty";
 
 export interface IRouter {
   path: string;
@@ -53,6 +55,8 @@ const router = createBrowserRouter([
           ...themeRoutes,
           ...questionRoutes,
           ...examRoutes,
+          ...chapterRoutes,
+          ...difficultyRoutes,
         ],
       },
     ],

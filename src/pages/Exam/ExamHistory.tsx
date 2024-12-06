@@ -15,6 +15,8 @@ import { useCommonStore } from "../../stores/commonStore.ts";
 import { SelectButton } from "primereact/selectbutton";
 import PreviewResult from "./Preview/PreviewResult.tsx";
 import PreviewCodeHtml from "./Preview/PreviewCodeHtml.tsx";
+import IntroCard from "../../components/UI/IntroCard.tsx";
+import dayjs from "dayjs";
 
 const HistoryExam = () => {
   const { id } = useParams();
@@ -23,9 +25,7 @@ const HistoryExam = () => {
   const { getTakeOrder, history, getExamHistory } = useExamStore();
   const { showToast } = useToast();
   const [questionIndex, setQuestionIndex] = useState(0);
-  const { onConfirm } = useConfirm();
   const navigate = useNavigate();
-  const { languages } = useLanguageStore();
 
   useEffect(() => {
     getData();
@@ -61,91 +61,118 @@ const HistoryExam = () => {
     return history.submissions[examQuestionId];
   }, [history, questionIndex]);
 
-  const examResult = useMemo(() => {
-    let count = 0;
-    let grades = 0;
-    if (
-      history &&
-      history.submissions &&
-      Object.keys(history.submissions).length > 0
-    ) {
-      for (const s of Object.values(history.submissions)) {
-        if ((s as any)?.grade) {
-          count += 1;
-          grades += (s as any)?.grade;
-        }
-      }
-    }
-
-    return {
-      count,
-      grades,
-    };
+  const intro: any = useMemo(() => {
+    if (!history || !history?.submissions) return;
+    const arraySubmissions = Object.values(history?.submissions || {});
+    return arraySubmissions?.[0] || null;
   }, [history]);
 
-  console.log("currentExam", currentExam);
-
   return (
-    <div className={"tw-flex tw-flex-col-reverse md:tw-flex-row tw-gap-4"}>
-      <MyCard containerClassName={"tw-flex-1 tw-h-full"}>
-        <MyLoading isLoading={!currentExam}>
-          {currentExam?.questionTemp?.type === QuestionType.MULTIPLE_CHOICE && (
-            <PreviewMultiChoice
-              showResult={history.showResult}
-              index={questionIndex}
-              data={currentExam}
-            />
-          )}
-          {currentExam?.questionTemp?.type === QuestionType.CODE && (
-            <PreviewQuestionCode
-              showResult={history.showResult}
-              index={questionIndex}
-              data={currentExam}
-            />
-          )}
-          {currentExam?.questionTemp?.type === QuestionType.CODE_HTML && (
-            <PreviewCodeHtml index={questionIndex} data={currentExam} />
-          )}
-        </MyLoading>
+    <div>
+      {intro && (
+        <IntroCard
+          data={[
+            {
+              label: "Lớp học",
+              content:
+                intro?.exam?.class?.major?.code +
+                " - " +
+                intro?.exam?.class?.major?.name +
+                " - " +
+                intro?.exam?.class?.name,
+            },
+            {
+              label: "Giảng viên",
+              content: intro?.exam?.class?.teachers
+                ?.map((item: any) => item.name)
+                .join(", "),
+            },
+            {
+              label: "Bài thi",
+              content: intro?.exam?.title,
+            },
+            {
+              label: "Thời gian làm bài",
+              content: `${intro?.exam?.duration} phút`,
+            },
+            {
+              label: "Thời gian mở",
+              content: `${dayjs(intro?.exam?.startTime).format(
+                "DD/MM/YYYY HH:mm:ss"
+              )} - ${dayjs(intro?.exam?.endTime).format(
+                "DD/MM/YYYY HH:mm:ss"
+              )}`,
+            },
+            {
+              label: "Sinh viên thực hiện",
+              content: `${intro?.user?.code} - ${intro?.user?.name}`,
+            },
+          ]}
+        />
+      )}
+      <div className={"tw-flex tw-flex-col-reverse md:tw-flex-row tw-gap-4"}>
+        <MyCard containerClassName={"tw-flex-1 tw-h-full"}>
+          <MyLoading isLoading={!currentExam}>
+            {currentExam?.questionTemp?.type ===
+              QuestionType.MULTIPLE_CHOICE && (
+              <PreviewMultiChoice
+                showResult={history.showResult}
+                index={questionIndex}
+                data={currentExam}
+              />
+            )}
+            {currentExam?.questionTemp?.type === QuestionType.CODE && (
+              <PreviewQuestionCode
+                showResult={history.showResult}
+                index={questionIndex}
+                data={currentExam}
+              />
+            )}
+            {currentExam?.questionTemp?.type === QuestionType.CODE_HTML && (
+              <PreviewCodeHtml index={questionIndex} data={currentExam} />
+            )}
+          </MyLoading>
 
-        <div className={"tw-flex tw-mt-4 tw-justify-center tw-gap-2"}>
-          <Button
-            disabled={questionIndex == 0}
-            onClick={() => setQuestionIndex(questionIndex - 1)}
-            severity={"secondary"}
-            iconPos={"left"}
-            icon={"pi pi-angle-left"}
-            label={"Câu trước"}
-          ></Button>
-          <Button
-            disabled={questionIndex == history?.takeOrder?.length - 1}
-            onClick={() => setQuestionIndex(questionIndex + 1)}
-            label={"Câu tiếp theo"}
-            iconPos={"right"}
-            icon={"pi pi-angle-right"}
-          ></Button>
-        </div>
-      </MyCard>
-      <MyCard containerClassName={"tw-w-full md:tw-w-[15%]"}>
-        <div className="tw-font-bold">Cập nhật kết quả</div>
-        <PreviewResult data={currentExam} />
-        <p className={"tw-italic"}>
-          Chú ý: Bạn có thể click vào số thứ tự câu hỏi bên dưới để chuyển câu.
-        </p>
-        <div className={"tw-gap-1 tw-mt-4 tw-flex tw-flex-wrap"}>
-          {history?.takeOrder?.map((item, i) => (
-            <div className={"tw-relative"} key={item}>
-              <Button
-                onClick={() => setQuestionIndex(i)}
-                outlined={questionIndex !== i}
-                size={"small"}
-              >
-                {i + 1}
-              </Button>
-            </div>
-          ))}
-        </div>
-      </MyCard>
+          <div className={"tw-flex tw-mt-4 tw-justify-center tw-gap-2"}>
+            <Button
+              disabled={questionIndex == 0}
+              onClick={() => setQuestionIndex(questionIndex - 1)}
+              severity={"secondary"}
+              iconPos={"left"}
+              icon={"pi pi-angle-left"}
+              label={"Câu trước"}
+            ></Button>
+            <Button
+              disabled={questionIndex == history?.takeOrder?.length - 1}
+              onClick={() => setQuestionIndex(questionIndex + 1)}
+              label={"Câu tiếp theo"}
+              iconPos={"right"}
+              icon={"pi pi-angle-right"}
+            ></Button>
+          </div>
+        </MyCard>
+        <MyCard containerClassName={"tw-w-full md:tw-w-[15%]"}>
+          <div className="tw-font-bold">Cập nhật kết quả</div>
+          <PreviewResult data={currentExam} />
+          <p className={"tw-italic"}>
+            Chú ý: Bạn có thể click vào số thứ tự câu hỏi bên dưới để chuyển
+            câu.
+          </p>
+          <div className={"tw-gap-1 tw-mt-4 tw-flex tw-flex-wrap"}>
+            {history?.takeOrder?.map((item, i) => (
+              <div className={"tw-relative"} key={item}>
+                <Button
+                  onClick={() => setQuestionIndex(i)}
+                  outlined={questionIndex !== i}
+                  size={"small"}
+                >
+                  {i + 1}
+                </Button>
+              </div>
+            ))}
+          </div>
+        </MyCard>
+      </div>
     </div>
   );
 };

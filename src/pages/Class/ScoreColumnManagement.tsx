@@ -18,6 +18,8 @@ import { IAction } from "../../stores/commonStore";
 import MyCard from "../../components/UI/MyCard";
 import { Button } from "primereact/button";
 import CanActivate from "../../components/CanActivate";
+import IntroCard from "../../components/UI/IntroCard";
+import { useClassStore } from "../../stores/classStore";
 
 const ScoreColumnManagement = () => {
   const { id } = useParams();
@@ -26,6 +28,7 @@ const ScoreColumnManagement = () => {
   const { setFooterActions, setHeaderTitle, resetActions, isLoadingApi } =
     useCommonStore();
   const { showToast } = useToast();
+  const { _class, fetchClass } = useClassStore();
   const [tableData, setTableData] = useState<any[]>([]);
   console.log("scoreColumn", scoreColumn);
   const onSubmit = async (values: any) => {
@@ -88,11 +91,11 @@ const ScoreColumnManagement = () => {
     }
   };
 
-  // useEffect(() => {
-  //   if (id) {
-  //     fetchScoreColumn(id);
-  //   }
-  // }, [id]);
+  useEffect(() => {
+    if (id) {
+      fetchClass(id || "");
+    }
+  }, [id]);
 
   useEffect(() => {
     setTableData(
@@ -162,29 +165,7 @@ const ScoreColumnManagement = () => {
     };
     onConfirm(result);
   };
-  const headerTable = useMemo(
-    () => (
-      <div className="tw-flex tw-items-center tw-justify-between tw-mb-4">
-        <MyCard>
-          <div className="md:tw-min-w-[280px]">
-            <div>Môn: {scoreColumn.data?.major?.name}</div>
-            <div>Nhóm: {scoreColumn.data?.major?.name}</div>
-          </div>
-        </MyCard>
-        <MyCard className="md:tw-min-w-[280px]">
-          <div className="tw-text-end">
-            <div>Năm học: {scoreColumn.data?.major?.name}</div>
-            {scoreColumn.data?.major?.teachers?.length > 0 && (
-              <div>
-                Giảng viên: {scoreColumn.data?.major?.teachers[0]?.name}
-              </div>
-            )}
-          </div>
-        </MyCard>
-      </div>
-    ),
-    [scoreColumn]
-  );
+
   const handleAdd = () => {
     setTableData([
       ...tableData,
@@ -203,6 +184,25 @@ const ScoreColumnManagement = () => {
 
   return (
     <div>
+      {_class && _class?.name && (
+        <IntroCard
+          data={[
+            {
+              label: "Lớp học",
+              content:
+                _class?.major?.code +
+                " - " +
+                _class?.major?.name +
+                " - " +
+                _class?.name,
+            },
+            {
+              label: "Giảng viên",
+              content: _class?.teachers?.map((item) => item.name).join(", "),
+            },
+          ]}
+        />
+      )}
       <MyTableCustom
         footer={footer}
         // headerTable={headerTable}

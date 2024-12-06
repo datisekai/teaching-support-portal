@@ -3,6 +3,10 @@ import MyCard from "../components/UI/MyCard";
 import { useUserStore } from "../stores/userStore";
 import MyTable from "../components/UI/MyTable";
 import { letterSchemas } from "../dataTable/letterTable";
+import { Button } from "primereact/button";
+import { useNavigate } from "react-router-dom";
+import { pathNames } from "../constants";
+import CanActivate from "../components/CanActivate";
 
 const stats = [
   { id: 1, name: "Transactions every 24 hours", value: "44 million" },
@@ -12,6 +16,7 @@ const stats = [
 
 export default function Home() {
   const { statistic, getStatistic } = useUserStore();
+  const navigate = useNavigate();
 
   useEffect(() => {
     getStatistic();
@@ -39,19 +44,30 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="tw-mt-8">
-        <div className="tw-font-bold tw-text-lg tw-mb-4">
-          Các đơn từ gần đây
+      <CanActivate permission="letter:view">
+        <div className="tw-mt-8">
+          <div className="tw-flex tw-mb-2 tw-items-center tw-justify-between ">
+            <div className="tw-font-bold tw-text-lg tw-mb-4">
+              Các đơn từ gần đây
+            </div>
+            <Button
+              onClick={() => navigate(pathNames.LETTER)}
+              size="small"
+              outlined
+              label="Xem thêm"
+              icon="pi pi-arrow-right"
+            />
+          </div>
+          <MyTable
+            schemas={letterSchemas}
+            data={statistic.pendingLetters.map((item) => ({
+              ...item,
+              studentCode: item?.user?.code,
+              studentName: item?.user?.name,
+            }))}
+          />
         </div>
-        <MyTable
-          schemas={letterSchemas}
-          data={statistic.pendingLetters.map((item) => ({
-            ...item,
-            studentCode: item?.user?.code,
-            studentName: item?.user?.name,
-          }))}
-        />
-      </div>
+      </CanActivate>
     </div>
   );
 }

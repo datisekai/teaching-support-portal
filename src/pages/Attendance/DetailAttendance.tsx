@@ -14,6 +14,7 @@ import { TableSchema } from "../../types/table";
 import { Checkbox } from "primereact/checkbox";
 import dayjs from "dayjs";
 import { useUserStore } from "../../stores/userStore";
+import IntroCard from "../../components/UI/IntroCard";
 
 const exportSchemas = [
   {
@@ -210,6 +211,35 @@ const DetailAttendance = () => {
 
   return (
     <div>
+      {currentAttendance && currentAttendance?.title && (
+        <IntroCard
+          data={[
+            {
+              label: "Lớp học",
+              content:
+                currentAttendance.class?.major?.code +
+                " - " +
+                currentAttendance.class?.major?.name +
+                " - " +
+                currentAttendance.class?.name,
+            },
+            {
+              label: "Giảng viên",
+              content: currentAttendance?.user?.name,
+            },
+            {
+              label: "Điểm danh",
+              content: currentAttendance?.title,
+            },
+            {
+              label: "Thời gian điểm danh",
+              content: dayjs(currentAttendance?.time).format(
+                "DD/MM/YYYY HH:mm:ss"
+              ),
+            },
+          ]}
+        />
+      )}
       <MyTable
         data={data}
         isLoading={isLoadingApi}

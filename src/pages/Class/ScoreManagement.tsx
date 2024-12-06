@@ -19,6 +19,8 @@ import { useDebounceValue } from "usehooks-ts";
 import useConfirm from "../../hooks/useConfirm";
 import { exportExcel } from "../../utils/my-export-excel";
 import CanActivate from "../../components/CanActivate";
+import MyCard from "../../components/UI/MyCard";
+import IntroCard from "../../components/UI/IntroCard";
 
 const ScoreManagement = () => {
   const { id } = useParams();
@@ -34,7 +36,8 @@ const ScoreManagement = () => {
     isLoadingApi,
     setHeaderActions,
   } = useCommonStore();
-  const { students, getStudentClass, classesUnlimited } = useClassStore();
+  const { students, getStudentClass, classesUnlimited, fetchClass, _class } =
+    useClassStore();
   const { showToast } = useToast();
   const [hashStudentScore, setHashStudentScore] = useState<any>({});
   const { attendances, fetchAttendances, toggleAttendee } =
@@ -396,13 +399,15 @@ const ScoreManagement = () => {
   }, [id]);
 
   const loadData = () => {
-    fetchScoreColumnClass(id || "");
-    fetchstudentScore(id || "");
-    getStudentClass(id || "", {});
-    fetchAttendances({ classId: id });
+    Promise.allSettled([
+      fetchScoreColumnClass(id || ""),
+      fetchstudentScore(id || ""),
+      getStudentClass(id || "", {}),
+      fetchAttendances({ classId: id }),
+      fetchClass(id || ""),
+    ]);
   };
 
-  console.log("hashScore", hashStudentScore);
   useEffect(() => {
     const hash: any = {};
     for (const item of attendances) {
@@ -437,6 +442,25 @@ const ScoreManagement = () => {
 
   return (
     <div>
+      {_class && _class?.name && (
+        <IntroCard
+          data={[
+            {
+              label: "Lớp học",
+              content:
+                _class?.major?.code +
+                " - " +
+                _class?.major?.name +
+                " - " +
+                _class?.name,
+            },
+            {
+              label: "Giảng viên",
+              content: _class?.teachers?.map((item) => item.name).join(", "),
+            },
+          ]}
+        />
+      )}
       <div className="tw-flex tw-justify-between tw-mb-2 tw-items-center">
         <div>
           <div className={"mb-1"}>Tìm kiếm theo msv, tên</div>
