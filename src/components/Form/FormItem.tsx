@@ -37,6 +37,7 @@ const FormItem: React.FC<IForm> = ({
   watch,
   preConditionProp,
   query,
+  disabled,
 }) => {
   const windowSize = useWindowSize();
 
@@ -127,6 +128,7 @@ const FormItem: React.FC<IForm> = ({
               placeholder={label}
               aria-describedby={`${prop}-help`}
               invalid={!!error}
+              disabled={disabled}
             />
           )
         );

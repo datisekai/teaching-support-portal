@@ -11,6 +11,10 @@ export const apiConfig = {
     method: "GET",
     endpoint: "/api.auth/profile",
   },
+  updateProfile: {
+    method: "PUT",
+    endpoint: "/api.user/me",
+  },
   updateUser: {
     method: "PUT",
     endpoint: "/api.user/:id",

@@ -1,17 +1,17 @@
 export const translateResource = (resource: string): string => {
   switch (resource) {
     case "user":
-      return "Người dùng";
+      return "Quản lý người dùng";
     case "upload":
       return "Tải lên";
     case "permission":
-      return "Quyền";
+      return "Quản lý quyền";
     case "role":
       return "Loại người dùng";
     case "faculty":
       return "Khoa";
     case "major":
-      return "Chuyên ngành";
+      return "Môn học";
     case "class":
       return "Lớp học";
     case "letter":
@@ -36,6 +36,8 @@ export const translateResource = (resource: string): string => {
       return "Cột điểm";
     case "student_score":
       return "Điểm sinh viên";
+    case "chapter":
+      return "Chương";
     default:
       return "Không rõ";
   }

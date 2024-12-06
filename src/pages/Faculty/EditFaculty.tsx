@@ -15,7 +15,7 @@ const schema = yup
   .object()
   .shape({
     name: yup.string().required("Tên ngành học là bắt buộc."),
-    description: yup.string().required("Mô tả ngành học là bắt buộc."),
+    description: yup.string(),
     code: yup.string().required("Mã ngành học là bắt buộc."),
   })
   .required();

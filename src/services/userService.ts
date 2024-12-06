@@ -28,6 +28,10 @@ export const UserService = {
       body,
     });
   },
+  updateProfile: async (body: any) => {
+    const { updateProfile } = apiConfig;
+    return processMiddlewareSendRequest({ ...updateProfile, body });
+  },
   update: async (id: number, body: Record<string, any>) => {
     const { update } = apiConfig.user;
     return sendServerRequest({

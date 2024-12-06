@@ -24,6 +24,7 @@ export interface IFormItem {
   description?: string;
   preConditionProp?: string;
   query?: any;
+  disabled?: boolean;
 }
 
 export interface IForm {

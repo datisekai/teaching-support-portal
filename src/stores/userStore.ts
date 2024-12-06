@@ -21,6 +21,7 @@ interface IState {
   getMe: () => Promise<void>;
   resetDevice: (id: number) => Promise<boolean>;
   getStatistic: () => Promise<void>;
+  updateProfile: (body: any) => Promise<boolean>;
 }
 interface IToast {
   message?: string;
@@ -35,7 +36,7 @@ interface IToast {
   life?: number;
 }
 
-export const useUserStore = create<IState>((set) => ({
+export const useUserStore = create<IState>((set, get) => ({
   user: {} as IUser,
   permissions: [],
   users: [],
@@ -52,13 +53,24 @@ export const useUserStore = create<IState>((set) => ({
     try {
       const resp = await UserService.getMe();
       const user = resp.user as IUser;
-      const permissions = user.role.permissions.map(
-        (item) => `${item.resource}:${item.action}`
-      );
+      const permissions =
+        user?.role?.permissions.map(
+          (item) => `${item.resource}:${item.action}`
+        ) || [];
 
       set((state) => ({ ...state, user, permissions }));
     } catch (error) {
       console.log(error);
+    }
+  },
+  updateProfile: async (body) => {
+    try {
+      const resp = await UserService.updateProfile(body);
+      set((state) => ({ ...state, user: resp.data }));
+      get().getMe();
+      return !!resp;
+    } catch (error) {
+      return false;
     }
   },
   fetchUsers: async (body) => {

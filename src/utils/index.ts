@@ -96,3 +96,7 @@ export function zeroPad(n: any, width: any, z?: string) {
 export const getIndex = (index: number, rowPerPage: number, page: number) => {
   return (page - 1) * rowPerPage + (index + 1);
 };
+
+export function getRandomAvatar(name?: string) {
+  return `https://api.dicebear.com/9.x/adventurer/svg?seed=${name || "SGU"}`;
+}

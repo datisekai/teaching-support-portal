@@ -13,4 +13,5 @@ export enum ModalName {
   QUESTION_EXAM_SETTING = "question-exam-setting",
   SMART_SEARCH = "smart-search",
   CODE_JOIN_CLASS = "code-join-class",
+  UPDATE_PROFILE = "update-profile",
 }

@@ -19,6 +19,8 @@ import { examRoutes } from "./exam";
 import { facultyRoutes } from "./faculty";
 import { chapterRoutes } from "./chapter";
 import { difficultyRoutes } from "./difficulty";
+import Profile from "../pages/Profile";
+import Logout from "../pages/Logout";
 
 export interface IRouter {
   path: string;
@@ -42,6 +44,14 @@ const router = createBrowserRouter([
           {
             path: pathNames.HOME,
             element: <Home />,
+          },
+          {
+            path: pathNames.PROFILE,
+            element: <Profile />,
+          },
+          {
+            path: pathNames.LOGOUT,
+            element: <Logout />,
           },
           ...classRoutes,
           ...facultyRoutes,

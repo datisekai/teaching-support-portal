@@ -15,10 +15,19 @@ import AutoFillQuestion from "../components/Modal/AutoFillQuestion";
 import QuestionExamSetting from "../components/Modal/QuestionExamSetting";
 import SmartSearch from "../components/Modal/SmartSearch/SmartSearch";
 import CodeJoinClassModal from "../components/Modal/CodeJoinClassModal";
+import UpdateProfileModal from "../components/Modal/UpdateProfileModal";
 
 const DynamicModal = () => {
-  const { modalName, onDismiss, onToggle, visible, footer, header, style } =
-    useModalStore();
+  const {
+    modalName,
+    onDismiss,
+    onToggle,
+    visible,
+    footer,
+    header,
+    style,
+    content,
+  } = useModalStore();
 
   useEffect(() => {
     if (visible) {
@@ -35,6 +44,7 @@ const DynamicModal = () => {
       footer={footer}
       className={`tw-w-[90%] md:tw-w-[50rem] ${style} modal-${modalName}`}
       onHide={onDismiss}
+      closable={content?.closeable != null ? content.closeable : true}
     >
       {modalName === ModalName.TEST && <TestModal />}
       {modalName === ModalName.VIEW_LETTER && <ViewLetterModal />}
@@ -49,6 +59,7 @@ const DynamicModal = () => {
       {modalName === ModalName.QUESTION_EXAM_SETTING && <QuestionExamSetting />}
       {modalName === ModalName.SMART_SEARCH && <SmartSearch />}
       {modalName === ModalName.CODE_JOIN_CLASS && <CodeJoinClassModal />}
+      {modalName === ModalName.UPDATE_PROFILE && <UpdateProfileModal />}
     </Dialog>
   );
 };

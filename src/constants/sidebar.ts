@@ -156,6 +156,19 @@ export const sidebarData: IMenuItem[] = [
   // },
 ];
 
+export const sidebarBottom: IMenuItem[] = [
+  {
+    title: "Tài khoản",
+    icon: "pi pi-user",
+    path: pathNames.PROFILE,
+  },
+  {
+    title: "Đăng xuất",
+    icon: "pi pi-sign-out",
+    path: pathNames.LOGOUT,
+  },
+];
+
 interface IMenuItem {
   title: string;
   icon?: string;

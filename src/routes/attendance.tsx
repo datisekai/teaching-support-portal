@@ -12,7 +12,7 @@ export const attendanceRoutes: IRouter[] = [
     element: <Attendance />,
   },
   {
-    path: pathNames.ATTENDANCE + '/create',
+    path: pathNames.ATTENDANCE + "/create",
     element: <CreateAttendance />,
   },
   {

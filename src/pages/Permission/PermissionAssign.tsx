@@ -220,7 +220,9 @@ const PermissionAssign: React.FC = () => {
                     value={item.key}
                     onChange={(e) => togglePermission(e, item)}
                     checked={isParentChecked(item)}
-                    disabled={!userPermissions.includes("user:update")}
+                    disabled={
+                      !userPermissions.includes("role:assign_permission")
+                    }
                   />
                   <label
                     className="tw-ml-2 tw-font-bold tw-text-lg text-primary"
@@ -237,7 +239,9 @@ const PermissionAssign: React.FC = () => {
                         key={child.key}
                       >
                         <InputSwitch
-                          disabled={!userPermissions.includes("user:update")}
+                          disabled={
+                            !userPermissions.includes("role:assign_permission")
+                          }
                           checked={
                             checkedStates[child.key] || child.isChecked || false
                           }
