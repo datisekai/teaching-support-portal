@@ -136,7 +136,7 @@ const EditMajor = () => {
   }, [teachers]);
 
   const filteredTeachers = useMemo(() => {
-    return teachers.filter((teacher) => teacher?.code !== user?.code);
+    return teachers?.filter((teacher) => teacher?.code !== user?.code) || [];
   }, [teachers, user])
 
   return (
