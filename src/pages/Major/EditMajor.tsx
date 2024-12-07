@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import * as yup from "yup";
 import GroupItem from "../../components/Form/GroupItem";
@@ -18,6 +18,7 @@ import { Avatar } from "primereact/avatar";
 import { getImageUrl } from "../../utils";
 import { Button } from "primereact/button";
 import MySmartSelect from "../../components/UI/MySmartSelect";
+import { useUserStore } from "../../stores/userStore";
 
 const schema = yup
   .object()
@@ -45,6 +46,7 @@ const EditMajor = () => {
   const { isLoadingApi } = useCommonStore();
   const [isLoading, setIsLoading] = useState(false);
   const [teachers, setTeachers] = useState<ISearchUser[]>([]);
+  const { user } = useUserStore()
   const {
     handleSubmit,
     formState: { errors },
@@ -133,6 +135,10 @@ const EditMajor = () => {
     setFooterActions(actions);
   }, [teachers]);
 
+  const filteredTeachers = useMemo(() => {
+    return teachers.filter((teacher) => teacher?.code !== user?.code);
+  }, [teachers, user])
+
   return (
     <div>
       <MyLoading isLoading={isLoadingApi || !isLoading}>
@@ -156,9 +162,9 @@ const EditMajor = () => {
 
         <div className="tw-mt-4">
           <MyCard title="Giảng viên">
-            {teachers &&
-              teachers.length > 0 &&
-              teachers.map((item: any, index: number) => (
+            {filteredTeachers &&
+              filteredTeachers?.length > 0 &&
+              filteredTeachers?.map((item: any, index: number) => (
                 <div className="tw-py-2 tw-px-4 tw-flex tw-items-center tw-justify-between tw-gap-4  tw-cursor-pointer tw-border-b">
                   <div className="tw-flex tw-items-center tw-gap-4">
                     <Avatar
@@ -184,7 +190,7 @@ const EditMajor = () => {
                   </div>
                 </div>
               ))}
-            {teachers.length == 0 && <div>Chưa có giảng viên nào</div>}
+            {filteredTeachers?.length == 0 && <div>Chưa có giảng viên nào</div>}
             <div className="tw-mt-4">
               <MySmartSelect
                 query={{ type: "teacher" }}
