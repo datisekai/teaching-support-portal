@@ -49,7 +49,7 @@ export const letterSchemas: TableSchema[] = [
             value: "Chưa xử lý",
             severity: "warning",
           };
-        case "accepted":
+        case "approved":
           return {
             value: "Chấp nhận",
             severity: "success",

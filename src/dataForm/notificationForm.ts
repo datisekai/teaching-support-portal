@@ -28,7 +28,7 @@ export const NotificationForm: IForm[] = [
         getOptions: (data = []) => {
           return data.map((item: any) => {
             return {
-              title: item.name,
+              title: `${item?.major?.code} - ${item?.major?.name} - ${item?.name}`,
               value: item.id,
             };
           });

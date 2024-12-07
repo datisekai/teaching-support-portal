@@ -18,7 +18,7 @@ const schema = yup
   .object()
   .shape({
     name: yup.string().required("Tên thông báo là bắt buộc."),
-    image: yup.string().required("Ảnh là bắt buộc."),
+    image: yup.string(),
     content: yup.string().required("Nội dung thông báo là bắt buộc."),
     classIds: yup
       .array()
@@ -40,6 +40,7 @@ const EditNotification = () => {
     control,
     reset,
     setValue,
+    watch
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
@@ -61,10 +62,7 @@ const EditNotification = () => {
       setValue("content", notification.content);
       setValue(
         "classIds",
-        notification?.classes?.map((item: any) => ({
-          title: `${item.name}`,
-          value: item.id,
-        }))
+        notification?.classes?.map((item: any) => item.id)
       );
     }
   }, [notification]);

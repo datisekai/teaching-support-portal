@@ -11,11 +11,16 @@ export const notificationSchemas: TableSchema[] = [
     prop: "name",
     type: "text",
   },
-  // {
-  //   label: "Nội dung thông báo",
-  //   prop: "content",
-  //   type: "text",
-  // },
+  {
+    label: "Lớp học",
+    prop: "classes",
+    type: "text",
+    render(data) {
+      return `${data?.classes
+        ?.map((item: any) => `${item?.major?.name} - ${item?.name}`)
+        .join(", ")}`;
+    },
+  },
   {
     label: "Ngày tạo",
     prop: "createdAt",

@@ -62,7 +62,7 @@ const CreateDifficulty = () => {
       message: "Tạo thành công",
       life: 3000,
     });
-    navigate(pathNames.CHAPTER);
+    navigate(pathNames.DIFFICULTY);
   };
 
   useEffect(() => {

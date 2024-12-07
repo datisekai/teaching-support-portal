@@ -16,7 +16,7 @@ const ViewLetterModal: React.FC = () => {
         </p>
         <p>
           <strong>Lý do: </strong>
-          {content.reason}
+          <div dangerouslySetInnerHTML={{ __html: content.reason }}></div>
         </p>
         <p>
           <strong>Trạng thái: </strong>

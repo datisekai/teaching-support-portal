@@ -15,7 +15,7 @@ const schema = yup
   .object()
   .shape({
     name: yup.string().required("Tên thông báo là bắt buộc."),
-    image: yup.string().required("Ảnh là bắt buộc."),
+    image: yup.string(),
     content: yup.string().required("Nội dung thông báo là bắt buộc."),
     classIds: yup
       .array()
