@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useModalStore } from "../../stores";
 import { generateCharacter } from "../../utils";
+import { QuestionType } from "../../constants";
 
 const ViewQuestionModal: React.FC = () => {
   const { content } = useModalStore();
@@ -25,7 +26,7 @@ const ViewQuestionModal: React.FC = () => {
         <div dangerouslySetInnerHTML={{ __html: content.content }} />
       </p>
 
-      {content?.choices?.length > 0 && (
+      {content?.type === QuestionType.MULTIPLE_CHOICE && content?.choices?.length > 0 && (
         <p className="tw-mb-4">
           <strong>Câu trả lời:</strong>
         </p>

@@ -62,9 +62,13 @@ export const QuestionCodeForm: IForm[] = [
       },
       {
         prop: "isPublic",
-        type: "switch",
-        label: "Public",
+        type: "select",
+        label: "Trạng thái",
         col: 6,
+        options: [
+          { title: "Private", value: false },
+          { title: "Public", value: true },
+        ],
       },
     ],
   },
@@ -190,6 +194,7 @@ export const QuestionCodeHtmlForm: IForm[] = [
             };
           });
         },
+        preConditionProp: "majorId",
       },
       {
         prop: "difficultyId",

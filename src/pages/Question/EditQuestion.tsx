@@ -95,6 +95,8 @@ const EditQuestion = () => {
     if (id) fetchQuestion(id);
   }, [id, fetchQuestion]);
 
+  console.log('question', question);
+
   useEffect(() => {
     if (question) {
       setValue("title", question.title);
@@ -103,7 +105,10 @@ const EditQuestion = () => {
       setValue("majorId", question.major.id);
       setValue("chapterId", question.chapter.id);
       setValue("difficultyId", question.difficulty.id);
-      setAnswers(question.choices || []);
+      setAnswers(question?.choices || []);
+      setValue('acceptedLanguages', question?.acceptedLanguages?.map((item: any) => +item));
+      setTestCases(question?.testCases || []);
+      setValue('initCode', question?.initCode || {});
     }
   }, [question, setValue]);
 
@@ -213,6 +218,7 @@ const EditQuestion = () => {
     resetActions,
     question,
     answers,
+    testcases,
   ]);
 
   const QuestionForm = useMemo(() => {

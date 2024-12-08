@@ -63,7 +63,7 @@ const CreateQuestion = () => {
     defaultValues: {
       title: "",
       content: "",
-      isPublic: false,
+      isPublic: true,
       majorId: "",
       chapterId: "",
       difficultyId: "",
@@ -157,6 +157,16 @@ const CreateQuestion = () => {
   };
 
   useEffect(() => {
+
+    setHeaderTitle("Tạo câu hỏi");
+    fetchLanguages();
+
+    return () => {
+      resetActions();
+    };
+  }, []);
+
+  useEffect(() => {
     const actions: IAction[] = [
       {
         title: "Trở lại",
@@ -171,13 +181,7 @@ const CreateQuestion = () => {
       },
     ];
     setFooterActions(actions);
-    setHeaderTitle("Tạo câu hỏi");
-    fetchLanguages();
-
-    return () => {
-      resetActions();
-    };
-  }, []);
+  }, [answers])
 
   const QuestionForm = useMemo(() => {
     let form;
@@ -205,23 +209,7 @@ const CreateQuestion = () => {
     newTestcases[index][key] = value;
     setTestCases(newTestcases);
   };
-  const handleSetValue = (
-    index: number,
-    value: any,
-    key: "text" | "isCorrect"
-  ) => {
-    setAnswers((prev) => {
-      const newAnswers = [...prev];
-      if (key === "isCorrect") {
-        newAnswers.forEach((ans, idx) => {
-          ans.isCorrect = idx === index;
-        });
-      } else {
-        newAnswers[index].text = value;
-      }
-      return newAnswers;
-    });
-  };
+
   const handleAdd = () => {
     setAnswers((prev) => [...prev, { text: "", isCorrect: false }]);
   };
@@ -268,19 +256,28 @@ const CreateQuestion = () => {
                 key={index}
               >
                 <RadioButton
-                  inputId={`answer-${index}`}
+                  inputId={`answer`}
                   name="choices"
-                  value={answer.text}
-                  onChange={() =>
-                    handleSetValue(index, answer.text, "isCorrect")
-                  }
+                  onChange={(e) => {
+                    const newAnswer = [...answers].map((item, i) => ({ ...item, isCorrect: i === index, }));
+                    setAnswers(newAnswer);
+                  }}
+
                   checked={answer.isCorrect}
                 />
                 <InputText
                   placeholder={`Đáp án ${index + 1}`}
                   value={answer.text}
-                  onChange={(e) =>
-                    handleSetValue(index, e.target.value, "text")
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    const newAnswer = [...answers].map((item, i) => {
+                      if (i === index) {
+                        return ({ ...item, text: value });
+                      }
+                      return item;
+                    });
+                    setAnswers(newAnswer);
+                  }
                   }
                   className="tw-w-full"
                 />

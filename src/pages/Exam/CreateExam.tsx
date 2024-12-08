@@ -140,7 +140,7 @@ const CreateExam = () => {
           life: 3000,
         });
       },
-      onReject: () => {},
+      onReject: () => { },
     });
   };
 
@@ -167,7 +167,7 @@ const CreateExam = () => {
       },
     ];
     setFooterActions(actions);
-  }, [previewQuestion]);
+  }, [previewQuestion, hashScore]);
 
   const classId = watch("classId");
 
