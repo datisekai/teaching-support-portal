@@ -13,33 +13,29 @@ export const questionSchemas: TableSchema[] = [
     prop: "title",
     type: "text",
   },
-  // {
-  //   label: "Nội dung",
-  //   prop: "content",
-  //   type: "text",
-  // },
-  // {
-  //   label: "Chương",
-  //   prop: "chapter",
-  //   type: "text",
-  // },
-  // {
-  //   label: "Độ khó",
-  //   prop: "level",
-  //   type: "badge",
-  //   getBadge: (value) => {
-  //     switch (value) {
-  //       case "easy":
-  //         return { value: "Dễ", severity: "info" };
-  //       case "medium":
-  //         return { value: "Trung bình", severity: "warning" };
-  //       case "difficult":
-  //         return { value: "Khó", severity: "danger" };
-  //       default:
-  //         return { value: "Lỗi", severity: "danger" };
-  //     }
-  //   },
-  // },
+  {
+    label: "Thông tin",
+    prop: "major",
+    type: "text",
+    render(data) {
+      return (
+        <div>
+          <p>
+            Môn học:{" "}
+            <strong>
+              {data.major.code} - {data.major.name}
+            </strong>
+          </p>
+          <p>
+            Chương: <strong>{data.chapter.name}</strong>
+          </p>
+          <p>
+            Độ khó: <strong>{data.difficulty.level}</strong>
+          </p>
+        </div>
+      );
+    },
+  },
   {
     label: "Trạng thái",
     prop: "isPublic",

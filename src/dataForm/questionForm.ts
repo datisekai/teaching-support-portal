@@ -14,7 +14,7 @@ export const QuestionCodeForm: IForm[] = [
       {
         prop: "content",
         type: "editor",
-        label: "Nội dung câu hỏi",
+        label: "Nội dung/Mô tả",
         col: 12,
       },
 

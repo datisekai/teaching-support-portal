@@ -1,15 +1,18 @@
-import { useEffect, useState } from "react";
-import { useCommonStore, useModalStore } from "../../stores";
-import MyTable, { IActionTable } from "../../components/UI/MyTable";
-import { useNavigate } from "react-router-dom";
 import { Button } from "primereact/button";
-import { questions, questionSchemas } from "../../dataTable/questionTable";
-import useConfirm from "../../hooks/useConfirm";
-import { ModalName, QuestionType, UserType } from "../../constants";
-import { useQuestionStore } from "../../stores/questionStore";
-import { useToast } from "../../hooks/useToast";
 import { Dropdown, DropdownChangeEvent } from "primereact/dropdown";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import MyCard from "../../components/UI/MyCard";
+import MyTable, { IActionTable } from "../../components/UI/MyTable";
+import { ModalName, UserType } from "../../constants";
+import { questionSchemas } from "../../dataTable/questionTable";
+import useConfirm from "../../hooks/useConfirm";
+import { useToast } from "../../hooks/useToast";
+import { useCommonStore, useModalStore } from "../../stores";
+import { useQuestionStore } from "../../stores/questionStore";
 import { useUserStore } from "../../stores/userStore";
+import { useMajorStore } from "../../stores/majorStore";
+import { set } from "react-hook-form";
 
 interface IStatus {
   id: string;
@@ -26,10 +29,9 @@ const Question = () => {
   const { isLoadingApi } = useCommonStore();
   const { showToast } = useToast();
   const { user } = useUserStore();
-  const handleSubmit = (data: any) => {
-    onDismiss();
-  };
+  const { fetchMajors, majorsUnlimited } = useMajorStore();
 
+  const [filter, setFilter] = useState({ type: "all", majorId: "" });
   const handleEdit = (data: any) => {
     navigate(`/question/edit/${data.id}?type=${data.type}`);
   };
@@ -146,6 +148,8 @@ const Question = () => {
         permission: "question:create",
       },
     ]);
+
+    fetchMajors({ pagination: false });
     return () => {
       resetActions();
     };
@@ -163,22 +167,76 @@ const Question = () => {
       label: "Của tôi",
     },
   ];
-  const [selectedStauts, setselectedStauts] = useState<IStatus>(status[0]);
+  // useEffect(() => {
+  //   fetchQuestions({ type: selectedStauts?.id });
+  // }, [selectedStauts]);
 
-  useEffect(() => {
-    fetchQuestions({ type: selectedStauts?.id });
-  }, [selectedStauts]);
+  const applyFilter = () => {
+    fetchQuestions(filter);
+  };
+
+  const resetFilter = () => {
+    fetchQuestions({});
+    setFilter({ type: "all", majorId: "" });
+  };
 
   return (
-    <div>
-      <Dropdown
-        value={selectedStauts}
-        onChange={(e: DropdownChangeEvent) => setselectedStauts(e.value)}
-        options={status}
-        optionLabel="label"
-        placeholder="Danh sách câu hỏi"
-        className="tw-my-2"
-      />
+    <div className="tw-space-y-4">
+      <MyCard title={"Tìm kiếm"}>
+        <div className={"tw-flex tw-items-end tw-gap-4 tw-flex-wrap"}>
+          <div>
+            <div className={"mb-1"}>Câu hỏi</div>
+            <Dropdown
+              value={filter.type}
+              onChange={(e: DropdownChangeEvent) =>
+                setFilter({ ...filter, type: e.value })
+              }
+              options={status}
+              optionValue="id"
+              optionLabel="label"
+              placeholder="Danh sách câu hỏi"
+            />
+          </div>
+
+          <div>
+            <div className={"mb-1"}>Lọc theo môn</div>
+            <Dropdown
+              // value={selectedClass}
+              // onChange={(e) => setSelectedClass(e.value)}
+              value={filter.majorId}
+              onChange={(e: DropdownChangeEvent) =>
+                setFilter({ ...filter, majorId: e.value })
+              }
+              options={majorsUnlimited}
+              optionLabel="name"
+              optionValue="id"
+              loading={isLoadingApi}
+              placeholder="Chọn môn học"
+              className="w-full"
+            />
+          </div>
+
+          <div>
+            <div className={"mb-1"}>Thao tác</div>
+            <div className={"tw-flex tw-gap-2"}>
+              <Button
+                onClick={applyFilter}
+                icon={"pi pi-play"}
+                iconPos={"right"}
+                label={"Áp dụng"}
+              ></Button>
+              <Button
+                onClick={resetFilter}
+                severity={"contrast"}
+                icon={"pi pi-refresh"}
+                iconPos={"right"}
+                label={"Reset"}
+              ></Button>
+            </div>
+          </div>
+        </div>
+      </MyCard>
+
       <MyTable
         keySearch="title"
         data={questions}
