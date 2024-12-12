@@ -50,6 +50,7 @@ interface IMyTable {
   onChange?: (query: object) => void;
   actions?: IActionTable[];
   isLoading?: boolean;
+  clientPagination?: boolean;
 }
 
 const MyTable: FC<IMyTable> = ({
@@ -62,6 +63,7 @@ const MyTable: FC<IMyTable> = ({
   actions = [],
   isLoading = false,
   keySearchLabel,
+  clientPagination = false,
 }) => {
   const [first, setFirst] = useState(1);
   const [selectedRowData, setSelectedRowData] = useState<any>(null);
@@ -232,6 +234,12 @@ const MyTable: FC<IMyTable> = ({
         value={data}
         header={keySearch ? renderHeader() : null}
         tableStyle={{ minWidth: "10rem" }}
+        {...(clientPagination
+          ? {
+              paginator: true,
+              rows: perPage,
+            }
+          : {})}
       >
         {schemas.map((schema) => (
           <Column

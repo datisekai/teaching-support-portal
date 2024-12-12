@@ -200,6 +200,8 @@ const AttendanceModal = () => {
             <MyTable
               schemas={AttendeeSchemas}
               data={roomState.attendees || []}
+              clientPagination={true}
+              perPage={10}
             />
           </TabPanel>
         </TabView>

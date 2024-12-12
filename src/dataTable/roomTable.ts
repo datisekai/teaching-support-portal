@@ -20,25 +20,16 @@ export const roomSchemas: TableSchema[] = [
     prop: "title",
     type: "text",
   },
-  {
-    label: "Trạng thái",
-    prop: "isOpen",
-    type: "badge",
-    getBadge: (value) => {
-      switch (value) {
-        case false:
-        case "":
-          return { severity: "warning", value: "Không hoạt động" };
-        case true:
-          return { severity: "info", value: "Đang điểm danh" };
-      }
-      return { severity: "danger", value: "Không xác định" };
-    },
-  },
+
   {
     label: "Giảng viên",
     prop: "teacherNames",
     type: "text",
+  },
+  {
+    label: "Ngày điểm danh",
+    prop: "time",
+    type: "datetime",
   },
   {
     label: "Ngày cập nhật",
