@@ -150,7 +150,7 @@ const AttendanceModal = () => {
               <div>
                 Ngày điểm danh:{" "}
                 <span className="tw-font-semibold">
-                  {dayjs(content.updatedAt).format("DD/MM/YYYY HH:mm")}
+                  {dayjs(content.time).format("DD/MM/YYYY HH:mm")}
                 </span>
               </div>
               <div>
