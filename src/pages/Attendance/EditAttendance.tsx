@@ -17,6 +17,7 @@ const schema = yup
     title: yup.string().required("Vui lòng điền tiêu đề"),
     expirationTime: yup.number().required("Vui lòng điền thời gian").min(1000),
     classId: yup.string().required("Vui lòng chọn lớp học"),
+    time: yup.date(),
   })
   .required();
 const EditAttendance = () => {
@@ -31,6 +32,7 @@ const EditAttendance = () => {
       title: "",
       classId: "",
       expirationTime: 3000,
+      time: new Date(),
     },
   });
   const navigate = useNavigate();
@@ -66,6 +68,7 @@ const EditAttendance = () => {
       setValue("title", attendance.title);
       setValue("classId", attendance.class.id.toString());
       setValue("expirationTime", attendance.expirationTime);
+      setValue("time", new Date(attendance.time));
     }
   }, [attendance]);
 

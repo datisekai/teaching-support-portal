@@ -92,9 +92,10 @@ export const useAttendanceStore = create<IAttendanceState>((set) => ({
   deleteAttendance: async (id: number) => {
     try {
       const response = await attendanceService.delete(id);
-      useAttendanceStore().fetchAttendances({});
+      useAttendanceStore.getState().fetchAttendances({});
       return !!response;
     } catch (error) {
+      console.log(error);
       return false;
     }
   },

@@ -41,7 +41,7 @@ const UpdateProfileModal = () => {
     onDismiss();
     if (!result) {
       showToast({
-        severity: "danger",
+        severity: "error",
         summary: "Thông báo",
         message: "Cập nhật thất bại",
         life: 3000,

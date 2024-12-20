@@ -92,7 +92,7 @@ const Attendance = () => {
         const result = await deleteAttendance(id);
         if (!result) {
           return showToast({
-            severity: "danger",
+            severity: "error",
             summary: "Thông báo",
             message: "Xóa thất bại",
             life: 3000,

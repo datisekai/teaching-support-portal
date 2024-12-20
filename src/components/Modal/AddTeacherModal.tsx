@@ -41,7 +41,7 @@ const AddTeacherModal = () => {
 
           if (!result) {
             showToast({
-              severity: "danger",
+              severity: "error",
               summary: "Thông báo",
               message: "Xóa thất bại",
               life: 3000,
@@ -56,7 +56,7 @@ const AddTeacherModal = () => {
           }
         } catch (error) {
           showToast({
-            severity: "danger",
+            severity: "error",
             summary: "Thông báo",
             message: "Xảy ra lỗi khi xoá",
             life: 3000,

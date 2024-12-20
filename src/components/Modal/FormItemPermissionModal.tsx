@@ -25,7 +25,7 @@ const FormItemPermissionModal = () => {
     const title = type === "create" ? "Tạo" : "Sửa";
     if (!result) {
       return showToast({
-        severity: "danger",
+        severity: "error",
         summary: "Thông báo",
         message: `${title} thất bại`,
         life: 3000,

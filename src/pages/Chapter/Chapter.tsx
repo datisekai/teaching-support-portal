@@ -29,7 +29,7 @@ const Chapter = () => {
           const result = await deleteChapter(id);
           if (!result) {
             return showToast({
-              severity: "danger",
+              severity: "error",
               summary: "Thông báo",
               message: "Xóa thất bại",
               life: 3000,

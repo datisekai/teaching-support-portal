@@ -23,6 +23,10 @@ const AttendanceModal = () => {
   const [roomState, setRoomState] = useState<IRoomState>({} as IRoomState);
 
   useEffect(() => {
+    setRoomState({} as any);
+  }, [content.id]);
+
+  useEffect(() => {
     socket?.emit(
       SocketMessage.JOIN_OR_CREATE,
       {
@@ -43,7 +47,7 @@ const AttendanceModal = () => {
           showToast({
             summary: "Thông báo",
             message,
-            severity: "danger",
+            severity: "error",
           });
         }
       }

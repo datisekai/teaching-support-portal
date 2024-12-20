@@ -45,7 +45,7 @@ const Question = () => {
           const result = await deleteQuestion(id);
           if (!result) {
             return showToast({
-              severity: "danger",
+              severity: "error",
               summary: "Thông báo",
               message: "Xóa thất bại",
               life: 3000,
