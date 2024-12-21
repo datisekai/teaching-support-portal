@@ -42,8 +42,7 @@ const ViewLetterModal: React.FC = () => {
               preview
               src={getImageServer(content.image)}
               alt="Minh chứng"
-              width="180"
-              height="180"
+              width="100%"
             />
           </p>
         )}
