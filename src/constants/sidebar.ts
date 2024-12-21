@@ -17,6 +17,12 @@ export const sidebarData: IMenuItem[] = [
         path: pathNames.ATTENDANCE,
         permission: "attendance:view",
       },
+      {
+        title: "Vị trí điểm danh",
+        icon: "pi pi-map-marker",
+        path: pathNames.LOCATION,
+        permission: "location:view",
+      },
     ],
   },
   {

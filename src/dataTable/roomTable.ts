@@ -16,6 +16,14 @@ export const roomSchemas: TableSchema[] = [
     },
   },
   {
+    label: "Vị trí",
+    prop: "location",
+    type: "text",
+    render(data) {
+      return `${data?.location?.name || "Chưa có"}`;
+    },
+  },
+  {
     label: "Tiêu đề",
     prop: "title",
     type: "text",

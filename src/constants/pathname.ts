@@ -2,6 +2,7 @@ export const pathNames = {
   HOME: "/",
   LOGIN: "/login",
   ATTENDANCE: "/attendance",
+  LOCATION: "/location",
   FACULTY: "/faculty",
   LETTER: "/letter",
   NOTIFICATION: "/notification",

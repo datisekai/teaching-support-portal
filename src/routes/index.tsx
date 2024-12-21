@@ -21,6 +21,7 @@ import { chapterRoutes } from "./chapter";
 import { difficultyRoutes } from "./difficulty";
 import Profile from "../pages/Profile";
 import Logout from "../pages/Logout";
+import { locationRoutes } from "./location";
 
 export interface IRouter {
   path: string;
@@ -67,6 +68,7 @@ const router = createBrowserRouter([
           ...examRoutes,
           ...chapterRoutes,
           ...difficultyRoutes,
+          ...locationRoutes
         ],
       },
     ],

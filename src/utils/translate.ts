@@ -38,6 +38,8 @@ export const translateResource = (resource: string): string => {
       return "Điểm sinh viên";
     case "chapter":
       return "Chương";
+    case "location":
+      return "Vị trí";
     default:
       return "Không rõ";
   }

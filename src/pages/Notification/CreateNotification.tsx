@@ -1,15 +1,15 @@
-import React, { useEffect } from "react";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import * as yup from "yup";
 import GroupItem from "../../components/Form/GroupItem";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { useForm } from "react-hook-form";
-import { useCommonStore } from "../../stores";
-import { IAction } from "../../stores/commonStore";
+import { pathNames } from "../../constants";
 import { NotificationForm } from "../../dataForm/notificationForm";
 import { useToast } from "../../hooks/useToast";
+import { useCommonStore } from "../../stores";
+import { IAction } from "../../stores/commonStore";
 import { useNotificationStore } from "../../stores/notificationStore";
-import { pathNames } from "../../constants";
 
 const schema = yup
   .object()
@@ -99,6 +99,8 @@ const CreateNotification = () => {
         {NotificationForm.map((form, index) => (
           <GroupItem errors={errors} {...form} key={index} control={control} />
         ))}
+
+
       </form>
     </div>
   );

@@ -66,9 +66,10 @@ const Step3: React.FC<Props> = ({ refId, type }) => {
   }, [studentScore]);
 
   useEffect(() => {
+    console.log('examHistorys', examHistorys);
     if (examHistorys?.data) {
       const hash: any = {};
-      for (const item of examHistorys) {
+      for (const item of examHistorys.data) {
         hash[item.user_code] = item;
       }
       for (const item of students) {

@@ -213,6 +213,29 @@ export const apiConfig = {
       endpoint: "/api.notification/:id",
     },
   },
+  //Location
+  location: {
+    create: {
+      method: "POST",
+      endpoint: "/api.location",
+    },
+    update: {
+      method: "PUT",
+      endpoint: "/api.location/:id",
+    },
+    _delete: {
+      method: "DELETE",
+      endpoint: "/api.location/:id",
+    },
+    getAll: {
+      method: "GET",
+      endpoint: "/api.location",
+    },
+    getSingle: {
+      method: "GET",
+      endpoint: "/api.location/:id",
+    },
+  },
   // Role
   role: {
     create: {

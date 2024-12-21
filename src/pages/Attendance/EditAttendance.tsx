@@ -18,6 +18,7 @@ const schema = yup
     expirationTime: yup.number().required("Vui lòng điền thời gian").min(1000),
     classId: yup.string().required("Vui lòng chọn lớp học"),
     time: yup.date(),
+    locationId: yup.string().required("Vui lòng chọn vị trí"),
   })
   .required();
 const EditAttendance = () => {
@@ -33,6 +34,7 @@ const EditAttendance = () => {
       classId: "",
       expirationTime: 3000,
       time: new Date(),
+      locationId: ""
     },
   });
   const navigate = useNavigate();

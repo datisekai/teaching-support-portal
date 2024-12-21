@@ -27,6 +27,22 @@ export const AttendanceForm: IForm[] = [
         },
       },
       {
+        prop: "locationId",
+        type: "select-ajax",
+        apiUrl: apiConfig.location.getAll.endpoint,
+        label: "Vị trí",
+        description: "Là vị trí đặt máy tính điểm danh",
+        col: 6,
+        getOptions: (data = []) => {
+          return data.map((item: any) => {
+            return {
+              title: `${item.name}`,
+              value: item.id,
+            };
+          });
+        },
+      },
+      {
         prop: "time",
         type: "date-time",
         label: "Ngày điểm danh",
