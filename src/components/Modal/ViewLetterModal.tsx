@@ -8,8 +8,8 @@ const ViewLetterModal: React.FC = () => {
   const { content } = useModalStore();
 
   return (
-    <div className="tw-flex tw-items-center tw-justify-between">
-      <div>
+    <div className="tw-flex tw-items-center tw-justify-between tw-gap-2">
+      <div className="tw-flex-1">
         <p>
           <strong>Loại đơn từ: </strong>
           {getTypeLetter(content.type)}
@@ -35,7 +35,7 @@ const ViewLetterModal: React.FC = () => {
           {content.class.name}
         </p>
       </div>
-      <div>
+      <div className="tw-flex-1">
         {content.studentName && (
           <p>
             <Image

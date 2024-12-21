@@ -7,6 +7,7 @@ import { Button } from "primereact/button";
 import { useNavigate } from "react-router-dom";
 import { pathNames } from "../constants";
 import CanActivate from "../components/CanActivate";
+import { useCommonStore } from "../stores";
 
 const stats = [
   { id: 1, name: "Transactions every 24 hours", value: "44 million" },
@@ -16,10 +17,12 @@ const stats = [
 
 export default function Home() {
   const { statistic, getStatistic } = useUserStore();
+  const { setHeaderTitle } = useCommonStore()
   const navigate = useNavigate();
 
   useEffect(() => {
     getStatistic();
+    setHeaderTitle("Trang chủ")
   }, []);
   return (
     <div>
