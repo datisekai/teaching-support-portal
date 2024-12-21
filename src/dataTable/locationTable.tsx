@@ -44,7 +44,7 @@ export const locationSchemas: TableSchema[] = [
         prop: "user",
         type: "text",
         render(data) {
-            return `${data.user.name}`
+            return `${data?.user?.name}`
         },
     }
 ];

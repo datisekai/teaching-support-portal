@@ -39,6 +39,11 @@ const AttendanceModal = () => {
           name: item.user.name,
           time: new Date(item.createdAt).getTime(),
         })),
+        location: {
+          latitude: content.location.latitude,
+          longitude: content.location.longitude,
+          accuracy: content.location.accuracy,
+        }
       },
       (response: ISocketResponse) => {
         const { message, success, data } = response;
