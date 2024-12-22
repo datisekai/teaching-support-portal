@@ -69,7 +69,7 @@ export const useLetterStore = create<ILetterState>((set) => ({
       if (response) {
         set((state) => ({
           letters: state.letters.map((item) =>
-            item.id === id ? response : item
+            item.id === id ? { ...item, ...response } : item
           ),
         }));
       }

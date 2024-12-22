@@ -274,10 +274,10 @@ const ScoreManagement = () => {
         width: 150,
       },
       ...[...attendances]?.reverse()?.map((item) => ({
-        label: `Vắng ${dayjs(item.time).format("DD/MM")}`,
+        label: `Vắng ${dayjs(item.time).format("DD/MM")} ${item.isLink && `(Đã liên kết)`}`,
         type: "number",
         render: (data: any) => {
-          return !hashAttendance?.[item.id]?.[data.code] ? "X" : "";
+          return !hashAttendance?.[item.id]?.[data.code] ? "V" : "";
         },
         prop: item.id,
         width: 120,

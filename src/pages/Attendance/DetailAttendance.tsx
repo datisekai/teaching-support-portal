@@ -15,11 +15,13 @@ import { Checkbox } from "primereact/checkbox";
 import dayjs from "dayjs";
 import { useUserStore } from "../../stores/userStore";
 import IntroCard from "../../components/UI/IntroCard";
+import { useDebounceValue } from "usehooks-ts";
+import { InputText } from "primereact/inputtext";
 
 const exportSchemas = [
   {
     label: "STT",
-    prop: "id",
+    prop: "index",
     type: "number",
   },
   {
@@ -32,22 +34,22 @@ const exportSchemas = [
     prop: "name",
     type: "text",
   },
-  {
-    label: "Email",
-    prop: "email",
-    type: "text",
-  },
-  {
-    label: "Số điện thoại",
-    prop: "phone",
-    type: "text",
-  },
+  // {
+  //   label: "Email",
+  //   prop: "email",
+  //   type: "text",
+  // },
+  // {
+  //   label: "Số điện thoại",
+  //   prop: "phone",
+  //   type: "text",
+  // },
   {
     label: "Vắng",
     prop: "isSuccess",
     type: "text",
     render: (data: any) => {
-      return !data.isSuccess ? "X" : "";
+      return !data.isSuccess ? "V" : "";
     },
   },
   {
@@ -69,6 +71,7 @@ const DetailAttendance = () => {
   });
   const [hashAttendees, setHashAttendees] = useState<any>({});
   const { permissions } = useUserStore();
+  const [debouncedValue, setValue] = useDebounceValue("", 500);
 
   const { getStudentClass, students } = useClassStore();
 
@@ -111,11 +114,21 @@ const DetailAttendance = () => {
     }
   }, [attendees]);
 
+  const studentFilter = useMemo(() => {
+    if (!debouncedValue || !debouncedValue?.trim()) {
+      return students;
+    }
+    return students?.filter((item: any) => {
+      const fullTextSearch = `${item.code} ${item.name}`.toLowerCase();
+      return fullTextSearch.includes(debouncedValue.toLowerCase());
+    });
+  }, [debouncedValue, students]);
+
   const data = useMemo(() => {
-    return students?.map((item: any) => {
+    return studentFilter?.map((item: any) => {
       return item;
     });
-  }, [students, hashAttendees]);
+  }, [studentFilter, hashAttendees]);
 
   const handleUpdateAttendee = (userId: number, checked: boolean) => {
     toggleAttendee(+(id || 0), userId);
@@ -142,16 +155,16 @@ const DetailAttendance = () => {
         prop: "name",
         type: "text",
       },
-      {
-        label: "Email",
-        prop: "email",
-        type: "text",
-      },
-      {
-        label: "Số điện thoại",
-        prop: "phone",
-        type: "text",
-      },
+      // {
+      //   label: "Email",
+      //   prop: "email",
+      //   type: "text",
+      // },
+      // {
+      //   label: "Số điện thoại",
+      //   prop: "phone",
+      //   type: "text",
+      // },
       {
         label: "Vắng",
         prop: "isSuccess",
@@ -193,6 +206,7 @@ const DetailAttendance = () => {
               return {
                 ...item,
                 isSuccess: hashAttendees?.[item?.id] || false,
+                index: index + 1
               };
             }),
             exportSchemas,
@@ -239,12 +253,21 @@ const DetailAttendance = () => {
           ]}
         />
       )}
-      <MyTable
-        data={data}
-        isLoading={isLoadingApi}
-        schemas={schemas as TableSchema[]}
-        actions={actionTable}
-      />
+      <div className="tw-space-y-4">
+        <div>
+          <div className={"mb-1"}>Tìm kiếm theo msv, tên</div>
+          <InputText
+            onChange={(e) => setValue(e.target.value)}
+            placeholder="Tìm kiếm"
+          />
+        </div>
+        <MyTable
+          data={data}
+          isLoading={isLoadingApi}
+          schemas={schemas as TableSchema[]}
+          actions={actionTable}
+        />
+      </div>
     </div>
   );
 };

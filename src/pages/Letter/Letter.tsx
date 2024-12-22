@@ -24,7 +24,7 @@ const Letter = () => {
   const { showToast } = useToast();
   const { onDismiss } = useModalStore();
   const handleSubmit = async (id: number, data: any) => {
-    const result = await updateStatus(id, { status: data });
+    const result = await updateStatus(id, { ...data });
     onDismiss();
     if (!result) {
       return showToast({
@@ -44,30 +44,10 @@ const Letter = () => {
   const handleView = (data: any) => {
     onToggle(ModalName.VIEW_LETTER, {
       header: "Chi tiết đơn",
-      footer: (
-        <>
-          <CanActivate permission="letter:update">
-            {data.status == "pending" && (
-              <div className="tw-flex tw-justify-end tw-items-center">
-                <Button
-                  label="Từ chối"
-                  icon="pi pi-times"
-                  type="button"
-                  severity="danger"
-                  onClick={() => handleSubmit(data.id, "rejected")}
-                />
-                <Button
-                  label="Đồng ý"
-                  icon="pi pi-check"
-                  autoFocus
-                  onClick={() => handleSubmit(data.id, "approved")}
-                />
-              </div>
-            )}
-          </CanActivate>
-        </>
-      ),
-      content: data, // Nội dung chi tiết của đơn từ
+      content: {
+        data,
+        handleSubmit: handleSubmit
+      }, // Nội dung chi tiết của đơn từ
       style: "tw-w-[90%] md:tw-w-[30rem]",
     });
   };
