@@ -34,7 +34,7 @@ const EditAttendance = () => {
       classId: "",
       expirationTime: 3000,
       time: new Date(),
-      locationId: ""
+      locationId: "",
     },
   });
   const navigate = useNavigate();
@@ -62,7 +62,7 @@ const EditAttendance = () => {
       message: "Cập nhật thành công",
       life: 3000,
     });
-    navigate(pathNames.FACULTY);
+    navigate(pathNames.ATTENDANCE);
   };
 
   useEffect(() => {
